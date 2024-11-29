@@ -11,8 +11,8 @@ Environment=TLS_DOMAIN=starchweb.com
 ExecStart=/usr/local/bin/thrust bin/rails server
 Restart=always
 
-StandardOutput=append:/root/starch/log/thruster/output.log
-StandardError=append:/root/starch/log/thruster/error.log
+StandardOutput=append:/root/starch/log/thruster-output.log
+StandardError=append:/root/starch/log/thruster-error.log
 
 [Install]
 WantedBy=multi-user.target
