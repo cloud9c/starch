@@ -1,0 +1,24 @@
+name: Deploy to Production
+on:
+  push:
+    branches: [ prod ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: starchweb.com
+        username: root
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /root/starch
+          git fetch
+          git checkout prod
+          git pull
+          bundle install
+          RAILS_ENV=production bundle exec rake assets:precompile
+          sudo systemctl restart rails-starchweb
+          sudo systemctl status rails-starchweb
