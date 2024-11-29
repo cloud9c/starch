@@ -15,10 +15,18 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /root/starch
+
           git fetch
           git checkout prod
           git pull
+
           bundle install
           RAILS_ENV=production bundle exec rake assets:precompile
-          sudo systemctl restart rails-starchweb
-          sudo systemctl status rails-starchweb
+
+          # Copy systemd service file
+          sudo cp config/systemd/deploy-web.service /etc/systemd/system/
+
+          # Reload systemd and restart
+          sudo systemctl daemon-reload
+          sudo systemctl restart deploy-web
+          sudo systemctl status deploy-web
