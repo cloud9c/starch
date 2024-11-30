@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "session/callback", to: "sessions#callback", as: :session_callback
   resource :session
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
