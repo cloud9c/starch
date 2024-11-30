@@ -8,7 +8,7 @@ Type=simple
 User=root
 WorkingDirectory=/root/starch
 Environment=RAILS_ENV=production
-ExecStart=/usr/local/bin/bundle exec sidekiq
+ExecStart=/usr/local/bin/bundle exec sidekiq -q default -q mailers
 Restart=always
 StandardOutput=append:/root/starch/log/sidekiq-output.log
 StandardError=append:/root/starch/log/sidekiq-error.log
