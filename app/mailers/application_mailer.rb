@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "support@starchweb.com"
+  default from: "support@@#{Rails.application.credentials.domain}"
   layout "mailer"
 end
