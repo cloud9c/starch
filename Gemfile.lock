@@ -244,6 +244,8 @@ GEM
     rake (13.2.1)
     rdoc (6.8.1)
       psych (>= 4.0.0)
+    redis-client (0.22.2)
+      connection_pool
     regexp_parser (2.9.3)
     reline (0.5.12)
       io-console (~> 0.5)
@@ -285,6 +287,11 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sidekiq (7.3.6)
+      connection_pool (>= 2.3.0)
+      logger
+      rack (>= 2.2.4)
+      redis-client (>= 0.22.2)
     solid_cable (3.0.2)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -381,6 +388,7 @@ DEPENDENCIES
   rails (~> 8.0.0)
   rubocop-rails-omakase
   selenium-webdriver
+  sidekiq
   solid_cable
   solid_cache
   solid_queue
