@@ -2,10 +2,9 @@ require "test_helper"
 
 class AuthMailerTest < ActionMailer::TestCase
   test "magic_link" do
-    mail = AuthMailer.magic_link
-    assert_equal "Magic link", mail.subject
-    assert_equal [ "to@example.org" ], mail.to
-    assert_equal [ "from@example.com" ], mail.from
-    assert_match "Hi", mail.body.encoded
+    user = users(:one)  # Create a fixture
+    mail = AuthMailer.magic_link(user, "test_token")
+    assert_equal "Log in to Starch", mail.subject
+    assert_equal [user.email_address], mail.to
   end
 end
