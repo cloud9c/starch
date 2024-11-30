@@ -8,7 +8,7 @@ Type=simple
 User=root
 WorkingDirectory=/root/starch
 Environment=RAILS_ENV=production
-ExecStart=bin/jobs
+ExecStart=/root/starch/bin/jobs
 Restart=always
 
 StandardOutput=append:/root/starch/log/jobs-output.log
