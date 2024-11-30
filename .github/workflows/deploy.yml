@@ -10,7 +10,7 @@ jobs:
     - name: Deploy to server
       uses: appleboy/ssh-action@master
       with:
-        host: <%= Rails.application.credentials.domain %>
+        host: starchapp.com
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
