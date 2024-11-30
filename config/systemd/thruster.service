@@ -7,7 +7,7 @@ Type=simple
 User=root
 WorkingDirectory=/root/starch
 Environment=RAILS_ENV=production
-Environment=TLS_DOMAIN=starchapp.com
+Environment=TLS_DOMAIN=starchapp.com,starchweb.com
 ExecStart=/usr/local/bin/thrust bin/rails server
 Restart=always
 
