@@ -1,0 +1,7 @@
+<div>
+	<h1>Welcome to Starch</h1>
+	<p>The only cooking companion you need.</p>
+	<% if authenticated? %>
+		<%= button_to "Logout", session_path, method: :delete %>
+	<% end %>
+</div>
