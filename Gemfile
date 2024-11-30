@@ -64,6 +64,3 @@ end
 
 # Postmark mail service
 gem "postmark-rails"
-
-# Background job runner for Action Mailer
-gem "sidekiq"

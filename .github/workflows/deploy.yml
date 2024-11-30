@@ -26,14 +26,10 @@ jobs:
           RAILS_ENV=production bundle exec rake assets:precompile
 
           # Copy systemd service file
-          sudo cp config/systemd/sidekiq.service /etc/systemd/system/
           sudo cp config/systemd/thruster.service /etc/systemd/system/
 
           # Reload systemd and restart
           sudo systemctl daemon-reload
 
-          sudo systemctl restart sidekiq
           sudo systemctl restart thruster
-
-          sudo systemctl status sidekiq
           sudo systemctl status thruster

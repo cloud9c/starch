@@ -1,6 +1,6 @@
 [Unit]
 Description=Deploy app with Thruster
-After=network.target sidekiq.service
+After=network.target
 
 [Service]
 Type=simple
