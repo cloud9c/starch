@@ -24,6 +24,8 @@ module Starch
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.active_job.queue_adapter = :sidekiq
+
     config.action_mailer.delivery_method = :postmark
     config.action_mailer.postmark_settings = { api_token: Rails.application.credentials.dig(:postmark, :server_api_token) }
   end
