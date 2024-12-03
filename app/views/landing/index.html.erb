@@ -3,5 +3,7 @@
 	<p>The only cooking companion you need.</p>
 	<% if authenticated? %>
 		<%= button_to "Logout", session_path, method: :delete %>
+	<% else %>
+		<%= button_to "Login", new_session_path, method: :get %>
 	<% end %>
 </div>

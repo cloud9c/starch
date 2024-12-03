@@ -1,7 +1,7 @@
-# Preview all emails at http://localhost:3000/rails/mailers/auth_mailer
-class AuthMailerPreview < ActionMailer::Preview
-  # Preview this email at http://localhost:3000/rails/mailers/auth_mailer/magic_link
-  def magic_link
-    AuthMailer.magic_link
+# Preview all emails at http://localhost:3000/rails/mailers/authentication_mailer
+class AuthenticatioPreview < ActionMailer::Preview
+  # Preview this email at http://localhost:3000/rails/mailers/authentication_mailer/login_email
+  def login_email
+    AuthenticatioMailer.login_email
   end
 end
