@@ -21,9 +21,6 @@ class SessionsController < ApplicationController
   def callback
     if params[:verification_code].present?
       user = User.find_by_token_for(:verification_code, params[:verification_code])
-      # Get code from token
-      token_payload = user.token_definitions[:verification_code].payload_for(user)
-      actual_code = token_payload[1]["verification_code"]
     else
       user = User.find_by_token_for(:magic_link, params[:magic_link])
     end
