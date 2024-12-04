@@ -27,14 +27,8 @@ class VerificationCode < ApplicationRecord
     vc.user
   end
 
-
   def self.get_code(user_id, session_id, magic_link_token)
     vc = VerificationCode.active.find_by(user_id: user_id, magic_link_token: magic_link_token)
-
-    puts "USER_ID, MAGIC_LINK_TOKEN", user_id, magic_link_token
-    puts "VC", vc
-    puts "NON_ACTIVE VC", VerificationCode.find_by(user_id: user_id, magic_link_token: magic_link_token)
-
     return nil unless vc
 
     vc.code unless vc.session_id == session_id
