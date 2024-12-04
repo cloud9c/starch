@@ -1,12 +1,11 @@
 class Session < ApplicationRecord
-  belongs_to :user
-  has_secure_token :device_token
+  belongs_to :user, optional: true
 
-  scope :temporary, -> { where(verified_at: nil) }
+  def expired?
+    updated_at < 24.hours.ago || created_at < 2.weeks.ago
+  end
 
-  def self.sweep(time = 24.hour)
-    where(updated_at: ...time.ago)
-      .or(where(created_at: ...2.weeks.ago))  # Max age
-      .delete_all
+  def self.sweep
+    where(expired: true).delete_all
   end
 end

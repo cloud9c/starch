@@ -1,7 +1,10 @@
 default: &default
   periodic_cleanup:
     class: SessionsCleanupJob
-    schedule: every hour
+    schedule: every day
+  verification_codes_cleanup:
+    class: VerificationCodesCleanupJob
+    schedule: every day
 
 development:
   <<: *default

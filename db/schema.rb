@@ -10,15 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_01_221454) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_04_013012) do
   create_table "sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "device_token"
-    t.index ["device_token"], name: "index_sessions_on_device_token", unique: true
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -31,5 +29,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_01_221454) do
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end
 
+  create_table "verification_codes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "code"
+    t.datetime "expires_at"
+    t.boolean "used", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "session_id"
+    t.string "magic_link_token"
+    t.index ["magic_link_token"], name: "index_verification_codes_on_magic_link_token", unique: true
+    t.index ["session_id"], name: "index_verification_codes_on_session_id"
+    t.index ["user_id"], name: "index_verification_codes_on_user_id"
+  end
+
   add_foreign_key "sessions", "users"
+  add_foreign_key "verification_codes", "sessions"
+  add_foreign_key "verification_codes", "users"
 end

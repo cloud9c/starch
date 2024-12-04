@@ -13,7 +13,7 @@
   </div>
 
   <div id="verification-form" style="display: none;" data-sessions-target="verificationForm">
-    <%= form_with(url: session_callback_path) do |f| %>
+    <%= form_with(url: magic_link_session_path) do |f| %>
       <div>
         <%= f.label :verification_code, "Enter verification code" %>
         <%= f.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>

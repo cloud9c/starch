@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root "landing#index"
 
-  resource :session
-  get "session/callback", to: "sessions#callback", as: :session_callback
+  resource :session do
+    get :magic_link
+    post :magic_link
+  end
 end
