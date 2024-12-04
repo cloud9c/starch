@@ -10,6 +10,6 @@ class User < ApplicationRecord
   end
 
   def send_login_email(magic_link_token)
-    AuthenticationMailer.login_email(self, magic_link_token).deliver_later
+    AuthenticationMailer.login_email(self, magic_link_token).deliver_now
   end
 end
