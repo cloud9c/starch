@@ -5,9 +5,7 @@ class User < ApplicationRecord
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address, presence: true, uniqueness: true
 
-  generates_token_for :magic_link, expires_in: 10.minutes do
-    verified_at
-  end
+  generates_token_for :magic_link, expires_in: 10.minutes
 
   def send_login_email(magic_link_token)
     AuthenticationMailer.login_email(self, magic_link_token).deliver_now
