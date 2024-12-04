@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
     user = find_user_by_params(params)
     return invalid_login_redirect(params) unless user
     return handle_token_mismatch if token_session_mismatch?
-    
+
     handle_user_verification(user)
     authenticate_session_for(user)
     redirect_to root_path
@@ -66,15 +66,15 @@ class SessionsController < ApplicationController
 
   def token_session_mismatch?
     return false unless params[:token].present?
-    
+
     vc = VerificationCode.find_by_magic_link(params[:token])
     return false if vc.nil?
-    
+
     if resume_session.id != vc.session_id
       @verification_code = vc.code
       return true
     end
-    
+
     VerificationCode.invalidate_session(resume_session.id)
     false
   end
