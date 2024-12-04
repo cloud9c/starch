@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
     end
 
     if !user
-      return redirect_to new_session_path, alert: "Invalid link"
+      return redirect_to new_session_path, alert: "Invalid login"
     end
 
     if params[:token].present?
