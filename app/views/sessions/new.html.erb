@@ -1,7 +1,17 @@
-<div data-controller="sessions">
-  <h1>Login</h1>
+<h1>Login</h1>
 
-  <div id="email-form" data-sessions-target="emailForm">
+<% if @show_verification %>
+  <div>
+    <%= form_with(url: magic_link_session_path) do |f| %>
+      <div>
+        <%= f.label :verification_code, "Enter verification code" %>
+        <%= f.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
+      </div>
+      <%= f.submit "Verify code" %>
+    <% end %>
+  </div>
+<% else %>
+  <div>
     <%= form_with(url: session_path) do |f| %>
       <div>
         <%= f.label :email_address, "Email" %>
@@ -11,17 +21,7 @@
       <%= f.submit "Continue with email" %>
     <% end %>
   </div>
-
-  <div id="verification-form" style="display: none;" data-sessions-target="verificationForm">
-    <%= form_with(url: magic_link_session_path) do |f| %>
-      <div>
-        <%= f.label :verification_code, "Enter verification code" %>
-        <%= f.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-      </div>
-      <%= f.submit "Verify code" %>
-    <% end %>
-  </div>
-</div>
+<% end %>
 
 <% flash.each do |name, msg| %>
   <div>

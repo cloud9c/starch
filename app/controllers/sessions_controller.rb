@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
   rate_limit to: 10, within: 3.minutes, only: :create
 
   def new
+    @show_verification = session[:show_verification]
   end
 
   def create
@@ -17,6 +18,7 @@ class SessionsController < ApplicationController
 
       user.send_login_email(magic_link_token)
 
+      session[:show_verification] = true
       redirect_to new_session_path,
         notice: user.previously_new_record? ? "Check your email to verify your account" : "Check your email to sign in"
     else
@@ -25,33 +27,12 @@ class SessionsController < ApplicationController
   end
 
   def magic_link
-    if params[:token].present?
-      user = User.find_by_token_for(:magic_link, params[:token])
-    elsif params[:verification_code].present?
-      user = VerificationCode.find_user(resume_session.id, params[:verification_code])
-    end
-
-    if !user
-      return redirect_to new_session_path, alert: "Invalid login"
-    end
-
-    if params[:token].present?
-      code = VerificationCode.get_code(user.id, resume_session.id, params[:token])
-
-      if code
-        return redirect_to session_path(verification_code: code)
-      else
-        VerificationCode.invalidate(user.id, resume_session.id)
-      end
-    end
-
-    verified = user.verified_at.nil?
-
-    user.update!(verified_at: Time.current) if !verified
-
-    authenticate_session_for user
-
-    # redirect_to verified ? after_authentication_url : complete_registration_path
+    user = find_user_by_params(params)
+    return invalid_login_redirect(params) unless user
+    return handle_token_mismatch if token_session_mismatch?
+    
+    handle_user_verification(user)
+    authenticate_session_for(user)
     redirect_to root_path
   end
 
@@ -62,5 +43,48 @@ class SessionsController < ApplicationController
   def destroy
     terminate_session
     redirect_to new_session_path
+  end
+
+  private
+
+  def find_user_by_params(params)
+    if params[:token].present?
+      User.find_by_token_for(:magic_link, params[:token])
+    elsif params[:verification_code].present?
+      VerificationCode.find_user(resume_session.id, params[:verification_code])
+    end
+  end
+
+  def invalid_login_redirect(params)
+    if params[:token].present?
+      redirect_to new_session_path, alert: "We were unable to verify you with this link."
+    elsif params[:verification_code].present?
+      session[:show_verification] = true
+      redirect_to new_session_path, alert: "There was an error verifying your code."
+    end
+  end
+
+  def token_session_mismatch?
+    return false unless params[:token].present?
+    
+    vc = VerificationCode.find_by_magic_link(params[:token])
+    return false if vc.nil?
+    
+    if resume_session.id != vc.session_id
+      @verification_code = vc.code
+      return true
+    end
+    
+    VerificationCode.invalidate_session(resume_session.id)
+    false
+  end
+
+  def handle_token_mismatch
+    redirect_to session_path(verification_code: @verification_code)
+  end
+
+  def handle_user_verification(user)
+    return if user.verified_at.present?
+    user.update!(verified_at: Time.current)
   end
 end
