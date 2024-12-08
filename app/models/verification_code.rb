@@ -16,11 +16,11 @@ class VerificationCode < ApplicationRecord
   scope :inactive, -> {  where("expires_at <= ? OR used = ?", Time.current, true) }
 
   def self.invalidate_session(session_id)
-    VerificationCode.where(session_id: session_id).update_all(used: true)
+    where(session_id: session_id).update_all(used: true)
   end
 
   def self.find_user(session_id, submitted_code)
-    vc = VerificationCode.active.find_by(session_id: session_id, code: submitted_code)
+    vc = active.find_by(session_id: session_id, code: submitted_code)
     return nil unless vc
 
     vc.update(used: true)
@@ -28,7 +28,7 @@ class VerificationCode < ApplicationRecord
   end
 
   def self.find_by_magic_link(magic_link_token)
-    VerificationCode.active.find_by(magic_link_token: magic_link_token)
+    active.find_by(magic_link_token: magic_link_token)
   end
 
   def self.sweep

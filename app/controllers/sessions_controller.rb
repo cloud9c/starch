@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   rate_limit to: 10, within: 3.minutes, only: :create
 
   def new
-    @show_verification = session[:show_verification]
+    @show_verification = session.delete(:show_verification)
   end
 
   def create
