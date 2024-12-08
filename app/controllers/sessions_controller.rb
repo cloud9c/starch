@@ -13,10 +13,9 @@ class SessionsController < ApplicationController
       user.save!
 
       magic_link_token = user.generate_token_for(:magic_link)
+      verification_code = VerificationCode.create!(user_id: user.id, session_id: resume_session.id)
 
-      vc = VerificationCode.create!(user_id: user.id, session_id: resume_session.id, magic_link_token: magic_link_token)
-
-      user.send_login_email(magic_link_token)
+      user.send_login_email(magic_link_token, verification_code)
 
       session[:show_verification] = true
       redirect_to new_session_path,
@@ -29,7 +28,6 @@ class SessionsController < ApplicationController
   def magic_link
     user = find_user_by_params(params)
     return invalid_login_redirect(params) unless user
-    return handle_token_mismatch if token_session_mismatch?
 
     handle_user_verification(user)
     authenticate_session_for(user)
@@ -62,25 +60,6 @@ class SessionsController < ApplicationController
       session[:show_verification] = true
       redirect_to new_session_path, alert: "There was an error verifying your code."
     end
-  end
-
-  def token_session_mismatch?
-    return false unless params[:token].present?
-
-    vc = VerificationCode.find_by_magic_link(params[:token])
-    return false if vc.nil?
-
-    if resume_session.id != vc.session_id
-      @verification_code = vc.code
-      return true
-    end
-
-    VerificationCode.invalidate_session(resume_session.id)
-    false
-  end
-
-  def handle_token_mismatch
-    redirect_to session_path(verification_code: @verification_code)
   end
 
   def handle_user_verification(user)

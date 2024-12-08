@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_04_013012) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_08_202908) do
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id"
     t.string "ip_address"
@@ -37,8 +37,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_013012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "session_id"
-    t.string "magic_link_token"
-    t.index ["magic_link_token"], name: "index_verification_codes_on_magic_link_token", unique: true
     t.index ["session_id"], name: "index_verification_codes_on_session_id"
     t.index ["user_id"], name: "index_verification_codes_on_user_id"
   end

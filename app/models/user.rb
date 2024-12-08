@@ -9,7 +9,7 @@ class User < ApplicationRecord
     verified_at
   end
 
-  def send_login_email(magic_link_token)
-    AuthenticationMailer.login_email(self, magic_link_token).deliver_now
+  def send_login_email(magic_link_token, verification_code)
+    AuthenticationMailer.login_email(self, magic_link_token, verification_code).deliver_now
   end
 end
