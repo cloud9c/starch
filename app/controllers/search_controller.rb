@@ -3,7 +3,7 @@ class SearchController < ApplicationController
 
   def index
     @query = params[:q]
-    
+
     if @query.present?
       @results = @query
     end
