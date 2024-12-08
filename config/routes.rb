@@ -7,4 +7,6 @@ Rails.application.routes.draw do
     get :magic_link
     post :magic_link
   end
+
+  get "search" => "search#index"
 end

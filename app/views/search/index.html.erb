@@ -1,0 +1,8 @@
+<h1>Starch</h1>
+<%= render 'shared/searchbar' %>
+
+<% if @results %>
+  <p><%= @results %></p>
+<% else %>
+  <p>No results found.</p>
+<% end %>

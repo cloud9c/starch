@@ -1,0 +1,12 @@
+<nav>
+  <div>
+    <%= link_to "Starch", root_path, method: :delete %>
+  </div>
+  <div>
+    <% if authenticated? %>
+      <%= button_to "Logout", session_path, method: :delete %>
+    <% else %>
+      <%= button_to "Sign in", new_session_path, method: :get %>
+    <% end %>
+  </div>
+</nav>

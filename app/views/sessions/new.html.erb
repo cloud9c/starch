@@ -1,26 +1,22 @@
 <h1>Login</h1>
 
 <% if @show_verification %>
-  <div>
-    <%= form_with(url: magic_link_session_path) do |f| %>
-      <div>
-        <%= f.label :verification_code, "Enter verification code" %>
-        <%= f.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-      </div>
-      <%= f.submit "Verify code" %>
-    <% end %>
-  </div>
+  <%= form_with(url: magic_link_session_path) do |form| %>
+    <div>
+      <%= form.label :verification_code, "Enter verification code" %>
+      <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
+    </div>
+    <%= form.submit "Verify code" %>
+  <% end %>
 <% else %>
-  <div>
-    <%= form_with(url: session_path) do |f| %>
-      <div>
-        <%= f.label :email_address, "Email" %>
-        <%= f.email_field :email_address %>
-      </div>
+  <%= form_with(url: session_path) do |form| %>
+    <div>
+      <%= form.label :email_address, "Email" %>
+      <%= form.email_field :email_address %>
+    </div>
 
-      <%= f.submit "Continue with email" %>
-    <% end %>
-  </div>
+    <%= form.submit "Continue with email" %>
+  <% end %>
 <% end %>
 
 <% flash.each do |name, msg| %>
