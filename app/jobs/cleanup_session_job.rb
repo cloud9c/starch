@@ -1,4 +1,4 @@
-class SessionsCleanupJob < ApplicationJob
+class CleanupSessionJob < ApplicationJob
   queue_as 0 # queue as highest priority
 
   def perform(*args)

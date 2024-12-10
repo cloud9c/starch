@@ -64,3 +64,9 @@ end
 
 # Postmark mail service
 gem "postmark-rails"
+
+# Web crawler
+gem "nokogiri"
+
+# HTTP client
+gem "httpx"

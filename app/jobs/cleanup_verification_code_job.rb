@@ -1,4 +1,4 @@
-class VerificationCodesCleanupJob < ApplicationJob
+class CleanupVerificationCodeJob < ApplicationJob
   queue_as 0 # queue as highest priority
 
   def perform(*args)
