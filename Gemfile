@@ -70,3 +70,6 @@ gem "nokogiri"
 
 # HTTP client
 gem "httpx"
+
+# Domain name parser
+gem "public_suffix"

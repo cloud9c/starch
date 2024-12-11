@@ -1,0 +1,18 @@
+<%= turbo_frame_tag "channels-list" do %>
+  <div>
+    <% if @channels.present? %>
+      <% @channels.each do |channel| %>
+        <div>
+          <span><%= channel.domain %></span>
+          <%= button_to channel_path(channel), 
+                data: { turbo_method: "delete" },
+                method: :delete do %>
+            Delete
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No channels found.</p>
+    <% end %>
+  </div>
+<% end %>

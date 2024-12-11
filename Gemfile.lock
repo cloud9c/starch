@@ -382,6 +382,7 @@ DEPENDENCIES
   nokogiri
   postmark-rails
   propshaft
+  public_suffix
   puma (>= 5.0)
   rails (~> 8.0.0)
   rubocop-rails-omakase

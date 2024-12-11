@@ -1,0 +1,14 @@
+<div>
+  <h2>Channels</h2>
+
+  <div>
+      <%= form_with(model: Channel.new, 
+              data: { turbo: true }) do |f| %>
+      <%= f.text_field :domain, 
+          placeholder: "Enter domain" %>
+      <%= f.submit "Add Channel" %>
+    <% end %>
+  </div>
+
+  <%= render partial: "shared/channels_list" %>
+</div>
