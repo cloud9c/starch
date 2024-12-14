@@ -10,19 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_09_215311) do
-  create_table "channel_items", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.string "url", null: false
-    t.datetime "published_at"
-    t.integer "channel_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel_id"], name: "index_channel_items_on_channel_id"
-    t.index ["url"], name: "index_channel_items_on_url", unique: true
-  end
-
+ActiveRecord::Schema[8.0].define(version: 2024_12_14_182815) do
   create_table "channels", force: :cascade do |t|
     t.string "domain", null: false
     t.string "title"
@@ -33,6 +21,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_09_215311) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["domain"], name: "index_channels_on_domain", unique: true
+  end
+
+  create_table "feeds", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "url", null: false
+    t.datetime "published_at"
+    t.integer "channel_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_feeds_on_channel_id"
+    t.index ["url"], name: "index_feeds_on_url", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -65,7 +65,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_09_215311) do
     t.index ["user_id"], name: "index_verification_codes_on_user_id"
   end
 
-  add_foreign_key "channel_items", "channels"
+  add_foreign_key "feeds", "channels"
   add_foreign_key "sessions", "users"
   add_foreign_key "verification_codes", "sessions"
   add_foreign_key "verification_codes", "users"
