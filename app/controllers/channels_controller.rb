@@ -7,6 +7,12 @@ class ChannelsController < ApplicationController
     domain = domain.gsub(/\/.*$/, "")
     domain = PublicSuffix.domain(domain)
 
+    unless PublicSuffix.valid?(domain, default_rule: nil)
+      render json: { errors: { domain: ["invalid domain"] } }, 
+             status: :unprocessable_entity
+      return
+    end
+
     @channel = Channel.new(domain: domain)
 
     if @channel.save

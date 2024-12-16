@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_16_004841) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_16_200244) do
   create_table "channels", force: :cascade do |t|
     t.string "domain", null: false
     t.string "title"
@@ -40,7 +40,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_16_004841) do
     t.datetime "published_at"
     t.integer "channel_id", null: false
     t.string "title"
+    t.text "content"
     t.index ["channel_id"], name: "index_pages_on_channel_id"
+    t.index ["link"], name: "index_pages_on_link", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|

@@ -1,8 +1,16 @@
 <h1>Starch</h1>
 <%= render 'shared/searchbar' %>
 
-<% if @results %>
-  <p><%= @results %></p>
-<% else %>
-  <p>No results found.</p>
+<% if @results.present? %>
+  <div class="search-results">
+    <% @results.each do |page| %>
+      <div class="result-item">
+        <h3><%= link_to page.title, page.link %></h3>
+        <p><%= page.description %></p>
+        <small>Published: <%= page.published_at.strftime('%B %d, %Y') %></small>
+      </div>
+    <% end %>
+  </div>
+<% elsif @query.present? %>
+  <p>No results found for "<%= @query %>"</p>
 <% end %>

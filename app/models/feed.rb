@@ -1,3 +1,3 @@
-class ChannelItem < ApplicationRecord
+class Feed < ApplicationRecord
   belongs_to :channel
 end

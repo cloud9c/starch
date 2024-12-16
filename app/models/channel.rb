@@ -1,11 +1,28 @@
 class Channel < ApplicationRecord
   validates :domain, presence: true, uniqueness: true
+  validate :validate_domain
   after_validation :fetch_metadata
+  has_many :pages, dependent: :destroy
+  has_many :feeds, dependent: :destroy
 
   private
+
+  def validate_domain
+    return if domain.blank?
+
+    begin
+      parsed_domain = PublicSuffix.parse(domain)
+      
+      unless PublicSuffix.valid?(domain)
+        errors.add(:domain, "invalid domain")
+      end
+    rescue PublicSuffix::Error => e
+      errors.add(:domain, "domain parsing error: #{e.message}")
+    end
+  end
+
   def fetch_metadata
     response = HTTPX.get("https://www.#{self.domain}")
-    logger.debug response.status.to_s + " https://#{self.domain}"
     return unless response&.status == 200
 
     doc = Nokogiri::HTML(response.body.to_s)
