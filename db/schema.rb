@@ -10,13 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_14_182815) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_16_004841) do
   create_table "channels", force: :cascade do |t|
     t.string "domain", null: false
     t.string "title"
     t.string "description"
     t.string "image"
-    t.boolean "active", default: true
     t.datetime "last_scraped_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -26,13 +25,22 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_14_182815) do
   create_table "feeds", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.string "url", null: false
-    t.datetime "published_at"
+    t.string "link", null: false
+    t.datetime "pubDate"
     t.integer "channel_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "guid"
     t.index ["channel_id"], name: "index_feeds_on_channel_id"
-    t.index ["url"], name: "index_feeds_on_url", unique: true
+    t.index ["link"], name: "index_feeds_on_link", unique: true
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.string "description"
+    t.string "link"
+    t.datetime "published_at"
+    t.integer "channel_id", null: false
+    t.string "title"
+    t.index ["channel_id"], name: "index_pages_on_channel_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -66,6 +74,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_14_182815) do
   end
 
   add_foreign_key "feeds", "channels"
+  add_foreign_key "pages", "channels"
   add_foreign_key "sessions", "users"
   add_foreign_key "verification_codes", "sessions"
   add_foreign_key "verification_codes", "users"

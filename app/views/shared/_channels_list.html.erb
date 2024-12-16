@@ -3,7 +3,11 @@
     <% if @channels.present? %>
       <% @channels.each do |channel| %>
         <div>
-          <span><%= channel.domain %></span>
+          <div>
+            <img src="<%= channel.image %>" width="24"/>
+            <span><%= channel.title %></span>
+          </div>
+          <p><%= channel.domain %></p>
           <%= button_to channel_path(channel), 
                 data: { turbo_method: "delete" },
                 method: :delete do %>

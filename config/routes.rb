@@ -10,5 +10,5 @@ Rails.application.routes.draw do
 
   get "search" => "search#index"
 
-  resources :channels, only: [:create, :destroy]
+  resources :channels, only: [ :create, :destroy ]
 end

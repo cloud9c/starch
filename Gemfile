@@ -65,7 +65,13 @@ end
 # Postmark mail service
 gem "postmark-rails"
 
-# Web crawler
+# robots.txt parser
+gem "robots"
+
+# Web spider
+gem "spidr"
+
+# HTML parser
 gem "nokogiri"
 
 # HTTP client
@@ -73,3 +79,7 @@ gem "httpx"
 
 # Domain name parser
 gem "public_suffix"
+
+# Search integration
+gem "elasticsearch-model"
+gem "elasticsearch-rails"

@@ -1,24 +1,54 @@
 class Channel < ApplicationRecord
   validates :domain, presence: true, uniqueness: true
-  validate :valid_domain_format
-  before_validation :normalize_domain
+  after_validation :fetch_metadata
 
   private
+  def fetch_metadata
+    response = HTTPX.get("https://www.#{self.domain}")
+    logger.debug response.status.to_s + " https://#{self.domain}"
+    return unless response&.status == 200
 
-  def normalize_domain
-    return if domain.blank?
-    
-    # Remove protocol and www if present, convert to lowercase
-    self.domain = domain.to_s.downcase
-      .gsub(%r{^https?://}, '')
-      .gsub(/^www\./, '')
+    doc = Nokogiri::HTML(response.body.to_s)
+
+    self.title = doc.at_css("title")&.text&.strip
+    self.description = doc.at_css('meta[name="description"]')&.[]("content")&.strip
+    self.image = find_favicon(doc)
   end
 
-  def valid_domain_format
-    domain_regex = /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,}$/
-    
-    unless domain.match?(domain_regex)
-      errors.add(:domain, "must be a valid domain format (e.g., example.com)")
+  def find_favicon(doc)
+    candidates = [
+      doc.at_css('link[rel="icon"]')&.[]("href"),
+      doc.at_css('link[rel="shortcut icon"]')&.[]("href"),
+      doc.at_css('link[rel="apple-touch-icon"]')&.[]("href"),
+      "/favicon.ico",
+      doc.at_css('meta[property="og:image"]')&.[]("content"),
+      doc.at_css('meta[name="twitter:image"]')&.[]("content")
+    ].compact
+    image_url = candidates.find { |url| valid_image_url?(ensure_absolute_url(url)) }
+    ensure_absolute_url(image_url)
+  end
+
+  def valid_image_url?(url)
+    return false unless url
+    response = HTTPX.get(url)
+    return false if response.is_a?(HTTPX::ErrorResponse)
+
+    response.headers["content-type"]&.start_with?("image/")
+    rescue HTTPX::Error
+      false
+  end
+
+  def ensure_absolute_url(url)
+    return nil unless url
+    begin
+      uri = URI.parse(url)
+      return url if uri.absolute?
+      base = "https://#{self.domain}"
+      base = base.chomp("/")
+      url = url.start_with?("/") ? url : "/#{url}"
+      "#{base}#{url}"
+    rescue URI::Error
+      nil
     end
   end
 end

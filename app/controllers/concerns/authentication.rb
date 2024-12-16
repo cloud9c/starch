@@ -19,7 +19,7 @@ module Authentication
     end
 
     def require_authentication
-      resume_session || request_authentication
+      authenticated? || request_authentication
     end
 
     def resume_session
