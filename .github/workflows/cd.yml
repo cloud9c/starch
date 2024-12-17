@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      RAILS_ENV: production
       RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
