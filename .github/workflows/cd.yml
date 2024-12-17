@@ -34,4 +34,4 @@ jobs:
           password: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
 
       - run: kamal lock release
-      - run: kamal redeploy
+      - run: kamal deploy
