@@ -17,6 +17,12 @@ jobs:
       KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
 
     steps:
+      - name: Debug environment
+        run: |
+          echo "RAILS_ENV is set to: $RAILS_ENV"
+          echo "RAILS_MASTER_KEY is set to: $RAILS_MASTER_KEY"
+          bin/rails credentials:show
+
       - name: Checkout code
         uses: actions/checkout@v3
 
