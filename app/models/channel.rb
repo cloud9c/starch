@@ -12,7 +12,7 @@ class Channel < ApplicationRecord
 
     begin
       parsed_domain = PublicSuffix.parse(domain)
-      
+
       unless PublicSuffix.valid?(domain)
         errors.add(:domain, "invalid domain")
       end

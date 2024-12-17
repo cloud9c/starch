@@ -10,10 +10,10 @@ class SpiderChannelJob < ApplicationJob
           doc = page.doc
           next if doc.text.blank? || page.title.to_s.strip.blank?
 
-          doc.css('script, style').each(&:remove)
+          doc.css("script, style").each(&:remove)
 
-          description = doc.at('meta[name="description"]')&.attr('content').to_s.strip
-          content = doc.text.strip.gsub(/\s+/, ' ')[0..100000]
+          description = doc.at('meta[name="description"]')&.attr("content").to_s.strip
+          content = doc.text.strip.gsub(/\s+/, " ")[0..100000]
 
           Page.create!(
             channel: channel,

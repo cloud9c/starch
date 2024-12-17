@@ -20,8 +20,8 @@ class SearchController < ApplicationController
             {
               multi_match: {
                 query: @query,
-                fields: ['title^3', 'description^2', 'content'],
-                fuzziness: 'AUTO'
+                fields: [ "title^3", "description^2", "content" ],
+                fuzziness: "AUTO"
               }
             }
           ],
@@ -29,8 +29,8 @@ class SearchController < ApplicationController
         }
       },
       sort: [
-        { published_at: { order: 'desc' } },
-        '_score'
+        { published_at: { order: "desc" } },
+        "_score"
       ],
       highlight: {
         fields: {
@@ -44,14 +44,14 @@ class SearchController < ApplicationController
 
   def build_filters
     filters = []
-    
+
     # Add date filter if provided
     if params[:start_date].present?
       filters << {
         range: {
           published_at: {
             gte: params[:start_date],
-            lte: params[:end_date].presence || 'now'
+            lte: params[:end_date].presence || "now"
           }
         }
       }

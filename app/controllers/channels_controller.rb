@@ -8,7 +8,7 @@ class ChannelsController < ApplicationController
     domain = PublicSuffix.domain(domain)
 
     unless PublicSuffix.valid?(domain, default_rule: nil)
-      render json: { errors: { domain: ["invalid domain"] } }, 
+      render json: { errors: { domain: [ "invalid domain" ] } },
              status: :unprocessable_entity
       return
     end

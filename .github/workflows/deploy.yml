@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install Kamal
-      run: gem install kamal
+      run: gem install kamal --user-install
 
     - name: Prepare deployment environment
       run: |

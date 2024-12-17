@@ -4,7 +4,7 @@ class Page < ApplicationRecord
   belongs_to :channel
   validates :channel, presence: true
   validates :link, presence: true, uniqueness: true
-  
+
   settings index: { number_of_shards: 1 } do
     mappings dynamic: "false" do
       indexes :description, type: "text"
