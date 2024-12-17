@@ -8,9 +8,7 @@ on:
       - prod
 jobs:
   deploy:
-    permissions:
-      contents: read
-      packages: write
+    permissions: write-all
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1
