@@ -7,33 +7,27 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: Install Kamal
+      run: gem install kamal
+
+    - name: Prepare deployment environment
+      run: |
+        # Set up SSH directory with proper permissions
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        # Configure SSH to use our key and not strict host checking
+        echo "Host starchapp.com" >> ~/.ssh/config
+        echo "  IdentityFile ~/.ssh/deploy_key" >> ~/.ssh/config
+        echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+      
     - name: Deploy to server
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       uses: appleboy/ssh-action@master
       with:
         host: starchapp.com
         username: root
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /root/starch
-
-          git fetch
-          git checkout prod
-          git pull
-
-          bundle install
-          rails db:migrate RAILS_ENV=production
-          bundle exec rake systemd:generate
-          RAILS_ENV=production bundle exec rake assets:precompile
-
-          # Copy systemd service file
-          sudo cp config/systemd/jobs.service /etc/systemd/system/
-          sudo cp config/systemd/thruster.service /etc/systemd/system/
-
-          # Reload systemd and restart
-          sudo systemctl enable jobs
-          sudo systemctl enable thruster
-
-          sudo systemctl daemon-reload
-
-          sudo systemctl restart jobs
-          sudo systemctl restart thruster
+          kamal deploy
