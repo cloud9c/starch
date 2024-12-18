@@ -1,7 +1,4 @@
 class ChannelsController < ApplicationController
-  require "nokogiri"
-  require "httpx"
-
   def create
     domain = params[:channel][:domain].to_s.gsub(%r{^https?://}, "")
     domain = domain.gsub(/\/.*$/, "")

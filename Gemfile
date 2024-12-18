@@ -81,5 +81,4 @@ gem "httpx"
 gem "public_suffix"
 
 # Search integration
-gem "elasticsearch-model"
-gem "elasticsearch-rails"
+gem 'typesense'

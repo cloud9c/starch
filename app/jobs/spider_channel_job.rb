@@ -1,7 +1,4 @@
 class SpiderChannelJob < ApplicationJob
-  require "spidr"
-  require "nokogiri"
-
   def perform(channel)
     Spidr.site("https://" + channel.domain, robots: true) do |agent|
       agent.every_html_page do |page|

@@ -3,12 +3,15 @@
 
 <% if @results.present? %>
   <div class="search-results">
-    <% @results.each do |page| %>
-      <div class="result-item">
-        <h3><%= link_to page.title, page.link %></h3>
-        <p><%= page.description %></p>
-        <small>Published: <%= page.published_at.strftime('%B %d, %Y') %></small>
-      </div>
+    <% @results["hits"].each do |hit| %>
+      <% doc = hit["document"] %>
+      
+      <h2><%= doc["title"] %></h2>
+      <p><%= doc["description"] %></p>
+      <a href="<%= doc["link"] %>">Read more</a>
+      <% if doc["published_at"] %>
+        <p>Published: <%= Time.at(doc["published_at"]).strftime("%Y-%m-%d") %></p>
+      <% end %>
     <% end %>
   </div>
 <% elsif @query.present? %>

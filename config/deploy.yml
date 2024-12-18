@@ -118,3 +118,15 @@ accessories:
         - RAILS_MASTER_KEY
     volumes:
       - "jobs_logs:/rails/log/jobs"
+
+  typesense:
+    image: typesense/typesense:27.1
+    port: 8108
+    volumes:
+      - /data:/data
+      - /typesense-server-peers:/typesense-server-peers
+    command: >
+      --data-dir /data 
+      --api-key=xyz 
+      --listen-port 8108 
+      --enable-cors
