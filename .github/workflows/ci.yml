@@ -69,7 +69,7 @@ jobs:
         ports:
           - "8108:8108"
         volumes:
-          - ./tmp/typesense-data:/data
+          - ./tmp/typesense-data:/data:rw
         env:
           TYPESENSE_API_KEY: xyz
           TYPESENSE_DATA_DIR: /data
