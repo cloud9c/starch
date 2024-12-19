@@ -2,7 +2,7 @@
 service: starch
 
 # Name of the container image.
-image: cloud9c/starch
+image: ghcr.io/cloud9c/starch
 
 # Deploy to these servers.
 servers:
