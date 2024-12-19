@@ -70,7 +70,7 @@ jobs:
           - "8108:8108"
         volumes:
           - ./tmp/typesense-data:/data
-        options: '--data-dir /data --api-key=xyz --enable-cors'
+        options: --data-dir "/data" --api-key=xyz --enable-cors
 
     steps:
       - name: Install packages
