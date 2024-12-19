@@ -67,11 +67,13 @@ jobs:
       typesense:
         image: typesense/typesense:27.1
         ports:
-          - "8108:8108"
-        options: >
-          --data-dir /data
-          --api-key xyz
-          --enable-cors
+          - 8108:8108
+        options: --health-cmd "curl -f http://localhost:8108/health || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          TYPESENSE_DATA_DIR: /data
+          TYPESENSE_API_KEY: xyz
+          TYPESENSE_ENABLE_CORS: "true"
+
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
@@ -84,12 +86,6 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
-      - name: Wait for Typesense to be ready
-        run: |
-          for i in {1..10}; do 
-            curl -s http://localhost:8108/health && break || sleep 5; 
-          done
 
       - name: Run tests
         env:
