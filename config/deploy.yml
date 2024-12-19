@@ -121,11 +121,12 @@ accessories:
 
   typesense:
     image: typesense/typesense:27.1
-    port: 8108
-    volumes:
-      - "typesense-data:/data"
     cmd: >
       --data-dir /data 
       --api-key=xyz 
       --listen-port 8108 
       --enable-cors
+    host: starchapp.com
+    port: 8108
+    volumes:
+      - "typesense-data:/data"
