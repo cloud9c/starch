@@ -68,7 +68,6 @@ jobs:
         image: typesense/typesense:27.1
         ports:
           - 8108:8108
-        options: --health-cmd "nc -z localhost 8108 || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
         volumes:
           - /data
         env:
