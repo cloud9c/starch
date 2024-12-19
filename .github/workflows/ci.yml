@@ -69,6 +69,8 @@ jobs:
         ports:
           - 8108:8108
         options: --health-cmd "curl -f http://localhost:8108/health || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
+        volumes:
+          - ./tmp/typesense-data:/data
         env:
           TYPESENSE_DATA_DIR: /data
           TYPESENSE_API_KEY: xyz
