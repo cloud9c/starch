@@ -86,6 +86,12 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Wait for Typesense to be ready
+        run: |
+          for i in {1..10}; do 
+            curl -s http://localhost:8108/health && break || sleep 5; 
+          done
+
       - name: Run tests
         env:
           RAILS_ENV: test
