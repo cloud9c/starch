@@ -62,6 +62,17 @@ jobs:
     #    ports:
     #      - 6379:6379
     #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    services:
+      typesense:
+        image: typesense/typesense:27.1
+        restart: on-failure
+        ports:
+          - "8108:8108"
+        volumes:
+          - ./tmp/typesense-data:/data
+        command: '--data-dir /data --api-key=xyz --enable-cors'
+
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
