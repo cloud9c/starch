@@ -68,10 +68,10 @@ jobs:
         image: typesense/typesense:27.1
         ports:
           - "8108:8108"
-         options: >
-            --data-dir /data
-            --api-key xyz
-            --enable-cors
+        options: >
+          --data-dir /data
+          --api-key xyz
+          --enable-cors
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
