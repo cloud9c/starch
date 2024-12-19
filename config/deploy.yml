@@ -123,9 +123,8 @@ accessories:
     image: typesense/typesense:27.1
     port: 8108
     volumes:
-      - /data:/data
-      - /typesense-server-peers:/typesense-server-peers
-    command: >
+      - "typesense-data:/data"
+    cmd: >
       --data-dir /data 
       --api-key=xyz 
       --listen-port 8108 

@@ -9,13 +9,13 @@ class Page < ApplicationRecord
 
  def self.typesense_schema
    {
-     name: 'pages',
+     name: "pages",
      fields: [
-       { name: 'title', type: 'string' },
-       { name: 'description', type: 'string' },
-       { name: 'link', type: 'string' },
-       { name: 'published_at', type: 'int64' },  # store as Unix timestamp
-       { name: 'content', type: 'string' }
+       { name: "title", type: "string" },
+       { name: "description", type: "string" },
+       { name: "link", type: "string" },
+       { name: "published_at", type: "int64" },  # store as Unix timestamp
+       { name: "content", type: "string" }
      ]
    }
  end
@@ -23,17 +23,17 @@ class Page < ApplicationRecord
  def self.search(query, options = {})
     search_params = {
       q: query,
-      query_by: 'title,description,content',
+      query_by: "title,description,content",
       # sort_by: 'published_at:desc',
       per_page: options[:per_page] || 20,
       page: options[:page] || 1
     }
-   
-    # Add optional filters if provided
-    # search_params[:filter_by] = options[:filter_by] if options[:filter_by]
+
+   # Add optional filters if provided
+   # search_params[:filter_by] = options[:filter_by] if options[:filter_by]
 
    begin
-     TypesenseClient.client.collections['pages']
+     TypesenseClient.client.collections["pages"]
               .documents
               .search(search_params)
    rescue Typesense::Error::ObjectNotFound
@@ -46,7 +46,7 @@ class Page < ApplicationRecord
 
  def index_in_typesense
    begin
-     TypesenseClient.client.collections['pages'].documents.create({
+     TypesenseClient.client.collections["pages"].documents.create({
        id: id.to_s,
        title: title,
        description: description,
@@ -61,7 +61,7 @@ class Page < ApplicationRecord
 
  def update_typesense_index
    begin
-     TypesenseClient.client.collections['pages'].documents[id.to_s].update({
+     TypesenseClient.client.collections["pages"].documents[id.to_s].update({
        title: title,
        description: description,
        link: link,
@@ -78,7 +78,7 @@ class Page < ApplicationRecord
 
  def remove_from_typesense
    begin
-     TypesenseClient.client.collections['pages'].documents[id.to_s].delete
+     TypesenseClient.client.collections["pages"].documents[id.to_s].delete
    rescue Typesense::Error::ObjectNotFound
      Rails.logger.info "Typesense record #{id} not found for deletion"
    rescue Typesense::Error => e

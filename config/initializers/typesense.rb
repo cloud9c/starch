@@ -3,9 +3,9 @@ module TypesenseClient
     @client ||= Typesense::Client.new(
       nodes: [
         {
-          host: 'localhost',
+          host: "localhost",
           port: 8108,
-          protocol: 'http'
+          protocol: "http"
         }
         # Uncomment if starting a 3-node cluster, using Option 2 under Setup instructions above
         # {
@@ -26,7 +26,7 @@ module TypesenseClient
       #   'port': '8108',
       #   'protocol': 'http'
       # },
-      api_key: 'xyz',
+      api_key: "xyz",
       num_retries: 10,
       healthcheck_interval_seconds: 1,
       retry_interval_seconds: 0.01,
@@ -38,7 +38,7 @@ module TypesenseClient
 
   def self.create_collection_if_not_exists
     begin
-      client.collections['pages'].retrieve
+      client.collections["pages"].retrieve
     rescue Typesense::Error::ObjectNotFound
       client.collections.create(Page.typesense_schema)
     end

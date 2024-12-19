@@ -81,4 +81,4 @@ gem "httpx"
 gem "public_suffix"
 
 # Search integration
-gem 'typesense'
+gem "typesense"
