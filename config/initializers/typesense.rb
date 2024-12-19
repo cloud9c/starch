@@ -39,8 +39,8 @@ module TypesenseClient
   def self.create_collection_if_not_exists
     begin
       client.collections["pages"].retrieve
-    rescue Typesense::Error::ObjectNotFound
-      client.collections.create(Page.typesense_schema)
+    rescue Typesense::Error::HTTPStatus0Error => e
+      Rails.logger.warn "Unable to connect to Typesense: #{e.message}"
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_18_183100) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_19_213921) do
   create_table "channels", force: :cascade do |t|
     t.string "domain", null: false
     t.string "title"
@@ -63,7 +63,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_18_183100) do
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end
 
-  create_table "verification_codes", force: :cascade do |t|
+  create_table "verifications", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "code"
     t.datetime "expires_at"
@@ -71,13 +71,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_18_183100) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "session_id"
-    t.index ["session_id"], name: "index_verification_codes_on_session_id"
-    t.index ["user_id"], name: "index_verification_codes_on_user_id"
+    t.index ["session_id"], name: "index_verifications_on_session_id"
+    t.index ["user_id"], name: "index_verifications_on_user_id"
   end
 
   add_foreign_key "feeds", "channels"
   add_foreign_key "pages", "channels"
   add_foreign_key "sessions", "users"
-  add_foreign_key "verification_codes", "sessions"
-  add_foreign_key "verification_codes", "users"
+  add_foreign_key "verifications", "sessions"
+  add_foreign_key "verifications", "users"
 end

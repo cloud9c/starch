@@ -13,9 +13,9 @@ class SessionsController < ApplicationController
       user.save!
 
       magic_link_token = user.generate_token_for(:magic_link)
-      verification_code = VerificationCode.create!(user_id: user.id, session_id: resume_session.id)
+      verification = Verification.create!(user_id: user.id, session_id: resume_session.id)
 
-      user.send_login_email(magic_link_token, verification_code)
+      user.send_login_email(magic_link_token, verification.code)
 
       session[:show_verification] = true
       redirect_to new_session_path,
@@ -34,10 +34,6 @@ class SessionsController < ApplicationController
     redirect_to root_path
   end
 
-  def show
-    @verification_code = params[:verification_code]
-  end
-
   def destroy
     terminate_session
     redirect_to new_session_path
@@ -49,7 +45,7 @@ class SessionsController < ApplicationController
     if params[:token].present?
       User.find_by_token_for(:magic_link, params[:token])
     elsif params[:verification_code].present?
-      VerificationCode.find_user(resume_session.id, params[:verification_code])
+      Verification.find_user(resume_session.id, params[:verification_code])
     end
   end
 

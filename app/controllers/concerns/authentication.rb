@@ -53,8 +53,8 @@ module Authentication
     end
 
     def terminate_session
-      verification_codes = VerificationCode.where(session_id: Current.session.id)
-      verification_codes.destroy_all
+      verifications = Verification.where(session_id: Current.session.id)
+      verifications.destroy_all
       reset_session
       Current.session.destroy
       cookies.delete(:session_id)

@@ -1,4 +1,4 @@
-class VerificationCode < ApplicationRecord
+class Verification < ApplicationRecord
   belongs_to :user
   belongs_to :session
 
