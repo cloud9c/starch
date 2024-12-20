@@ -95,7 +95,7 @@ builder:
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
   jobs:
-    image: starch
+    image: ghcr.io/cloud9c/starch
     cmd: ./bin/jobs
     host: starchapp.com
     env:
@@ -105,7 +105,7 @@ accessories:
       - "thruster_logs:/rails/log/thruster"
     
   thruster:
-    image: starch
+    image: ghcr.io/cloud9c/starch
     cmd: /usr/local/bin/thrust bin/rails server
     host: starchapp.com
     env:
@@ -129,3 +129,8 @@ accessories:
     port: 8108
     volumes:
       - "typesense-data:/data"
+    env:
+      clear:
+        RAILS_ENV: production
+      secret:
+        - RAILS_MASTER_KEY
