@@ -3,7 +3,7 @@ module TypesenseClient
     @client ||= Typesense::Client.new(
       nodes: [
         {
-          host: "localhost",
+          host: "typesense",
           port: 8108,
           protocol: "http"
         }

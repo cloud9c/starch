@@ -125,7 +125,7 @@ accessories:
       --api-key=xyz 
       --listen-port 8108 
       --enable-cors
-    host: localhost
+    host: 0.0.0.0
     port: 8108
     volumes:
       - "typesense-data:/data"
