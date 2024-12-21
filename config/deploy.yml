@@ -7,7 +7,7 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    - 45.76.2.10
+    - starchapp.com
   # job:
   #   hosts:
   #     - 192.168.0.1
