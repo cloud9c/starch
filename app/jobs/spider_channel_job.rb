@@ -1,5 +1,3 @@
-require 'robots'
-
 class SpiderChannelJob < ApplicationJob
   def perform(channel)
     Spidr.site("https://" + channel.domain, robots: true) do |agent|

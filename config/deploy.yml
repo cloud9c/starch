@@ -65,8 +65,6 @@ aliases:
 # Recommended to change this to a mounted volume path that is backed up off server.
 volumes:
   - "starch_storage:/rails/storage"
-  - "jobs_logs:/rails/log/jobs"
-  - "thruster_logs:/rails/log/thruster"
   - "typesense-data:/data"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
@@ -94,30 +92,6 @@ builder:
 
 # Use accessory services (secrets come from .kamal/secrets).
 accessories:
-  jobs:
-    image: ghcr.io/cloud9c/starch
-    cmd: ./bin/jobs
-    host: starchapp.com
-    env:
-      clear:
-        RAILS_ENV: production
-    volumes:
-      - "thruster_logs:/rails/log/thruster"
-    
-  thruster:
-    image: ghcr.io/cloud9c/starch
-    cmd: /usr/local/bin/thrust bin/rails server
-    host: starchapp.com
-    env:
-      clear:
-        RAILS_ENV: production
-        TLS_DOMAIN: starchapp.com
-        PORT: 80
-      secret:
-        - RAILS_MASTER_KEY
-    volumes:
-      - "jobs_logs:/rails/log/jobs"
-
   typesense:
     image: typesense/typesense:27.1
     cmd: >
