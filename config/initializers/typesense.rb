@@ -3,7 +3,7 @@ module TypesenseClient
     @client ||= Typesense::Client.new(
       nodes: [
         {
-          host: "localhost",
+          host: Rails.env.production? ? "starch-typesense" : "localhost",
           port: 8108,
           protocol: "http"
         }
