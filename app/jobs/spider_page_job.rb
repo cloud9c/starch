@@ -1,6 +1,6 @@
 class SpiderPageJob < ApplicationJob
   include UrlNormalizer
-  
+
   def perform(channel_id, url, domain)
     begin
       normalized_url = normalize_url(url)
@@ -10,14 +10,14 @@ class SpiderPageJob < ApplicationJob
       response = HTTPX.get(url)
       doc = Nokogiri::HTML(response.body)
 
-      return [normalize_url(response.headers['location'])] if response.status == 301
+      return [ normalize_url(response.headers["location"]) ] if response.status == 301
       return [] if response.status != 200 || doc.text.blank?
 
       doc.css("script, style").each(&:remove)
 
       description = doc.at('meta[name="description"]')&.attr("content").to_s.strip
       content = doc.text.strip.gsub(/\s+/, " ")[0..100000]
-      title = doc.at('title')&.inner_text
+      title = doc.at("title")&.inner_text
 
       Page.create!(
         channel: channel,
@@ -37,8 +37,8 @@ class SpiderPageJob < ApplicationJob
   def get_urls(doc, domain)
     base_url = "https://#{domain}"
 
-    absolute_urls = doc.css('a').map { |link| 
-      href = link['href']
+    absolute_urls = doc.css("a").map { |link|
+      href = link["href"]
       uri = URI.join(base_url, href) rescue nil
       normalize_url uri.to_s if uri && uri.host == domain
     }.compact

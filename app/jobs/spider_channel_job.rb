@@ -9,10 +9,10 @@ class SpiderChannelJob < ApplicationJob
     @base_url = "https://www.#{channel.domain}"
 
     return unless robot_allowed?(@base_url)
-    
-    initial_urls = fetch_sitemap || [@base_url]
+
+    initial_urls = fetch_sitemap || [ @base_url ]
     initial_urls.each { |url| to_visit << normalize_url(url) }
-    
+
     while !to_visit.empty?
       current_url = to_visit.pop
       next if !robot_allowed?(current_url) || discovered_urls.include?(current_url)
@@ -26,8 +26,8 @@ class SpiderChannelJob < ApplicationJob
     end
   end
 
-  def fetch_sitemap()
-    sitemap = SitemapParser.new("#{@base_url}/sitemap.xml", {recurse: true})
+  def fetch_sitemap
+    sitemap = SitemapParser.new("#{@base_url}/sitemap.xml", { recurse: true })
 
     begin
       sitemap.to_a.map { |url| normalize_url(url) }
