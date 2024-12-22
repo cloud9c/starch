@@ -305,6 +305,9 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sitemap-parser (0.5.6)
+      nokogiri (~> 1.6)
+      typhoeus (>= 0.6, < 2.0)
     solid_cable (3.0.4)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -412,6 +415,7 @@ DEPENDENCIES
   robots
   rubocop-rails-omakase
   selenium-webdriver
+  sitemap-parser
   solid_cable
   solid_cache
   solid_queue

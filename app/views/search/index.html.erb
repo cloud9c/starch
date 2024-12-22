@@ -2,16 +2,14 @@
 <%= render 'shared/searchbar' %>
 
 <% if @results.present? %>
-  <div class="search-results">
+  <div>
     <% @results["hits"].each do |hit| %>
       <% doc = hit["document"] %>
       
-      <h2><%= doc["title"] %></h2>
+      <a href="<%= doc["link"] %>">
+        <h4><%= doc["title"] %></h4>
+      </a>
       <p><%= doc["description"] %></p>
-      <a href="<%= doc["link"] %>">Read more</a>
-      <% if doc["published_at"] %>
-        <p>Published: <%= Time.at(doc["published_at"]).strftime("%Y-%m-%d") %></p>
-      <% end %>
     <% end %>
   </div>
 <% elsif @query.present? %>

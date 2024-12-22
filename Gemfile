@@ -68,9 +68,6 @@ gem "postmark-rails"
 # robots.txt parser
 gem "robots"
 
-# Web spider
-gem "spidr"
-
 # HTML parser
 gem "nokogiri"
 
@@ -82,3 +79,6 @@ gem "public_suffix"
 
 # Search integration
 gem "typesense"
+
+# Parse sitemaps.org compliant sitemaps
+gem "sitemap-parser"

@@ -1,30 +1,46 @@
 class SpiderChannelJob < ApplicationJob
+  include UrlNormalizer
+
   def perform(channel)
-    Spidr.site("https://" + channel.domain, robots: true) do |agent|
-      agent.every_html_page do |page|
-        begin
-          next if page.code != 200
-          doc = page.doc
-          next if doc.text.blank? || page.title.to_s.strip.blank?
+    @robots = Robots.new "StarchBot"
+    discovered_urls = Set.new
+    to_visit = Queue.new
 
-          doc.css("script, style").each(&:remove)
+    @base_url = "https://www.#{channel.domain}"
 
-          description = doc.at('meta[name="description"]')&.attr("content").to_s.strip
-          content = doc.text.strip.gsub(/\s+/, " ")[0..100000]
+    return unless robot_allowed?(@base_url)
+    
+    initial_urls = fetch_sitemap || [@base_url]
+    initial_urls.each { |url| to_visit << normalize_url(url) }
+    
+    while !to_visit.empty?
+      current_url = to_visit.pop
+      next if !robot_allowed?(current_url) || discovered_urls.include?(current_url)
 
-          Page.create!(
-            channel: channel,
-            title: page.title.to_s.strip,
-            description: description,
-            link: page.url,
-            content: content
-          )
+      discovered_urls.add(current_url)
 
-        rescue StandardError => e
-          Rails.logger.error("Error processing page #{page.url}: #{e.message}")
-          next
-        end
-      end
+      new_urls = SpiderPageJob.perform_now(channel.id, current_url, channel.domain)
+                 .reject { |url| discovered_urls.include?(url) }
+
+      new_urls.each { |url| to_visit << url }
+    end
+  end
+
+  def fetch_sitemap()
+    sitemap = SitemapParser.new("#{@base_url}/sitemap.xml", {recurse: true})
+
+    begin
+      sitemap.to_a.map { |url| normalize_url(url) }
+    rescue RuntimeError => e
+      nil if e.message.include?("Malformed sitemap")
+    end
+  end
+
+  def robot_allowed?(url)
+    if @robots
+      @robots.allowed?(url)
+    else
+      true
     end
   end
 end
