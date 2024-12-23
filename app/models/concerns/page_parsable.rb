@@ -73,13 +73,13 @@ module PageParsable
     doc.at("title")&.text&.strip
   end
 
-  def get_content(doc, limit=100000)
-    doc.css('script, style').each(&:remove)
+  def get_content(doc, limit = 100000)
+    doc.css("script, style").each(&:remove)
     doc.text.strip.gsub(/\s+/, " ")[0..limit]
   end
 
   def get_feed(doc)
-    doc.at('link[type="application/rss+xml"]')&.[]('href') ||
-    doc.at('link[type="application/atom+xml"]')&.[]('href')
+    doc.at('link[type="application/rss+xml"]')&.[]("href") ||
+    doc.at('link[type="application/atom+xml"]')&.[]("href")
   end
 end

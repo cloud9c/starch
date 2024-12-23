@@ -37,7 +37,7 @@ class Channel < ApplicationRecord
 
     candidates = [
       doc.at_css('link[rel~="icon"]')&.[]("href"),
-      "/favicon.ico",
+      "/favicon.ico"
     ].compact
     self.image = get_icon(candidates, origin)
   end

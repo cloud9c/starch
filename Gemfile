@@ -84,4 +84,4 @@ gem "typesense"
 gem "sitemap-parser"
 
 # RSS parser
-gem 'rss'
+gem "rss"

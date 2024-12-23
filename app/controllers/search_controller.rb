@@ -15,13 +15,13 @@ class SearchController < ApplicationController
       filter_by: params[:filter]
     })
 
-    channel_ids = results['hits'].map { |hit| hit['document']['channel_id'] }.uniq
-    
+    channel_ids = results["hits"].map { |hit| hit["document"]["channel_id"] }.uniq
+
     channels = Channel.where(id: channel_ids).index_by(&:id)
-    
-    results['hits'].each do |hit|
-      channel = channels[hit['document']['channel_id']]
-      hit['document']['icon'] = channel&.icon
+
+    results["hits"].each do |hit|
+      channel = channels[hit["document"]["channel_id"]]
+      hit["document"]["icon"] = channel&.icon
     end
 
     results

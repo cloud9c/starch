@@ -27,7 +27,7 @@ class Page < ApplicationRecord
       query_by: "title,description,content",
       # sort_by: 'published_at:desc',
       per_page: options[:per_page] || 20,
-      page: options[:page] || 1,
+      page: options[:page] || 1
     }
 
    # Add optional filters if provided

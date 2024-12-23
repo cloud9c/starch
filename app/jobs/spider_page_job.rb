@@ -22,8 +22,8 @@ class SpiderPageJob < ApplicationJob
     )
 
     {
-      :candidates => doc.css("a").map { |a| get_absolute_url(a["href"], canonical_url) }.compact,
-      :canonical_url => canonical_url
+      candidates: doc.css("a").map { |a| get_absolute_url(a["href"], canonical_url) }.compact,
+      canonical_url: canonical_url
     }
   end
 
@@ -34,6 +34,6 @@ class SpiderPageJob < ApplicationJob
   end
 
   def get_canonical(doc, response)
-    return doc.at_css('link[rel="canonical"]')&.[]("href") || normalize_url(response.uri.to_s)
+    doc.at_css('link[rel="canonical"]')&.[]("href") || normalize_url(response.uri.to_s)
   end
 end
