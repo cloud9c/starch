@@ -46,7 +46,7 @@ FROM base
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 
 # Fix for spidr gem unable to access robots gem
-RUN chmod -R go+r "${BUNDLE_PATH}""
+RUN chmod -R go+r "${BUNDLE_PATH}"
 
 COPY --from=build /rails /rails
 
