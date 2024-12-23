@@ -16,7 +16,7 @@ class Page < ApplicationRecord
        { name: "url", type: "string" },
        { name: "published_at", type: "int64" },  # store as Unix timestamp
        { name: "content", type: "string" },
-       { name: "channel_id", type: "string", index: false }
+       { name: "channel_id", type: "int32", index: false }
      ]
    }
  end

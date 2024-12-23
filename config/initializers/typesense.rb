@@ -46,15 +46,9 @@ module TypesenseClient
     end
   end
 
-  def self.reindex
+  def self.reset
     client.collections["pages"].delete
     self.initialize
-
-    Page.find_each(batch_size: 1000) do |page|
-      page.index_in_typesense
-    rescue => e
-      Rails.logger.error "Failed to index page #{page.id}: #{e.message}"
-    end
   end
 end
 
