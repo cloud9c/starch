@@ -45,7 +45,7 @@ FROM base
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 
-# Fix for "spidr" gem unable to access "robots" dependency
+# Fix for spidr gem unable to access robots gem
 RUN chmod -R go+r "${BUNDLE_PATH}""
 
 COPY --from=build /rails /rails
