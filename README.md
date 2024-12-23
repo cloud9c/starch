@@ -8,6 +8,8 @@
 - max crawl to avoid infinite crawling
 - channel folders
 - RSS feed
+- support email addresses for users
+- how to safely migrate typesearch indexes (?)
 
 # competitors
 - Readwise Readers
