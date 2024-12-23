@@ -1,7 +1,7 @@
 class Page < ApplicationRecord
  belongs_to :channel
  validates :channel, presence: true
- validates :link, presence: true, uniqueness: true
+ validates :url, presence: true, uniqueness: true
  validates :content, length: { maximum: 100_000 }
  after_create :index_in_typesense
  after_update :update_typesense_index
@@ -13,9 +13,10 @@ class Page < ApplicationRecord
      fields: [
        { name: "title", type: "string" },
        { name: "description", type: "string" },
-       { name: "link", type: "string" },
+       { name: "url", type: "string" },
        { name: "published_at", type: "int64" },  # store as Unix timestamp
-       { name: "content", type: "string" }
+       { name: "content", type: "string" },
+       { name: "channel_id", type: "string", index: false }
      ]
    }
  end
@@ -26,7 +27,7 @@ class Page < ApplicationRecord
       query_by: "title,description,content",
       # sort_by: 'published_at:desc',
       per_page: options[:per_page] || 20,
-      page: options[:page] || 1
+      page: options[:page] || 1,
     }
 
    # Add optional filters if provided
@@ -38,7 +39,7 @@ class Page < ApplicationRecord
               .search(search_params)
    rescue Typesense::Error::ObjectNotFound
      Rails.logger.error "Typesense collection 'pages' not found"
-     { hits: [] } # Return empty results structure
+     { hits: [] }
    end
  end
 
@@ -50,9 +51,10 @@ class Page < ApplicationRecord
        id: id.to_s,
        title: title,
        description: description,
-       link: link,
+       url: url,
        published_at: published_at.to_i,
-       content: content
+       content: content,
+       channel_id: channel_id
      })
    rescue Typesense::Error => e
      Rails.logger.error "Failed to index page #{id} in Typesense: #{e.message}"
@@ -64,9 +66,10 @@ class Page < ApplicationRecord
      TypesenseClient.client.collections["pages"].documents[id.to_s].update({
        title: title,
        description: description,
-       link: link,
+       url: url,
        published_at: published_at.to_i,
-       content: content
+       content: content,
+       channel_id: channel_id
      })
    rescue Typesense::Error::ObjectNotFound
      # If document doesn't exist, create it

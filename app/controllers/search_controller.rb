@@ -9,10 +9,21 @@ class SearchController < ApplicationController
   private
 
   def search_pages
-    Page.search(@query, {
+    results = Page.search(@query, {
       per_page: params[:per_page],
       page: params[:page],
       filter_by: params[:filter]
     })
+
+    channel_ids = results['hits'].map { |hit| hit['document']['channel_id'] }.uniq
+    
+    channels = Channel.where(id: channel_ids).index_by(&:id)
+    
+    results['hits'].each do |hit|
+      channel = channels[hit['document']['channel_id']]
+      hit['document']['icon'] = channel&.icon
+    end
+
+    results
   end
 end

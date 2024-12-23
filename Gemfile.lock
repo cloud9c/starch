@@ -268,6 +268,8 @@ GEM
       io-console (~> 0.5)
     rexml (3.3.9)
     robots (0.10.1)
+    rss (0.3.1)
+      rexml
     rubocop (1.69.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -411,6 +413,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.1)
   robots
+  rss
   rubocop-rails-omakase
   selenium-webdriver
   sitemap-parser

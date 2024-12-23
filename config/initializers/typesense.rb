@@ -31,12 +31,12 @@ module TypesenseClient
       healthcheck_interval_seconds: 1,
       retry_interval_seconds: 0.01,
       connection_timeout_seconds: 10,
-      logger: Logger.new($stdout),
+      logger: Rails.logger,
       log_level: Logger::INFO
     )
   end
 
-  def self.create_collection_if_not_exists
+  def self.initialize
     begin
       client.collections["pages"].retrieve
     rescue Typesense::Error::ObjectNotFound
@@ -45,8 +45,19 @@ module TypesenseClient
       Rails.logger.warn "Unable to connect to Typesense: #{e.message}"
     end
   end
+
+  def self.reindex
+    client.collections["pages"].delete
+    self.initialize
+
+    Page.find_each(batch_size: 1000) do |page|
+      page.index_in_typesense
+    rescue => e
+      Rails.logger.error "Failed to index page #{page.id}: #{e.message}"
+    end
+  end
 end
 
 Rails.application.config.after_initialize do
-  TypesenseClient.create_collection_if_not_exists
+  TypesenseClient.initialize
 end

@@ -1,48 +1,39 @@
 class SpiderPageJob < ApplicationJob
-  include UrlNormalizer
+  include PageParsable
 
-  def perform(channel_id, url, domain)
-    begin
-      normalized_url = normalize_url(url)
-      return [] if Page.exists?(link: normalized_url)
+  def perform(channel_id, url)
+    channel = Channel.find(channel_id)
+    domain = channel.domain
+    response = get_response(url)
 
-      channel = Channel.find(channel_id)
-      response = HTTPX.get(url)
-      doc = Nokogiri::HTML(response.body)
+    return if response.is_a?(HTTPX::ErrorResponse) || response.status != 200
 
-      return [ normalize_url(response.headers["location"]) ] if response.status == 301
-      return [] if response.status != 200 || doc.text.blank?
+    doc = Nokogiri::HTML(response.body)
+    canonical_url = get_canonical(doc, response)
 
-      doc.css("script, style").each(&:remove)
+    return if Page.exists?(url: canonical_url) || doc.text.blank?
 
-      description = doc.at('meta[name="description"]')&.attr("content").to_s.strip
-      content = doc.text.strip.gsub(/\s+/, " ")[0..100000]
-      title = doc.at("title")&.inner_text
+    Page.create(
+      channel: channel,
+      title: get_title(doc),
+      description: get_description(doc),
+      url: canonical_url,
+      content: get_content(doc)
+    )
 
-      Page.create!(
-        channel: channel,
-        title: title.to_s.strip,
-        description: description,
-        link: normalized_url,
-        content: content
-      )
-
-      get_urls(doc, domain)
-    rescue => e
-      Rails.logger.error("Error processing page #{url}: #{e.message}")
-      []
-    end
+    {
+      :candidates => doc.css("a").map { |a| get_absolute_url(a["href"], canonical_url) }.compact,
+      :canonical_url => canonical_url
+    }
   end
 
-  def get_urls(doc, domain)
-    base_url = "https://#{domain}"
+  def get_response(url)
+    response = HTTPX.get(url)
+    return get_response(normalize_url(response.headers["location"])) if response.status == 301
+    response
+  end
 
-    absolute_urls = doc.css("a").map { |link|
-      href = link["href"]
-      uri = URI.join(base_url, href) rescue nil
-      normalize_url uri.to_s if uri && uri.host == domain
-    }.compact
-
-    absolute_urls
+  def get_canonical(doc, response)
+    return doc.at_css('link[rel="canonical"]')&.[]("href") || normalize_url(response.uri.to_s)
   end
 end

@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_19_213921) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_23_005313) do
   create_table "channels", force: :cascade do |t|
     t.string "domain", null: false
     t.string "title"
     t.string "description"
-    t.string "image"
+    t.string "icon"
     t.datetime "last_scraped_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,24 +25,24 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_19_213921) do
   create_table "feeds", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.string "link", null: false
+    t.string "url"
     t.datetime "pubDate"
     t.integer "channel_id", null: false
     t.datetime "created_at", null: false
     t.string "guid"
     t.index ["channel_id"], name: "index_feeds_on_channel_id"
-    t.index ["link"], name: "index_feeds_on_link", unique: true
+    t.index ["url"], name: "index_feeds_on_url"
   end
 
   create_table "pages", force: :cascade do |t|
     t.string "description"
-    t.string "link"
+    t.string "url"
     t.datetime "published_at"
     t.integer "channel_id", null: false
     t.string "title"
     t.text "content", limit: 100000
     t.index ["channel_id"], name: "index_pages_on_channel_id"
-    t.index ["link"], name: "index_pages_on_link", unique: true
+    t.index ["url"], name: "index_pages_on_url", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|

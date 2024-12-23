@@ -82,3 +82,6 @@ gem "typesense"
 
 # Parse sitemaps.org compliant sitemaps
 gem "sitemap-parser"
+
+# RSS parser
+gem 'rss'

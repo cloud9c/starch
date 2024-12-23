@@ -1,46 +1,47 @@
 class SpiderChannelJob < ApplicationJob
-  include UrlNormalizer
+  include PageParsable
 
   def perform(channel)
-    @robots = Robots.new "StarchBot"
-    discovered_urls = Set.new
-    to_visit = Queue.new
+    origin = get_origin(channel.domain)
+    return unless robot_allowed?(origin)
 
-    @base_url = "https://www.#{channel.domain}"
+    @host = get_host(channel.domain)
 
-    return unless robot_allowed?(@base_url)
+    seeds = Set.new
+    visited = Set.new
+    queue = Queue.new
 
-    initial_urls = fetch_sitemap || [ @base_url ]
-    initial_urls.each { |url| to_visit << normalize_url(url) }
+    seeds.merge(get_sitemap(origin))
+    seeds.add(origin)
+    seeds.each { |url| queue << normalize_url(url) }
 
-    while !to_visit.empty?
-      current_url = to_visit.pop
-      next if !robot_allowed?(current_url) || discovered_urls.include?(current_url)
-
-      discovered_urls.add(current_url)
-
-      new_urls = SpiderPageJob.perform_now(channel.id, current_url, channel.domain)
-                 .reject { |url| discovered_urls.include?(url) }
-
-      new_urls.each { |url| to_visit << url }
+    while !queue.empty?
+      dequeue(queue, visited, channel)
     end
   end
 
-  def fetch_sitemap
-    sitemap = SitemapParser.new("#{@base_url}/sitemap.xml", { recurse: true })
-
+  def has_same_host?(url)
     begin
-      sitemap.to_a.map { |url| normalize_url(url) }
-    rescue RuntimeError => e
-      nil if e.message.include?("Malformed sitemap")
+      URI.parse(url).host == @host
+    rescue URI::InvalidURIError
+      false
     end
   end
 
-  def robot_allowed?(url)
-    if @robots
-      @robots.allowed?(url)
-    else
-      true
-    end
+  def dequeue(queue, visited, channel)
+    current_url = queue.pop
+
+    return if visited.include?(current_url)
+    return unless robot_allowed?(current_url)
+
+    visited.add(current_url)
+    response = SpiderPageJob.perform_now(channel.id, current_url)
+
+    return unless response
+
+    visited.add(response[:canonical_url])
+    Array(response[:candidates]).reject { |url| visited.include?(url) }
+              .select { |url| has_same_host?(url) }
+              .each { |url| queue << url }
   end
 end
