@@ -1,7 +1,7 @@
 module FeedParser
   extend self
 
-  def get(url, follow=true)
+  def get(url, follow = true)
     response = HTTPX.get(url)
     if follow && (response.status == 301 || response.status == 302) && response.headers["location"]
       return get(WebUrl.get_absolute(response.headers["location"], url), false)

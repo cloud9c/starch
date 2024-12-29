@@ -1,5 +1,4 @@
 class UpdateFeedJob < ApplicationJob
-
   def perform(channel)
     feed = FeedParser.get_feed(channel.feed_url)
 

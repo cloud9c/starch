@@ -7,12 +7,12 @@ class CreateFoldersAndSubscriptions < ActiveRecord::Migration[8.0]
     end
 
     create_table :subscriptions do |t|
-      t.references :user, null: false, foreign_key: true  
+      t.references :user, null: false, foreign_key: true
       t.references :channel, null: false, foreign_key: true
       t.references :folder, null: false, foreign_key: true
       t.timestamps
     end
 
-    add_index :subscriptions, [:user_id, :channel_id], unique: true
+    add_index :subscriptions, [ :user_id, :channel_id ], unique: true
   end
 end

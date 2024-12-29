@@ -1,7 +1,7 @@
 module WebUrl
   class InvalidWebUrlError < StandardError; end
 
-  SUPPORTED_SCHEMES = ["http", "https"]
+  SUPPORTED_SCHEMES = [ "http", "https" ]
 
   extend self
 
@@ -27,7 +27,7 @@ module WebUrl
 
   def normalize(url)
     url = url.strip.downcase
-    url = "https://#{url}" unless url.start_with?('http://', 'https://')
+    url = "https://#{url}" unless url.start_with?("http://", "https://")
 
     url.chomp("/")
   end

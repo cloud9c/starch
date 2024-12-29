@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
-  after_action :load_subscriptions, only: [:create, :destroy]
-  
+  after_action :load_subscriptions, only: [ :create, :destroy ]
+
   def create
     feed_url = FeedParser.get_feed_url(params[:feed_url])
 
@@ -8,7 +8,7 @@ class SubscriptionsController < ApplicationController
     return head :unprocessable_entity unless channel.save
 
     @subscription = current_user.subscriptions.create(channel: channel)
-    return head :unprocessable_entity unless @subscription.persisted?
+    head :unprocessable_entity unless @subscription.persisted?
   end
 
   def destroy
