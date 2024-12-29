@@ -23,13 +23,9 @@
   </head>
 
   <body>
-    <nav>
-      <main>
-        <%= render 'shared/navbar' %>
-      </main>
-    </nav>
+    <%= render "shared/flash" %>
+    <%= render 'shared/navbar' %>
     <main>
-      <%= render 'shared/flash' %>
       <%= yield %>
     </main>
   </body>

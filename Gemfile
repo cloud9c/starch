@@ -65,23 +65,14 @@ end
 # Postmark mail service
 gem "postmark-rails"
 
-# robots.txt parser
-gem "robots"
-
 # HTML parser
 gem "nokogiri"
 
 # HTTP client
 gem "httpx"
 
-# Domain name parser
-gem "public_suffix"
-
 # Search integration
 gem "typesense"
 
-# Parse sitemaps.org compliant sitemaps
-gem "sitemap-parser"
-
-# RSS parser
-gem "rss"
+# Feed parser
+gem "feedjira"

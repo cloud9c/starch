@@ -10,39 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_23_005313) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_26_101526) do
   create_table "channels", force: :cascade do |t|
-    t.string "domain", null: false
     t.string "title"
     t.string "description"
     t.string "icon"
-    t.datetime "last_scraped_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["domain"], name: "index_channels_on_domain", unique: true
+    t.string "feed_url"
+    t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 
-  create_table "feeds", force: :cascade do |t|
+  create_table "documents", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "url"
-    t.datetime "pubDate"
-    t.integer "channel_id", null: false
+    t.datetime "published_at"
+    t.integer "channel_id"
     t.datetime "created_at", null: false
     t.string "guid"
-    t.index ["channel_id"], name: "index_feeds_on_channel_id"
-    t.index ["url"], name: "index_feeds_on_url"
+    t.integer "user_id", null: false
+    t.index ["channel_id"], name: "index_documents_on_channel_id"
+    t.index ["url"], name: "index_documents_on_url"
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
-  create_table "pages", force: :cascade do |t|
-    t.string "description"
-    t.string "url"
-    t.datetime "published_at"
-    t.integer "channel_id", null: false
-    t.string "title"
-    t.text "content", limit: 100000
-    t.index ["channel_id"], name: "index_pages_on_channel_id"
-    t.index ["url"], name: "index_pages_on_url", unique: true
+  create_table "folders", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -52,6 +50,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_23_005313) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "channel_id", null: false
+    t.integer "folder_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_subscriptions_on_channel_id"
+    t.index ["folder_id"], name: "index_subscriptions_on_folder_id"
+    t.index ["user_id", "channel_id"], name: "index_subscriptions_on_user_id_and_channel_id", unique: true
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -75,9 +85,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_23_005313) do
     t.index ["user_id"], name: "index_verifications_on_user_id"
   end
 
-  add_foreign_key "feeds", "channels"
-  add_foreign_key "pages", "channels"
+  add_foreign_key "documents", "channels"
+  add_foreign_key "documents", "users"
+  add_foreign_key "folders", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "channels"
+  add_foreign_key "subscriptions", "folders"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "verifications", "sessions"
   add_foreign_key "verifications", "users"
 end

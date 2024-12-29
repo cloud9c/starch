@@ -31,23 +31,23 @@ module TypesenseClient
       healthcheck_interval_seconds: 1,
       retry_interval_seconds: 0.01,
       connection_timeout_seconds: 10,
-      logger: Rails.logger,
+      logger: Logger.new($stdout),
       log_level: Logger::INFO
     )
   end
 
   def self.initialize
     begin
-      client.collections["pages"].retrieve
+      client.collections["documents"].retrieve
     rescue Typesense::Error::ObjectNotFound
-      client.collections.create(Page.typesense_schema)
+      client.collections.create(Document.typesense_schema)
     rescue Typesense::Error::HTTPStatus0Error => e
       Rails.logger.warn "Unable to connect to Typesense: #{e.message}"
     end
   end
 
   def self.reset
-    client.collections["pages"].delete
+    client.collections["documents"].delete
     self.initialize
   end
 end

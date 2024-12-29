@@ -112,6 +112,9 @@ GEM
       tzinfo
     ethon (0.16.0)
       ffi (>= 1.15.0)
+    feedjira (3.2.3)
+      loofah (>= 2.3.1, < 3)
+      sax-machine (>= 1.0, < 2)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-aarch64-linux-musl)
     ffi (1.17.0-arm-linux-gnu)
@@ -267,9 +270,6 @@ GEM
     reline (0.5.12)
       io-console (~> 0.5)
     rexml (3.3.9)
-    robots (0.10.1)
-    rss (0.3.1)
-      rexml
     rubocop (1.69.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -300,6 +300,7 @@ GEM
       rubocop-rails
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
+    sax-machine (1.3.2)
     securerandom (0.4.0)
     selenium-webdriver (4.27.0)
       base64 (~> 0.2)
@@ -307,9 +308,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sitemap-parser (0.5.6)
-      nokogiri (~> 1.6)
-      typhoeus (>= 0.6, < 2.0)
     solid_cable (3.0.4)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -402,6 +400,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  feedjira
   httpx
   importmap-rails
   jbuilder
@@ -412,11 +411,8 @@ DEPENDENCIES
   public_suffix
   puma (>= 5.0)
   rails (~> 8.0.1)
-  robots
-  rss
   rubocop-rails-omakase
   selenium-webdriver
-  sitemap-parser
   solid_cable
   solid_cache
   solid_queue

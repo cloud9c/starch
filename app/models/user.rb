@@ -2,6 +2,11 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :verifications, dependent: :destroy
 
+  has_many :folders
+  has_many :subscriptions
+  has_many :channels, through: :subscriptions
+  has_many :documents
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address, presence: true, uniqueness: true
 

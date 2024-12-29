@@ -1,9 +1,6 @@
 default: &default
-  cleanup_session:
-    class: CleanupSessionJob
-    schedule: every day
-  cleanup_verification_code:
-    class: CleanupVerificationCodeJob
+  sweep_authentication:
+    class: SweepAuthenticationJob
     schedule: every day
 
 development:

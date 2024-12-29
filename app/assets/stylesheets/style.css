@@ -17,7 +17,7 @@ body {
 	line-height:var(--line-height);
 }
 
-main {
+main, nav {
 	width: min(100%, 60em);
 	padding: 0 1.5em;
 	margin: 0 auto;

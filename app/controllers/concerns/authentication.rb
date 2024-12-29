@@ -26,6 +26,10 @@ module Authentication
       Current.session ||= find_session_by_cookie || start_new_session
     end
 
+    def current_user
+      Current.session&.user
+    end
+
     def find_session_by_cookie
       Session.find_by(id: cookies.signed[:session_id])
     end

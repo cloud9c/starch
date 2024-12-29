@@ -1,12 +1,12 @@
 <h1>Starch</h1>
-<%= render 'shared/searchbar' %>
+<%= render 'search/searchbar' %>
 
 <% if @results.present? %>
   <div>
     <% @results["hits"].each do |hit| %>
       <% doc = hit["document"] %>
       
-      <a href="<%= doc["link"] %>">
+      <a href="<%= doc["url"] %>">
         <img src="<%= doc["icon"] %>" width="24"/>
         <h4><%= doc["title"] %></h4>
       </a>

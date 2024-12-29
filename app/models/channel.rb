@@ -1,44 +1,52 @@
 class Channel < ApplicationRecord
-  include PageParsable
+  has_many :documents
+  has_many :subscriptions
+  has_many :users, through: :subscriptions
+  has_many :documents
 
-  validates :domain, presence: true, uniqueness: true
-  validate :validate_domain
-  validate :validate_origin
-  has_many :pages, dependent: :destroy
-  has_many :feeds, dependent: :destroy
+  validates :feed_url, presence: true, uniqueness: true
+  before_create :get_metadata
+  after_create :perform_jobs
 
   private
 
-  def validate_domain
-    return errors.add(:domain, "can't be blank") if domain.blank?
+  def get_metadata
+    feed = FeedParser.get_feed(self.feed_url)
 
-    begin
-      parsed_domain = PublicSuffix.parse(domain)
+    self.title = feed.title
+    self.description = feed.description
 
-      unless PublicSuffix.valid?(domain)
-        errors.add(:domain, "invalid domain")
-      end
-    rescue PublicSuffix::Error => e
-      errors.add(:domain, "domain parsing error: #{e.message}")
-    end
+    self.icon = get_icon(self.feed_url)
   end
 
-  def validate_origin(origin = get_origin(self.domain))
-    response = HTTPX.get(origin)
+  def perform_jobs
+    UpdateFeedJob.perform_later(self)
+  end
 
-    return errors.add(:domain, "fetching error") if response.is_a?(HTTPX::ErrorResponse)
-    return validate_origin(response.headers["location"]) if response.status == 301
-    return errors.add(:domain, "status not ok ") if response&.status != 200
+  def get_icon(feed_url)
+    host = WebUrl.normalize(URI(feed_url).host)
 
+    response = FeedParser.get(host)
     doc = Nokogiri::HTML(response.body.to_s)
-
-    self.title = get_title(doc)
-    self.description = get_description(doc)
 
     candidates = [
       doc.at_css('link[rel~="icon"]')&.[]("href"),
       "/favicon.ico"
     ].compact
-    self.icon = get_icon(candidates, origin)
+
+    image_url = candidates.find { |url| is_valid_image?(WebUrl.get_absolute(url, host)) }
+    WebUrl.get_absolute(image_url, host)
+  end
+
+  def is_valid_image?(url)
+    logger.debug "IS VALID IMAGE #{url}"
+
+    return false unless url
+    response = FeedParser.get(url)
+    return false if response.is_a?(HTTPX::ErrorResponse)
+
+    response.headers["content-type"]&.start_with?("image/")
+  rescue HTTPX::Error
+    false
   end
 end

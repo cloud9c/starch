@@ -1,15 +1,15 @@
-class Page < ApplicationRecord
- belongs_to :channel
- validates :channel, presence: true
- validates :url, presence: true, uniqueness: true
- validates :content, length: { maximum: 100_000 }
- after_create :index_in_typesense
- after_update :update_typesense_index
- after_destroy :remove_from_typesense
+class Document < ApplicationRecord
+  belongs_to :user
+  belongs_to :channel, optional: true
+  validates :content, length: { maximum: 100_000 }
 
- def self.typesense_schema
+  after_create :index_in_typesense
+  after_update :update_typesense_index
+  after_destroy :remove_from_typesense
+
+  def self.typesense_schema
    {
-     name: "pages",
+     name: "documents",
      fields: [
        { name: "title", type: "string" },
        { name: "description", type: "string" },
@@ -19,9 +19,9 @@ class Page < ApplicationRecord
        { name: "channel_id", type: "int32", index: false }
      ]
    }
- end
+  end
 
- def self.search(query, options = {})
+  def self.search(query, options = {})
     search_params = {
       q: query,
       query_by: "title,description,content",
@@ -34,20 +34,20 @@ class Page < ApplicationRecord
    # search_params[:filter_by] = options[:filter_by] if options[:filter_by]
 
    begin
-     TypesenseClient.client.collections["pages"]
+     TypesenseClient.client.collections["documents"]
               .documents
               .search(search_params)
    rescue Typesense::Error::ObjectNotFound
-     Rails.logger.error "Typesense collection 'pages' not found"
+     Rails.logger.error "Typesense collection 'documents' not found"
      { hits: [] }
    end
- end
+  end
 
- private
+  private
 
- def index_in_typesense
+  def index_in_typesense
    begin
-     TypesenseClient.client.collections["pages"].documents.create({
+     TypesenseClient.client.collections["documents"].documents.create({
        id: id.to_s,
        title: title,
        description: description,
@@ -59,11 +59,11 @@ class Page < ApplicationRecord
    rescue Typesense::Error => e
      Rails.logger.error "Failed to index page #{id} in Typesense: #{e.message}"
    end
- end
+  end
 
- def update_typesense_index
+  def update_typesense_index
    begin
-     TypesenseClient.client.collections["pages"].documents[id.to_s].update({
+     TypesenseClient.client.collections["documents"].documents[id.to_s].update({
        title: title,
        description: description,
        url: url,
@@ -77,15 +77,15 @@ class Page < ApplicationRecord
    rescue Typesense::Error => e
      Rails.logger.error "Failed to update page #{id} in Typesense: #{e.message}"
    end
- end
+  end
 
- def remove_from_typesense
+  def remove_from_typesense
    begin
-     TypesenseClient.client.collections["pages"].documents[id.to_s].delete
+     TypesenseClient.client.collections["documents"].documents[id.to_s].delete
    rescue Typesense::Error::ObjectNotFound
      Rails.logger.info "Typesense record #{id} not found for deletion"
    rescue Typesense::Error => e
      Rails.logger.error "Failed to remove page #{id} from Typesense: #{e.message}"
    end
- end
+  end
 end

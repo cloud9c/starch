@@ -1,0 +1,22 @@
+<div>
+  <h2>Subscriptions</h2>
+
+  <%= turbo_frame_tag "subscription_form" do %>
+      <%= form_with(url: subscriptions_path,
+              data: { turbo: true }) do |f| %>
+      <%= f.text_field :feed_url, 
+          placeholder: "Enter link" %>
+      <%= f.submit "Add subscription" %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_frame_tag "subscriptions" do %>
+    <% if @subscriptions.present? %>
+      <% @subscriptions.each do |subscription| %>
+        <%= render subscription %>
+      <% end %>
+    <% else %>
+      <p>No subscriptions found.</p>
+    <% end %>
+  <% end %>
+</div>

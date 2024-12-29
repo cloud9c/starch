@@ -9,20 +9,19 @@ class SessionsController < ApplicationController
   def create
     user = User.find_or_initialize_by(email_address: params[:email_address])
 
-    if user.valid?
-      user.save!
-
+    if user.save
       magic_link_token = user.generate_token_for(:magic_link)
       verification = Verification.create!(user_id: user.id, session_id: resume_session.id)
 
       user.send_login_email(magic_link_token, verification.code)
 
       session[:show_verification] = true
-      redirect_to new_session_path,
-        notice: user.previously_new_record? ? "Check your email to verify your account" : "Check your email to sign in"
+      flash[:notice] = user.previously_new_record? ? "Check your email to verify your account" : "Check your email to sign in"
     else
-      redirect_to new_session_path, alert: user.errors.full_messages.to_sentence
+      flash[:alert] = user.errors.full_messages.to_sentence
     end
+
+    redirect_to new_session_path
   end
 
   def magic_link
@@ -51,11 +50,12 @@ class SessionsController < ApplicationController
 
   def invalid_login_redirect(params)
     if params[:token].present?
-      redirect_to new_session_path, alert: "We were unable to verify you with this link."
+      flash[:alert] = "We were unable to verify you with this link."
     elsif params[:verification_code].present?
       session[:show_verification] = true
-      redirect_to new_session_path, alert: "There was an error verifying your code."
+      flash[:alert] = "There was an error verifying your code."
     end
+    redirect_to new_session_path
   end
 
   def handle_user_verification(user)
