@@ -135,6 +135,8 @@ GEM
       http-2 (>= 1.0.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
+    idnx (0.1.1)
+      ffi (~> 1.12)
     importmap-rails (2.1.0)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -410,6 +412,7 @@ DEPENDENCIES
   debug
   feedjira
   httpx
+  idnx
   importmap-rails
   jbuilder
   kamal
