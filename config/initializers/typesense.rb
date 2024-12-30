@@ -35,23 +35,4 @@ module TypesenseClient
       log_level: Logger::INFO
     )
   end
-
-  def self.initialize
-    begin
-      client.collections["documents"].retrieve
-    rescue Typesense::Error::ObjectNotFound
-      client.collections.create(Document.typesense_schema)
-    rescue Typesense::Error::HTTPStatus0Error => e
-      Rails.logger.warn "Unable to connect to Typesense: #{e.message}"
-    end
-  end
-
-  def self.reset
-    client.collections["documents"].delete
-    self.initialize
-  end
-end
-
-Rails.application.config.after_initialize do
-  TypesenseClient.initialize
 end
