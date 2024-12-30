@@ -2,51 +2,103 @@ class Channel < ApplicationRecord
   has_many :documents
   has_many :subscriptions
   has_many :users, through: :subscriptions
-  has_many :documents
 
+  before_validation :get_canonical_feed_url
   validates :feed_url, presence: true, uniqueness: true
-  before_create :get_metadata
-  after_create :perform_jobs
+
+  before_save :get_feed_content, if: :will_save_change_to_feed_url? 
+  before_save :subscribe_to_hub, if: :will_save_change_to_hub_url?
+
+  before_save :update_metadata
 
   private
 
-  def get_metadata
-    feed = FeedParser.get_feed(self.feed_url)
+  def get_canonical_feed_url
+    url = UrlUtils.normalize(self.feed_url)
+    response = UrlUtils.get(url)
+    return unless response
+
+    feed = Feedjira.parse(response.body.to_s) rescue nil
+    return unless feed
+
+    self.feed_url = feed.feed_url if feed.feed_url
+  end
+
+  def get_feed_content
+    response = UrlUtils.get(self.feed_url)
+    return unless response
+    self.feed_content = response.body.to_s
+  end
+
+  def update_metadata
+    feed = Feedjira.parse(self.feed_content) rescue nil
+    return unless feed
 
     self.title = feed.title
     self.description = feed.description
-
+    self.url = UrlUtils.normalize(
+            feed.url || URI(self.feed_url).host
+          )
     self.icon = get_icon(self.feed_url)
+
+    if feed.feed_url
+      self.feed_url = feed.feed_url
+    end
+
+    if feed.respond_to?(:hubs) && feed.hubs.any?
+      self.hub_url = feed.hubs.first
+    end
   end
 
-  def perform_jobs
-    UpdateFeedJob.perform_later(self)
+  def update_entries
+    # feed.entries.each do |entry|
+    #   puts "title: #{entry.title}"
+    #   puts "published: #{entry.published}"
+    #   puts "url: #{entry.url}"
+    #   puts "id: #{entry.entry_id}"
+    #   puts "summary: #{entry.summary}"
+    #   puts "author: #{entry.author}"
+    # end
   end
 
-  def get_icon(feed_url)
-    host = WebUrl.normalize(URI(feed_url).host)
+  def get_icon(url)
+    host = UrlUtils.normalize(URI(url).host)
+    favicon_url = UrlUtils.get_absolute("/favicon.ico", host)
 
-    response = FeedParser.get(host)
+    return favicon_url if is_valid_image?(favicon_url)
+
+    response = UrlUtils.get(host)
+    return unless response
+
     doc = Nokogiri::HTML(response.body.to_s)
 
-    candidates = [
-      doc.at_css('link[rel~="icon"]')&.[]("href"),
-      "/favicon.ico"
-    ].compact
+    candidates = doc.css('link[rel~="icon"]').map { |link| link[:href] }.compact
+    href = candidates.find { |href| is_valid_image?(UrlUtils.get_absolute(href, host)) }
 
-    image_url = candidates.find { |url| is_valid_image?(WebUrl.get_absolute(url, host)) }
-    WebUrl.get_absolute(image_url, host)
+    UrlUtils.get_absolute(href, host) if href
   end
 
   def is_valid_image?(url)
-    logger.debug "IS VALID IMAGE #{url}"
+    response = UrlUtils.get(url)
 
-    return false unless url
-    response = FeedParser.get(url)
-    return false if response.is_a?(HTTPX::ErrorResponse)
+    return false unless response
+    return false if response.body.empty?
 
     response.headers["content-type"]&.start_with?("image/")
-  rescue HTTPX::Error
-    false
+  end
+
+  def subscribe_to_hub
+    return unless self.hub_url.present?
+    
+    hub_secret = SecureRandom.hex(32)
+
+    self.hub_secret = hub_secret
+    
+    HTTPX.post(self.hub_url, form: {
+      'hub.mode' => 'subscribe',
+      'hub.topic' => self.feed_url,
+      'hub.callback' => "#{Rails.application.config.host}/websub/verify",
+      'hub.secret' => hub_secret
+    })
   end
 end

@@ -1,0 +1,10 @@
+<turbo-frame id="new_subscription">
+    <%= form_with(url: subscriptions_path,
+            data: { turbo: true }) do |f| %>
+    <%= f.text_field :feed_url, 
+        placeholder: "Enter link",
+        required: true %>
+    <%= f.submit "Add subscription",
+        data: { disable_with: "Adding..." } %>
+  <% end %>
+</turbo-frame>

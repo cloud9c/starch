@@ -2,7 +2,9 @@ default: &default
   sweep_authentication:
     class: SweepAuthenticationJob
     schedule: every day
-
+  update_channels:
+    class: UpdateChannelJob
+    schedule: every day
 development:
   <<: *default
 

@@ -1,4 +1,4 @@
 <h1>Starch</h1>
 
 <%= render 'search/searchbar' %>
-<%= render "subscriptions/menu" %>
+<%= turbo_frame_tag "subscriptions", src: subscriptions_path %>

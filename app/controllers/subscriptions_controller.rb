@@ -1,11 +1,14 @@
 class SubscriptionsController < ApplicationController
-  after_action :load_subscriptions, only: [ :create, :destroy ]
+  before_action :load_subscriptions, only: [:index]
 
   def create
-    feed_url = FeedParser.get_feed_url(params[:feed_url])
+    channel = Channel.find_by(feed_url: params[:feed_url])
 
-    channel = Channel.find_or_initialize_by(feed_url: feed_url)
-    return head :unprocessable_entity unless channel.save
+    unless channel
+      feed_url = UrlUtils.get_feed_url(params[:feed_url])
+      channel = Channel.find_or_initialize_by(feed_url: feed_url)
+      return head :unprocessable_entity unless channel.save
+    end
 
     @subscription = current_user.subscriptions.create(channel: channel)
     head :unprocessable_entity unless @subscription.persisted?
@@ -13,9 +16,7 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     @subscription = Subscription.find(params[:id])
-    @subscription.destroy!
-  rescue ActiveRecord::RecordNotDestroyed => e
-    flash[:error] = subscription.errors.full_messages.join(", ")
+    return head :unprocessable_entity unless @subscription.destroy!
   end
 
   private

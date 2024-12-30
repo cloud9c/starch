@@ -11,4 +11,9 @@ Rails.application.routes.draw do
   get "search" => "search#index"
 
   resources :subscriptions
+
+  namespace :websub do
+    post :receive
+    get :verify
+  end
 end

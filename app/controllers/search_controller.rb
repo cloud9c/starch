@@ -9,7 +9,7 @@ class SearchController < ApplicationController
   private
 
   def search_pages
-    results = Page.search(@query, {
+    results = current_user.documents.search(@query, {
       per_page: params[:per_page],
       page: params[:page],
       filter_by: params[:filter]

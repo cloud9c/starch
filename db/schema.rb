@@ -10,14 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_26_101526) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_30_025117) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "feed_url"
+    t.string "feed_url", null: false
+    t.text "feed_content"
+    t.string "url"
+    t.string "hub_url"
+    t.string "hub_secret"
+    t.datetime "hub_verified_at"
     t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 

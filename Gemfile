@@ -68,6 +68,9 @@ gem "postmark-rails"
 # HTML parser
 gem "nokogiri"
 
+# Internationalized domain names
+gem "idnx"
+
 # HTTP client
 gem "httpx"
 
