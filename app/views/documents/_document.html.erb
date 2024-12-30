@@ -1,0 +1,15 @@
+<div id="<%= dom_id(document) %>">
+  <div>
+    <% if document.channel %>
+      <img src="<%= document.channel.icon %>" 
+           width="24" 
+           alt="<%= document.channel.title %> icon"/>
+    <% end %>
+    <span><%= document.title %></span>
+  </div>
+  <p><%= document.description %></p>
+  <%= button_to document_path(document), 
+        method: :delete do %>
+    Delete
+  <% end %>
+</div>

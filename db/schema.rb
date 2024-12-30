@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_30_025117) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_30_220348) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -20,9 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_025117) do
     t.string "feed_url", null: false
     t.text "feed_content"
     t.string "url"
-    t.string "hub_url"
-    t.string "hub_secret"
-    t.datetime "hub_verified_at"
+    t.datetime "polled_at"
     t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 
@@ -33,8 +31,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_025117) do
     t.datetime "published_at"
     t.integer "channel_id"
     t.datetime "created_at", null: false
-    t.string "guid"
     t.integer "user_id", null: false
+    t.text "content"
+    t.string "author"
     t.index ["channel_id"], name: "index_documents_on_channel_id"
     t.index ["url"], name: "index_documents_on_url"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -91,9 +90,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_025117) do
   end
 
   add_foreign_key "documents", "channels"
+  add_foreign_key "documents", "channels"
   add_foreign_key "documents", "users"
   add_foreign_key "folders", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "folders"
   add_foreign_key "subscriptions", "users"

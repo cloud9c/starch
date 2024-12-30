@@ -1,5 +1,5 @@
 class UpdateChannelJob < ApplicationJob
-  def perform()
+  def perform
    Channel.find_each do |channel|
      channel.update_metadata
    end

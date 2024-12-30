@@ -1,0 +1,13 @@
+<%= turbo_frame_tag "documents" do %>
+  <h2>Documents</h2>
+
+  <%= turbo_frame_tag "document_list" do %>
+    <% if @documents.present? %>
+      <% @documents.each do |document| %>
+        <%= render document %>
+      <% end %>
+    <% else %>
+      <p>No documents found.</p>
+    <% end %>
+  <% end %>
+<% end %>

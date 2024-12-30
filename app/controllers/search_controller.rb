@@ -12,15 +12,17 @@ class SearchController < ApplicationController
     results = current_user.documents.search(@query, {
       per_page: params[:per_page],
       page: params[:page],
-      filter_by: params[:filter]
+      filter_by: params[:filter],
+      user_id: current_user.id
     })
 
-    channel_ids = results["hits"].map { |hit| hit["document"]["channel_id"] }.uniq
+    puts results
 
-    channels = Channel.where(id: channel_ids).index_by(&:id)
+    document_ids = results["hits"].map { |hit| hit["document"][:document_id] }.uniq
+    documents = Document.where(id: document_ids).index_by(&:document_id)
 
     results["hits"].each do |hit|
-      channel = channels[hit["document"]["channel_id"]]
+      channel = documents[hit["document"]["channel_id"]]
       hit["document"]["icon"] = channel&.icon
     end
 

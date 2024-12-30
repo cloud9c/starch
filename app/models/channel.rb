@@ -5,11 +5,18 @@ class Channel < ApplicationRecord
 
   before_validation :get_canonical_feed_url
   validates :feed_url, presence: true, uniqueness: true
+  after_validation :update_feed_content
 
-  before_save :get_feed_content, if: :will_save_change_to_feed_url? 
-  before_save :subscribe_to_hub, if: :will_save_change_to_hub_url?
+  before_save :update_metadata, if: :will_save_change_to_feed_content?
+  before_save :push_new_documents_to_users, if: :will_save_change_to_feed_content?
 
-  before_save :update_metadata
+  def push_documents_to_new_users(user_id)
+    feed = Feedjira.parse(self.feed_content) rescue nil
+    return nil unless feed
+
+    latest_entries = feed.entries.sort_by(&:published).reverse.first(5)
+    create_documents_for_entries(latest_entries, [ user_id ])
+  end
 
   private
 
@@ -18,16 +25,27 @@ class Channel < ApplicationRecord
     response = UrlUtils.get(url)
     return unless response
 
-    feed = Feedjira.parse(response.body.to_s) rescue nil
+    feed = Feedjira.parse(UrlUtils.body_to_s(response)) rescue nil
     return unless feed
 
-    self.feed_url = feed.feed_url if feed.feed_url
+    if feed.feed_url
+      self.feed_url = feed.feed_url
+    end
   end
 
-  def get_feed_content
-    response = UrlUtils.get(self.feed_url)
+  def update_feed_content
+    headers = {}
+    if self.polled_at
+      headers["If-Modified-Since"] = self.polled_at.httpdate
+    end
+
+    response = UrlUtils.get(self.feed_url, headers)
     return unless response
-    self.feed_content = response.body.to_s
+
+    self.polled_at = Time.current
+
+    return if response.status == 304
+    self.feed_content = UrlUtils.body_to_s(response)
   end
 
   def update_metadata
@@ -39,66 +57,41 @@ class Channel < ApplicationRecord
     self.url = UrlUtils.normalize(
             feed.url || URI(self.feed_url).host
           )
-    self.icon = get_icon(self.feed_url)
+    self.icon = UrlUtils.get_icon(self.feed_url)
 
     if feed.feed_url
       self.feed_url = feed.feed_url
     end
+  end
 
-    if feed.respond_to?(:hubs) && feed.hubs.any?
-      self.hub_url = feed.hubs.first
+  def create_documents_for_entries(entries, user_ids)
+    entries.each do |entry|
+      user_ids.each do |user_id|
+        documents.create!(
+          title: entry.title,
+          description: entry.summary,
+          author: entry.author,
+          published_at: entry.published,
+          url: entry.url,
+          content: entry.content,
+          user_id: user_id
+        )
+      end
     end
   end
 
-  def update_entries
-    # feed.entries.each do |entry|
-    #   puts "title: #{entry.title}"
-    #   puts "published: #{entry.published}"
-    #   puts "url: #{entry.url}"
-    #   puts "id: #{entry.entry_id}"
-    #   puts "summary: #{entry.summary}"
-    #   puts "author: #{entry.author}"
-    # end
-  end
+  def push_new_documents_to_users
+    feed = Feedjira.parse(self.feed_content) rescue nil
+    return nil unless feed
 
-  def get_icon(url)
-    host = UrlUtils.normalize(URI(url).host)
-    favicon_url = UrlUtils.get_absolute("/favicon.ico", host)
+    ActiveRecord::Base.transaction do
+      new_entries = feed.entries.select do |entry|
+        entry.published > self.polled_at || 0
+      end
 
-    return favicon_url if is_valid_image?(favicon_url)
+      return if new_entries.empty?
 
-    response = UrlUtils.get(host)
-    return unless response
-
-    doc = Nokogiri::HTML(response.body.to_s)
-
-    candidates = doc.css('link[rel~="icon"]').map { |link| link[:href] }.compact
-    href = candidates.find { |href| is_valid_image?(UrlUtils.get_absolute(href, host)) }
-
-    UrlUtils.get_absolute(href, host) if href
-  end
-
-  def is_valid_image?(url)
-    response = UrlUtils.get(url)
-
-    return false unless response
-    return false if response.body.empty?
-
-    response.headers["content-type"]&.start_with?("image/")
-  end
-
-  def subscribe_to_hub
-    return unless self.hub_url.present?
-    
-    hub_secret = SecureRandom.hex(32)
-
-    self.hub_secret = hub_secret
-    
-    HTTPX.post(self.hub_url, form: {
-      'hub.mode' => 'subscribe',
-      'hub.topic' => self.feed_url,
-      'hub.callback' => "#{Rails.application.config.host}/websub/verify",
-      'hub.secret' => hub_secret
-    })
+      create_documents_for_entries(new_entries, users.pluck(:user_id))
+    end
   end
 end

@@ -1,3 +1,5 @@
-<%= turbo_stream.append "subscriptions" do %>
-  <%= render @subscription %>
+<% if @subscription %>
+  <%= turbo_stream.append "subscriptions" do %>
+    <%= render @subscription %>
+  <% end %>
 <% end %>

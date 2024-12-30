@@ -7,85 +7,103 @@ class Document < ApplicationRecord
   after_update :update_typesense_index
   after_destroy :remove_from_typesense
 
-  def self.typesense_schema
-   {
-     name: "documents",
-     fields: [
-       { name: "title", type: "string" },
-       { name: "description", type: "string" },
-       { name: "url", type: "string" },
-       { name: "published_at", type: "int64" },  # store as Unix timestamp
-       { name: "content", type: "string" },
-       { name: "channel_id", type: "int32", index: false }
-     ]
-   }
+  def self.collection_name(user_id)
+    "documents_user_#{user_id}"
   end
 
   def self.search(query, options = {})
+    raise ArgumentError, "user_id is required" unless options[:user_id]
+
+    collection = TypesenseClient.client.collections[collection_name(options[:user_id])]
+
     search_params = {
       q: query,
       query_by: "title,description,content",
-      # sort_by: 'published_at:desc',
       per_page: options[:per_page] || 20,
       page: options[:page] || 1
     }
 
-   # Add optional filters if provided
-   # search_params[:filter_by] = options[:filter_by] if options[:filter_by]
+    begin
+      result = collection.documents.search(search_params)
+      Rails.logger.debug "Search result: #{result.inspect}"
+      result
+    rescue Typesense::Error::ObjectNotFound
+      create_collection_for_user(options[:user_id])
+      { hits: [] }
+    end
+  end
 
-   begin
-     TypesenseClient.client.collections["documents"]
-              .documents
-              .search(search_params)
-   rescue Typesense::Error::ObjectNotFound
-     Rails.logger.error "Typesense collection 'documents' not found"
-     { hits: [] }
-   end
+  def self.create_collection_for_user(user_id)
+    TypesenseClient.client.collections.create({
+      name: collection_name(user_id),
+      fields: [
+        { name: "document_id", type: "int32", index: false },
+        { name: "title", type: "string", optional: true },
+        { name: "description", type: "string", optional: true },
+        { name: "url", type: "string", optional: true },
+        { name: "published_at", type: "int64", optional: true },
+        { name: "content", type: "string", optional: true },
+        { name: "channel_id", type: "int32", index: false }
+      ]
+    })
+  rescue Typesense::Error => e
+    Rails.logger.error "Failed to create collection for user #{user_id}: #{e.message}"
   end
 
   private
 
+  def document_params
+    {
+      document_id: self.id,
+      title: self.title,
+      description: self.description,
+      url: self.url,
+      published_at: self.published_at&.to_i,
+      content: self.content,
+      channel_id: self.channel_id
+    }
+  end
+
   def index_in_typesense
-   begin
-     TypesenseClient.client.collections["documents"].documents.create({
-       id: id.to_s,
-       title: title,
-       description: description,
-       url: url,
-       published_at: published_at.to_i,
-       content: content,
-       channel_id: channel_id
-     })
-   rescue Typesense::Error => e
-     Rails.logger.error "Failed to index page #{id} in Typesense: #{e.message}"
-   end
+    ensure_collection_exists
+
+    result = TypesenseClient.client.collections[collection_name]
+              .documents
+              .create(document_params)
+  rescue Typesense::Error => e
+    Rails.logger.error "Failed to index document #{id}: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n") # Add full backtrace
   end
 
   def update_typesense_index
-   begin
-     TypesenseClient.client.collections["documents"].documents[id.to_s].update({
-       title: title,
-       description: description,
-       url: url,
-       published_at: published_at.to_i,
-       content: content,
-       channel_id: channel_id
-     })
-   rescue Typesense::Error::ObjectNotFound
-     # If document doesn't exist, create it
-     index_in_typesense
-   rescue Typesense::Error => e
-     Rails.logger.error "Failed to update page #{id} in Typesense: #{e.message}"
-   end
+    ensure_collection_exists
+
+    TypesenseClient.client.collections[collection_name]
+              .documents[id.to_s]
+              .update(document_params)
+  rescue Typesense::Error::ObjectNotFound
+    index_in_typesense
+  rescue Typesense::Error => e
+    Rails.logger.error "Failed to update document #{id}: #{e.message}"
   end
 
   def remove_from_typesense
-   begin
-     TypesenseClient.client.collections["documents"].documents[id.to_s].delete
-   rescue Typesense::Error::ObjectNotFound
-     Rails.logger.info "Typesense record #{id} not found for deletion"
-   rescue Typesense::Error => e
-     Rails.logger.error "Failed to remove page #{id} from Typesense: #{e.message}"
-   end
+    TypesenseClient.client.collections[collection_name]
+              .documents[id.to_s]
+              .delete
+  rescue Typesense::Error::ObjectNotFound
+    Rails.logger.info "Document #{id} not found for deletion"
+  rescue Typesense::Error => e
+    Rails.logger.error "Failed to remove document #{id}: #{e.message}"
+  end
+
+  def collection_name
+    self.class.collection_name(user_id)
+  end
+
+  def ensure_collection_exists
+    TypesenseClient.client.collections[collection_name].retrieve
+  rescue Typesense::Error::ObjectNotFound
+    self.class.create_collection_for_user(user_id)
   end
 end
