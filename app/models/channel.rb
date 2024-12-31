@@ -45,10 +45,7 @@ class Channel < ApplicationRecord
           )
     self.icon = UrlUtils.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
 
-    puts "FEED_URL #{self.feed_url}"
-
     if feed.respond_to?(:feed_url)
-      puts "NEW_FEED_URL #{feed.feed_url}"
       self.feed_url = feed.feed_url
     end
   end
