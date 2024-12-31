@@ -16,9 +16,7 @@ module UrlUtils
   end
 
   def normalize(url)
-    url = url.strip.downcase
     url = "https://#{url}" unless url.start_with?("http://", "https://")
-
     url.chomp("/")
   end
 
@@ -35,11 +33,35 @@ module UrlUtils
     response.body.to_s.force_encoding("UTF-8")
   end
 
+  def get_canonical_feed_url(url)
+    feed_url = get_feed_url(url)
+
+    puts "FEED_URL: #{feed_url}"
+
+    url = normalize(feed_url)
+    response = get(url)
+    return feed_url unless response
+
+    puts "response: true"
+
+    feed = Feedjira.parse(body_to_s(response)) rescue nil
+    return feed_url unless feed
+
+    puts "feed: true"
+
+    if feed.respond_to?(:feed_url)
+      puts "NEW_FEED_URL: #{feed.feed_url}"
+      return feed.feed_url
+    end
+
+    feed_url
+  end
+
   def get_feed_url(url)
-    url = UrlUtils.normalize(url)
+    url = normalize(url)
 
     # 1. Try url directly
-    response = UrlUtils.get(url)
+    response = get(url)
     return unless response
 
     # assuming all feeds are application/xml
@@ -51,7 +73,7 @@ module UrlUtils
     link = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
            doc.at('link[type="application/rss+xml"]')&.[]("href")
 
-    UrlUtils.get_absolute(link, response.uri.host)
+    get_absolute(link, response.uri.host)
   end
 
   def get_icon(url)

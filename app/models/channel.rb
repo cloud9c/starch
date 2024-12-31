@@ -3,7 +3,6 @@ class Channel < ApplicationRecord
   has_many :subscriptions
   has_many :users, through: :subscriptions
 
-  before_validation :get_canonical_feed_url
   validates :feed_url, presence: true, uniqueness: true
   after_validation :update_feed_content
 
@@ -19,19 +18,6 @@ class Channel < ApplicationRecord
   end
 
   private
-
-  def get_canonical_feed_url
-    url = UrlUtils.normalize(self.feed_url)
-    response = UrlUtils.get(url)
-    return unless response
-
-    feed = Feedjira.parse(UrlUtils.body_to_s(response)) rescue nil
-    return unless feed
-
-    if feed.feed_url
-      self.feed_url = feed.feed_url
-    end
-  end
 
   def update_feed_content
     headers = {}
@@ -52,14 +38,17 @@ class Channel < ApplicationRecord
     feed = Feedjira.parse(self.feed_content) rescue nil
     return unless feed
 
-    self.title = feed.title
-    self.description = feed.description
+    self.title = feed.title if feed.respond_to?(:title)
+    self.description = feed.description if feed.respond_to?(:description)
     self.url = UrlUtils.normalize(
-            feed.url || URI(self.feed_url).host
+            (feed.url if feed.respond_to?(:url)) || URI(self.feed_url).host
           )
-    self.icon = UrlUtils.get_icon(self.feed_url)
+    self.icon = UrlUtils.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
 
-    if feed.feed_url
+    puts "FEED_URL #{self.feed_url}"
+
+    if feed.respond_to?(:feed_url)
+      puts "NEW_FEED_URL #{feed.feed_url}"
       self.feed_url = feed.feed_url
     end
   end
