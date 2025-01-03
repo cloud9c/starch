@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_30_220348) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_172034) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_220348) do
     t.text "feed_content"
     t.string "url"
     t.datetime "polled_at"
+    t.string "etag"
     t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 

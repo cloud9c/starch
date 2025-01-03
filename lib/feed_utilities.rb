@@ -1,4 +1,4 @@
-module UrlUtils
+module FeedUtilities
   extend self
 
   def get(url, headers = {}, follow = true)
@@ -33,47 +33,25 @@ module UrlUtils
     response.body.to_s.force_encoding("UTF-8")
   end
 
-  def get_canonical_feed_url(url)
-    feed_url = get_feed_url(url)
-
-    puts "FEED_URL: #{feed_url}"
-
-    url = normalize(feed_url)
-    response = get(url)
-    return feed_url unless response
-
-    puts "response: true"
-
-    feed = Feedjira.parse(body_to_s(response)) rescue nil
-    return feed_url unless feed
-
-    puts "feed: true"
-
-    if feed.respond_to?(:feed_url)
-      puts "NEW_FEED_URL: #{feed.feed_url}"
-      return feed.feed_url
-    end
-
-    feed_url
-  end
-
   def get_feed_url(url)
     url = normalize(url)
-
-    # 1. Try url directly
     response = get(url)
     return unless response
 
-    # assuming all feeds are application/xml
-    return response.uri.to_s if response.headers["content-type"].include?("application/xml")
+    feed = Feedjira.parse(body_to_s(response)) rescue nil
 
-    # 2. Try to find it myself
-    doc = Nokogiri::HTML(body_to_s(response))
+    unless feed
+      doc = Nokogiri::HTML(body_to_s(response))
+      link = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
+             doc.at('link[type="application/rss+xml"]')&.[]("href")
+      url = get_absolute(link, response.uri.host)
+      return unless url
+      response = get(url)
+      return unless response
+      feed = Feedjira.parse(body_to_s(response)) rescue nil
+    end
 
-    link = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
-           doc.at('link[type="application/rss+xml"]')&.[]("href")
-
-    get_absolute(link, response.uri.host)
+    feed&.respond_to?(:feed_url) && feed&.feed_url ? feed.feed_url : url
   end
 
   def get_icon(url)

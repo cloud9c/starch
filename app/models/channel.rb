@@ -21,17 +21,20 @@ class Channel < ApplicationRecord
 
   def update_feed_content
     headers = {}
-    if self.polled_at
-      headers["If-Modified-Since"] = self.polled_at.httpdate
-    end
+    headers["If-Modified-Since"] = self.polled_at.httpdate if self.polled_at
+    headers["If-None-Match"] = self.etag if self.etag
 
-    response = UrlUtils.get(self.feed_url, headers)
+    response = FeedUtilities.get(self.feed_url, headers)
     return unless response
 
     self.polled_at = Time.current
+    self.etag = response.headers[:Etag]
 
     return if response.status == 304
-    self.feed_content = UrlUtils.body_to_s(response)
+    self.feed_content = FeedUtilities.body_to_s(response)
+
+    puts "Time: #{self.polled_at}"
+    puts "ETag: #{self.etag}"
   end
 
   def update_metadata
@@ -40,14 +43,12 @@ class Channel < ApplicationRecord
 
     self.title = feed.title if feed.respond_to?(:title)
     self.description = feed.description if feed.respond_to?(:description)
-    self.url = UrlUtils.normalize(
+    self.url = FeedUtilities.normalize(
             (feed.url if feed.respond_to?(:url)) || URI(self.feed_url).host
           )
-    self.icon = UrlUtils.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
+    self.icon = FeedUtilities.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
 
-    if feed.respond_to?(:feed_url)
-      self.feed_url = feed.feed_url
-    end
+    self.feed_url = feed.feed_url if feed.respond_to?(:feed_url) && feed.feed_url
   end
 
   def create_documents_for_entries(entries, user_ids)

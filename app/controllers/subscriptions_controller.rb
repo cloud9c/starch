@@ -5,7 +5,8 @@ class SubscriptionsController < ApplicationController
     channel = Channel.find_by(feed_url: params[:feed_url])
 
     unless channel
-      feed_url = UrlUtils.get_canonical_feed_url(params[:feed_url])
+      feed_url = FeedUtilities.get_feed_url(params[:feed_url])
+
       return render status: :unprocessable_entity unless feed_url
 
       channel = Channel.find_or_initialize_by(feed_url: feed_url)
