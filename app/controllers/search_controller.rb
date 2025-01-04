@@ -19,7 +19,7 @@ class SearchController < ApplicationController
     puts results
 
     document_ids = results["hits"].map { |hit| hit["document"][:document_id] }.uniq
-    documents = Document.where(id: document_ids).index_by(&:document_id)
+    documents = current_user.documents.where(id: document_ids).index_by(&:document_id)
 
     results["hits"].each do |hit|
       channel = documents[hit["document"]["channel_id"]]

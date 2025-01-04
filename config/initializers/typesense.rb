@@ -7,32 +7,38 @@ module TypesenseClient
           port: 8108,
           protocol: "http"
         }
-        # Uncomment if starting a 3-node cluster, using Option 2 under Setup instructions above
-        # {
-        #   host: 'localhost',
-        #   port: 7108,
-        #   protocol: 'http'
-        # },
-        # {
-        #   host: 'localhost',
-        #   port: 9108,
-        #   protocol: 'http'
-        # }
       ],
-      # If this optional key is specified, requests are always sent to this node first if it is healthy
-      #   before falling back on the nodes mentioned in the `nodes` key. This is useful when running a distributed set of search clusters.
-      # 'nearest_node': {
-      #   'host': 'localhost',
-      #   'port': '8108',
-      #   'protocol': 'http'
-      # },
       api_key: "xyz",
       num_retries: 10,
       healthcheck_interval_seconds: 1,
       retry_interval_seconds: 0.01,
       connection_timeout_seconds: 10,
-      logger: Logger.new($stdout),
-      log_level: Logger::INFO
+      logger: Rails.logger,
+      log_level: Rails.env.production? ? Logger::INFO : Logger::DEBUG
     )
   end
+
+  def self.initialize
+    begin
+      client.collections[Document::COLLECTION_NAME].retrieve
+    rescue Typesense::Error::ObjectNotFound
+      Document.create_collection
+    rescue Typesense::Error::HTTPStatus0Error => e
+      Rails.logger.error "Unable to connect to Typesense: #{e.message}"
+      raise
+    end
+  end
+
+  def self.reset
+    begin
+      client.collections[Document::COLLECTION_NAME].delete
+    rescue Typesense::Error::ObjectNotFound
+      Rails.logger.info "Collection not found during reset"
+    end
+    self.initialize
+  end
+end
+
+Rails.application.config.after_initialize do
+  TypesenseClient.initialize
 end

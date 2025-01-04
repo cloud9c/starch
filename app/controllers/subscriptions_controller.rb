@@ -22,7 +22,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy
-    @subscription = Subscription.find(params[:id])
+    @subscription = current_user.subscriptions.find(params[:id])
     render status: :unprocessable_entity unless @subscription.destroy!
   end
 
