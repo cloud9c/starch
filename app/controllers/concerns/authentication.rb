@@ -26,10 +26,6 @@ module Authentication
       Current.session ||= find_session_by_cookie || start_new_session
     end
 
-    def current_user
-      Current.session&.user
-    end
-
     def find_session_by_cookie
       Session.find_by(id: cookies.signed[:session_id])
     end
@@ -56,7 +52,7 @@ module Authentication
       resume_session && Current.session.update!(user: user)
     end
 
-    def terminate_session
+    def destroy_session
       verifications = Verification.where(session_id: Current.session.id)
       verifications.destroy_all
       reset_session

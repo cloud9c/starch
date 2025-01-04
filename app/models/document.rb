@@ -1,5 +1,6 @@
 class Document < ApplicationRecord
-  belongs_to :user
+  include UserOwnable
+
   belongs_to :channel, optional: true
   validates :content, length: { maximum: 100_000 }
 

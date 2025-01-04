@@ -14,21 +14,21 @@ class SubscriptionsController < ApplicationController
       return render status: :unprocessable_entity unless channel.save
     end
 
-    @subscription = current_user.subscriptions.create(channel: channel)
+    @subscription = Subscription.create(channel: channel)
 
     return render status: :unprocessable_entity unless @subscription.persisted?
 
-    channel.push_documents_to_new_users(current_user.id)
+    channel.push_documents_to_new_users(Current.user.id)
   end
 
   def destroy
-    @subscription = current_user.subscriptions.find(params[:id])
+    @subscription = Subscription.find(params[:id])
     render status: :unprocessable_entity unless @subscription.destroy!
   end
 
   private
 
   def load_subscriptions
-    @subscriptions = current_user.subscriptions
+    @subscriptions = Subscription.all
   end
 end

@@ -1,5 +1,6 @@
 class Folder < ApplicationRecord
-  belongs_to :user
+  include UserOwnable
+
   has_many :subscriptions
   has_many :channels, through: :subscriptions
 end
