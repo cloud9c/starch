@@ -5,7 +5,7 @@ class SubscriptionsController < ApplicationController
     channel = Channel.find_by(feed_url: params[:feed_url])
 
     unless channel
-      feed_url = FeedUtilities.get_feed_url(params[:feed_url])
+      feed_url = HttpUtilities.get_feed_url(params[:feed_url])
 
       return render status: :unprocessable_entity unless feed_url
 
@@ -16,9 +16,7 @@ class SubscriptionsController < ApplicationController
 
     @subscription = Subscription.create(channel: channel)
 
-    return render status: :unprocessable_entity unless @subscription.persisted?
-
-    channel.push_documents_to_new_users(Current.user.id)
+    render status: :unprocessable_entity unless @subscription.persisted?
   end
 
   def destroy

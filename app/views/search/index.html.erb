@@ -1,16 +1,14 @@
 <h1>Starch</h1>
 <%= render 'search/searchbar' %>
 
-<% if @results.present? %>
+<% if @documents.present? %>
   <div>
-    <% @results["hits"].each do |hit| %>
-      <% doc = hit["document"] %>
-      
-      <a href="<%= doc["url"] %>">
-        <img src="<%= doc["icon"] %>" width="24"/>
-        <h4><%= doc["title"] %></h4>
+    <% @documents.each do |doc| %>
+      <a href="<%= doc[:url] %>">
+        <img src="<%= doc[:channel_icon] %>" width="24"/>
+        <h4><%= doc[:title] %></h4>
       </a>
-      <p><%= doc["description"] %></p>
+      <p><%= doc[:description] %></p>
     <% end %>
   </div>
 <% elsif @query.present? %>

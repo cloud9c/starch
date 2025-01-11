@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :folders
   has_many :subscriptions
   has_many :channels, through: :subscriptions
-  has_many :documents
+  has_many :document_user_states
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address, presence: true, uniqueness: true

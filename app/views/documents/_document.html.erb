@@ -1,9 +1,9 @@
 <div id="<%= dom_id(document) %>">
   <div>
-    <% if document.channel %>
-      <img src="<%= document.channel.icon %>" 
+    <% if document.entry %>
+      <img src="<%= document.channel_icon %>" 
            width="24" 
-           alt="<%= document.channel.title %> icon"/>
+           alt="<%= document.channel_title %> icon"/>
     <% end %>
     <span><%= document.title %></span>
   </div>

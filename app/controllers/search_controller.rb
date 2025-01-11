@@ -7,23 +7,18 @@ class SearchController < ApplicationController
   private
 
   def search_pages
-    results = current_user.documents.search(@query, {
+    results = Document.search(@query, {
       per_page: params[:per_page],
       page: params[:page],
-      filter_by: params[:filter],
-      user_id: current_user.id
+      filter_by: params[:filter]
     })
 
-    puts results
-
     document_ids = results["hits"].map { |hit| hit["document"][:document_id] }.uniq
-    documents = current_user.documents.where(id: document_ids).index_by(&:document_id)
+    documents = Document
+      .select("documents.*, channels.icon as channel_icon")
+      .left_joins(entry: :channel)
+      .where(id: document_ids)
 
-    results["hits"].each do |hit|
-      channel = documents[hit["document"]["channel_id"]]
-      hit["document"]["icon"] = channel&.icon
-    end
-
-    results
+    documents
   end
 end

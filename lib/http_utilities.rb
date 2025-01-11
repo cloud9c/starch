@@ -1,4 +1,4 @@
-module FeedUtilities
+module HttpUtilities
   extend self
 
   def get(url, headers = {}, follow = true)
@@ -78,5 +78,21 @@ module FeedUtilities
     return false if response.body.empty?
 
     response.headers["content-type"]&.start_with?("image/")
+  end
+
+  def remove_protocol_and_host(url)
+    parsed = URI(uri)
+    result = [ parsed.userinfo, parsed.path, parsed.query, parsed.fragment ].join
+    if result == "" || result == "/"
+      uri
+    else
+      result
+    end
+  rescue
+    if uri.respond_to?(:gsub!)
+      uri.gsub!("http:", "")
+      uri.gsub!("https:", "")
+    end
+    uri
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_172034) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_11_185134) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -25,19 +25,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_172034) do
     t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 
+  create_table "document_user_states", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_document_user_states_on_document_id"
+    t.index ["user_id"], name: "index_document_user_states_on_user_id"
+  end
+
   create_table "documents", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "url"
     t.datetime "published_at"
-    t.integer "channel_id"
     t.datetime "created_at", null: false
-    t.integer "user_id", null: false
     t.text "content"
     t.string "author"
-    t.index ["channel_id"], name: "index_documents_on_channel_id"
-    t.index ["url"], name: "index_documents_on_url"
-    t.index ["user_id"], name: "index_documents_on_user_id"
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.integer "channel_id", null: false
+    t.string "stable_id", null: false
+    t.string "fingerprint", null: false
+    t.integer "document_id", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["channel_id"], name: "index_entries_on_channel_id"
+    t.index ["document_id"], name: "index_entries_on_document_id"
+    t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end
 
   create_table "folders", force: :cascade do |t|
@@ -90,9 +106,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_172034) do
     t.index ["user_id"], name: "index_verifications_on_user_id"
   end
 
-  add_foreign_key "documents", "channels"
-  add_foreign_key "documents", "channels"
-  add_foreign_key "documents", "users"
+  add_foreign_key "document_user_states", "documents"
+  add_foreign_key "document_user_states", "users"
+  add_foreign_key "entries", "channels"
+  add_foreign_key "entries", "documents"
   add_foreign_key "folders", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "channels"
