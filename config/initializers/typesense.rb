@@ -15,7 +15,9 @@ module TypesenseClient
       connection_timeout_seconds: 10,
       logger: Rails.logger,
       log_level: Rails.env.production? ? Logger::INFO : Logger::DEBUG
-    )
+    ).tap do |client|
+      self.initialize
+    end
   end
 
   def self.initialize
@@ -37,8 +39,4 @@ module TypesenseClient
     end
     self.initialize
   end
-end
-
-Rails.application.config.after_initialize do
-  TypesenseClient.initialize
 end
