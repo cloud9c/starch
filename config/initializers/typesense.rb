@@ -19,6 +19,7 @@ module TypesenseClient
   end
 
   def self.initialize
+    logger.debug "INITIALIZING collection #{Document::COLLECTION_NAME}"
     begin
       client.collections[Document::COLLECTION_NAME].retrieve
     rescue Typesense::Error::ObjectNotFound

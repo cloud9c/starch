@@ -108,3 +108,8 @@ accessories:
         RAILS_ENV: production
       secret:
         - RAILS_MASTER_KEY
+    healthcheck:
+      cmd: "curl -f http://starch-typesense:8108/health"
+      interval: 10s
+      max_attempts: 5
+      log_lines: 100

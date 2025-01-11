@@ -89,7 +89,6 @@ class Document < ApplicationRecord
     Rails.logger.error e.backtrace.join("\n")
   end
 
-  # Update index when document_user_states change
   def update_user_index
     update_typesense_index if persisted?
   end
