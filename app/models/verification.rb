@@ -24,6 +24,6 @@ class Verification < ApplicationRecord
   end
 
   def self.sweep
-    inactive.delete_all
+    inactive.destroy_all
   end
 end

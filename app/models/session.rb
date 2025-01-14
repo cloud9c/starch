@@ -1,11 +1,9 @@
 class Session < ApplicationRecord
   belongs_to :user, optional: true
 
-  def expired?
-    updated_at < 24.hours.ago || created_at < 2.weeks.ago
-  end
+  scope :expired, -> { where("updated_at < ? OR created_at < ?", 24.hours.ago, 2.weeks.ago) }
 
   def self.sweep
-    where(expired: true).delete_all
+    expired.destroy_all
   end
 end

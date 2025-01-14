@@ -4,7 +4,7 @@ default: &default
     schedule: every day
   update_channels:
     class: UpdateChannelsJob
-    schedule: every 12h
+    schedule: every day
 development:
   <<: *default
 
