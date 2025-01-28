@@ -1,13 +1,13 @@
-# todo
-- rn all Typesense schemas are required
-- how to safely migrate typesearch indexes (?)
+# product
+- motto: human intelligence; design your own algorithm; curation
 
+# todo
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- on subscription, update the document_list
+- document content view
 
-- motto: human intelligence; design your own algorithm; curation
+- https://github.com/postlight/parser
 
 # competitors
 - Readwise Readers
