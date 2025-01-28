@@ -12,14 +12,9 @@ class Entry < ApplicationRecord
   after_touch :update_ids
 
   scope :recent, -> {
-    where(
-      document_id: Document
-        .unscoped
-        .order(published_at: :desc)
-        .order(created_at: :desc)
-        .limit(5)
-        .select(:id)
-    )
+    includes(:document)
+      .order("documents.published_at DESC, documents.created_at DESC")
+      .limit(5)
   }
 
   def create_document_user_states

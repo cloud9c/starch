@@ -7,22 +7,22 @@ class SubscriptionsController < ApplicationController
     unless channel
       feed_url = HttpUtilities.get_feed_url(params[:feed_url])
 
-      return render status: :unprocessable_entity unless feed_url
+      return head :unprocessable_entity unless feed_url
 
       channel = Channel.find_or_initialize_by(feed_url: feed_url)
 
-      return render status: :unprocessable_entity unless channel.save
+      return head :unprocessable_entity unless channel.save
     end
 
     @subscription = Subscription.create(channel: channel)
     @documents = Document.with_channel_details
 
-    render status: :unprocessable_entity unless @subscription.persisted?
+    head :unprocessable_entity unless @subscription.persisted?
   end
 
   def destroy
     @subscription = Subscription.find(params[:id])
-    render status: :unprocessable_entity unless @subscription.destroy!
+    head :unprocessable_entity unless @subscription.destroy!
   end
 
   private

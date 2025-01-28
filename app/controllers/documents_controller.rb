@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id])
     document_user_state = @document.document_user_states.find_by!(user_id: Current.user.id)
 
-    render status: :unprocessable_entity unless document_user_state.destroy!
+    head :unprocessable_entity unless document_user_state.destroy!
   end
 
   private
