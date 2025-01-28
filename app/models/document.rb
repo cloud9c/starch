@@ -14,6 +14,12 @@ class Document < ApplicationRecord
     where(id: DocumentUserState.select(:document_id))
   }
 
+  scope :with_channel_details, -> {
+    select("documents.*, channels.icon as channel_icon, channels.title as channel_title")
+      .left_joins(entry: :channel)
+      .order(published_at: :desc)
+  }
+
   COLLECTION_NAME = "documents"
 
   def self.search(query, options = {})

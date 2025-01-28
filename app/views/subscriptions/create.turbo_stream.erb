@@ -2,4 +2,6 @@
   <%= turbo_stream.append "subscriptions" do %>
     <%= render @subscription %>
   <% end %>
+
+  <%= turbo_stream.replace "document_list", partial: "documents/list" %>
 <% end %>

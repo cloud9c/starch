@@ -1,6 +1,8 @@
 module TypesenseClient
   def self.client
-    @client ||= Typesense::Client.new(
+    return @client if @client
+    
+    @client = Typesense::Client.new(
       nodes: [
         {
           host: Rails.env.production? ? "starch-typesense" : "localhost",
@@ -15,14 +17,15 @@ module TypesenseClient
       connection_timeout_seconds: 10,
       logger: Rails.logger,
       log_level: Rails.env.production? ? Logger::INFO : Logger::DEBUG
-    ).tap do |client|
-      self.initialize
-    end
+    )
+    
+    self.initialize
+    @client
   end
 
   def self.initialize
     begin
-      client.collections[Document::COLLECTION_NAME].retrieve
+      @client.collections[Document::COLLECTION_NAME].retrieve
     rescue Typesense::Error::ObjectNotFound
       Document.create_collection
     rescue Typesense::Error::HTTPStatus0Error => e
@@ -33,7 +36,7 @@ module TypesenseClient
 
   def self.reset
     begin
-      client.collections[Document::COLLECTION_NAME].delete
+      @client.collections[Document::COLLECTION_NAME].delete
     rescue Typesense::Error::ObjectNotFound
       Rails.logger.info "Collection not found during reset"
     end

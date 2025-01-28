@@ -9,19 +9,13 @@ class Subscription < ApplicationRecord
   private
 
   def add_recent_entries
-    recent_entries = channel.entries.unscoped_recent
+    recent_entries = channel.entries.recent
 
-    logger.debug "RECENT #: #{recent_entries.count}"
-
-    states = recent_entries.map do |entry|
-      {
+    recent_entries.each do |entry|
+      DocumentUserState.create(
         user_id: user_id,
-        document_id: entry.document_id,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
+        document_id: entry.document_id
+      )
     end
-
-    DocumentUserState.insert_all(states) if states.any?
   end
 end

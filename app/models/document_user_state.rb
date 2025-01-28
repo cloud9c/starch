@@ -1,19 +1,21 @@
 class DocumentUserState < ApplicationRecord
   include UserOwnable
 
+  validates :document_id, uniqueness: { scope: :user_id }
+
   after_create :update_document_index
   after_destroy :update_document_index
 
   belongs_to :document
-  after_destroy :delete_document_if_no_states
+  after_destroy :delete_zombie_document
 
   private
 
-  def delete_document_if_no_states
-    document.destroy if document.document_user_states.empty?
-  end
-
   def update_document_index
     document.update_typesense_index
+  end
+
+  def delete_zombie_document
+    document.destroy if document.entry.nil? && document.document_user_states.empty?
   end
 end

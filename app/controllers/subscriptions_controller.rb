@@ -15,6 +15,7 @@ class SubscriptionsController < ApplicationController
     end
 
     @subscription = Subscription.create(channel: channel)
+    @documents = Document.with_channel_details
 
     render status: :unprocessable_entity unless @subscription.persisted?
   end

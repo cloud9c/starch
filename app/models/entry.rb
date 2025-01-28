@@ -11,7 +11,7 @@ class Entry < ApplicationRecord
 
   after_touch :update_ids
 
-  scope :unscoped_recent, -> {
+  scope :recent, -> {
     where(
       document_id: Document
         .unscoped
@@ -25,16 +25,12 @@ class Entry < ApplicationRecord
   def create_document_user_states
     users = channel.users
 
-    states = users.map do |user|
-      {
+    users.each do |user|
+      DocumentUserState.create(
         user_id: user.id,
-        document_id: self.document.id,
-        created_at: Time.current,
-        updated_at: Time.current
-      }
+        document_id: self.document.id
+      )
     end
-
-    DocumentUserState.insert_all!(states)
   end
 
   def update_ids

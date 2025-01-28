@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_11_185134) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_14_201125) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -30,6 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_11_185134) do
     t.integer "document_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id", "user_id"], name: "index_document_user_states_on_document_and_user", unique: true
     t.index ["document_id"], name: "index_document_user_states_on_document_id"
     t.index ["user_id"], name: "index_document_user_states_on_user_id"
   end

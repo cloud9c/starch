@@ -1,14 +1,11 @@
 # todo
-
 - rn all Typesense schemas are required
 - how to safely migrate typesearch indexes (?)
 
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- DocumentUserState
-- 1 document, 1 entry, multiple DocumentUserState
-- documents w/o DocumentUserState should get deleted
+- on subscription, update the document_list
 
 - motto: human intelligence; design your own algorithm; curation
 
@@ -16,3 +13,7 @@
 - Readwise Readers
 - Google News
 - Newsblur
+
+# how to dev
+1. `docker compose up`
+2. `rails s`
