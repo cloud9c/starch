@@ -1,7 +1,7 @@
 module TypesenseClient
   def self.client
     return @client if @client
-    
+
     @client = Typesense::Client.new(
       nodes: [
         {
@@ -18,7 +18,7 @@ module TypesenseClient
       logger: Rails.logger,
       log_level: Rails.env.production? ? Logger::INFO : Logger::DEBUG
     )
-    
+
     self.initialize
     @client
   end
