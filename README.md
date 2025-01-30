@@ -5,9 +5,7 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- document content view
-
-- https://github.com/postlight/parser
+- document content view (https://github.com/postlight/parser)
 
 # competitors
 - Readwise Readers

@@ -31,6 +31,13 @@ jobs:
           gem install specific_install
           gem specific_install https://github.com/basecamp/kamal.git 
 
+      - name: Build reading_parser image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./reading_parser
+          push: true
+          tags: ghcr.io/cloud9c/reading_parser:latest
+
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}

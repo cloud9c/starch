@@ -4,6 +4,6 @@ class AuthenticationMailer < ApplicationMailer
     @url = magic_link_session_url(token: magic_link_token)
     @verification_code = verification_code
 
-    mail to: user.email_address, subject: "Secure link to log in to Starch | #{Time.current.strftime('%Y-%m-%d %H:%M:%S')}"
+    mail to: user.email_address, subject: "Log in to Starch (#{verification_code})"
   end
 end

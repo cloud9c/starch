@@ -1,4 +1,4 @@
-module TypesenseClient
+module SearchEngine
   def self.client
     return @client if @client
 

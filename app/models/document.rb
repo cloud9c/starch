@@ -33,7 +33,7 @@ class Document < ApplicationRecord
     }
 
     begin
-      collection = TypesenseClient.client.collections[COLLECTION_NAME]
+      collection = SearchEngine.client.collections[COLLECTION_NAME]
       result = collection.documents.search(search_params)
       Rails.logger.debug "Search result: #{result.inspect}"
       result
@@ -44,7 +44,7 @@ class Document < ApplicationRecord
   end
 
   def self.create_collection
-    TypesenseClient.client.collections.create({
+    SearchEngine.client.collections.create({
       name: COLLECTION_NAME,
       fields: [
         { name: "document_id", type: "int32", index: false },
@@ -62,7 +62,7 @@ class Document < ApplicationRecord
 
   def update_typesense_index
     ensure_collection_exists
-    TypesenseClient.client.collections[COLLECTION_NAME]
+    SearchEngine.client.collections[COLLECTION_NAME]
                   .documents[id.to_s]
                   .update(document_params)
   rescue Typesense::Error::ObjectNotFound
@@ -87,7 +87,7 @@ class Document < ApplicationRecord
 
   def index_in_typesense
     ensure_collection_exists
-    TypesenseClient.client.collections[COLLECTION_NAME]
+    SearchEngine.client.collections[COLLECTION_NAME]
                   .documents
                   .create(document_params)
   rescue Typesense::Error => e
@@ -100,7 +100,7 @@ class Document < ApplicationRecord
   end
 
   def remove_from_typesense
-    TypesenseClient.client.collections[COLLECTION_NAME]
+    SearchEngine.client.collections[COLLECTION_NAME]
                   .documents[id.to_s]
                   .delete
   rescue Typesense::Error::ObjectNotFound
@@ -110,7 +110,7 @@ class Document < ApplicationRecord
   end
 
   def ensure_collection_exists
-    TypesenseClient.client.collections[COLLECTION_NAME].retrieve
+    SearchEngine.client.collections[COLLECTION_NAME].retrieve
   rescue Typesense::Error::ObjectNotFound
     self.class.create_collection
   end
