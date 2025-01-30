@@ -110,6 +110,6 @@ accessories:
         - RAILS_MASTER_KEY
   reading_parser:
     image: ghcr.io/cloud9c/reading_parser
-    command: 'npm start'
+    cmd: 'npm start'
     host: starchapp.com
     port: 3001
