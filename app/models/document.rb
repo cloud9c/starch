@@ -1,4 +1,6 @@
 class Document < ApplicationRecord
+  include SearchIndexable
+
   has_one :entry, dependent: :destroy, touch: true
   has_one :channel, through: :entry
   has_many :document_user_states, dependent: :destroy
@@ -6,11 +8,9 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  after_create :index_in_typesense
-  after_update :update_typesense_index
-  after_destroy :remove_from_typesense
+  after_save :parse_content, if: :should_parse_content?
 
-  default_scope -> {
+  scope :owned_by_user, -> {
     where(id: DocumentUserState.select(:document_id))
   }
 
@@ -19,8 +19,6 @@ class Document < ApplicationRecord
       .left_joins(entry: :channel)
       .order(published_at: :desc)
   }
-
-  COLLECTION_NAME = "documents"
 
   def self.search(query, options = {})
     search_params = {
@@ -33,9 +31,8 @@ class Document < ApplicationRecord
     }
 
     begin
-      collection = SearchEngine.client.collections[COLLECTION_NAME]
+      collection = SearchEngine.client.collections[search_collection_name]
       result = collection.documents.search(search_params)
-      Rails.logger.debug "Search result: #{result.inspect}"
       result
     rescue Typesense::Error::ObjectNotFound
       create_collection
@@ -45,7 +42,7 @@ class Document < ApplicationRecord
 
   def self.create_collection
     SearchEngine.client.collections.create({
-      name: COLLECTION_NAME,
+      name: search_collection_name,
       fields: [
         { name: "document_id", type: "int32", index: false },
         { name: "user_ids", type: "int32[]" }, # Changed to array type
@@ -60,23 +57,12 @@ class Document < ApplicationRecord
     Rails.logger.error "Failed to create collection: #{e.message}"
   end
 
-  def update_typesense_index
-    ensure_collection_exists
-    SearchEngine.client.collections[COLLECTION_NAME]
-                  .documents[id.to_s]
-                  .update(document_params)
-  rescue Typesense::Error::ObjectNotFound
-    index_in_typesense
-  rescue Typesense::Error => e
-    Rails.logger.error "Failed to update document #{id}: #{e.message}"
-  end
-
   private
 
-  def document_params
+  def search_params
     {
       document_id: self.id,
-      user_ids: self.document_user_states.pluck(:user_id), # Get array of user IDs
+      user_ids: DocumentUserState.where(document_id: self.id).pluck(:user_id),
       title: self.title,
       description: self.description,
       url: self.url,
@@ -85,33 +71,11 @@ class Document < ApplicationRecord
     }
   end
 
-  def index_in_typesense
-    ensure_collection_exists
-    SearchEngine.client.collections[COLLECTION_NAME]
-                  .documents
-                  .create(document_params)
-  rescue Typesense::Error => e
-    Rails.logger.error "Failed to index document #{id}: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
+  def should_parse_content?
+    saved_change_to_content? || saved_change_to_url?
   end
-
-  def update_user_index
-    update_typesense_index if persisted?
-  end
-
-  def remove_from_typesense
-    SearchEngine.client.collections[COLLECTION_NAME]
-                  .documents[id.to_s]
-                  .delete
-  rescue Typesense::Error::ObjectNotFound
-    Rails.logger.info "Document #{id} not found for deletion"
-  rescue Typesense::Error => e
-    Rails.logger.error "Failed to remove document #{id}: #{e.message}"
-  end
-
-  def ensure_collection_exists
-    SearchEngine.client.collections[COLLECTION_NAME].retrieve
-  rescue Typesense::Error::ObjectNotFound
-    self.class.create_collection
+  
+  def parse_content
+    ParseDocumentJob.perform_now(self.id)
   end
 end

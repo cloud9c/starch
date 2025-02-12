@@ -12,7 +12,7 @@ class DocumentUserState < ApplicationRecord
   private
 
   def update_document_index
-    document.update_typesense_index
+    document.update_search_index
   end
 
   def delete_zombie_document

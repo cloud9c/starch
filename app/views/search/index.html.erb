@@ -1,9 +1,9 @@
 <h1>Starch</h1>
 <%= render 'search/searchbar' %>
 
-<% if @documents.present? %>
+<% if @results.present? %>
   <div>
-    <% @documents.each do |doc| %>
+    <% @results.each do |doc| %>
       <a href="<%= doc[:url] %>">
         <img src="<%= doc[:channel_icon] %>" width="24"/>
         <h4><%= doc[:title] %></h4>

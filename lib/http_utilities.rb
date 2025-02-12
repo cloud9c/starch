@@ -38,7 +38,7 @@ module HttpUtilities
     response = get(url)
     return unless response
 
-    feed = Feedjira.parse(body_to_s(response)) rescue nil
+    feed = FeedUtilities.parse(body_to_s(response)) rescue nil
 
     unless feed
       doc = Nokogiri::HTML(body_to_s(response))
@@ -48,7 +48,7 @@ module HttpUtilities
       return unless url
       response = get(url)
       return unless response
-      feed = Feedjira.parse(body_to_s(response)) rescue nil
+      feed = FeedUtilities.parse(body_to_s(response)) rescue nil
     end
 
     feed&.respond_to?(:feed_url) && feed&.feed_url ? feed.feed_url : url

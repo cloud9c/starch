@@ -7,6 +7,9 @@
 
 - document content view (https://github.com/postlight/parser)
 
+- why only 5 documents but 23 entries?
+- parsed_content is nil
+
 # competitors
 - Readwise Readers
 - Google News

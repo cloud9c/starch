@@ -3,30 +3,6 @@ module EntryUtilities
 
   mattr_reader :cache_duration, default: 7.days
 
-  def get_new_and_updated(feed_url, feed_content)
-    feed = Feedjira.parse(feed_content) rescue nil
-
-    return { new: [], updated: [] } unless feed
-
-    new_entries = []
-    updated_entries = []
-
-    feed.entries.each do |entry|
-      stable_id = get_stable_id(feed_url, entry)
-      fingerprint = get_fingerprint(entry)
-
-      if is_new?(stable_id)
-        new_entries << entry
-        cache_entry(stable_id, fingerprint)
-      elsif is_updated?(stable_id, fingerprint)
-        updated_entries << entry
-        update_entry_cache(stable_id, fingerprint)
-      end
-    end
-
-    { new: new_entries, updated: updated_entries }
-  end
-
   def get_stable_id(feed_url, entry)
     parts = []
     parts << feed_url
@@ -50,10 +26,38 @@ module EntryUtilities
     ].compact.join)
   end
 
+  def get_new_and_updated(feed_url, feed_content)
+    feed = FeedUtilities.parse(feed_content) rescue nil
+    logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
+
+    return { new: [], updated: [] } unless feed
+
+    new_entries = []
+    updated_entries = []
+
+    feed.entries.each do |entry|
+      stable_id = get_stable_id(feed_url, entry)
+      fingerprint = get_fingerprint(entry)
+
+      if is_new?(stable_id)
+        new_entries << entry
+        cache_entry(stable_id, fingerprint)
+      elsif is_updated?(stable_id, fingerprint)
+        updated_entries << entry
+        update_entry_cache(stable_id, fingerprint)
+      end
+    end
+
+    { new: new_entries, updated: updated_entries }
+  end
+
+  def decode_text(text)
+    CGI.unescapeHTML(text)
+  end
+
   private
 
   def is_new?(stable_id)
-    puts "is in cache? #{Rails.cache.exist?("feed_entry:#{stable_id}")} #{stable_id}"
     return false if Rails.cache.exist?("feed_entry:#{stable_id}")
     return false if Entry.exists?(stable_id: stable_id)
     true
@@ -70,6 +74,8 @@ module EntryUtilities
 
     # Fallback to database
     entry = Entry.find_by(stable_id: stable_id)
+    return false unless entry
+
     old_fingerprint = entry.fingerprint
     old_fingerprint != new_fingerprint
   end

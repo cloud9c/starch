@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
     user = find_user_by_params(params)
     return invalid_login_redirect(params) unless user
 
-    handle_user_verification(user)
+    verify_user(user)
     authenticate_session_for(user)
     redirect_to root_path
   end
@@ -58,8 +58,7 @@ class SessionsController < ApplicationController
     redirect_to new_session_path
   end
 
-  def handle_user_verification(user)
-    return if user.verified_at.present?
-    user.update!(verified_at: Time.current)
+  def verify_user(user)
+    user.update!(verified_at: Time.current) if user.verified_at.nil?
   end
 end

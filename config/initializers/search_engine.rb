@@ -23,23 +23,32 @@ module SearchEngine
     @client
   end
 
+  def self.register_collection(klass)
+    @collections_to_initialize ||= []
+    @collections_to_initialize << klass
+  end
+
   def self.initialize
-    begin
-      @client.collections[Document::COLLECTION_NAME].retrieve
-    rescue Typesense::Error::ObjectNotFound
-      Document.create_collection
-    rescue Typesense::Error::HTTPStatus0Error => e
-      Rails.logger.error "Unable to connect to Typesense: #{e.message}"
-      raise
+    @collections_to_initialize.each do |klass|
+      begin
+        @client.collections[klass.search_collection_name].retrieve
+      rescue Typesense::Error::ObjectNotFound
+        klass.create_collection
+      rescue Typesense::Error::HTTPStatus0Error => e
+        Rails.logger.error "Unable to connect to Typesense: #{e.message}"
+        raise
+      end
     end
   end
 
   def self.reset
-    begin
-      @client.collections[Document::COLLECTION_NAME].delete
-    rescue Typesense::Error::ObjectNotFound
-      Rails.logger.info "Collection not found during reset"
+    @collections_to_initialize.each do |klass|
+      begin
+        @client.collections[klass.search_collection_name].delete
+      rescue Typesense::Error::ObjectNotFound
+        Rails.logger.info "Collection not found during reset"
+      end
+      self.initialize
     end
-    self.initialize
   end
 end

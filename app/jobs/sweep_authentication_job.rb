@@ -7,5 +7,8 @@ class SweepAuthenticationJob < ApplicationJob
 
     # destroy expired or used verification codes
     Verification.sweep
+
+    # destroy unverified users
+    User.sweep
   end
 end
