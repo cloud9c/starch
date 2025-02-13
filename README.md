@@ -7,8 +7,7 @@
 
 - document content view (https://github.com/postlight/parser)
 
-- why only 5 documents but 23 entries?
-- parsed_content is nil
+- subscriber should wait for channel to finish polling entries before adding top 5 recent. add_recent_entries
 
 # competitors
 - Readwise Readers

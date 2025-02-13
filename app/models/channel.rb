@@ -27,10 +27,10 @@ class Channel < ApplicationRecord
     true
   end
 
-  def poll
+  def poll(syndicate)
     result = EntryUtilities.get_new_and_updated(self.feed_url, self.feed_content)
 
-    add_new_entries(result[:new])
+    add_new_entries(result[:new], syndicate)
     update_entries(result[:updated])
   end
 
@@ -54,10 +54,10 @@ class Channel < ApplicationRecord
   private
 
   def schedule_initial_update
-    UpdateChannelJob.perform_now(id)
+    UpdateChannelJob.perform_now(id, syndicate=false)
   end
 
-  def add_new_entries(new_entries)
+  def add_new_entries(new_entries, syndicate)
     new_entries.each do |entry|
       ActiveRecord::Base.transaction do
         document = Document.create!(
@@ -71,6 +71,7 @@ class Channel < ApplicationRecord
         Entry.create!(
           document: document,
           channel: self,
+          syndicate: syndicate,
         )
       end
     end

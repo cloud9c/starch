@@ -7,7 +7,10 @@ class Entry < ApplicationRecord
   validates :fingerprint, presence: true
   validates :document, presence: true, uniqueness: true
   validates :channel, presence: true
-  after_validation :create_document_user_states
+
+  attr_accessor :syndicate
+  after_validation :create_document_user_states, if: :syndicate
+
   after_destroy :delete_document
 
   after_touch :update_ids
