@@ -13,7 +13,7 @@ class SearchController < ApplicationController
       filter_by: params[:filter]
     })
 
-    document_ids = results['hits'].map { |hit| hit.dig('document', 'document_id') }.compact.uniq
+    document_ids = results["hits"].map { |hit| hit.dig("document", "document_id") }.compact.uniq
 
     documents = Document
       .select("documents.*, channels.icon as channel_icon")

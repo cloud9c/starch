@@ -12,18 +12,18 @@ class Channel < ApplicationRecord
     headers = {}
     headers["If-Modified-Since"] = self.polled_at.httpdate if self.polled_at
     headers["If-None-Match"] = self.etag if self.etag
-    
+
     response = HttpUtilities.get(self.feed_url, headers)
     return false unless response
-    
+
     self.polled_at = Time.current
     self.etag = response.headers[:Etag]
-    
+
     return false if response.status == 304
-    
+
     self.feed_content = HttpUtilities.body_to_s(response)
     save!
-    
+
     true
   end
 
@@ -81,7 +81,7 @@ class Channel < ApplicationRecord
     updated_entries.each do |entry|
       stable_id = get_stable_id(self.feed_url, entry)
       existing_entry = Entry.find_by(stable_id: stable_id)
-      
+
       if existing_entry
         ActiveRecord::Base.transaction do
           existing_entry.document.update!(

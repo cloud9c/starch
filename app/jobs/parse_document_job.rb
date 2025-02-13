@@ -5,13 +5,13 @@ class ParseDocumentJob < ApplicationJob
 
     if raw_content.nil?
       return unless document&.url.present?
-      
+
       response = HttpUtilities.get(document.url)
       return unless response
 
       raw_content = response.body
     end
-    
+
     parsed_content = ReadingParser.parse(raw_content)
     document.update(parsed_content: parsed_content)
   end

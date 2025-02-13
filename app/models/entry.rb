@@ -23,7 +23,7 @@ class Entry < ApplicationRecord
 
   def create_document_user_states
     users = channel.users
-    
+
     users.each do |user|
       DocumentUserState.create(
         user_id: user.id,

@@ -74,7 +74,7 @@ class Document < ApplicationRecord
   def should_parse_content?
     saved_change_to_content? || saved_change_to_url?
   end
-  
+
   def parse_content
     ParseDocumentJob.perform_now(self.id)
   end

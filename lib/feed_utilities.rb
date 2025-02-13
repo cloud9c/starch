@@ -4,5 +4,4 @@ module FeedUtilities
   def parse(content)
     Feedjira.parse(content)
   end
-
 end
