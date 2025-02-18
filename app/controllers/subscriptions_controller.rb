@@ -12,12 +12,9 @@ class SubscriptionsController < ApplicationController
       channel = Channel.find_or_initialize_by(feed_url: feed_url)
 
       return head :unprocessable_entity unless channel.save
-
-      UpdateChannelJob.perform_now(channel.id, initial=false)
     end
 
     @subscription = Current.user.subscriptions.create(channel: channel)
-
     head :unprocessable_entity unless @subscription.persisted?
   end
 

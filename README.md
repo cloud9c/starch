@@ -7,7 +7,7 @@
 
 - document content view (https://github.com/postlight/parser)
 
-- subscriber should wait for channel to finish polling entries before adding top 5 recent. add_recent_entries
+- subscriber should wait for channel to finish polling entries before adding top 5 recent. call add_recent_entries
 
 # competitors
 - Readwise Readers

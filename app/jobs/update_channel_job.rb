@@ -1,11 +1,12 @@
 class UpdateChannelJob < ApplicationJob
-  def perform(channel_id, initial = true)
+  def perform(channel_id, syndicate = true)
     channel = Channel.find_by(id: channel_id)
     return unless channel
 
     if channel.update_feed_content
-      UpdateChannelMetadataJob.perform_later(channel.id)
-      PollChannelJob.perform_later(channel.id, initial)
+      perform_method = syndicate ? :perform_later : :perform_now
+      UpdateChannelMetadataJob.send(perform_method, channel.id)
+      PollChannelJob.send(perform_method, channel.id, syndicate)
     end
   end
 end
