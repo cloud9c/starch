@@ -3,7 +3,7 @@ const { Readability } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
 
 app.post('/parse', async (req, res) => {
   try {

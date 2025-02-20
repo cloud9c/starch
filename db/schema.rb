@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_12_182816) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_20_231438) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -44,7 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_12_182816) do
     t.text "content"
     t.string "author"
     t.datetime "updated_at", null: false
-    t.text "parsed_content"
+    t.json "parsed_data"
   end
 
   create_table "entries", force: :cascade do |t|

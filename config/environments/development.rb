@@ -73,4 +73,8 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "debug")
+
+  config.after_initialize do
+    Rails.cache.clear
+  end
 end

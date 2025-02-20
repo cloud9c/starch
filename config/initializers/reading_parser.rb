@@ -4,8 +4,9 @@ module ReadingParser
     headers = { "Content-Type" => "application/json" }
 
     begin
-      response = HTTPX.post(uri, json: { html: html }, headers: headers)
+      Rails.logger.debug "ReadingParser debug: sending html size: #{html.bytesize} bytes (#{(html.bytesize / 1024.0).round(2)} KB)"
 
+      response = HTTPX.post(uri, json: { html: html }, headers: headers)
 
       if response.status >= 200 && response.status < 300
         JSON.parse(response.body.to_s)

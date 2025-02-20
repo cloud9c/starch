@@ -8,7 +8,7 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  after_save :parse_content, if: :should_parse_content?
+  after_commit :parse_content, if: :should_parse_content?
 
   scope :owned_by_user, -> {
     where(id: DocumentUserState.select(:document_id))
@@ -57,6 +57,22 @@ class Document < ApplicationRecord
     Rails.logger.error "Failed to create collection: #{e.message}"
   end
 
+  def parsed_content
+    parsed_data["content"] if parsed_data.present?
+  end
+
+  def parsed_title
+    parsed_data["title"] if parsed_data.present?
+  end
+
+  def parsed_excerpt
+    parsed_data["excerpt"] if parsed_data.present?
+  end
+
+  def parsed_author
+    parsed_data["byline"] if parsed_data.present?
+  end
+
   private
 
   def search_params
@@ -76,6 +92,6 @@ class Document < ApplicationRecord
   end
 
   def parse_content
-    ParseDocumentJob.perform_now(self.id)
+    ParseDocumentJob.perform_later(self.id)
   end
 end
