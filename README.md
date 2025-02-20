@@ -5,6 +5,8 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
+- support meta-actions; move to folder
+
 # competitors
 - Readwise Readers
 - Google News
