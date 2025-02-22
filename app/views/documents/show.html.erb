@@ -1,14 +1,16 @@
 <div id="<%= dom_id(@document) %>">
   <div>
     <% if @document.entry %>
-      <img src="<%= @document.channel_icon %>" 
+      <img src="<%= h @document.channel_icon %>" 
            width="24" 
-           alt="<%= @document.channel_title %> icon"/>
+           alt="<%= h @document.channel_title %> icon"/>
     <% end %>
-    <span><%= @document.title %></span>
+    <span><%= h @document.title %></span>
   </div>
-  <a href="<%= @document.url %>"><%= @document.url %></a>
-  <p>description: <%= @document.description %></p>
-  <p>content: <%= @document.content %></p>
-  <p>parsed_html: <%= raw @document.parsed_content %></p>
+  <a href="<%= h @document.url %>"><%= h @document.url %></a>
+  <p>description: <%= h @document.description %></p>
+  <p>content: <%= h @document.content %></p>
+  <p>parsed_html: <%= sanitize @document.parsed_content, 
+    tags: %w(p a h1 h2 h3 h4 h5 h6 strong em i u b pre code blockquote img figure figcaption article section ul ol li), 
+    attributes: %w(href src alt title) %></p>
 </div>

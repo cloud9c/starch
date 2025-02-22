@@ -5,7 +5,14 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- support meta-actions; move to folder
+- support meta-actions; move to folder (later -> inbox -> archived)
+- highlighting
+- progress tracker
+
+- add css
+- support youtube
+- support mobile download
+- uploading custom docs
 
 # competitors
 - Readwise Readers

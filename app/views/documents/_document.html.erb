@@ -1,13 +1,13 @@
 <div id="<%= dom_id(document) %>">
   <div>
     <% if document.entry %>
-      <img src="<%= document.channel_icon %>" 
+      <img src="<%= h document.channel_icon %>" 
            width="24" 
-           alt="<%= document.channel_title %> icon"/>
+           alt="<%= h document.channel_title %> icon"/>
     <% end %>
-    <span><%= document.title %></span>
+    <span><%= h document.title %></span>
   </div>
-  <p><%= document.description %></p>
+  <p><%= h document.description %></p>
   <%= button_to document_path(document), 
         method: :delete do %>
     Delete
