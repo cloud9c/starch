@@ -28,7 +28,8 @@ module EntryHelper
 
   def get_new_and_updated(feed_url, feed_content)
     feed = FeedHelper.parse(feed_content) rescue nil
-    logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
+
+    Rails.logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
 
     return { new: [], updated: [] } unless feed
 

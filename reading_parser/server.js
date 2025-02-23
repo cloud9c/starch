@@ -1,5 +1,5 @@
 const express = require('express');
-const { Readability } = require('@mozilla/readability');
+const { Readability, isProbablyReaderable } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 
 const app = express();
@@ -13,7 +13,13 @@ app.post('/parse', async (req, res) => {
     }
 
     const dom = new JSDOM(html);
-    const reader = new Readability(dom.window.document);
+    const document = dom.window.document;
+
+    if (!isProbablyReaderable(document)) {
+      return res.status(204).end();
+    }
+
+    const reader = new Readability(document);
     const article = reader.parse();
     
     res.json(article);

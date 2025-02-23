@@ -1,7 +1,7 @@
 class Document < ApplicationRecord
   include SearchIndexable
 
-  has_one :entry, dependent: :destroy, touch: true
+  belongs_to :entry, optional: true
   has_one :channel, through: :entry
   has_many :document_user_states, dependent: :destroy
   has_many :users, through: :document_user_states
@@ -16,6 +16,12 @@ class Document < ApplicationRecord
 
   scope :with_channel_details, -> {
     select("documents.*, channels.icon as channel_icon, channels.title as channel_title")
+      .left_joins(entry: :channel)
+      .order(published_at: :desc)
+  }
+
+  scope :with_channel_icon, -> {
+    select("documents.*, channels.icon as channel_icon")
       .left_joins(entry: :channel)
       .order(published_at: :desc)
   }
@@ -88,7 +94,7 @@ class Document < ApplicationRecord
   end
 
   def should_parse_content?
-    saved_change_to_content? || saved_change_to_url?
+    entry&.saved_change_to_content? || entry&.saved_change_to_url?
   end
 
   def parse_content

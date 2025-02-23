@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_20_231438) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -36,26 +36,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_231438) do
   end
 
   create_table "documents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "entry_id"
     t.string "title"
     t.text "description"
-    t.string "url"
-    t.datetime "published_at"
-    t.datetime "created_at", null: false
     t.text "content"
+    t.string "url"
     t.string "author"
-    t.datetime "updated_at", null: false
-    t.json "parsed_data"
+    t.datetime "published_at"
+    t.index ["entry_id"], name: "index_documents_on_entry_id"
   end
 
   create_table "entries", force: :cascade do |t|
     t.integer "channel_id", null: false
     t.string "stable_id", null: false
     t.string "fingerprint", null: false
-    t.integer "document_id", null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string "title"
+    t.text "description"
+    t.string "url"
+    t.datetime "published_at"
+    t.text "content"
+    t.string "author"
     t.index ["channel_id"], name: "index_entries_on_channel_id"
-    t.index ["document_id"], name: "index_entries_on_document_id"
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end
 
@@ -112,7 +117,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_231438) do
   add_foreign_key "document_user_states", "documents"
   add_foreign_key "document_user_states", "users"
   add_foreign_key "entries", "channels"
-  add_foreign_key "entries", "documents"
   add_foreign_key "folders", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "channels"

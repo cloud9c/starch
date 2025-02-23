@@ -5,7 +5,7 @@ class SubscriptionsController < ApplicationController
     channel = Channel.find_by(feed_url: params[:feed_url])
 
     unless channel
-      feed_url = HttpUtilities.get_feed_url(params[:feed_url])
+      feed_url = HttpHelper.get_feed_url(params[:feed_url])
 
       return head :unprocessable_entity unless feed_url
 

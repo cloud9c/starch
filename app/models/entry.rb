@@ -1,19 +1,13 @@
 class Entry < ApplicationRecord
-  belongs_to :document, dependent: :destroy
+  has_one :document, dependent: :destroy
   belongs_to :channel
 
-  before_validation :update_ids
   validates :stable_id, presence: true, uniqueness: true
   validates :fingerprint, presence: true
-  validates :document, presence: true, uniqueness: true
   validates :channel, presence: true
 
   attr_accessor :syndicate
-  after_validation :create_document_user_states, if: :syndicate
-
-  after_destroy :delete_document
-
-  after_touch :update_ids
+  after_save :initialize_document
 
   scope :recent, -> {
     includes(:document)
@@ -21,23 +15,23 @@ class Entry < ApplicationRecord
       .limit(5)
   }
 
-  def create_document_user_states
-    users = channel.users
+  def initialize_document
+    document = create_document!(
+      title: self.title,
+      description: self.description,
+      author: self.author,
+      published_at: self.published_at,
+      url: self.url,
+      content: self.content,
+    )
 
-    users.each do |user|
-      DocumentUserState.create(
-        user_id: user.id,
-        document_id: self.document.id
-      )
+    if syndicate
+      channel.users.each do |user|
+        DocumentUserState.create!(
+          user: user,
+          document: document
+        )
+      end
     end
-  end
-
-  def update_ids
-    self.stable_id = EntryUtilities.get_stable_id(self.channel.feed_url, self.document)
-    self.fingerprint = EntryUtilities.get_fingerprint(self.document)
-  end
-
-  def delete_document
-    self.document.destroy
   end
 end

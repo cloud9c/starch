@@ -8,12 +8,19 @@ module ReadingParser
 
       response = HTTPX.post(uri, json: { html: html }, headers: headers)
 
-      if response.status >= 200 && response.status < 300
+      case response.status
+      when 200
         JSON.parse(response.body.to_s)
-      else
+      when 204
+        nil
+      when 400..599
         Rails.logger.error "ReadingParser error: Received non-2xx status code #{response.status}"
         nil
+      else
+        Rails.logger.error "ReadingParser error: Unexpected status code #{response.status}"
+        nil
       end
+
     rescue HTTPX::Error => e
       Rails.logger.error "ReadingParser error: #{e.message}"
       nil

@@ -14,7 +14,7 @@ class Subscription < ApplicationRecord
     recent_entries.each do |entry|
       DocumentUserState.create(
         user_id: user_id,
-        document_id: entry.document_id
+        document: entry.document
       )
     end
   end

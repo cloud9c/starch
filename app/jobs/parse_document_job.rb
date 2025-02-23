@@ -1,22 +1,35 @@
 class ParseDocumentJob < ApplicationJob
   def perform(document_id)
     document = Document.find_by(id: document_id)
-    raw_html = document.content
+    content = document.content
 
-    if raw_html.nil?
+    if content.nil?
       return unless document&.url.present?
 
-      response = HttpUtilities.get(document.url)
+      response = HttpHelper.get(document.url)
       return unless response
 
       raw_html = response.body
+      doc = Nokogiri::HTML(raw_html)
+      doc.css("script, style").remove
+      content = doc.to_html
     end
 
-    doc = Nokogiri::HTML(raw_html)
-    doc.css("script, style").remove
-    cleaned_html = doc.to_html
+    return unless content
 
-    parsed_data = ReadingParser.parse(cleaned_html)
-    document.update(parsed_data: parsed_data)
+    parsed_data = ReadingParser.parse(content)
+
+    return unless parsed_data
+
+    logger.debug "parsed_data: #{parsed_data}"
+
+    # only update key if value is non-nil
+    document.update({
+      title: parsed_data["title"],
+      content: parsed_data["content"],
+      description: parsed_data["excerpt"],
+      author: parsed_data["byline"],
+      published_at: parsed_data["publishedTime"]
+    }.compact)
   end
 end

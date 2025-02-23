@@ -13,13 +13,11 @@ class SearchController < ApplicationController
       filter_by: params[:filter]
     })
 
-    document_ids = results["hits"].map { |hit| hit.dig("document", "document_id") }.compact.uniq
+    document_ids = results["hits"]
+      .map { |hit| hit.dig("document", "document_id") }
+      .compact
+      .uniq
 
-    documents = Document
-      .select("documents.*, channels.icon as channel_icon")
-      .left_joins(entry: :channel)
-      .where(id: document_ids)
-
-    documents
+    Document.with_channel_icon.where(id: document_ids)
   end
 end
