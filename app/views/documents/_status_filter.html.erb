@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "status_filter" do %>
+  <%= form_with(url: documents_path, method: :get, data: { turbo_frame: "documents", controller: "status-filter" }) do |form| %>
+    <div>
+      <%= form.radio_button :status, "FEED", 
+                           id: "feed", 
+                           checked: params[:status] == "FEED" || params[:status].nil?,
+                           data: { action: "change->status-filter#submit" } %>
+      <%= form.label :feed, "Feed" %>
+    </div>
+    <div>
+      <%= form.radio_button :status, "INBOX", 
+                           id: "inbox", 
+                           checked: params[:status] == "INBOX",
+                           data: { action: "change->status-filter#submit" } %>
+      <%= form.label :inbox, "Inbox" %>
+    </div>
+    <div>
+      <%= form.radio_button :status, "LATER", 
+                           id: "later", 
+                           checked: params[:status] == "LATER",
+                           data: { action: "change->status-filter#submit" } %>
+      <%= form.label :later, "Later" %>
+    </div>
+    <div>
+      <%= form.radio_button :status, "ARCHIVE", 
+                           id: "archive", 
+                           checked: params[:status] == "ARCHIVE",
+                           data: { action: "change->status-filter#submit" } %>
+      <%= form.label :archive, "Archive" %>
+    </div>
+  <% end %>
+<% end %>

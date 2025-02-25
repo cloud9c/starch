@@ -11,7 +11,11 @@ class Document < ApplicationRecord
   after_commit :parse_content, if: :should_parse_content?
 
   scope :owned_by_user, -> {
-    where(id: DocumentUserState.select(:document_id))
+    where(id: Current.user.document_user_states.select(:document_id))
+  }
+
+  scope :owned_by_user_with_status, ->(status) {
+    where(id: Current.user.document_user_states.where(status: status).select(:document_id))
   }
 
   scope :with_channel_details, -> {

@@ -2,7 +2,8 @@ class Subscription < ApplicationRecord
   include UserOwnable
 
   belongs_to :channel
-  belongs_to :folder, optional: true
+  has_many :subscriptions_tags, dependent: :destroy
+  has_many :tags, through: :subscriptions_tags
   validates :channel_id, presence: true, uniqueness: { scope: :user_id }
   after_create :add_recent_entries
 

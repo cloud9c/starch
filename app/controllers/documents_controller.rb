@@ -1,5 +1,21 @@
 class DocumentsController < ApplicationController
-  before_action :load_documents, only: [ :index ]
+  def index
+    if params[:status].nil?
+      redirect_to documents_path(status: "FEED")
+      return
+    end
+
+    case params[:status]
+    when "FEED"
+      @documents = @documents = Document.owned_by_user_with_status("FEED").with_channel_details
+    when "INBOX"
+      @documents = @documents = Document.owned_by_user_with_status("INBOX").with_channel_details
+    when "LATER"
+      @documents = @documents = Document.owned_by_user_with_status("LATER").with_channel_details
+    when "ARCHIVE"
+      @documents = @documents = Document.owned_by_user_with_status("ARCHIVE").with_channel_details
+    end
+  end
 
   def destroy
     @document = Document.owned_by_user.find(params[:id])
@@ -13,8 +29,4 @@ class DocumentsController < ApplicationController
   end
 
   private
-
-  def load_documents
-    @documents = Document.owned_by_user.with_channel_details
-  end
 end

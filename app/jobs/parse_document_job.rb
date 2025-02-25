@@ -21,8 +21,6 @@ class ParseDocumentJob < ApplicationJob
 
     return unless parsed_data
 
-    logger.debug "parsed_data: #{parsed_data}"
-
     # only update key if value is non-nil
     document.update({
       title: parsed_data["title"],

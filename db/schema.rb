@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_25_221422) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -30,8 +30,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
     t.integer "document_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "FEED", null: false
     t.index ["document_id", "user_id"], name: "index_document_user_states_on_document_and_user", unique: true
     t.index ["document_id"], name: "index_document_user_states_on_document_id"
+    t.index ["status"], name: "index_document_user_states_on_status"
     t.index ["user_id"], name: "index_document_user_states_on_user_id"
   end
 
@@ -64,14 +66,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end
 
-  create_table "folders", force: :cascade do |t|
-    t.string "name"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_folders_on_user_id"
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id"
     t.string "ip_address"
@@ -84,13 +78,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
   create_table "subscriptions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "channel_id", null: false
-    t.integer "folder_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["channel_id"], name: "index_subscriptions_on_channel_id"
-    t.index ["folder_id"], name: "index_subscriptions_on_folder_id"
     t.index ["user_id", "channel_id"], name: "index_subscriptions_on_user_id_and_channel_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
+  create_table "subscriptions_tags", force: :cascade do |t|
+    t.integer "subscription_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subscription_id", "tag_id"], name: "index_subscriptions_tags_on_subscription_id_and_tag_id", unique: true
+    t.index ["subscription_id"], name: "index_subscriptions_tags_on_subscription_id"
+    t.index ["tag_id"], name: "index_subscriptions_tags_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -117,12 +127,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_230253) do
   add_foreign_key "document_user_states", "documents"
   add_foreign_key "document_user_states", "users"
   add_foreign_key "entries", "channels"
-  add_foreign_key "folders", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "channels"
-  add_foreign_key "subscriptions", "folders"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "subscriptions_tags", "subscriptions"
+  add_foreign_key "subscriptions_tags", "tags"
+  add_foreign_key "tags", "users"
   add_foreign_key "verifications", "sessions"
   add_foreign_key "verifications", "users"
 end
