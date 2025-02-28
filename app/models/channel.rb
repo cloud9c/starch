@@ -41,15 +41,15 @@ class Channel < ApplicationRecord
 
     attributes = {}
 
-    attributes[:title] = feed.title if feed.respond_to?(:title)
-    attributes[:description] = feed.description if feed.respond_to?(:description)
+    attributes[:title] = EntryHelper.format_text(feed.title) if feed.respond_to?(:title)
+    attributes[:description] = EntryHelper.format_text(feed.description) if feed.respond_to?(:description)
     attributes[:url] = HttpHelper.normalize(
       (feed.url if feed.respond_to?(:url)) || URI(self.feed_url).host
     )
     attributes[:icon] = HttpHelper.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
-    attributes[:feed_url] = feed.feed_url if feed.respond_to?(:feed_url) && feed.feed_url
+    attributes[:feed_url] = HttpHelper.normalize feed.feed_url if feed.respond_to?(:feed_url) && feed.feed_url
 
-    update_columns(attributes) unless attributes.empty?
+    update(attributes) unless attributes.empty?
   end
 
   private
@@ -63,12 +63,12 @@ class Channel < ApplicationRecord
       Entry.create!(
         channel: self,
         syndicate: syndicate,
-        title: entry.title,
-        description: EntryHelper.decode_text(entry.summary),
-        author: entry.author,
+        title: EntryHelper.format_text(entry.title),
+        description: EntryHelper.format_text(entry.summary),
+        author: EntryHelper.format_text(entry.author),
         published_at: entry.published,
-        url: entry.url,
-        content: entry.content,
+        url: HttpHelper.normalize(entry.url),
+        content: EntryHelper.format_html(entry.content),
         fingerprint: EntryHelper.get_fingerprint(entry),
         stable_id: EntryHelper.get_stable_id(self.feed_url, entry)
       )
@@ -82,11 +82,11 @@ class Channel < ApplicationRecord
 
       if existing_entry
         existing_entry.update!(
-          title: entry.title,
-          description: entry.summary,
-          author: entry.author,
+          title: EntryHelper.format_text(entry.title),
+          description: EntryHelper.format_text(entry.summary),
+          author: EntryHelper.format_text(entry.author),
           published_at: entry.published,
-          content: entry.content,
+          content: EntryHelper.format_html(entry.content),
           fingerprint: EntryHelper.get_fingerprint(entry)
         )
       else

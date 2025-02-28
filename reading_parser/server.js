@@ -1,6 +1,7 @@
 const express = require('express');
 const { Readability, isProbablyReaderable } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
+const createDOMPurify = require('dompurify');
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));
@@ -13,13 +14,17 @@ app.post('/parse', async (req, res) => {
     }
 
     const dom = new JSDOM(html);
-    const document = dom.window.document;
+    const DOMPurify = createDOMPurify(dom.window);
 
-    if (!isProbablyReaderable(document)) {
+    const cleanHTML = DOMPurify.sanitize(html);
+    const cleanDOM = new JSDOM(cleanHTML);
+    const cleanDocument = cleanDOM.window.document;
+
+    if (!isProbablyReaderable(cleanDocument)) {
       return res.status(204).end();
     }
 
-    const reader = new Readability(document);
+    const reader = new Readability(cleanDocument);
     const article = reader.parse();
     
     res.json(article);

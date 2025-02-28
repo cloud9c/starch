@@ -2,6 +2,7 @@ module HttpHelper
   extend self
 
   def get(url, headers = {}, follow = true)
+    Rails.logger.debug "getting #{url}"
     response = HTTPX.get(url, headers: headers)
 
     return nil if response.error
@@ -16,8 +17,30 @@ module HttpHelper
   end
 
   def normalize(url)
-    url = "https://#{url}" unless url.start_with?("http://", "https://")
-    url.chomp("/")
+    return nil unless url.present?
+    
+    # Only allow http and https protocols
+    if url.start_with?("http://", "https://")
+      # URL already has a valid protocol
+    elsif url.include?(":")
+      # URL has a protocol but it's not http/https, reject it
+      return nil
+    else
+      # Add https protocol
+      url = "https://#{url}"
+    end
+    
+    # Remove trailing slash
+    url = url.chomp("/")
+    
+    # Validate it's a proper URL structure
+    begin
+      uri = URI.parse(url)
+      return url if uri.host.present?
+      nil
+    rescue URI::InvalidURIError
+      nil
+    end
   end
 
   def get_absolute(url, host)

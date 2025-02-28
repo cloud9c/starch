@@ -1,12 +1,12 @@
 <div id="<%= dom_id(subscription) %>">
   <div>
-    <img src="<%= h subscription.channel.icon %>" 
+    <img src="<%= subscription.channel.icon %>" 
          width="24" 
-         alt="<%= h subscription.channel.title %> icon"/>
-    <span><%= h subscription.channel.title %></span>
+         alt="<%= subscription.channel.title %> icon"/>
+    <span><%= subscription.channel.title %></span>
   </div>
-  <p><%= h subscription.channel.feed_url %></p>
-  <p><%= h subscription.channel.url %></p>
+  <p><%= subscription.channel.feed_url %></p>
+  <p><%= subscription.channel.url %></p>
   <%= button_to subscription_path(subscription), 
         method: :delete do %>
     Delete

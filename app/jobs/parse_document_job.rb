@@ -23,10 +23,10 @@ class ParseDocumentJob < ApplicationJob
 
     # only update key if value is non-nil
     document.update({
-      title: parsed_data["title"],
-      content: parsed_data["content"],
-      description: parsed_data["excerpt"],
-      author: parsed_data["byline"],
+      title: EntryHelper.format_text(parsed_data["title"]),
+      content: EntryHelper.format_html(parsed_data["content"]),
+      description: EntryHelper.format_text(parsed_data["excerpt"]),
+      author: EntryHelper.format_text(parsed_data["byline"]),
       published_at: parsed_data["publishedTime"]
     }.compact)
   end

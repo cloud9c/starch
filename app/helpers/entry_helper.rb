@@ -52,8 +52,23 @@ module EntryHelper
     { new: new_entries, updated: updated_entries }
   end
 
-  def decode_text(text)
-    CGI.unescapeHTML(text)
+  def format_text(text)
+    return nil if text.nil? || text.empty?
+
+    text ||= ""
+    text = ActionController::Base.helpers.strip_tags(text)
+    text = text.delete("\n")
+    text = text.delete("\t")
+    text = CGI.unescapeHTML(text)
+    text
+  end
+
+  def format_html(html)
+    return nil if html.nil? || html.empty?
+
+    # content_text = ActionController::Base.helpers.sanitize(html)
+    content_text = CGI.unescapeHTML(html)
+    content_text
   end
 
   private

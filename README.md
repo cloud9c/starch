@@ -5,9 +5,10 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- support meta-actions; move to folder (later -> inbox -> archived)
 - highlighting
 - progress tracker
+- changing document status
+- tagging subscriptions
 
 - add css
 - support youtube

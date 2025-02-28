@@ -1,17 +1,24 @@
 <div id="<%= dom_id(@document) %>">
+  <hgroup>
+    <h1><%= @document.title %></h1>
+    <h2><%= @document.description %></h2>
+  </hgroup>
+
   <div>
-    <% if @document.entry %>
-      <img src="<%= h @document.channel_icon %>" 
+    <div>
+      <img src="<%= @document.channel_icon %>" 
            width="24" 
-           alt="<%= h @document.channel_title %> icon"/>
-    <% end %>
-    <span><%= h @document.title %></span>
+           alt="<%= @document.channel_title %> icon"/>
+      <span>
+        <p><%= @document.channel_title %></p>
+        <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+      </span>
+    </div>
   </div>
-  <a href="<%= h @document.url %>"><%= h @document.url %></a>
-  <p>description: <%= h @document.description %></p>
-  <p>author: <%= h @document.author %></p>
-  <p>published_at: <%= h @document.published_at %></p>
-  <p>content: <%= sanitize @document.content, 
-    tags: %w(p a h1 h2 h3 h4 h5 h6 strong em i u b pre code blockquote img figure figcaption article section ul ol li), 
-    attributes: %w(href src alt title) %></p>
+
+  <hr/>
+  
+  <article>
+    <%= raw @document.content %>
+  </article>
 </div>
