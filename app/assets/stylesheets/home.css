@@ -1,0 +1,16 @@
+#home {
+	display: flex;
+	gap: 1em;
+	padding-top: 1em;
+}
+
+#home #documents {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#home #subscriptions {
+	border-left: 1px solid lightgray;
+	padding: 1em;
+}

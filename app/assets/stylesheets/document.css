@@ -1,0 +1,32 @@
+#documents {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+#document_list {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	width: min(100%, 40em);
+}
+
+.document-item {
+	padding: 1em;
+	border-bottom: 1px solid lightgray;
+}
+
+.document-item:last-child {
+	border-bottom: none;
+}
+
+.document {
+	display: flex;
+	width: 100%;
+	padding: 0 1.5em;
+	justify-content: center;
+}
+
+#document-content {
+	width: min(100%, 60em);
+}
