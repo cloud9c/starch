@@ -1,7 +1,7 @@
 <nav>
-  <div>
-    <%= link_to "Starch", root_path, method: :delete %>
-  </div>
+  <%= render 'shared/searchbar' %>
+  <%= render "shared/status_filter" %>
+
   <div>
     <% if authenticated? %>
       <%= button_to "Logout", session_path, method: :delete %>

@@ -18,7 +18,7 @@ module HttpHelper
 
   def normalize(url)
     return nil unless url.present?
-    
+
     # Only allow http and https protocols
     if url.start_with?("http://", "https://")
       # URL already has a valid protocol
@@ -29,10 +29,10 @@ module HttpHelper
       # Add https protocol
       url = "https://#{url}"
     end
-    
+
     # Remove trailing slash
     url = url.chomp("/")
-    
+
     # Validate it's a proper URL structure
     begin
       uri = URI.parse(url)

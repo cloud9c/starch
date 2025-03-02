@@ -1,20 +1,22 @@
-<h1>Login</h1>
+<div id="login">
+  <h1>Login</h1>
 
-<% if @show_verification %>
-  <%= form_with(url: magic_link_session_path) do |form| %>
-  <div>
-    <%= form.label :verification_code, "Enter verification code" %>
-    <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-  </div>
-  <%= form.submit "Verify code" %>
-<% end %>
-<% else %>
-  <%= form_with(url: session_path) do |form| %>
+  <% if @show_verification %>
+    <%= form_with(url: magic_link_session_path) do |form| %>
     <div>
-      <%= form.label :email_address, "Email" %>
-      <%= form.email_field :email_address %>
+      <%= form.label :verification_code, "Enter verification code" %>
+      <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
     </div>
-
-    <%= form.submit "Continue with email" %>
+    <%= form.submit "Verify code" %>
   <% end %>
-<% end %>
+  <% else %>
+    <%= form_with(url: session_path) do |form| %>
+      <div>
+        <%= form.label :email_address, "Email" %>
+        <%= form.email_field :email_address %>
+      </div>
+
+      <%= form.submit "Continue with email" %>
+    <% end %>
+  <% end %>
+</div>

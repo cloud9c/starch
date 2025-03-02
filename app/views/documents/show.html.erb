@@ -1,24 +1,26 @@
-<div id="<%= dom_id(@document) %>">
-  <hgroup>
-    <h1><%= @document.title %></h1>
-    <h2><%= @document.description %></h2>
-  </hgroup>
+<div id="<%= dom_id(@document) %>" class="document">
+  <div id="document-content">
+    <hgroup>
+      <h1><%= @document.title %></h1>
+      <h2><%= @document.description %></h2>
+    </hgroup>
 
-  <div>
     <div>
-      <img src="<%= @document.channel_icon %>" 
-           width="24" 
-           alt="<%= @document.channel_title %> icon"/>
-      <span>
-        <p><%= @document.channel_title %></p>
-        <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
-      </span>
+      <div>
+        <img src="<%= @document.channel_icon %>" 
+             width="24" 
+             alt="<%= @document.channel_title %> icon"/>
+        <span>
+          <p><%= @document.channel_title %></p>
+          <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+        </span>
+      </div>
     </div>
-  </div>
 
-  <hr/>
-  
-  <article>
-    <%= raw @document.content %>
-  </article>
+    <hr/>
+    
+    <article>
+      <%= raw @document.content %>
+    </article>
+  </div>
 </div>
