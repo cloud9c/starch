@@ -8,7 +8,7 @@ module HttpHelper
     return nil if response.error
 
     if follow && (response.status == 301 || response.status == 302) && response.headers["location"]
-      return get(get_absolute(response.headers["location"], url), headers: {}, follow: false)
+      return get(get_absolute_url(response.headers["location"], url), headers: {}, follow: false)
     end
 
     response
@@ -16,7 +16,7 @@ module HttpHelper
     nil
   end
 
-  def normalize(url)
+  def normalize_url(url)
     return nil unless url.present?
 
     # Only allow http and https protocols
@@ -43,8 +43,8 @@ module HttpHelper
     end
   end
 
-  def get_absolute(url, host)
-    origin = normalize(host)
+  def get_absolute_url(url, host)
+    origin = normalize_url(host)
     uri = URI.join(origin, url) rescue nil
 
     return nil unless uri
@@ -52,12 +52,24 @@ module HttpHelper
     uri.to_s
   end
 
+  def get_base_url(url)
+    return nil unless url
+
+    uri = URI.parse(url)
+
+    if uri.port == uri.default_port
+      "#{uri.scheme}://#{uri.host}"
+    else
+      "#{uri.scheme}://#{uri.host}:#{uri.port}"
+    end
+  end
+
   def body_to_s(response)
     response.body.to_s.force_encoding("UTF-8")
   end
 
   def get_feed_url(url)
-    url = normalize(url)
+    url = normalize_url(url)
     response = get(url)
     return unless response
 
@@ -67,7 +79,7 @@ module HttpHelper
       doc = Nokogiri::HTML(body_to_s(response))
       link = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
              doc.at('link[type="application/rss+xml"]')&.[]("href")
-      url = get_absolute(link, response.uri.host)
+      url = get_absolute_url(link, response.uri.host)
       return unless url
       response = get(url)
       return unless response
@@ -78,8 +90,8 @@ module HttpHelper
   end
 
   def get_icon(url)
-    host = normalize(URI(url).host)
-    favicon_url = get_absolute("/favicon.ico", host)
+    host = normalize_url(URI(url).host)
+    favicon_url = get_absolute_url("/favicon.ico", host)
 
     return favicon_url if is_valid_image?(favicon_url)
 
@@ -89,9 +101,9 @@ module HttpHelper
     doc = Nokogiri::HTML(body_to_s(response))
 
     candidates = doc.css('link[rel~="icon"]').map { |link| link[:href] }.compact
-    href = candidates.find { |href| is_valid_image?(get_absolute(href, host)) }
+    href = candidates.find { |href| is_valid_image?(get_absolute_url(href, host)) }
 
-    get_absolute(href, host) if href
+    get_absolute_url(href, host) if href
   end
 
   def is_valid_image?(url)

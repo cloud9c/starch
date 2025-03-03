@@ -17,7 +17,7 @@ class ParseDocumentJob < ApplicationJob
 
     return unless content
 
-    parsed_data = ReadingParser.parse(content)
+    parsed_data = ReadingParser.parse(content, HttpHelper.get_base_url(document&.url))
 
     return unless parsed_data
 

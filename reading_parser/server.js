@@ -8,16 +8,20 @@ app.use(express.json({ limit: '5mb' }));
 
 app.post('/parse', async (req, res) => {
   try {
-    const { html } = req.body;
-    if (!html) {
+    const { html, url } = req.body;
+    if (!html || !url) {
       return res.status(400).json({ error: 'HTML content is required' });
     }
 
-    const dom = new JSDOM(html);
+    const domOptions = {
+      url: url
+    };
+
+    const dom = new JSDOM(html, domOptions);
     const DOMPurify = createDOMPurify(dom.window);
 
     const cleanHTML = DOMPurify.sanitize(html);
-    const cleanDOM = new JSDOM(cleanHTML);
+    const cleanDOM = new JSDOM(cleanHTML, domOptions);
     const cleanDocument = cleanDOM.window.document;
 
     if (!isProbablyReaderable(cleanDocument)) {
