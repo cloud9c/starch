@@ -5,6 +5,9 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
+- if reading parser fails, need to try again
+- dont hotlink favicon, dont hotlink document images
+
 - highlighting
 - progress tracker
 - changing document status

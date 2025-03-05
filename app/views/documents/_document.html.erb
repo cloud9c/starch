@@ -1,13 +1,26 @@
-<div id="<%= dom_id(document) %>" class="document-item">
-  <%= link_to document_path(document), data: { turbo_frame: "_top" } do %>
+<%= link_to document_path(document),
+    data: { turbo_frame: "_top" },
+    id: dom_id(document),
+    class: "document-item" do %>
+  <header>
     <div>
       <% if document.entry %>
         <img src="<%= document.channel_icon %>" 
              width="24" 
              alt="<%= document.channel_title %> icon"/>
       <% end %>
-      <span><%= document.title %></span>
+      <span><%= document.channel_title %></span>
     </div>
-    <p><%= document.description %></p>
-  <% end %>
-</div>
+    <p><%= document.published_at %></p>
+  </header>
+  <main>
+    <div>
+      <h1><%= document.title %></h1>
+      <p><%= document.description %></p>
+      <p><%= document.author %> · X min read</p>
+    </div>
+    <div>
+      image
+    </div>
+  </main>
+<% end %>

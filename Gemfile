@@ -79,3 +79,6 @@ gem "typesense"
 
 # Feed parser
 gem "feedjira"
+
+# Sniff image url
+gem "fastimage"

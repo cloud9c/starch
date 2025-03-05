@@ -91,28 +91,26 @@ module HttpHelper
 
   def get_icon(url)
     host = normalize_url(URI(url).host)
-    favicon_url = get_absolute_url("/favicon.ico", host)
-
-    return favicon_url if is_valid_image?(favicon_url)
-
     response = get(host)
     return unless response
-
+    
     doc = Nokogiri::HTML(body_to_s(response))
-
-    candidates = doc.css('link[rel~="icon"]').map { |link| link[:href] }.compact
-    href = candidates.find { |href| is_valid_image?(get_absolute_url(href, host)) }
-
-    get_absolute_url(href, host) if href
-  end
-
-  def is_valid_image?(url)
-    response = get(url)
-
-    return false unless response
-    return false if response.body.empty?
-
-    response.headers["content-type"]&.start_with?("image/")
+    candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
+    
+    absolute_candidates = candidates.map { |href| get_absolute_url(href, host) }.compact
+    
+    ranked_images = absolute_candidates.map do |abs_url|
+      size = FastImage.size(abs_url)
+      [abs_url, size] if size
+    end.compact
+    
+    ranked_by_area = ranked_images.map do |abs_url, size|
+      [abs_url, size[0] * size[1]]
+    end
+    
+    largest_image = ranked_by_area.sort_by { |_, area| -area }.first
+    
+    largest_image ? largest_image[0] : nil
   end
 
   def remove_protocol_and_host(url)

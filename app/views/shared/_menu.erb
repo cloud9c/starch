@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "status_filter" do %>
+<%= turbo_frame_tag "menu" do %>
   <div>
     <% on_root = current_page?(root_path) || current_page?(documents_path) %>
     <% turbo_option = on_root ? { turbo_frame: "documents" } : { turbo: false } %>
@@ -7,5 +7,6 @@
     <%= link_to "Inbox", "#{filter_path}?status=INBOX", data: turbo_option %>
     <%= link_to "Later", "#{filter_path}?status=LATER", data: turbo_option %>
     <%= link_to "Archive", "#{filter_path}?status=ARCHIVE", data: turbo_option %>
+    <%= link_to "Subscriptions", subscriptions_path, data: { turbo: false } %>
   </div>
 <% end %>

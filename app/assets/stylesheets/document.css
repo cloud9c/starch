@@ -1,7 +1,8 @@
 #documents {
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 
 #document_list {
@@ -14,10 +15,22 @@
 .document-item {
 	padding: 1em;
 	border-bottom: 1px solid lightgray;
+	text-decoration: none;
+	color: inherit;
 }
 
 .document-item:last-child {
 	border-bottom: none;
+}
+
+.document-item header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.document-item main {
+	display: flex;
+	justify-content: space-between;
 }
 
 .document {
