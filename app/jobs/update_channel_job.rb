@@ -4,9 +4,8 @@ class UpdateChannelJob < ApplicationJob
     return unless channel
 
     if channel.update_feed_content
-      perform_method = syndicate ? :perform_later : :perform_now
-      UpdateChannelMetadataJob.send(perform_method, channel.id)
-      PollChannelJob.send(perform_method, channel.id, syndicate)
+      UpdateChannelMetadataJob.perform_now(channel.id)
+      PollChannelJob.perform_now(channel.id, syndicate)
     end
   end
 end

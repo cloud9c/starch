@@ -8,8 +8,10 @@ services:
       - ./tmp/typesense-data:/data
     command: '--data-dir /data --api-key=xyz --enable-cors'
   reading_parser:
-    image: ghcr.io/cloud9c/reading_parser
+    build: ./reading_parser
     restart: on-failure
     ports:
       - "3001:3001"
+    volumes:
+      - ./reading_parser:/app
     command: 'npm start'

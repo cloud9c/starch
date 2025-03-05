@@ -8,14 +8,24 @@ app.use(express.json({ limit: '5mb' }));
 
 app.post('/parse', async (req, res) => {
   try {
-    const { html, url } = req.body;
-    if (!html || !url) {
-      return res.status(400).json({ error: 'HTML content is required' });
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
     }
 
+    const parsedUrl = new URL(url);
     const domOptions = {
-      url: url
+      url: `${parsedUrl.protocol}//${parsedUrl.host}`
     };
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res.status(response.status).json({ 
+        error: `Failed to fetch URL: ${response.statusText}` 
+      });
+    }
+
+    const html = await response.text();
 
     const dom = new JSDOM(html, domOptions);
     const DOMPurify = createDOMPurify(dom.window);
@@ -30,7 +40,7 @@ app.post('/parse', async (req, res) => {
 
     const reader = new Readability(cleanDocument);
     const article = reader.parse();
-    
+
     res.json(article);
   } catch (error) {
     console.error('Parsing error:', error);

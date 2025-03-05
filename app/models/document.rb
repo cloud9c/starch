@@ -8,8 +8,6 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  after_commit :parse_content, if: :should_parse_content?
-
   scope :owned_by_user, -> {
     where(id: Current.user.document_user_states.select(:document_id))
   }
@@ -95,13 +93,5 @@ class Document < ApplicationRecord
       published_at: self.published_at&.to_i,
       content: self.content
     }
-  end
-
-  def should_parse_content?
-    entry&.saved_change_to_content? || entry&.saved_change_to_url?
-  end
-
-  def parse_content
-    ParseDocumentJob.perform_later(self.id)
   end
 end

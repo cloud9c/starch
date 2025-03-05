@@ -27,3 +27,7 @@
 1. `docker compose up`
 2. `rails s`
 3. (optional) `rails c`
+
+# update ghcr.io key
+`export CR_PAT=YOUR_TOKEN`
+`echo $CR_PAT | docker login ghcr.io -u cloud9c --password-stdin`

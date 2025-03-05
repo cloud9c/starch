@@ -7,7 +7,9 @@ class Entry < ApplicationRecord
   validates :channel, presence: true
 
   attr_accessor :syndicate
-  after_save :initialize_document
+
+  after_create :upsert_document
+  after_save :upsert_document, if: :saved_change_to_url?
 
   scope :recent, -> {
     includes(:document)
@@ -15,23 +17,7 @@ class Entry < ApplicationRecord
       .limit(5)
   }
 
-  def initialize_document
-    document = create_document!(
-      title: self.title,
-      description: self.description,
-      author: self.author,
-      published_at: self.published_at,
-      url: self.url,
-      content: self.content,
-    )
-
-    if syndicate
-      channel.users.each do |user|
-        DocumentUserState.create!(
-          user: user,
-          document: document
-        )
-      end
-    end
+  def upsert_document
+    UpsertDocumentFromEntry.perform_now(self.id, syndicate || false)
   end
 end

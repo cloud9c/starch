@@ -1,10 +1,10 @@
 module ReadingParser
-  def self.parse(html, url)
-    uri = "http://#{Rails.env.production? ? 'starch-reading_parser' : 'localhost'}:3001/parse"
+  def self.parse(url)
+    service_uri = "http://#{Rails.env.production? ? 'starch-reading_parser' : 'localhost'}:3001/parse"
     headers = { "Content-Type" => "application/json" }
 
     begin
-      response = HTTPX.post(uri, json: { html: html, url: url }, headers: headers)
+      response = HTTPX.post(service_uri, json: { url: url }, headers: headers)
 
       case response.status
       when 200
