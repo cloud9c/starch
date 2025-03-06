@@ -2,7 +2,7 @@ class DocumentUserState < ApplicationRecord
   include UserOwnable
 
   validates :document_id, uniqueness: { scope: :user_id }
-  validates :status, inclusion: { in: %w[INBOX LATER ARCHIVE] }
+  validates :status, inclusion: { in: %w[inbox later archive] }
 
   after_create :update_document_index
   after_destroy :update_document_index

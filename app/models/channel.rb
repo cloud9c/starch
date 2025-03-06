@@ -28,11 +28,16 @@ class Channel < ApplicationRecord
     true
   end
 
-  def poll(syndicate)
+  def poll
     result = EntryHelper.get_new_and_updated(self.feed_url, self.feed_content)
 
-    add_new_entries(result[:new], syndicate)
-    update_entries(result[:updated])
+    new_entries = add_new_entries(result[:new])
+    updated_entries = update_entries(result[:updated])
+
+    return {
+      new: new_entries,
+      updated: updated_entries
+    }
   end
 
   def update_metadata
@@ -58,40 +63,24 @@ class Channel < ApplicationRecord
     UpdateChannelJob.perform_now(id, syndicate=false)
   end
 
-  def add_new_entries(new_entries, syndicate)
-    new_entries.each do |entry|
-      Entry.create!(
-        channel: self,
-        syndicate: syndicate,
-        title: EntryHelper.format_text(entry.title),
-        description: EntryHelper.format_text(entry.summary),
-        author: EntryHelper.format_text(entry.author),
-        published_at: entry.published,
-        url: HttpHelper.normalize_url(entry.url),
-        content: EntryHelper.format_html(entry.content),
-        fingerprint: EntryHelper.get_fingerprint(entry),
-        stable_id: EntryHelper.get_stable_id(self.feed_url, entry)
-      )
+  def add_new_entries(new_entries)
+    created_entries = []
+    new_entries.each do |entry_data|
+      entry = Entry.create_from_feed(self, entry_data)
+      created_entries << entry
     end
+    created_entries
   end
 
   def update_entries(updated_entries)
-    updated_entries.each do |entry|
-      stable_id = EntryHelper.get_stable_id(self.feed_url, entry)
+    updated_entries = []
+    updated_entries.each do |entry_data|
+      stable_id = EntryHelper.get_stable_id(self.feed_url, entry_data)
       existing_entry = Entry.find_by(stable_id: stable_id)
-
-      if existing_entry
-        existing_entry.update!(
-          title: EntryHelper.format_text(entry.title),
-          description: EntryHelper.format_text(entry.summary),
-          author: EntryHelper.format_text(entry.author),
-          published_at: entry.published,
-          content: EntryHelper.format_html(entry.content),
-          fingerprint: EntryHelper.get_fingerprint(entry)
-        )
-      else
-        logger.warn "Could not find existing entry with stable_id: #{stable_id}"
-      end
+      existing_entry&.update_from_feed(entry_data)
+      
+      updated_entries << existing_entry
     end
+    updated_entries
   end
 end

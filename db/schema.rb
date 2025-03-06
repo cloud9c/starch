@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_02_210015) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_210015) do
     t.integer "document_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status", default: "INBOX", null: false
+    t.string "status", default: "inbox", null: false
     t.boolean "read", default: false, null: false
     t.index ["document_id", "user_id"], name: "index_document_user_states_on_document_and_user", unique: true
     t.index ["document_id"], name: "index_document_user_states_on_document_id"
@@ -49,7 +49,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_210015) do
     t.string "url"
     t.string "author"
     t.datetime "published_at"
+    t.string "source_type", default: "rss_original", null: false
+    t.string "thumbnail_url"
     t.index ["entry_id"], name: "index_documents_on_entry_id"
+    t.index ["source_type"], name: "index_documents_on_source_type"
   end
 
   create_table "entries", force: :cascade do |t|
@@ -58,12 +61,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_02_210015) do
     t.string "fingerprint", null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.string "title"
-    t.text "description"
-    t.string "url"
-    t.datetime "published_at"
-    t.text "content"
-    t.string "author"
     t.index ["channel_id"], name: "index_entries_on_channel_id"
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end

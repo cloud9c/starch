@@ -5,15 +5,17 @@
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
+- change between original vs extracted
+- make sure search only searches for 1
+- original vs extracted global and feed settings
+
 - if reading parser fails, need to try again
-- dont hotlink favicon, dont hotlink document images
 
 - highlighting
 - progress tracker
 - changing document status
 - tagging subscriptions
 
-- add css
 - support youtube
 - support mobile download
 - uploading custom docs

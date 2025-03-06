@@ -1,17 +1,17 @@
 class DocumentsController < ApplicationController
   def index
     if params[:status].nil?
-      redirect_to documents_path(status: "INBOX")
+      redirect_to documents_path(status: "inbox")
       return
     end
 
     case params[:status]
-    when "INBOX"
-      @documents = @documents = Document.owned_by_user_with_status("INBOX").with_channel_details
-    when "LATER"
-      @documents = @documents = Document.owned_by_user_with_status("LATER").with_channel_details
-    when "ARCHIVE"
-      @documents = @documents = Document.owned_by_user_with_status("ARCHIVE").with_channel_details
+    when "inbox"
+      @documents = @documents = Document.owned_by_user_with_status("inbox").with_channel_details
+    when "later"
+      @documents = @documents = Document.owned_by_user_with_status("later").with_channel_details
+    when "archive"
+      @documents = @documents = Document.owned_by_user_with_status("archive").with_channel_details
     end
   end
 

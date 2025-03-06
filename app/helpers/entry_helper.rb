@@ -3,26 +3,26 @@ module EntryHelper
 
   mattr_reader :cache_duration, default: 7.days
 
-  def get_stable_id(feed_url, entry)
+  def get_stable_id(feed_url, entry_data)
     parts = []
     parts << feed_url
 
-    if entry.id.present?
-      parts << entry.id
+    if entry_data.id.present?
+      parts << entry_data.id
     else
-      parts << HttpHelper.remove_protocol_and_host(entry.url) if entry.url
-      parts << entry.published.iso8601 if entry.published
-      parts << entry.title if entry.title
+      parts << HttpHelper.remove_protocol_and_host(entry_data.url) if entry_data.url
+      parts << entry_data.published.iso8601 if entry_data.published
+      parts << entry_data.title if entry_data.title
     end
 
     Digest::SHA1.hexdigest(parts.compact.join)
   end
 
-  def get_fingerprint(entry)
+  def get_fingerprint(entry_data)
     Digest::MD5.hexdigest([
-      entry.title,
-      entry.content,
-      entry.author
+      entry_data.title,
+      entry_data.content,
+      entry_data.author
     ].compact.join)
   end
 
@@ -36,15 +36,15 @@ module EntryHelper
     new_entries = []
     updated_entries = []
 
-    feed.entries.each do |entry|
-      stable_id = get_stable_id(feed_url, entry)
-      fingerprint = get_fingerprint(entry)
+    feed.entries.each do |entry_data|
+      stable_id = get_stable_id(feed_url, entry_data)
+      fingerprint = get_fingerprint(entry_data)
 
       if is_new?(stable_id)
-        new_entries << entry
+        new_entries << entry_data
         cache_entry(stable_id, fingerprint)
       elsif is_updated?(stable_id, fingerprint)
-        updated_entries << entry
+        updated_entries << entry_data
         update_entry_cache(stable_id, fingerprint)
       end
     end
@@ -63,12 +63,37 @@ module EntryHelper
     text
   end
 
-  def format_html(html)
-    return nil if html.nil? || html.empty?
+  def extract_thumbnail(html, min_width: 100, min_height: 100)
+    doc = Nokogiri::HTML(html)
+    
+    images = doc.css('img')
+    
+    images.each do |img|
+      src = img['src']
+      next if src.nil? || src.empty?
 
-    # content_text = ActionController::Base.helpers.sanitize(html)
-    content_text = CGI.unescapeHTML(html)
-    content_text
+      if src.start_with?('//') 
+        src = "https:#{src}"
+      elsif src.start_with?('/')
+        next
+      end
+      
+      begin
+        dimensions = FastImage.size(src)
+        
+        next if dimensions.nil?
+        
+        width, height = dimensions
+        
+        if width >= min_width && height >= min_height
+          return src
+        end
+      rescue => e
+        next
+      end
+    end
+    
+    nil
   end
 
   private

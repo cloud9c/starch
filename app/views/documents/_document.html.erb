@@ -11,7 +11,9 @@
       <% end %>
       <span><%= document.channel_title %></span>
     </div>
-    <p><%= document.published_at %></p>
+    <% if document.published_at %>
+      <p><%= document.published_at.strftime("%b %d, %Y") %></p>
+    <% end %>
   </header>
   <main>
     <div>
@@ -20,7 +22,12 @@
       <p><%= document.author %> · X min read</p>
     </div>
     <div>
-      image
+      <% if document.thumbnail_url %>
+        <img src="<%= document.thumbnail_url %>" 
+             width="160"
+             height="120"
+             alt="Thumbnail"/>
+      <% end %>
     </div>
   </main>
 <% end %>

@@ -33,6 +33,11 @@
 	justify-content: space-between;
 }
 
+.document-item main img {
+	object-fit: cover;
+	border-radius: 0.5em;
+}
+
 .document {
 	display: flex;
 	width: 100%;
