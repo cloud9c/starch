@@ -33,7 +33,7 @@ class Entry < ApplicationRecord
 
   def get_raw_entry_data(entry_data)
     {
-      source_type: 'rss_original',
+      source_type: "rss_original",
       title: EntryHelper.format_text(entry_data.title),
       description: EntryHelper.format_text(entry_data.summary),
       author: EntryHelper.format_text(entry_data.author),
@@ -60,27 +60,27 @@ class Entry < ApplicationRecord
     }.compact
 
     return nil if cleaned_data.empty?
-    
-    result[:source_type] = 'rss_extracted'
+
+    result[:source_type] = "rss_extracted"
     result.merge!(cleaned_data)
   end
 
   def create_documents(entry_data)
     original_data = get_raw_entry_data(entry_data)
     documents.create!(original_data)
-    
+
     extracted_data = get_extracted_entry_data(entry_data)
     documents.create!(extracted_data) if extracted_data
   end
 
   def update_documents(entry_data)
     original_data = get_raw_entry_data(entry_data)
-    original_doc = documents.find_by!(source_type: 'rss_original')
+    original_doc = documents.find_by!(source_type: "rss_original")
     original_doc.update!(original_data)
-    
+
     extracted_data = get_extracted_entry_data(entry_data)
     if extracted_data
-      extracted_doc = documents.find_by!(source_type: 'rss_extracted')
+      extracted_doc = documents.find_by!(source_type: "rss_extracted")
       extracted_doc.update!(extracted_data)
     end
   end

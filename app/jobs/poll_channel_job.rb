@@ -8,7 +8,7 @@ class PollChannelJob < ApplicationJob
     return if !syndicate
 
     result[:new].each do |entry|
-      document = entry.documents.find_by!(source_type: 'rss_extracted') # TODO hardcoded
+      document = entry.documents.find_by!(source_type: "rss_extracted") # TODO hardcoded
       entry.channel.users.each do |user|
         DocumentUserState.create!(
           user: user,

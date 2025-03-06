@@ -34,7 +34,7 @@ class Channel < ApplicationRecord
     new_entries = add_new_entries(result[:new])
     updated_entries = update_entries(result[:updated])
 
-    return {
+    {
       new: new_entries,
       updated: updated_entries
     }
@@ -78,7 +78,7 @@ class Channel < ApplicationRecord
       stable_id = EntryHelper.get_stable_id(self.feed_url, entry_data)
       existing_entry = Entry.find_by(stable_id: stable_id)
       existing_entry&.update_from_feed(entry_data)
-      
+
       updated_entries << existing_entry
     end
     updated_entries

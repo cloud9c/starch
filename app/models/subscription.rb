@@ -10,10 +10,10 @@ class Subscription < ApplicationRecord
   private
 
   def add_recent_entries
-    recent_entries = channel.entries.recent('rss_extracted')
+    recent_entries = channel.entries.recent("rss_extracted")
 
     recent_entries.each do |entry|
-      document = entry.documents.find_by!(source_type: 'rss_extracted')
+      document = entry.documents.find_by!(source_type: "rss_extracted")
       DocumentUserState.create(
         user_id: user_id,
         document: document

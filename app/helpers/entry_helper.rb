@@ -65,26 +65,26 @@ module EntryHelper
 
   def extract_thumbnail(html, min_width: 100, min_height: 100)
     doc = Nokogiri::HTML(html)
-    
-    images = doc.css('img')
-    
+
+    images = doc.css("img")
+
     images.each do |img|
-      src = img['src']
+      src = img["src"]
       next if src.nil? || src.empty?
 
-      if src.start_with?('//') 
+      if src.start_with?("//")
         src = "https:#{src}"
-      elsif src.start_with?('/')
+      elsif src.start_with?("/")
         next
       end
-      
+
       begin
         dimensions = FastImage.size(src)
-        
+
         next if dimensions.nil?
-        
+
         width, height = dimensions
-        
+
         if width >= min_width && height >= min_height
           return src
         end
@@ -92,7 +92,7 @@ module EntryHelper
         next
       end
     end
-    
+
     nil
   end
 
