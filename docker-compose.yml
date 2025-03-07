@@ -14,4 +14,4 @@ services:
       - "3001:3001"
     volumes:
       - ./reading_parser:/app
-    command: 'npm start'
+    command: 'pnpm start'
