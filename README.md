@@ -1,11 +1,10 @@
-# product
+e# product
 - motto: human intelligence; design your own algorithm; curation
 
 # todo
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- change between original vs extracted
 - make sure search only searches for 1
 - original vs extracted global and feed settings
 
