@@ -1,6 +1,6 @@
 <search>
   <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
-    <i class="ph ph-magnifying-glass"></i>
+    <%= content_tag(:i) { image_tag "icons/magnifying-glass.svg", alt: "Magnifying glass" } %>
     <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Enter documents" %>
     <%= form.submit "Search", name: nil %>
   <% end %>

@@ -1,4 +1,6 @@
 class DocumentsController < ApplicationController
+  include CacheableOffline
+
   def index
     if params[:status].nil?
       redirect_to documents_path(status: "inbox")
@@ -31,6 +33,9 @@ class DocumentsController < ApplicationController
     )
 
     document_user_state.update(read: true) if document_user_state.present?
+
+    # Add cache headers to make the page available offline
+    response.headers["Cache-Control"] = "private, max-age=86400" # 24 hours
   end
 
   private

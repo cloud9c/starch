@@ -32,7 +32,6 @@ class Entry < ApplicationRecord
   end
 
   def get_raw_entry_data(entry_data)
-
     content = entry_data.content || entry_data.summary
     description = entry_data.content && entry_data.summary
 

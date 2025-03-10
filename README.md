@@ -5,10 +5,9 @@ e# product
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- make sure search only searches for 1
-- original vs extracted global and feed settings
-
-- if reading parser fails, need to try again
+- original vs extracted global settings
+- reading parser can fail. need to assume some documents dont have extract mode (also if no url)
+- offline search
 
 - highlighting
 - progress tracker
@@ -16,7 +15,7 @@ e# product
 - tagging subscriptions
 
 - support youtube
-- support mobile download
+- support mobile/offline app
 - uploading custom docs
 
 # competitors
