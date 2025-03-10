@@ -32,15 +32,19 @@ class Entry < ApplicationRecord
   end
 
   def get_raw_entry_data(entry_data)
+
+    content = entry_data.content || entry_data.summary
+    description = entry_data.content && entry_data.summary
+
     {
       source_type: :rss_original,
       title: EntryHelper.format_text(entry_data.title),
-      description: EntryHelper.format_text(entry_data.summary),
+      description: EntryHelper.format_text(description),
       author: EntryHelper.format_text(entry_data.author),
       published_at: entry_data.published,
       url: HttpHelper.normalize_url(entry_data.url),
-      content: entry_data.content,
-      thumbnail_url: EntryHelper.extract_thumbnail(entry_data.content)
+      content: content,
+      thumbnail_url: EntryHelper.extract_thumbnail(content)
     }
   end
 
