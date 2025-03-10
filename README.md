@@ -1,4 +1,4 @@
-e# product
+# product
 - motto: human intelligence; design your own algorithm; curation
 
 # todo
