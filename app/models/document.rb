@@ -5,20 +5,24 @@ class Document < ApplicationRecord
   has_one :channel, through: :entry
   has_many :document_states, dependent: :destroy
   has_many :users, through: :document_states
-  enum :source_type, [ :rss_original, :rss_extracted ]
+
+  # Changed from source_type enum to a single type
+  enum :source_type, [ :rss ]
+
+  after_update :clear_extracted_cache, if: :url_changed?
 
   validates :content, length: { maximum: 100_000 }
 
   scope :visible_to_user, -> {
-    where(id: Current.user.document_states.where(visible: true).select(:document_id))
+    where(id: Current.user.document_states.select(:document_id))
   }
 
   scope :visible_to_user_with_status, ->(status) {
-    where(id: Current.user.document_states.where(visible: true, status: status).select(:document_id))
+    where(id: Current.user.document_states.where(status: status).select(:document_id))
   }
 
   scope :with_channel_details, -> {
-    select("documents.*, channels.icon as channel_icon, channels.title as channel_title")
+    select("documents.*, channels.icon as channel_icon, channels.title as channel_title, channels.id as channel_id")
       .left_joins(entry: :channel)
       .order(published_at: :desc)
   }
@@ -38,12 +42,9 @@ class Document < ApplicationRecord
       filter_by: "user_ids:=[#{Current.user_or_raise!.id}]",
       select_fields: "document_id"
     }
-
     collection = SearchEngine.client.collections[search_collection_name]
     result = collection.documents.search(search_params)
-
     Rails.logger.debug "THIS IS THE RESULT #{result.to_json}"
-
     result
   end
 
@@ -64,20 +65,34 @@ class Document < ApplicationRecord
     Rails.logger.error "Failed to create collection: #{e.message}"
   end
 
-  def parsed_content
-    parsed_data["content"] if parsed_data.present?
+  def get_attribute(attribute)
+    if show_extracted? && extracted_data.present? && extracted_data[attribute].present?
+      extracted_data[attribute]
+    else
+      self[attribute]
+    end
   end
 
-  def parsed_title
-    parsed_data["title"] if parsed_data.present?
+  def show_extracted?
+    subscription = Subscription.find_by(
+      user_id: Current.user&.id,
+      channel_id: entry&.channel_id
+    )
+    subscription&.view_extracted || false
   end
 
-  def parsed_excerpt
-    parsed_data["excerpt"] if parsed_data.present?
-  end
+  def extracted_data
+    return {} unless url
 
-  def parsed_author
-    parsed_data["byline"] if parsed_data.present?
+    Rails.cache.fetch("document_extracted_#{id}", expires_in: 7.days) do
+      extracted_data = ReadingParser.extract(url)
+      return unless extracted_data
+
+      {
+        content: extracted_data["content"],
+        thumbnail_url: EntryHelper.extract_thumbnail(extracted_data["content"])
+      }.compact
+    end
   end
 
   private
@@ -90,7 +105,11 @@ class Document < ApplicationRecord
       description: self.description,
       url: self.url,
       published_at: self.published_at&.to_i,
-      content: self.content
+      content: self[:content] # Use the database content for search indexing
     }
+  end
+
+  def clear_extracted_cache
+    Rails.cache.delete("document_extracted_#{id}")
   end
 end

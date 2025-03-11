@@ -6,7 +6,7 @@
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
 - original vs extracted global settings
-- reading parser can fail. need to assume some documents dont have extract mode (also if no url)
+- reading parser can fail. need to assume some documents dont have extract mode (also if no url); store extracted mode in cache
 - offline search
 
 - highlighting

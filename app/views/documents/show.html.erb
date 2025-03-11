@@ -22,7 +22,8 @@
     <hr/>
     
     <article>
-      <%= render_document_html(@document.content) %>
+      <% Rails.logger.debug @document.get_attribute(:content) %>
+      <%= render_document_html @document.get_attribute(:content) %>
     </article>
   </div>
 </div>

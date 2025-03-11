@@ -11,13 +11,11 @@ class PollChannelJob < ApplicationJob
       entries = result[:new].includes(documents: [], channel: { channel_users: :user })
 
       entries.each do |entry|
-        original_doc = entry.documents.find { |d| d.source_type == :rss_original }
-        extracted_doc = entry.documents.find { |d| d.source_type == :rss_extracted }
+        document = entry.document
 
         users = entry.channel.users
 
         users.each do |user|
-          document = user.view_extracted ? extracted_doc : original_doc
           DocumentState.create!(user: user, document: document)
         end
       end

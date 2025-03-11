@@ -22,11 +22,13 @@
       <p><%= document.author %> · X min read</p>
     </div>
     <div>
-      <% if document.thumbnail_url %>
-        <img src="<%= document.thumbnail_url %>" 
-             width="160"
-             height="120"
-             alt="Thumbnail"/>
+      <% cache [document, document.show_extracted?] do %>
+        <% if document.get_attribute(:thumbnail_url) %>
+          <img src="<%= document.get_attribute(:thumbnail_url) %>" 
+               width="160"
+               height="120"
+               alt="Thumbnail"/>
+        <% end %>
       <% end %>
     </div>
   </main>
