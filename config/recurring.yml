@@ -1,10 +1,10 @@
 default: &default
   sweep_authentication:
     class: SweepAuthenticationJob
-    schedule: every day
+    schedule: every day at midnight
   update_channels:
     class: UpdateChannelsJob
-    schedule: every day
+    schedule: every day at midnight
 development:
   <<: *default
 
