@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[ new create magic_link ]
   rate_limit to: 10, within: 3.minutes, only: :create
+  invisible_captcha only: :create, on_spam: :send_to_root
 
   def new
     @show_verification = session.delete(:show_verification)
@@ -39,6 +40,10 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def send_to_root
+    redirect_to root_path
+  end
 
   def find_user_by_params(params)
     if params[:token].present?

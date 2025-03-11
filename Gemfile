@@ -82,3 +82,6 @@ gem "feedjira"
 
 # Sniff image url
 gem "fastimage"
+
+# Spam protection 
+gem 'invisible_captcha'
