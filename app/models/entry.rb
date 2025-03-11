@@ -1,14 +1,14 @@
 class Entry < ApplicationRecord
-  has_many :documents, dependent: :destroy
+  has_one :document, dependent: :destroy
   belongs_to :channel
 
   validates :stable_id, presence: true, uniqueness: true
   validates :fingerprint, presence: true
   validates :channel, presence: true
 
-  scope :recent, ->(source_type) {
-    includes(:documents)
-      .where(documents: { source_type: source_type })
+  scope :recent, -> {
+    includes(:document)
+      .where.not(document: nil)
       .order("documents.published_at DESC, documents.created_at DESC")
       .limit(5)
   }
@@ -21,67 +21,47 @@ class Entry < ApplicationRecord
     )
 
     entry.save!
-    entry.create_documents(entry_data)
+
+    raw_entry_data = get_raw_entry_data(entry_data)
+    document = entry.create_document(raw_entry_data)
+
+    # warm up extracted_content
+    document.extracted_data
+
     entry
+  end
+
+  def self.get_raw_entry_data(entry_data)
+    content = entry_data.content || entry_data.summary
+    description = if entry_data.summary.present?
+      entry_data.summary
+    elsif content.present?
+      clean_content = EntryHelper.format_text(content)
+      clean_content.slice(0, 150) + (clean_content.length > 150 ? "..." : "")
+    end
+
+    {
+      source_type: :rss,
+      title: EntryHelper.format_text(entry_data.title),
+      description: EntryHelper.format_text(description),
+      author: EntryHelper.format_text(entry_data.author),
+      published_at: entry_data.published,
+      url: HttpHelper.normalize_url(entry_data.url),
+      content: content,
+      thumbnail_url: EntryHelper.extract_thumbnail(content)
+    }
   end
 
   def update_from_feed(entry_data)
     update!(fingerprint: EntryHelper.get_fingerprint(entry_data))
-    update_documents(entry_data)
+    update_document(entry_data)
     self
   end
 
-  def get_raw_entry_data(entry_data)
-    {
-      source_type: "rss_original",
-      title: EntryHelper.format_text(entry_data.title),
-      description: EntryHelper.format_text(entry_data.summary),
-      author: EntryHelper.format_text(entry_data.author),
-      published_at: entry_data.published,
-      url: HttpHelper.normalize_url(entry_data.url),
-      content: entry_data.content,
-      thumbnail_url: EntryHelper.extract_thumbnail(entry_data.content)
-    }
-  end
+  private
 
-  def get_extracted_entry_data(entry_data)
-    result = get_raw_entry_data(entry_data)
-
-    extracted_data = ReadingParser.extract(entry_data.url)
-
-    return unless extracted_data
-
-    cleaned_data = {
-      title: EntryHelper.format_text(extracted_data["title"]),
-      description: EntryHelper.format_text(extracted_data["excerpt"]),
-      published_at: extracted_data["publishedTime"],
-      content: extracted_data["content"],
-      thumbnail_url: EntryHelper.extract_thumbnail(extracted_data["content"])
-    }.compact
-
-    return nil if cleaned_data.empty?
-
-    result[:source_type] = "rss_extracted"
-    result.merge!(cleaned_data)
-  end
-
-  def create_documents(entry_data)
-    original_data = get_raw_entry_data(entry_data)
-    documents.create!(original_data)
-
-    extracted_data = get_extracted_entry_data(entry_data)
-    documents.create!(extracted_data) if extracted_data
-  end
-
-  def update_documents(entry_data)
-    original_data = get_raw_entry_data(entry_data)
-    original_doc = documents.find_by!(source_type: "rss_original")
-    original_doc.update!(original_data)
-
-    extracted_data = get_extracted_entry_data(entry_data)
-    if extracted_data
-      extracted_doc = documents.find_by!(source_type: "rss_extracted")
-      extracted_doc.update!(extracted_data)
-    end
+  def update_document(entry_data)
+    raw_data = get_raw_entry_data(entry_data)
+    document.update!(raw_data)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_06_191810) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -25,18 +25,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
     t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 
-  create_table "document_user_states", force: :cascade do |t|
+  create_table "document_states", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "document_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "status", default: "inbox", null: false
+    t.integer "status", default: 0, null: false
     t.boolean "read", default: false, null: false
-    t.index ["document_id", "user_id"], name: "index_document_user_states_on_document_and_user", unique: true
-    t.index ["document_id"], name: "index_document_user_states_on_document_id"
-    t.index ["read"], name: "index_document_user_states_on_read"
-    t.index ["status"], name: "index_document_user_states_on_status"
-    t.index ["user_id"], name: "index_document_user_states_on_user_id"
+    t.boolean "visible", default: true
+    t.index ["document_id", "user_id"], name: "index_document_states_on_document_and_user", unique: true
+    t.index ["document_id"], name: "index_document_states_on_document_id"
+    t.index ["read"], name: "index_document_states_on_read"
+    t.index ["status"], name: "index_document_states_on_status"
+    t.index ["user_id"], name: "index_document_states_on_user_id"
+    t.index ["visible"], name: "index_document_states_on_visible"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -49,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
     t.string "url"
     t.string "author"
     t.datetime "published_at"
-    t.string "source_type", default: "rss_original", null: false
+    t.integer "source_type", null: false
     t.string "thumbnail_url"
     t.index ["entry_id"], name: "index_documents_on_entry_id"
     t.index ["source_type"], name: "index_documents_on_source_type"
@@ -79,6 +81,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
     t.integer "channel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "view_extracted", default: false
     t.index ["channel_id"], name: "index_subscriptions_on_channel_id"
     t.index ["user_id", "channel_id"], name: "index_subscriptions_on_user_id_and_channel_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
@@ -107,6 +110,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "verified_at"
+    t.boolean "view_extracted", default: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end
@@ -123,8 +127,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_025731) do
     t.index ["user_id"], name: "index_verifications_on_user_id"
   end
 
-  add_foreign_key "document_user_states", "documents"
-  add_foreign_key "document_user_states", "users"
+  add_foreign_key "document_states", "documents"
+  add_foreign_key "document_states", "users"
   add_foreign_key "entries", "channels"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "channels"

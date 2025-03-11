@@ -34,3 +34,14 @@ body > main {
 	align-items: center;
 	padding: 1em;
 }
+
+i {
+	display: inline-block;
+	line-height: 1;
+	font-size: 0;
+}
+
+i img {
+	width: 16px;
+	height: 16px;
+}

@@ -1,14 +1,28 @@
-<div id="<%= dom_id(subscription) %>">
-  <div>
-    <img src="<%= subscription.channel.icon %>" 
-         width="24" 
-         alt="<%= subscription.channel.title %> icon"/>
-    <span><%= subscription.channel.title %></span>
+<%= turbo_frame_tag dom_id(subscription) do %>
+  <div id="<%= dom_id(subscription) %>">
+    <div>
+      <img src="<%= subscription.channel.icon %>" 
+           width="24" 
+           alt="<%= subscription.channel.title %> icon"/>
+      <span><%= subscription.channel.title %></span>
+    </div>
+    <p><%= subscription.channel.feed_url %></p>
+    <p><%= subscription.channel.url %></p>
+    
+    <%= form_with(model: subscription, html: { autocomplete: 'off' }) do |form| %>
+      <div>
+        <%= form.check_box :view_extracted, 
+            onchange: 'this.form.requestSubmit()', 
+            id: "view_extracted_#{subscription.id}" %>
+        <%= form.label :view_extracted, "View extracted content", 
+            for: "view_extracted_#{subscription.id}" %>
+      </div>
+    <% end %>
+    
+    <%= button_to subscription_path(subscription), 
+          method: :delete,
+          form: { data: { turbo_confirm: "Are you sure?" } } do %>
+      Delete
+    <% end %>
   </div>
-  <p><%= subscription.channel.feed_url %></p>
-  <p><%= subscription.channel.url %></p>
-  <%= button_to subscription_path(subscription), 
-        method: :delete do %>
-    Delete
-  <% end %>
-</div>
+<% end %>

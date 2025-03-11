@@ -18,6 +18,15 @@ class SubscriptionsController < ApplicationController
     head :unprocessable_entity unless @subscription.persisted?
   end
 
+  def update
+    @subscription = Current.user.subscriptions.find(params[:id])
+
+    if @subscription.update(subscription_params)
+      # Add a timestamp to session to bust Turbo cache for documents
+      session[:preference_updated_at] = Time.now.to_i if subscription_params[:view_extracted].present?
+    end
+  end
+
   def destroy
     @subscription = Current.user.subscriptions.find(params[:id])
     head :unprocessable_entity unless @subscription.destroy!
@@ -27,5 +36,9 @@ class SubscriptionsController < ApplicationController
 
   def load_subscriptions
     @subscriptions = Current.user.subscriptions
+  end
+
+  def subscription_params
+    params.require(:subscription).permit(:view_extracted)
   end
 end
