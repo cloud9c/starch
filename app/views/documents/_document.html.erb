@@ -1,4 +1,4 @@
-<%= link_to document_path(document),
+<%= link_to document_path(document, cache_buster: session[:preference_updated_at]),
     data: { turbo_frame: "_top" },
     id: dom_id(document),
     class: "document-item" do %>
@@ -22,14 +22,12 @@
       <p><%= document.author %> · X min read</p>
     </div>
     <div>
-      <% cache [document, document.show_extracted?] do %>
         <% if document.get_attribute(:thumbnail_url) %>
           <img src="<%= document.get_attribute(:thumbnail_url) %>" 
                width="160"
                height="120"
                alt="Thumbnail"/>
         <% end %>
-      <% end %>
     </div>
   </main>
 <% end %>

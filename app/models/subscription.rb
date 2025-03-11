@@ -10,7 +10,6 @@ class Subscription < ApplicationRecord
 
   validates :channel_id, presence: true, uniqueness: { scope: :user_id }
   after_create :add_recent_entries
-  after_save :expire_document_caches, if: :view_extracted_changed?
 
   private
 
@@ -24,8 +23,5 @@ class Subscription < ApplicationRecord
         document: document
       )
     end
-  end
-
-  def expire_document_caches
   end
 end
