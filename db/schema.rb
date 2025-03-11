@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_06_191810) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_11_025702) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -32,13 +32,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_191810) do
     t.datetime "updated_at", null: false
     t.integer "status", default: 0, null: false
     t.boolean "read", default: false, null: false
-    t.boolean "visible", default: true
     t.index ["document_id", "user_id"], name: "index_document_states_on_document_and_user", unique: true
     t.index ["document_id"], name: "index_document_states_on_document_id"
     t.index ["read"], name: "index_document_states_on_read"
     t.index ["status"], name: "index_document_states_on_status"
     t.index ["user_id"], name: "index_document_states_on_user_id"
-    t.index ["visible"], name: "index_document_states_on_visible"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -110,7 +108,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_06_191810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "verified_at"
-    t.boolean "view_extracted", default: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end

@@ -13,11 +13,11 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  scope :visible_to_user, -> {
+  scope :owned_by_user, -> {
     where(id: Current.user.document_states.select(:document_id))
   }
 
-  scope :visible_to_user_with_status, ->(status) {
+  scope :owned_by_user_with_status, ->(status) {
     where(id: Current.user.document_states.where(status: status).select(:document_id))
   }
 
@@ -100,7 +100,7 @@ class Document < ApplicationRecord
   def search_params
     {
       document_id: self.id,
-      user_ids: DocumentState.where(document_id: self.id, visible: true).pluck(:user_id),
+      user_ids: DocumentState.where(document_id: self.id).pluck(:user_id),
       title: self.title,
       description: self.description,
       url: self.url,

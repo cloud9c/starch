@@ -1,4 +1,4 @@
-<%= link_to document_path(document, cache_buster: session[:preference_updated_at]),
+<%= link_to document_path(document, t: session[:preference_updated_at]),
     data: { turbo_frame: "_top" },
     id: dom_id(document),
     class: "document-item" do %>
