@@ -76,7 +76,7 @@ class Document < ApplicationRecord
   end
 
   def show_extracted?
-    Rails.logger.debug "show_extracted? #{subscription_view_extracted?.to_s}"
+    Rails.logger.debug "show_extracted? #{subscription_view_extracted?}"
 
     if subscription_view_extracted.present?
       subscription_view_extracted?
