@@ -6,10 +6,7 @@ class Document < ApplicationRecord
   has_many :document_states, dependent: :destroy
   has_many :users, through: :document_states
 
-  # Changed from source_type enum to a single type
   enum :source_type, [ :rss ]
-
-  after_update :clear_extracted_cache, if: :url_changed?
 
   validates :content, length: { maximum: 100_000 }
 
@@ -33,6 +30,12 @@ class Document < ApplicationRecord
       .order(published_at: :desc)
   }
 
+  scope :with_subscription_info, -> {
+    select("documents.*, COALESCE(subscriptions.view_extracted, false) as subscription_view_extracted")
+      .left_joins(entry: { channel: :subscriptions })
+      .where("subscriptions.user_id = ? OR subscriptions.user_id IS NULL", Current.user&.id)
+  }
+
   def self.search(query, options = {})
     search_params = {
       q: query,
@@ -44,7 +47,6 @@ class Document < ApplicationRecord
     }
     collection = SearchEngine.client.collections[search_collection_name]
     result = collection.documents.search(search_params)
-    Rails.logger.debug "THIS IS THE RESULT #{result.to_json}"
     result
   end
 
@@ -74,23 +76,31 @@ class Document < ApplicationRecord
   end
 
   def show_extracted?
-    subscription = Subscription.find_by(
-      user_id: Current.user&.id,
-      channel_id: entry&.channel_id
-    )
-    subscription&.view_extracted || false
+    Rails.logger.debug "show_extracted? #{subscription_view_extracted?.to_s}"
+
+    if subscription_view_extracted.present?
+      subscription_view_extracted?
+    else
+      subscription = Subscription.find_by(
+        user_id: Current.user&.id,
+        channel_id: entry&.channel_id
+      )
+      subscription&.view_extracted
+    end
   end
 
   def extracted_data
     return {} unless url
 
-    Rails.cache.fetch("document_extracted_#{id}", expires_in: 7.days) do
-      extracted_data = ReadingParser.extract(url)
-      return unless extracted_data
+    Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 1.day) do
+      parsed_data = ReadingParser.extract(url)
+      next {} unless parsed_data
 
       {
-        content: extracted_data["content"],
-        thumbnail_url: EntryHelper.extract_thumbnail(extracted_data["content"])
+        title: parsed_data["title"],
+        description: parsed_data["excerpt"],
+        content: parsed_data["content"],
+        thumbnail_url: EntryHelper.extract_thumbnail(parsed_data["content"])
       }.compact
     end
   end
@@ -105,11 +115,7 @@ class Document < ApplicationRecord
       description: self.description,
       url: self.url,
       published_at: self.published_at&.to_i,
-      content: self[:content] # Use the database content for search indexing
+      content: self[:content]
     }
-  end
-
-  def clear_extracted_cache
-    Rails.cache.delete("document_extracted_#{id}")
   end
 end

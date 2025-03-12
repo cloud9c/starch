@@ -21,9 +21,18 @@ class SubscriptionsController < ApplicationController
   def update
     @subscription = Current.user.subscriptions.find(params[:id])
 
-    if @subscription.update(subscription_params)
-      # Add a timestamp to session to bust Turbo cache for documents
-      session[:preference_updated_at] = Time.now.to_i if subscription_params[:view_extracted].present?
+    if @subscription.update(subscription_params) && subscription_params[:view_extracted].present?
+      # cache busting
+      channel_id = @subscription.channel_id
+      document_ids = DocumentState.joins(document: { entry: :channel })
+                                    .where(user_id: Current.user.id)
+                                    .where(entries: { channel_id: channel_id })
+                                    .pluck(:document_id)
+
+      timestamp = Time.now.to_i
+      document_ids.each do |doc_id|
+        session["document_#{doc_id}_updated_at"] = timestamp
+      end
     end
   end
 

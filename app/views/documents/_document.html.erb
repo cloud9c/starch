@@ -1,4 +1,4 @@
-<%= link_to document_path(document, t: session[:preference_updated_at]),
+<%= link_to document_path(document, t: session["document_#{document.id}_updated_at"]),
     data: { turbo_frame: "_top" },
     id: dom_id(document),
     class: "document-item" do %>
@@ -17,17 +17,17 @@
   </header>
   <main>
     <div>
-      <h1><%= document.title %></h1>
-      <p><%= document.description %></p>
-      <p><%= document.author %> · X min read</p>
+      <h1><%= document.get_attribute(:title) %></h1>
+      <p><%= document.get_attribute(:description) %></p>
+      <p><%= document.get_attribute(:author) %> · X min read</p>
     </div>
     <div>
-        <% if document.get_attribute(:thumbnail_url) %>
-          <img src="<%= document.get_attribute(:thumbnail_url) %>" 
-               width="160"
-               height="120"
-               alt="Thumbnail"/>
-        <% end %>
+      <% if document.get_attribute(:thumbnail_url) %>
+        <img src="<%= document.get_attribute(:thumbnail_url) %>" 
+             width="160"
+           height="120"
+           alt="Thumbnail"/>
+      <% end %>
     </div>
   </main>
 <% end %>

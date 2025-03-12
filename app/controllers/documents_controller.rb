@@ -9,11 +9,11 @@ class DocumentsController < ApplicationController
 
     case params[:status]
     when "inbox"
-      @documents = @documents = Document.owned_by_user_with_status(:inbox).with_channel_details
+      @documents = @documents = Document.owned_by_user_with_status(:inbox).with_channel_details.with_subscription_info
     when "later"
-      @documents = @documents = Document.owned_by_user_with_status(:later).with_channel_details
+      @documents = @documents = Document.owned_by_user_with_status(:later).with_channel_details.with_subscription_info
     when "archive"
-      @documents = @documents = Document.owned_by_user_with_status(:archive).with_channel_details
+      @documents = @documents = Document.owned_by_user_with_status(:archive).with_channel_details.with_subscription_info
     end
   end
 
@@ -25,7 +25,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Document.owned_by_user.with_channel_details.find(params[:id])
+    @document = Document.owned_by_user.with_channel_details.with_subscription_info.find(params[:id])
 
     document_user_state = DocumentState.find_by(
       user_id: Current.user.id,

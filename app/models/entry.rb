@@ -25,9 +25,6 @@ class Entry < ApplicationRecord
     raw_entry_data = get_raw_entry_data(entry_data)
     document = entry.create_document(raw_entry_data)
 
-    # warm up extracted_content
-    document.extracted_data
-
     entry
   end
 

@@ -19,7 +19,6 @@ module SearchEngine
       log_level: Rails.env.production? ? Logger::INFO : Logger::DEBUG
     )
 
-    # Initialize collections on client creation
     initialize_collections
     @client
   end
@@ -46,13 +45,11 @@ module SearchEngine
     end
   end
 
-  # Sync all indexed models with Typesense
   def self.sync_database
     return unless @collections_to_initialize
 
     @collections_to_initialize.each do |klass|
       begin
-        # First ensure the collection exists
         begin
           @client.collections[klass.search_collection_name].retrieve
         rescue Typesense::Error::ObjectNotFound
@@ -67,14 +64,14 @@ module SearchEngine
           batch.each do |record|
             begin
               record.update_search_index
-              print "." # Progress indicator
+              print "."
             rescue => e
               Rails.logger.error "Error indexing #{klass.name} ##{record.id}: #{e.message}"
             end
           end
         end
 
-        puts # Newline after progress dots
+        puts
         Rails.logger.info "#{klass.name} sync complete"
       rescue => e
         Rails.logger.error "Error syncing #{klass.name}: #{e.message}"
@@ -97,7 +94,6 @@ module SearchEngine
       end
     end
 
-    # Re-create collections
     initialize_collections
   end
 end

@@ -3,27 +3,20 @@ module ReadingParser
     service_uri = "http://#{Rails.env.production? ? 'starch-reading_parser' : 'localhost'}:3001/parse"
     headers = { "Content-Type" => "application/json" }
 
-    begin
-      response = HTTPX.post(service_uri, json: { url: url }, headers: headers)
+    response = HTTPX.post(service_uri, json: { url: url }, headers: headers)
+    Rails.logger.debug "url: #{url}"
 
-      case response.status
-      when 200
-        JSON.parse(response.body.to_s)
-      when 204
-        nil
-      when 400..599
-        Rails.logger.error "ReadingParser error: Received non-2xx status code #{response.status}"
-        nil
-      else
-        Rails.logger.error "ReadingParser error: Unexpected status code #{response.status}"
-        nil
-      end
-
-    rescue HTTPX::Error => e
-      Rails.logger.error "ReadingParser error: #{e.message}"
+    case (response)
+    in {status: 200}
+      JSON.parse(response.body.to_s)
+    in {status: 204}
+      Rails.logger.debug "No content available for url: #{url}"
       nil
-    rescue JSON::ParserError => e
-      Rails.logger.error "ReadingParser error: Failed to parse JSON response: #{e.message}"
+    in {status: 400..}
+      Rails.logger.error "ReadingParser error: HTTP error #{response.status}"
+      nil
+    in {error: error}
+      Rails.logger.error "ReadingParser error: Unexpected status code #{error.class}"
       nil
     end
   end
