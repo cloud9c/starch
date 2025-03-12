@@ -1,12 +1,13 @@
-# product
+e# product
 - motto: human intelligence; design your own algorithm; curation
 
 # todo
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
+- replace subscription skeleton without refresh 
+- tell the user if extracted content cannot be rendered
 - offline search
-- support hackernews.com
 
 - highlighting
 - progress tracker

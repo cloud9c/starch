@@ -52,15 +52,11 @@ module EntryHelper
     { new: new_entries, updated: updated_entries }
   end
 
-  def format_text(text)
-    return nil if text.nil? || text.empty?
-
-    text ||= ""
-    text = ActionController::Base.helpers.strip_tags(text)
-    text = text.delete("\n")
-    text = text.delete("\t")
-    text = CGI.unescapeHTML(text)
-    text
+  def format_text(html)
+    return nil if html.nil? || html.empty?
+    
+    text = Nokogiri::HTML(html).xpath('//text()').map(&:text).join(' ')
+    text.gsub(/\s+/, ' ').strip
   end
 
   def extract_thumbnail(html, min_width: 100, min_height: 100)
@@ -94,6 +90,27 @@ module EntryHelper
     end
 
     nil
+  end
+
+  def get_raw_entry_data(entry_data)
+    content = entry_data.content || entry_data.summary
+    description = if entry_data.summary
+      entry_data.summary
+    elsif content.present?
+      clean_content = EntryHelper.format_text(content)
+      clean_content.slice(0, 150) + (clean_content.length > 150 ? "..." : "")
+    end
+
+    {
+      source_type: :rss,
+      title: EntryHelper.format_text(entry_data.title),
+      description: EntryHelper.format_text(description),
+      author: EntryHelper.format_text(entry_data.author),
+      published_at: entry_data.published || Time.current,
+      url: HttpHelper.normalize_url(entry_data.url),
+      content: content,
+      thumbnail_url: EntryHelper.extract_thumbnail(content)
+    }
   end
 
   private

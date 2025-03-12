@@ -28,18 +28,6 @@ class Channel < ApplicationRecord
     true
   end
 
-  def poll
-    result = EntryHelper.get_new_and_updated(self.feed_url, self.feed_content)
-
-    new_entries = add_new_entries(result[:new])
-    updated_entries = update_entries(result[:updated])
-
-    {
-      new: new_entries,
-      updated: updated_entries
-    }
-  end
-
   def update_metadata
     feed = FeedHelper.parse(self.feed_content) rescue nil
     return unless feed
@@ -59,28 +47,7 @@ class Channel < ApplicationRecord
 
   private
 
-  def schedule_initial_update
-    UpdateChannelJob.perform_now(id, syndicate=false)
-  end
-
-  def add_new_entries(new_entries)
-    created_entries = []
-    new_entries.each do |entry_data|
-      entry = Entry.create_from_feed(self, entry_data)
-      created_entries << entry
-    end
-    created_entries
-  end
-
-  def update_entries(updated_entries)
-    updated_entries = []
-    updated_entries.each do |entry_data|
-      stable_id = EntryHelper.get_stable_id(self.feed_url, entry_data)
-      existing_entry = Entry.find_by(stable_id: stable_id)
-      existing_entry&.update_from_feed(entry_data)
-
-      updated_entries << existing_entry
-    end
-    updated_entries
+  def schedule_initial_update 
+    UpdateChannelJob.perform_now(id, true)
   end
 end

@@ -2,20 +2,15 @@ class SubscriptionsController < ApplicationController
   before_action :load_subscriptions, only: [ :index, :create ]
 
   def create
-    channel = Channel.find_by(feed_url: params[:feed_url])
+    feed_url = HttpHelper.get_feed_url(params[:feed_url])
+    return head :unprocessable_entity unless feed_url
+    
+    ActiveRecord::Base.transaction do
+      channel = Channel.find_or_create_by!(feed_url: feed_url)
 
-    unless channel
-      feed_url = HttpHelper.get_feed_url(params[:feed_url])
-
-      return head :unprocessable_entity unless feed_url
-
-      channel = Channel.find_or_initialize_by(feed_url: feed_url)
-
-      return head :unprocessable_entity unless channel.save
+      @subscription = Current.user.subscriptions.create!(channel: channel)
+      @subscription.add_recent_entries if channel.initial_poll_complete?
     end
-
-    @subscription = Current.user.subscriptions.create(channel: channel)
-    head :unprocessable_entity unless @subscription.persisted?
   end
 
   def update

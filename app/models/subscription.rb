@@ -9,9 +9,6 @@ class Subscription < ApplicationRecord
   has_many :documents, through: :entries
 
   validates :channel_id, presence: true, uniqueness: { scope: :user_id }
-  after_create :add_recent_entries
-
-  private
 
   def add_recent_entries
     recent_entries = channel.entries.recent

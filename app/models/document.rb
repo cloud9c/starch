@@ -68,24 +68,11 @@ class Document < ApplicationRecord
   end
 
   def get_attribute(attribute)
-    if show_extracted? && extracted_data.present? && extracted_data[attribute].present?
+    Rails.logger.debug "extracted_data: #{extracted_data.to_s}"
+    if subscription_view_extracted? && extracted_data.present? && extracted_data[attribute].present?
       extracted_data[attribute]
     else
       self[attribute]
-    end
-  end
-
-  def show_extracted?
-    Rails.logger.debug "show_extracted? #{subscription_view_extracted?}"
-
-    if subscription_view_extracted.present?
-      subscription_view_extracted?
-    else
-      subscription = Subscription.find_by(
-        user_id: Current.user&.id,
-        channel_id: entry&.channel_id
-      )
-      subscription&.view_extracted
     end
   end
 
