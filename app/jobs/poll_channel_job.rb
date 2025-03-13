@@ -16,7 +16,7 @@ class PollChannelJob < ApplicationJob
     return if channel.initial_poll_complete?
 
     channel.with_lock do
-      # double check
+      # double check after locking
       return if channel.initial_poll_complete?
       
       channel.update(initial_poll_complete: true)
@@ -45,6 +45,8 @@ class PollChannelJob < ApplicationJob
       end
 
       DocumentState.insert_all!(document_states)
+
+      document.update_search_index
 
       # warm up extracted document
       ExtractDocumentJob.perform_later(document.id)

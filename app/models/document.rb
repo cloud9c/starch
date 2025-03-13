@@ -50,11 +50,10 @@ class Document < ApplicationRecord
     result
   end
 
-  def self.create_collection
+  def self.create_search_collection
     SearchEngine.client.collections.create({
       name: search_collection_name,
       fields: [
-        { name: "document_id", type: "int32", index: false },
         { name: "user_ids", type: "int32[]" },
         { name: "title", type: "string", optional: true },
         { name: "description", type: "string", optional: true },
@@ -63,8 +62,6 @@ class Document < ApplicationRecord
         { name: "content", type: "string", optional: true }
       ]
     })
-  rescue Typesense::Error => e
-    Rails.logger.error "Failed to create collection: #{e.message}"
   end
 
   def get_attribute(attribute)
@@ -94,9 +91,9 @@ class Document < ApplicationRecord
 
   private
 
-  def search_params
+  def search_attributes
     {
-      document_id: self.id,
+      id: self.id.to_s,
       user_ids: DocumentState.where(document_id: self.id).pluck(:user_id),
       title: self.title,
       description: self.description,

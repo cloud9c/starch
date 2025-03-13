@@ -1,13 +1,1 @@
-<% if @results.present? %>
-  <div>
-    <% @results.each do |doc| %>
-      <a href="<%= doc[:url] %>">
-        <img src="<%= doc[:channel_icon] %>" width="24"/>
-        <h4><%= doc[:title] %></h4>
-      </a>
-      <p><%= doc[:description] %></p>
-    <% end %>
-  </div>
-<% elsif @query.present? %>
-  <p>No results found for "<%= @query %>"</p>
-<% end %>
+<%= render "documents/list" %>

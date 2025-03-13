@@ -37,7 +37,7 @@ module SearchEngine
         Rails.logger.info "Collection '#{klass.search_collection_name}' exists in Typesense"
       rescue Typesense::Error::ObjectNotFound
         Rails.logger.info "Creating collection '#{klass.search_collection_name}' in Typesense"
-        klass.create_collection
+        klass.create_search_collection
       rescue Typesense::Error::HTTPStatus0Error => e
         Rails.logger.error "Unable to connect to Typesense: #{e.message}"
         raise
@@ -53,17 +53,15 @@ module SearchEngine
         begin
           @client.collections[klass.search_collection_name].retrieve
         rescue Typesense::Error::ObjectNotFound
-          klass.create_collection
+          klass.create_search_collection
         end
 
-        # Now sync all records
         Rails.logger.info "Syncing #{klass.name} records to Typesense..."
 
-        # Use find_in_batches to handle large datasets efficiently
         klass.find_in_batches(batch_size: 100) do |batch|
           batch.each do |record|
             begin
-              record.update_search_index
+              record.upsert_search_index
               print "."
             rescue => e
               Rails.logger.error "Error indexing #{klass.name} ##{record.id}: #{e.message}"
@@ -85,6 +83,8 @@ module SearchEngine
   def self.reset
     return unless @collections_to_initialize
 
+    client
+
     @collections_to_initialize.each do |klass|
       begin
         @client.collections[klass.search_collection_name].delete
@@ -96,4 +96,8 @@ module SearchEngine
 
     initialize_collections
   end
+end
+
+Rails.application.config.to_prepare do
+  SearchEngine.register_collection(Document)
 end

@@ -5,9 +5,11 @@ e# product
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
+- verify that search works according to user_id / documentstate
 - replace subscription skeleton without refresh 
 - tell the user if extracted content cannot be rendered
 - offline search
+- add/remove users when document states change
 
 - highlighting
 - progress tracker
