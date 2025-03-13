@@ -18,9 +18,9 @@ class PollChannelJob < ApplicationJob
     channel.with_lock do
       # double check after locking
       return if channel.initial_poll_complete?
-      
+
       channel.update(initial_poll_complete: true)
-      
+
       channel.subscriptions.each do |subscription|
         subscription.add_recent_entries
       end

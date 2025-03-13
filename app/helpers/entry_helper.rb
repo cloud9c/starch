@@ -54,9 +54,9 @@ module EntryHelper
 
   def format_text(html)
     return nil if html.nil? || html.empty?
-    
-    text = Nokogiri::HTML(html).xpath('//text()').map(&:text).join(' ')
-    text.gsub(/\s+/, ' ').strip
+
+    text = Nokogiri::HTML(html).xpath("//text()").map(&:text).join(" ")
+    text.gsub(/\s+/, " ").strip
   end
 
   def extract_thumbnail(html, min_width: 100, min_height: 100)

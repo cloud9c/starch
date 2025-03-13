@@ -4,7 +4,7 @@ class SubscriptionsController < ApplicationController
   def create
     feed_url = HttpHelper.get_feed_url(params[:feed_url])
     return head :unprocessable_entity unless feed_url
-    
+
     ActiveRecord::Base.transaction do
       channel = Channel.find_or_create_by!(feed_url: feed_url)
 

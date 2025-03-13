@@ -16,7 +16,7 @@ class DocumentState < ApplicationRecord
 
   def on_destroy
     if document.entry.nil? && document.document_states.empty?
-      document.destroy 
+      document.destroy
     end
 
     document.update_search_index

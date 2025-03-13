@@ -65,7 +65,7 @@ class Document < ApplicationRecord
   end
 
   def get_attribute(attribute)
-    Rails.logger.debug "extracted_data: #{extracted_data.to_s}"
+    Rails.logger.debug "extracted_data: #{extracted_data}"
     if subscription_view_extracted? && extracted_data.present? && extracted_data[attribute].present?
       extracted_data[attribute]
     else

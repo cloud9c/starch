@@ -47,7 +47,7 @@ class Channel < ApplicationRecord
 
   private
 
-  def schedule_initial_update 
+  def schedule_initial_update
     UpdateChannelJob.perform_now(id, true)
   end
 end
