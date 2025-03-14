@@ -19,7 +19,9 @@ module Authentication
     end
 
     def require_authentication
-      authenticated? || request_authentication
+      return if authenticated?
+      session[:return_to_after_authenticating] = request.url
+      redirect_to new_session_path
     end
 
     def resume_session
@@ -28,15 +30,6 @@ module Authentication
 
     def find_session_by_cookie
       Session.find_by(id: cookies.signed[:session_id])
-    end
-
-    def request_authentication
-      session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
-    end
-
-    def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
     end
 
     def start_new_session

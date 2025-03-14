@@ -10,30 +10,16 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  scope :owned_by_user, -> {
-    where(id: Current.user.document_states.select(:document_id))
-  }
-
-  scope :owned_by_user_with_status, ->(status) {
-    where(id: Current.user.document_states.where(status: status).select(:document_id))
+  scope :owned_by_user, ->(status = nil) {
+    query = Current.user.document_states
+    query = query.where(status: status) if status.present?
+    where(id: query.select(:document_id))
   }
 
   scope :with_channel_details, -> {
     select("documents.*, channels.icon as channel_icon, channels.title as channel_title, channels.id as channel_id")
       .left_joins(entry: :channel)
       .order(published_at: :desc)
-  }
-
-  scope :with_channel_icon, -> {
-    select("documents.*, channels.icon as channel_icon")
-      .left_joins(entry: :channel)
-      .order(published_at: :desc)
-  }
-
-  scope :with_subscription_info, -> {
-    select("documents.*, COALESCE(subscriptions.view_extracted, false) as subscription_view_extracted")
-      .left_joins(entry: { channel: :subscriptions })
-      .where("subscriptions.user_id = ? OR subscriptions.user_id IS NULL", Current.user&.id)
   }
 
   def self.search(query, options = {})
@@ -64,14 +50,22 @@ class Document < ApplicationRecord
     })
   end
 
-  def get_attribute(attribute)
-    Rails.logger.debug "extracted_data: #{extracted_data}"
-    if subscription_view_extracted? && extracted_data.present? && extracted_data[attribute].present?
-      extracted_data[attribute]
-    else
-      self[attribute]
+  def with_view_preferences
+    subscription = channel.subscriptions.find_by(user_id: Current.user.id)
+    return unless subscription.view_extracted
+
+    cache_key = "#{cache_key_with_version}/subscription/#{subscription.id}/#{subscription.updated_at.to_i}"
+    Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      data = extracted_data
+      if data.present?
+        [:title, :description, :content, :thumbnail_url].each do |attr|
+          self[attr] = data[attr] if data[attr].present?
+        end
+      end
     end
   end
+
+  private
 
   def extracted_data
     return {} unless url
@@ -89,17 +83,15 @@ class Document < ApplicationRecord
     end
   end
 
-  private
-
   def search_attributes
     {
-      id: self.id.to_s,
+      id: id.to_s,
       user_ids: DocumentState.where(document_id: self.id).pluck(:user_id),
-      title: self.title,
-      description: self.description,
-      url: self.url,
-      published_at: self.published_at&.to_i,
-      content: self[:content]
+      title: title,
+      description: description,
+      url: url,
+      published_at: published_at&.to_i,
+      content: content
     }
   end
 end

@@ -1,11 +1,11 @@
 <div id="<%= dom_id(@document) %>" class="document">
   <div id="document-content">
-    <hgroup>
-      <h1><%= @document.title %></h1>
-      <h2><%= @document.description %></h2>
-    </hgroup>
-
-    <div>
+    <header>
+      <hgroup>
+        <h1><%= @document.title %></h1>
+        <h2><%= @document.description %></h2>
+        <h3><%= @document.author %></h3>
+      </hgroup>
       <div>
         <img src="<%= @document.channel_icon %>" 
              width="24" 
@@ -17,13 +17,14 @@
           <% end %>
         </span>
       </div>
-    </div>
+      <%= button_to "Delete", document_path(@document), 
+      method: :delete %>
+    </header>
 
     <hr/>
     
     <article>
-      <% Rails.logger.debug @document.get_attribute(:content) %>
-      <%= render_document_html @document.get_attribute(:content) %>
+      <%= render_document_html @document.content %>
     </article>
   </div>
 </div>

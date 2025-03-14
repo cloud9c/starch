@@ -5,11 +5,18 @@ e# product
 - treat body as a buffer/file
 	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
-- verify that search works according to user_id / documentstate
+# FIX NOW NOW NOW
+
+- error message if subscription fails
+- timelimit for trying to get website (hackernew.com as example)
+- extraction is blocking
+
 - replace subscription skeleton without refresh 
-- tell the user if extracted content cannot be rendered
 - offline search
-- add/remove users when document states change
+
+## DO LATER
+
+- tell the user if extracted content cannot be rendered
 
 - highlighting
 - progress tracker

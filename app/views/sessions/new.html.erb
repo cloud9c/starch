@@ -2,7 +2,7 @@
   <h1>Login</h1>
 
   <% if @show_verification %>
-    <%= form_with(url: magic_link_session_path) do |form| %>
+    <%= form_with(url: verify_session_path) do |form| %>
     <div>
       <%= form.label :verification_code, "Enter verification code" %>
       <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>

@@ -1,39 +1,35 @@
 class DocumentsController < ApplicationController
   include CacheableOffline
-
+  
   def index
-    if params[:status].nil?
+    status = params[:status]
+    
+    unless status.present? && DocumentState.statuses.key?(status)
       redirect_to documents_path(status: "inbox")
       return
     end
-
-    case params[:status]
-    when "inbox"
-      @documents = @documents = Document.owned_by_user_with_status(:inbox).with_channel_details.with_subscription_info
-    when "later"
-      @documents = @documents = Document.owned_by_user_with_status(:later).with_channel_details.with_subscription_info
-    when "archive"
-      @documents = @documents = Document.owned_by_user_with_status(:archive).with_channel_details.with_subscription_info
-    end
+    
+    @documents = Document.owned_by_user(status.to_sym).with_channel_details
+    @documents.map(&:with_view_preferences)
   end
-
+  
   def destroy
     @document = Document.owned_by_user.find(params[:id])
     document_user_state = @document.document_states.find_by!(user_id: Current.user.id)
-
-    head :unprocessable_entity unless document_user_state.destroy!
+    
+    if document_user_state.destroy
+      redirect_to root_path, notice: 'Document was successfully deleted.'
+    else
+      head :unprocessable_entity
+    end
   end
-
+  
   def show
-    @document = Document.owned_by_user.with_channel_details.with_subscription_info.find(params[:id])
-
-    document_user_state = DocumentState.find_by(
-      user_id: Current.user.id,
-      document_id: @document.id
-    )
-
+    @document = Document.where(id: params[:id]).owned_by_user.with_channel_details.first!
+    
+    document_user_state = @document.document_states.find_by(user_id: Current.user.id)
     document_user_state.update(read: true) if document_user_state.present?
-  end
 
-  private
+    @document.with_view_preferences
+  end
 end

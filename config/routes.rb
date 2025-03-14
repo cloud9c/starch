@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   resource :session do
-    get :magic_link
-    post :magic_link
+    get :verify
+    post :verify
   end
 
   get "search" => "search#index"

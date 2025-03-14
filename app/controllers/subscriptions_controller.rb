@@ -1,5 +1,7 @@
 class SubscriptionsController < ApplicationController
-  before_action :load_subscriptions, only: [ :index, :create ]
+  def index
+    @subscriptions = Current.user.subscriptions
+  end
 
   def create
     feed_url = HttpHelper.get_feed_url(params[:feed_url])
@@ -15,20 +17,7 @@ class SubscriptionsController < ApplicationController
 
   def update
     @subscription = Current.user.subscriptions.find(params[:id])
-
-    if @subscription.update(subscription_params) && subscription_params[:view_extracted].present?
-      # cache busting
-      channel_id = @subscription.channel_id
-      document_ids = DocumentState.joins(document: { entry: :channel })
-                                    .where(user_id: Current.user.id)
-                                    .where(entries: { channel_id: channel_id })
-                                    .pluck(:document_id)
-
-      timestamp = Time.now.to_i
-      document_ids.each do |doc_id|
-        session["document_#{doc_id}_updated_at"] = timestamp
-      end
-    end
+    @subscription.update(subscription_params)
   end
 
   def destroy
@@ -37,10 +26,6 @@ class SubscriptionsController < ApplicationController
   end
 
   private
-
-  def load_subscriptions
-    @subscriptions = Current.user.subscriptions
-  end
 
   def subscription_params
     params.require(:subscription).permit(:view_extracted)

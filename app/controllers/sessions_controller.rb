@@ -1,48 +1,59 @@
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: %i[ new create magic_link ]
+  allow_unauthenticated_access only: %i[ new create verify ]
   rate_limit to: 10, within: 3.minutes, only: :create
   invisible_captcha only: :create, on_spam: :send_to_root
 
   def new
-    @show_verification = session.delete(:show_verification)
+    @show_verification = flash[:show_verification]
   end
 
   def create
     user = User.find_or_initialize_by(email_address: params[:email_address])
-
-    if user.save
-      magic_link_token = user.generate_token_for(:magic_link)
-      verification = Verification.create!(user_id: user.id, session_id: resume_session.id)
-
-      if user.email_address == "test@example.com"
-        verify_user(user)
-        authenticate_session_for(user)
-        redirect_path = root_path
-      end
-
-      begin
-        user.send_login_email(magic_link_token, verification.code)
-
-        session[:show_verification] = true
-        flash[:notice] = user.previously_new_record? ? "Check your email to verify your account" : "Check your email to sign in"
-      rescue => e
-        Rails.logger.error("Failed to send login email: #{e.message}")
-        flash[:alert] = "We couldn't send your login email at this time. Please try again later."
-      end
-    else
+    unless user.save
       flash[:alert] = user.errors.full_messages.to_sentence
+      redirect_to new_session_path and return
+    end
+    
+    magic_link_token = user.generate_magic_link
+    verification = user.generate_verification
+    
+    ### TODO: remove
+
+    if user.email_address === "test@example.com"
+      user.verify
+      authenticate_session_for(user)
+      redirect_to root_path and return
     end
 
-    redirect_to redirect_path ? redirect_path : new_session_path
+    ###
+
+    unless user.send_login_email(magic_link_token, verification.code)
+      flash[:alert] = "We couldn't send your login email at this time. Please try again later."
+      redirect_to new_session_path and return
+    end
+
+    flash[:show_verification] = true
+    redirect_to new_session_path
   end
 
-  def magic_link
-    user = find_user_by_params(params)
-    return invalid_login_redirect(params) unless user
+  def verify
+    user = User.find_user_by_params(params[:token], params[:verification_code])
 
-    verify_user(user)
-    authenticate_session_for(user)
-    redirect_to root_path
+    if user
+      user.verify
+      authenticate_session_for(user)
+      redirect_to root_path and return
+    end
+
+    flash[:alert] = 
+      if params[:token]
+        "We were unable to verify you with this link."
+      elsif params[:verification_code]
+        "There was an error verifying your code."
+      end
+
+    flash[:show_verification] = true
+    redirect_to new_session_path()
   end
 
   def destroy
@@ -54,27 +65,5 @@ class SessionsController < ApplicationController
 
   def send_to_root
     redirect_to root_path
-  end
-
-  def find_user_by_params(params)
-    if params[:token].present?
-      User.find_by_token_for(:magic_link, params[:token])
-    elsif params[:verification_code].present?
-      Verification.find_user(resume_session.id, params[:verification_code])
-    end
-  end
-
-  def invalid_login_redirect(params)
-    if params[:token].present?
-      flash[:alert] = "We were unable to verify you with this link."
-    elsif params[:verification_code].present?
-      session[:show_verification] = true
-      flash[:alert] = "There was an error verifying your code."
-    end
-    redirect_to new_session_path
-  end
-
-  def verify_user(user)
-    user.update!(verified_at: Time.current) if user.verified_at.nil?
   end
 end

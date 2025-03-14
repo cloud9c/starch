@@ -68,9 +68,6 @@ gem "postmark-rails"
 # HTML parser
 gem "nokogiri"
 
-# Internationalized domain names
-gem "idnx"
-
 # HTTP client
 gem "httpx"
 
@@ -85,3 +82,8 @@ gem "fastimage"
 
 # Spam protection
 gem "invisible_captcha"
+
+# Live reloading
+group :development do
+  gem "hotwire-spark"
+end

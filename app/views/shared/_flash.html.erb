@@ -1,7 +1,9 @@
 <div id="flash">
   <% flash.each do |name, msg| %>
-    <div>
-      <%= msg %>
-    </div>
+    <% if name.to_s == 'notice' || name.to_s == 'alert' %>
+      <div class="<%= name %>">
+        <%= msg %>
+      </div>
+    <% end %>
   <% end %>
 </div>
