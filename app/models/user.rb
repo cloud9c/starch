@@ -8,9 +8,9 @@ class User < ApplicationRecord
   has_many :document_states, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
-  validates :email_address, 
-            presence: true, 
-            uniqueness: true, 
+  validates :email_address,
+            presence: true,
+            uniqueness: true,
             format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
 
   scope :unverified, -> { where(verified_at: nil) }

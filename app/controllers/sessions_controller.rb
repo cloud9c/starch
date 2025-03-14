@@ -13,10 +13,10 @@ class SessionsController < ApplicationController
       flash[:alert] = user.errors.full_messages.to_sentence
       redirect_to new_session_path and return
     end
-    
+
     magic_link_token = user.generate_magic_link
     verification = user.generate_verification
-    
+
     ### TODO: remove
 
     if user.email_address === "test@example.com"
@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
       redirect_to root_path and return
     end
 
-    flash[:alert] = 
+    flash[:alert] =
       if params[:token]
         "We were unable to verify you with this link."
       elsif params[:verification_code]

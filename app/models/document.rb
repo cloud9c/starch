@@ -58,7 +58,7 @@ class Document < ApplicationRecord
     Rails.cache.fetch(cache_key, expires_in: 1.hour) do
       data = extracted_data
       if data.present?
-        [:title, :description, :content, :thumbnail_url].each do |attr|
+        [ :title, :description, :content, :thumbnail_url ].each do |attr|
           self[attr] = data[attr] if data[attr].present?
         end
       end
