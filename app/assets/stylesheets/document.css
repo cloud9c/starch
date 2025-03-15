@@ -5,7 +5,7 @@
 	align-items: center;
 }
 
-#document_list {
+#document-list {
 	display: flex;
 	flex-direction: column;
 	gap: 1em;

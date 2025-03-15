@@ -1,4 +1,4 @@
-<%= link_to document_path(document),
+<%= link_to document_path(document, view_extracted: document.view_extracted?),
     data: { turbo_frame: "_top" },
     id: dom_id(document),
     class: "document-item" do %>

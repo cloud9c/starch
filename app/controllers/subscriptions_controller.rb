@@ -17,7 +17,10 @@ class SubscriptionsController < ApplicationController
 
   def update
     @subscription = Current.user.subscriptions.find(params[:id])
-    @subscription.update(subscription_params)
+    if @subscription.update(subscription_params)
+      cache_key = "subscription/#{@subscription.id}/#{@subscription.updated_at.to_i}/view_extracted"
+      Rails.cache.delete(cache_key)
+    end
   end
 
   def destroy

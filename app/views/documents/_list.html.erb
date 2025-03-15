@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "document_list" do %>
+<div id="document-list">
   <% if @documents.present? %>
     <% @documents.each do |document| %>
       <%= render document %>
@@ -6,4 +6,4 @@
   <% else %>
     <p>No documents found.</p>
   <% end %>
-<% end %>
+</div>

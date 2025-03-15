@@ -50,19 +50,27 @@ class Document < ApplicationRecord
     })
   end
 
-  def with_view_preferences
-    subscription = channel.subscriptions.find_by(user_id: Current.user.id)
-    return unless subscription.view_extracted
+  def view_extracted?
+    return @view_extracted unless @view_extracted.nil?
 
-    cache_key = "#{cache_key_with_version}/subscription/#{subscription.id}/#{subscription.updated_at.to_i}"
-    Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-      data = extracted_data
-      if data.present?
-        [ :title, :description, :content, :thumbnail_url ].each do |attr|
-          self[attr] = data[attr] if data[attr].present?
-        end
+    subscription = channel&.subscriptions&.find_by(user_id: Current.user&.id)
+    @view_extracted = if subscription
+      cache_key = "subscription/#{subscription.id}/#{subscription.updated_at.to_i}/view_extracted"
+      Rails.cache.fetch(cache_key, expires_in: 1.hour) { subscription.view_extracted || false }
+    else
+      false
+    end
+  end
+
+  def with_view_preferences
+    return self unless view_extracted?
+
+    if extracted_data.present?
+      [ :title, :description, :content, :thumbnail_url ].each do |attr|
+        self[attr] = extracted_data[attr] if extracted_data[attr].present?
       end
     end
+    self
   end
 
   private
