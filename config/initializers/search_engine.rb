@@ -33,7 +33,7 @@ module SearchEngine
 
     @collections_to_initialize.each do |klass|
       begin
-        @client.collections[klass.search_collection_name].retrieve
+        client.collections[klass.search_collection_name].retrieve
         Rails.logger.info "Collection '#{klass.search_collection_name}' exists in Typesense"
       rescue Typesense::Error::ObjectNotFound
         Rails.logger.info "Creating collection '#{klass.search_collection_name}' in Typesense"
@@ -51,7 +51,7 @@ module SearchEngine
     @collections_to_initialize.each do |klass|
       begin
         begin
-          @client.collections[klass.search_collection_name].retrieve
+          client.collections[klass.search_collection_name].retrieve
         rescue Typesense::Error::ObjectNotFound
           klass.create_search_collection
         end
@@ -83,11 +83,9 @@ module SearchEngine
   def self.reset
     return unless @collections_to_initialize
 
-    client
-
     @collections_to_initialize.each do |klass|
       begin
-        @client.collections[klass.search_collection_name].delete
+        client.collections[klass.search_collection_name].delete
         Rails.logger.info "Collection '#{klass.search_collection_name}' deleted from Typesense"
       rescue Typesense::Error::ObjectNotFound
         Rails.logger.info "Collection '#{klass.search_collection_name}' not found during reset"
