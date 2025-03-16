@@ -1,5 +1,5 @@
 class UpdateChannelJob < ApplicationJob
-  def perform(channel_id, is_initial_update)
+  def perform(channel_id, is_initial_update=false)
     channel = Channel.find_by(id: channel_id)
     return unless channel
 
