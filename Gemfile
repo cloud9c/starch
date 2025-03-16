@@ -87,3 +87,6 @@ gem "invisible_captcha"
 group :development do
   gem "hotwire-spark"
 end
+
+# inspect job queues
+gem "mission_control-jobs"

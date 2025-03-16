@@ -15,4 +15,6 @@ Rails.application.routes.draw do
 
   resources :subscriptions
   resources :documents
+
+  mount MissionControl::Jobs::Engine, at: "/jobs"
 end
