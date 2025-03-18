@@ -73,8 +73,6 @@ class Document < ApplicationRecord
     self
   end
 
-  private
-
   def extracted_data
     return {} unless url
 
@@ -92,6 +90,8 @@ class Document < ApplicationRecord
       }.compact
     end
   end
+
+  private
 
   def search_attributes
     {
