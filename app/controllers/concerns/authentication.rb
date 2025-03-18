@@ -21,7 +21,7 @@ module Authentication
     def require_authentication
       return if authenticated?
       session[:return_to_after_authenticating] = request.url
-      redirect_to new_session_path
+      redirect_to main_app.new_session_path
     end
 
     def resume_session

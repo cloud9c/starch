@@ -2,54 +2,39 @@ module HttpHelper
   extend self
 
   def get(url, headers = {}, follow = true)
-    Rails.logger.debug "getting #{url}"
     response = HTTPX.get(url, headers: headers)
 
     return nil if response.error
 
-    if follow && (response.status == 301 || response.status == 302) && response.headers["location"]
-      return get(get_absolute_url(response.headers["location"], url), headers: {}, follow: false)
+    if follow && response.status.between?(301, 302) && response.headers["location"]
+      absolute_url = get_absolute_url(response.headers["location"], url)
+      return get(absolute_url, headers, false)
     end
 
     response
-  rescue
-    nil
   end
 
   def normalize_url(url)
-    return nil unless url.present?
+    return nil unless url.is_a?(String) && !url.empty?
 
-    # Only allow http and https protocols
-    if url.start_with?("http://", "https://")
-      # URL already has a valid protocol
-    elsif url.include?(":")
-      # URL has a protocol but it's not http/https, reject it
-      return nil
-    else
-      # Add https protocol
-      url = "https://#{url}"
-    end
-
-    # Remove trailing slash
+    url = "https://#{url}" unless is_absolute_url?(url)
     url = url.chomp("/")
 
-    # Validate it's a proper URL structure
-    begin
-      uri = URI.parse(url)
-      return url if uri.host.present?
-      nil
-    rescue URI::InvalidURIError
-      nil
-    end
+    uri = URI.parse(url) rescue nil
+    uri && uri.scheme =~ /\A(http|https)\z/ ? url : nil
   end
 
-  def get_absolute_url(url, host)
-    origin = normalize_url(host)
-    uri = URI.join(origin, url) rescue nil
+  def get_absolute_url(path, url)
+    Rails.logger.debug "#{path}, #{url}"
+    return path if is_absolute_url?(path)
 
-    return nil unless uri
+    base_url = get_base_url(url)
+    uri = URI.join(base_url, path)
+    uri ? uri.to_s : nil
+  end
 
-    uri.to_s
+  def is_absolute_url?(url)
+    url.start_with?("http://", "https://")
   end
 
   def get_base_url(url)
@@ -68,7 +53,7 @@ module HttpHelper
     response.body.to_s.force_encoding("UTF-8")
   end
 
-  def get_feed_url(url)
+  def get_feed_url(url, discover = true)
     url = normalize_url(url)
     response = get(url)
     return unless response
@@ -76,30 +61,30 @@ module HttpHelper
     feed = FeedHelper.parse(body_to_s(response)) rescue nil
 
     unless feed
+      return nil unless discover
+
       doc = Nokogiri::HTML(body_to_s(response))
-      link = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
+      path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
              doc.at('link[type="application/rss+xml"]')&.[]("href")
-      url = get_absolute_url(link, response.uri.host)
+      url = get_absolute_url(path, url)
       return unless url
-      response = get(url)
-      return unless response
-      feed = FeedHelper.parse(body_to_s(response)) rescue nil
+
+      return get_feed_url(url, false)
     end
 
     feed&.respond_to?(:feed_url) && feed&.feed_url ? feed.feed_url : url
   end
 
   def get_icon(url)
-    host = normalize_url(URI(url).host)
-    response = get(host)
+    response = get(url)
     return unless response
 
     doc = Nokogiri::HTML(body_to_s(response))
     candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
 
-    absolute_candidates = candidates.map { |href| get_absolute_url(href, host) }.compact
+    absolute_candidates = candidates.map { |href| get_absolute_url(href, url) }.compact
 
-    ranked_images = absolute_candidates.map do |abs_url|
+    ranked_images = absolute_candidates.first(5).map do |abs_url|
       size = FastImage.size(abs_url)
       [ abs_url, size ] if size
     end.compact
@@ -116,16 +101,6 @@ module HttpHelper
   def remove_protocol_and_host(url)
     parsed = URI(url)
     result = [ parsed.userinfo, parsed.path, parsed.query, parsed.fragment ].join
-    if result == "" || result == "/"
-      url
-    else
-      result
-    end
-  rescue
-    if url.respond_to?(:gsub!)
-      url.gsub!("http:", "")
-      url.gsub!("https:", "")
-    end
-    url
+    result.empty? || result == "/" ? url : result
   end
 end

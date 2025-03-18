@@ -93,7 +93,8 @@ module EntryHelper
   end
 
   def get_raw_entry_data(entry_data)
-    content = entry_data.content || entry_data.summary
+    url = HttpHelper.normalize_url(entry_data.url)
+    content = EntryHelper.format_content(entry_data.content || entry_data.summary, url)
     description = if entry_data.summary
       entry_data.summary
     elsif content.present?
@@ -107,13 +108,43 @@ module EntryHelper
       description: EntryHelper.format_text(description),
       author: EntryHelper.format_text(entry_data.author),
       published_at: entry_data.published || Time.current,
-      url: HttpHelper.normalize_url(entry_data.url),
+      url: url,
       content: content,
       thumbnail_url: EntryHelper.extract_thumbnail(content)
     }
   end
 
+  def format_content(html, url)
+    doc = Nokogiri::HTML(html)
+
+    open_links_in_new_tab(doc)
+    convert_links_to_absolute(doc, url)
+
+    doc.to_html
+  end
+
   private
+
+  def open_links_in_new_tab(doc)
+    doc.css("a").each do |link|
+      link["target"] = "_blank"
+      link["rel"] = "noopener noreferrer"
+    end
+  end
+
+  def convert_links_to_absolute(doc, base_url)
+    doc.css("img, iframe, video, audio, source").each do |element|
+      if element["src"] && !element["src"].empty?
+        element["src"] = HttpHelper.get_absolute_url(element["src"], base_url)
+      end
+    end
+
+    doc.css("object").each do |element|
+      if element["data"] && !element["data"].empty?
+        element["data"] = HttpHelper.get_absolute_url(element["data"], base_url)
+      end
+    end
+  end
 
   def is_new?(stable_id)
     return false if Rails.cache.exist?("feed_entry:#{stable_id}")

@@ -78,15 +78,17 @@ class Document < ApplicationRecord
   def extracted_data
     return {} unless url
 
-    Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 1.day) do
+    Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 7.day) do
       parsed_data = ReadingParser.extract(url)
       next {} unless parsed_data
 
+      content = EntryHelper.format_content(parsed_data["content"], url)
+
       {
-        title: parsed_data["title"],
-        description: parsed_data["excerpt"],
-        content: parsed_data["content"],
-        thumbnail_url: EntryHelper.extract_thumbnail(parsed_data["content"])
+        title: EntryHelper.format_text(parsed_data["title"]),
+        description: EntryHelper.format_text(parsed_data["excerpt"]),
+        content: content,
+        thumbnail_url: EntryHelper.extract_thumbnail(content)
       }.compact
     end
   end
