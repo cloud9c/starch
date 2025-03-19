@@ -1,29 +1,31 @@
 <div id="<%= dom_id(@document) %>" class="document">
   <div id="document-content">
-    <header>
-      <hgroup>
-        <h1><%= @document.title %></h1>
-        <h2><%= @document.description %></h2>
-        <h3><%= @document.author %></h3>
-      </hgroup>
-      <div>
+    <header id="document-header">
+      <div class="channel-container">
         <img src="<%= @document.channel_icon %>" 
              width="24" 
              alt="<%= @document.channel_title %> icon"/>
-        <span>
-          <p><%= @document.channel_title %></p>
-          <% if @document.published_at %>
-            <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
-          <% end %>
-        </span>
+        <a><%= @document.channel_title %></a>
       </div>
+      <hgroup>
+        <h1 class="title"><%= @document.title %></h1>
+        <h3 class="description"><%= @document.description %></h3>
+      </hgroup>
+
+      <div class="metadata-row">
+        <p class="author"><%= @document.author %></p>
+        <% if @document.published_at %>
+          <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+        <% end %>
+      </div>
+
       <%= button_to "Delete", document_path(@document), 
       method: :delete %>
     </header>
 
     <hr/>
     
-    <article>
+    <article id="document-body">
       <%= render_document_html @document.content %>
     </article>
   </div>

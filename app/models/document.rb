@@ -84,10 +84,14 @@ class Document < ApplicationRecord
 
       {
         title: EntryHelper.format_text(parsed_data["title"]),
-        description: EntryHelper.format_text(parsed_data["excerpt"]),
         content: content,
         thumbnail_url: EntryHelper.extract_thumbnail(content)
       }.compact
+
+      # only add parsed description if original description is blank
+      if self.description.blank?
+        result[:description] = EntryHelper.format_text(parsed_data["excerpt"])
+      end
     end
   end
 

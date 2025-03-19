@@ -46,5 +46,46 @@
 }
 
 #document-content {
-	width: min(100%, 60em);
+	width: min(100%, 45em);
+}
+
+.title {
+	font-weight: 600;
+}
+
+.description {
+	font-weight: normal;
+}
+
+.author {
+	font-weight: normal;
+}
+
+#document-body {
+	margin-bottom: 1em;
+}
+
+#document-body p {
+	margin-bottom: 1em;
+}
+
+#document-body * {
+	max-width: 100%;
+	height: auto;
+}
+
+#document-body figure {
+	margin: 2em 0;
+}
+
+.channel-container {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+}
+
+.metadata-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
