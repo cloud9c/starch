@@ -82,16 +82,22 @@ class Document < ApplicationRecord
 
       content = EntryHelper.format_content(parsed_data["content"], url)
 
-      {
+      result = {
         title: EntryHelper.format_text(parsed_data["title"]),
         content: content,
         thumbnail_url: EntryHelper.extract_thumbnail(content)
-      }.compact
+      }
 
-      # only add parsed description if original description is blank
-      if self.description.blank?
-        result[:description] = EntryHelper.format_text(parsed_data["excerpt"])
+      # only add parsed data if original data is blank
+      if self.author.blank?
+        result[:author] = EntryHelper.format_text(parsed_data["byline"])
       end
+
+      if self.published_at.blank?
+        result[:published_at] = DateTime.parse(parsed_data["publishedTime"]) rescue nil
+      end
+
+      result.compact
     end
   end
 
