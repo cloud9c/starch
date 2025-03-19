@@ -65,7 +65,7 @@ class Document < ApplicationRecord
   def with_view_preferences
     return self unless view_extracted?
 
-    if extracted_data.present?
+    if !extracted_data.empty?
       [ :title, :description, :content, :thumbnail_url ].each do |attr|
         self[attr] = extracted_data[attr] if extracted_data[attr].present?
       end
