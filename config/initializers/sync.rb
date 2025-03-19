@@ -1,4 +1,4 @@
-# Rails.application.config.after_initialize do  
+# Rails.application.config.after_initialize do
 #   begin
 #     Rails.logger.info "Scheduling UpdateChannelsJob on startup"
 #     UpdateChannelsJob.perform_later
