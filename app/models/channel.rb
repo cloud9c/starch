@@ -32,15 +32,18 @@ class Channel < ApplicationRecord
     feed = FeedHelper.parse(self.feed_content) rescue nil
     return unless feed
 
-    attributes = {}
-
-    attributes[:title] = EntryHelper.format_text(feed.title) if feed.respond_to?(:title)
-    attributes[:description] = EntryHelper.format_text(feed.description) if feed.respond_to?(:description)
-    attributes[:url] = HttpHelper.normalize_url(
-      (feed.url if feed.respond_to?(:url)) || URI(self.feed_url).host
+    feed_url = HttpHelper.normalize_url(feed.try(:feed_url)) || self.feed_url
+    url = HttpHelper.normalize_url(
+      feed.try(:url) || HttpHelper.get_base_url(feed_url)
     )
-    attributes[:icon] = HttpHelper.get_icon(self.feed_url) if feed.respond_to?(:feed_url)
-    attributes[:feed_url] = HttpHelper.normalize_url feed.feed_url if feed.respond_to?(:feed_url) && feed.feed_url
+
+    attributes = {
+      title: EntryHelper.format_text(feed.try(:title)),
+      description: EntryHelper.format_text(feed.try(:description)),
+      feed_url: feed_url,
+      url: url,
+      icon: HttpHelper.get_icon(url)
+    }.compact
 
     update(attributes) unless attributes.empty?
   end
