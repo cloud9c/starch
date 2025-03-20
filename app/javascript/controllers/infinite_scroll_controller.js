@@ -58,7 +58,6 @@ export default class extends Controller {
     })
     .then(html => {
       if (html) {
-        console.log(html)
         this.pageValue = nextPage
         Turbo.renderStreamMessage(html)
       }
