@@ -16,12 +16,6 @@ class Document < ApplicationRecord
     where(id: query.select(:document_id))
   }
 
-  scope :with_channel_details, -> {
-    select("documents.*, channels.icon as channel_icon, channels.title as channel_title, channels.id as channel_id")
-      .left_joins(entry: :channel)
-      .order(published_at: :desc)
-  }
-
   def self.search(query, options = {})
     search_params = {
       q: query,
@@ -70,6 +64,7 @@ class Document < ApplicationRecord
         self[attr] = extracted_data[attr] if extracted_data[attr].present?
       end
     end
+
     self
   end
 

@@ -1,0 +1,7 @@
+<%= turbo_stream.append "document-list" do %>
+  <% @documents.each do |document| %>
+    <%= turbo_frame_tag "preview_#{document.id}", src: preview_document_path(document) do %>
+      <div>Loading...</div>
+    <% end %>
+  <% end %>
+<% end %>

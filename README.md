@@ -7,14 +7,19 @@ e# product
 
 # FIX NOW NOW NOW
 
+- add pagination
+- fallback image
+
+# AFTER FIX NOW
+
 - error message if subscription fails
 - timelimit for trying to get website (hackernew.com as example)
 - extraction is blocking
 
+## DO LATER
+
 - replace subscription skeleton without refresh 
 - offline search
-
-## DO LATER
 
 - tell the user if extracted content cannot be rendered
 

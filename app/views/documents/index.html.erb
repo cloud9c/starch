@@ -1,4 +1,9 @@
-<%= turbo_frame_tag "documents" do %>
+<%= turbo_frame_tag "documents", 
+                    data: { 
+                      controller: "infinite-scroll", 
+                      infinite_scroll_page_value: 1, 
+                      infinite_scroll_status_value: params[:status] 
+                    } do %>
   <h1><%= params[:status].titleize %></h1>
-  <%= render "list" %>
+  <%= render partial: "list", locals: { documents: @documents } %>
 <% end %>

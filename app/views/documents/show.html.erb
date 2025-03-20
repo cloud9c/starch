@@ -1,12 +1,15 @@
 <div id="<%= dom_id(@document) %>" class="document">
   <div id="document-content">
+
     <header id="document-header">
       <div class="channel-container">
-        <img src="<%= @document.channel_icon %>" 
-             width="24" 
-             alt="<%= @document.channel_title %> icon"/>
-        <a><%= @document.channel_title %></a>
+        <picture>
+          <source srcset="<%= @document.channel.icon %>"/>
+          <%= image_tag "icons/feed-icon.svg", width: 24, alt: "#{@document.channel.title} icon" %>
+        </picture>
+        <a><%= @document.channel.title %></a>
       </div>
+      
       <hgroup>
         <h1 class="title"><%= @document.title %></h1>
         <h3 class="description"><%= @document.description %></h3>

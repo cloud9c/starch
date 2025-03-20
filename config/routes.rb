@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   get "search" => "search#index"
 
   resources :subscriptions
-  resources :documents
+  resources :documents do
+    member do
+      get :preview
+    end
+  end
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 end
