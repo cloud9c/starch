@@ -49,18 +49,18 @@ export default class extends Controller {
       }
     })
     .then(response => {
-      if (response.ok) {
+      if (response.status === 204) {
+        this.hasNextPageValue = false
+        return null
+      } else if (response.ok) {
         return response.text()
-      } else {
-        throw new Error("Failed to load more documents")
       }
     })
     .then(html => {
-      if (html.trim().length > 0) {
+      if (html) {
+        console.log(html)
         this.pageValue = nextPage
         Turbo.renderStreamMessage(html)
-      } else {
-        this.hasNextPageValue = false
       }
     })
     .catch(error => console.error(error))

@@ -4,7 +4,7 @@ class DocumentsController < ApplicationController
   def index
     status = params[:status] ||= "inbox"
     page = params[:page].present? ? params[:page].to_i : 1
-    per_page = 3
+    per_page = 10
 
     @documents = Document.owned_by_user(status.to_sym)
                         .select(:id)
@@ -13,7 +13,13 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream do
+        if @documents.empty?
+          head :no_content
+        else
+          render :index
+        end
+      end
     end
   end
 
