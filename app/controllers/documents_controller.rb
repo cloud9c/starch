@@ -8,6 +8,7 @@ class DocumentsController < ApplicationController
 
     @documents = Document.owned_by_user(status.to_sym)
                         .select(:id)
+                        .order(published_at: :desc)
                         .limit(per_page)
                         .offset((page - 1) * per_page)
 
