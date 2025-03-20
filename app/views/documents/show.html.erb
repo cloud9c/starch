@@ -2,21 +2,15 @@
   <div id="document-content">
 
     <header id="document-header">
-      <div class="channel-container">
-        <picture>
-          <source srcset="<%= @document.channel.icon %>"/>
-          <%= image_tag "icons/feed-icon.svg", width: 24, alt: "#{@document.channel.title} icon" %>
-        </picture>
-        <a><%= @document.channel.title %></a>
-      </div>
+      <%= render 'channel/preview', channel: @document.channel %>
       
       <hgroup>
-        <h1 class="title"><%= @document.title %></h1>
-        <h3 class="description"><%= @document.description %></h3>
+        <h1 class="document-title"><%= @document.title %></h1>
+        <p class="document-description"><%= @document.description %></p>
       </hgroup>
 
-      <div class="metadata-row">
-        <p class="author"><%= @document.author %></p>
+      <div class="document-metadata-row">
+        <p class="document-author"><%= @document.author %></p>
         <% if @document.published_at %>
           <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
         <% end %>

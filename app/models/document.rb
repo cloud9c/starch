@@ -72,27 +72,13 @@ class Document < ApplicationRecord
     return {} unless url
 
     Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 7.day) do
-      parsed_data = ReadingParser.extract(url)
-      next {} unless parsed_data
+      result = EntryHelper.get_extracted_entry_data(url)
 
-      content = EntryHelper.format_content(parsed_data["content"], url)
+      result.delete(:title) if self.title
+      result.delete(:author) if self.author
+      result.delete(:published_at) if self.published_at
 
-      result = {
-        title: EntryHelper.format_text(parsed_data["title"]),
-        content: content,
-        thumbnail_url: EntryHelper.extract_thumbnail(content)
-      }
-
-      # only add parsed data if original data is blank
-      if self.author.blank?
-        result[:author] = EntryHelper.format_text(parsed_data["byline"])
-      end
-
-      if self.published_at.blank?
-        result[:published_at] = DateTime.parse(parsed_data["publishedTime"]) rescue nil
-      end
-
-      result.compact
+      result
     end
   end
 

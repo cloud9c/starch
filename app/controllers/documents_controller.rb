@@ -25,7 +25,11 @@ class DocumentsController < ApplicationController
   end
 
   def preview
-    @document = Document.owned_by_user.find(params[:id]).with_view_preferences
+    @document = Document.owned_by_user
+                      .select(:id, :description, :title, :author, :thumbnail_url, :published_at, :entry_id, :url, :updated_at)
+                      .find(params[:id])
+                      .with_view_preferences
+
     render partial: "preview", locals: { document: @document }
   end
 

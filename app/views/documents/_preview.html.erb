@@ -2,25 +2,21 @@
   <%= link_to document_path(document, view_extracted: document.view_extracted?),
       data: { turbo_frame: "_top" },
       id: dom_id(document),
-      class: "document-item" do %>
-    <header>
-      <div class="channel-container">
-        <picture>
-          <source srcset="<%= @document.channel.icon %>"/>
-          <%= image_tag "icons/feed-icon.svg", width: 24, alt: "#{@document.channel.title} icon" %>
-        </picture>
-        <%= document.channel.title %>
-      </div>
+      class: "document-preview" do %>
+    <header class="document-preview-title">
+      <%= render 'channel/preview', channel: document.channel %>
 
       <% if document.published_at %>
         <p><%= document.published_at.strftime("%b %d, %Y") %></p>
       <% end %>
     </header>
-    <main>
-      <div>
-        <h1><%= document.title %></h1>
-        <p><%= document.description %></p>
-        <p><%= document.author %> · X min read</p>
+    <main class="document-preview-main">
+      <div class="document-preview-left">
+        <h3><%= document.title %></h3>
+        <div class="document-preview-metadata">
+          <p class="document-preview-description"><%= document.description %></p>
+          <p><%= document.author %></p>
+        </div>
       </div>
       <div>
         <% if document.thumbnail_url %>

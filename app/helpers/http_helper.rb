@@ -6,7 +6,7 @@ module HttpHelper
 
     return nil if response.error
 
-    if follow && response.status.between?(301, 302) && response.headers["location"]
+    if follow && response.status.between?(301, 302) && response.headers["location"].present?
       absolute_url = get_absolute_url(response.headers["location"], url)
       return get(absolute_url, headers, false)
     end
@@ -25,7 +25,6 @@ module HttpHelper
   end
 
   def get_absolute_url(path, url)
-    Rails.logger.debug "#{path}, #{url}"
     return path if is_absolute_url?(path)
 
     base_url = get_base_url(url)
@@ -56,23 +55,30 @@ module HttpHelper
   def get_feed_url(url, discover = true)
     url = normalize_url(url)
     response = get(url)
-    return unless response
+    return nil unless response
 
     feed = FeedHelper.parse(body_to_s(response)) rescue nil
+    return (feed.try(:feed_url) || url) if feed
 
-    unless feed
-      return nil unless discover
+    return nil unless discover
 
-      doc = Nokogiri::HTML(body_to_s(response))
-      path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
-             doc.at('link[type="application/rss+xml"]')&.[]("href")
-      url = get_absolute_url(path, url)
-      return unless url
+    html = body_to_s(response)
+    path = extract_feed_url(html)
+    return nil unless path
 
-      return get_feed_url(url, false)
-    end
+    feed_url = get_absolute_url(path, url)
+    return nil unless feed_url
 
-    feed&.respond_to?(:feed_url) && feed&.feed_url ? feed.feed_url : url
+    get_feed_url(feed_url, false)
+  end
+
+  def extract_feed_url(html)
+    doc = Nokogiri::HTML(html)
+
+    path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
+           doc.at('link[type="application/rss+xml"]')&.[]("href")
+
+    path
   end
 
   def get_icon(url)

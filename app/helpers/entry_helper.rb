@@ -92,15 +92,19 @@ module EntryHelper
     nil
   end
 
+  def format_content(html, url)
+    doc = Nokogiri::HTML(html)
+
+    open_links_in_new_tab(doc)
+    convert_links_to_absolute(doc, url)
+
+    doc.to_html
+  end
+
   def get_raw_entry_data(entry_data)
     url = HttpHelper.normalize_url(entry_data.url)
     content = EntryHelper.format_content(entry_data.content || entry_data.summary, url)
-    description = if entry_data.summary
-      entry_data.summary
-    elsif content.present?
-      clean_content = EntryHelper.format_text(content)
-      clean_content.slice(0, 150) + (clean_content.length > 150 ? "..." : "")
-    end
+    description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
       source_type: :rss,
@@ -114,13 +118,21 @@ module EntryHelper
     }
   end
 
-  def format_content(html, url)
-    doc = Nokogiri::HTML(html)
+  def get_extracted_entry_data(url)
+    parsed_data = ReadingParser.extract(url)
+    return {} unless parsed_data
 
-    open_links_in_new_tab(doc)
-    convert_links_to_absolute(doc, url)
+    content = EntryHelper.format_content(parsed_data["content"], url)
 
-    doc.to_html
+    result = {
+      content: content,
+      thumbnail_url: EntryHelper.extract_thumbnail(content),
+      title: EntryHelper.format_text(parsed_data["title"]),
+      author: EntryHelper.format_text(parsed_data["byline"]),
+      published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
+    }
+
+    result.compact
   end
 
   private

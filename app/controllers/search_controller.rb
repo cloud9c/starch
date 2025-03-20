@@ -20,7 +20,7 @@ class SearchController < ApplicationController
       .compact
       .uniq
 
-    documents = Document.with_channel_details.where(id: document_ids)
+    documents = Document.where(id: document_ids)
     documents.map(&:with_view_preferences)
   end
 end
