@@ -10,11 +10,14 @@ servers:
     hosts:
       - starchapp.com
     labels:
-      traefik.http.routers.starch.rule: Host(`starchapp.com`) || Host(`www.starchapp.com`)
-      traefik.http.middlewares.www-to-non-www.redirectregex.regex: "^https?://www\\.(.+)"
-      traefik.http.middlewares.www-to-non-www.redirectregex.replacement: "https://$${1}"
-      traefik.http.middlewares.www-to-non-www.redirectregex.permanent: "true"
-      traefik.http.routers.starch.middlewares: "www-to-non-www"
+      # www to non-www redirect middleware
+      traefik.http.middlewares.redirect-to-non-www.redirectregex.regex: ^https?://www.starchapp.com/(.*)
+      traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement: https://starchapp.com/$${1}
+      traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent: true
+
+      # Apply middleware to your HTTPS router
+      traefik.http.routers.starch-https.middlewares: redirect-to-non-www
+
   job:
     hosts:
       - starchapp.com
