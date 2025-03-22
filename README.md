@@ -1,14 +1,10 @@
-e# product
+# product
 - motto: human intelligence; design your own algorithm; curation
-
-# todo
-- treat body as a buffer/file
-	- https://honeyryderchuck.gitlab.io/httpx/wiki/Response-Handling#body-httpxresponsebody
 
 # FIX NOW NOW NOW
 
-- add pagination
-- fallback image
+- fallback image / proxy images that dont allow CORS
+- search autocomplete
 
 # AFTER FIX NOW
 
@@ -17,6 +13,8 @@ e# product
 - extraction is blocking
 
 ## DO LATER
+
+- www -> root domain
 
 - replace subscription skeleton without refresh 
 - offline search

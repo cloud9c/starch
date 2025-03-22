@@ -1,5 +1,5 @@
 # Name of your application. Used to uniquely configure containers.
-service: starch
+service: starch-staging
 
 # Name of the container image.
 image: cloud9c/starch
@@ -8,10 +8,10 @@ image: cloud9c/starch
 servers:
   web:
     hosts:
-      - starchapp.com
+      - staging.starchapp.com
   job:
     hosts:
-      - starchapp.com
+      - staging.starchapp.com
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -21,8 +21,7 @@ servers:
 proxy:
   ssl: true
   hosts: 
-    - starchapp.com
-    - www.starchapp.com
+    - staging.starchapp.com
 
 # Credentials for your image host.
 registry:
@@ -56,6 +55,8 @@ env:
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
 
+    RAILS_ENV: production
+
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
 aliases:
@@ -67,8 +68,8 @@ aliases:
 # Use a persistent storage volume for sqlite database files and local Active Storage files.
 # Recommended to change this to a mounted volume path that is backed up off server.
 volumes:
-  - "starch_storage:/rails/storage"
-  - "typesense-data:/data"
+  - "starch_storage_staging:/rails/storage"
+  - "typesense-data-staging:/data"
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
 # hitting 404 on in-flight requests. Combines all files from new and old
@@ -102,10 +103,10 @@ accessories:
       --api-key=xyz 
       --listen-port 8108 
       --enable-cors
-    host: starchapp.com
-    port: 8108
+    host: staging.starchapp.com
+    port: 8109
     volumes:
-      - "typesense-data:/data"
+      - "typesense-data-staging:/data"
     env:
       clear:
         RAILS_ENV: production
@@ -114,5 +115,5 @@ accessories:
   reading_parser:
     image: ghcr.io/cloud9c/reading_parser
     cmd: 'npm start'
-    host: starchapp.com
-    port: 3001
+    host: staging.starchapp.com
+    port: 3002
