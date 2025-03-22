@@ -7,7 +7,14 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    - 45.76.2.10
+    hosts:
+      - starchapp.com
+    labels:
+      traefik.http.routers.starch.rule: Host(`starchapp.com`) || Host(`www.starchapp.com`)
+      traefik.http.middlewares.www-to-non-www.redirectregex.regex: "^https?://www\\.(.+)"
+      traefik.http.middlewares.www-to-non-www.redirectregex.replacement: "https://$${1}"
+      traefik.http.middlewares.www-to-non-www.redirectregex.permanent: "true"
+      traefik.http.routers.starch.middlewares: "www-to-non-www"
   job:
     hosts:
       - starchapp.com
