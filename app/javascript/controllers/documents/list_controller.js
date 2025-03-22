@@ -1,17 +1,17 @@
 import { Controller } from "@hotwired/stimulus"
+import { FetchRequest } from '@rails/request.js'
 
 export default class extends Controller {
-  static targets = ["items", "pagination"]
   static values = { 
     page: { type: Number, default: 1 },
     loading: { type: Boolean, default: false },
     hasNextPage: { type: Boolean, default: true },
-    status: String
+    threshold: { type: Number, default: 500 },
+    status: { type: String, default: 'inbox' }
   }
   
   initialize() {
     this.scroll = this.scroll.bind(this)
-    this.statusValue = this.element.dataset.status
   }
   
   connect() {
@@ -26,14 +26,14 @@ export default class extends Controller {
     if (this.loadingValue || !this.hasNextPageValue) return
     
     const scrollPosition = window.scrollY + window.innerHeight
-    const bottomPosition = document.body.scrollHeight - 500
+    const bottomPosition = document.body.scrollHeight - this.thresholdValue
     
     if (scrollPosition >= bottomPosition) {
       this.loadMore()
     }
   }
   
-  loadMore() {
+  async loadMore() {
     this.loadingValue = true
     const nextPage = this.pageValue + 1
     
@@ -42,29 +42,23 @@ export default class extends Controller {
     if (this.statusValue) {
       url += `&status=${this.statusValue}`
     }
-    
-    fetch(url, {
-      headers: {
-        "Accept": "text/vnd.turbo-stream.html"
-      }
-    })
-    .then(response => {
-      if (response.status === 204) {
-        this.hasNextPageValue = false
-        return null
-      } else if (response.ok) {
-        return response.text()
-      }
-    })
-    .then(html => {
-      if (html) {
-        this.pageValue = nextPage
-        Turbo.renderStreamMessage(html)
-      }
-    })
-    .catch(error => console.error(error))
-    .finally(() => {
+
+    const request = new FetchRequest('GET', url, {
+    headers: {
+      "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
+    }
+  })
+    const response = await request.perform()
+  
+    if (response.status === 204) {
+      this.hasNextPageValue = false
       this.loadingValue = false
-    })
+    } else if (response.ok) {
+      this.pageValue = nextPage
+      const html = await response.text
+      this.loadingValue = false
+      
+      Turbo.renderStreamMessage(html)
+    }
   }
 }

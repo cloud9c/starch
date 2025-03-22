@@ -1,8 +1,5 @@
 <%= turbo_frame_tag "documents" do %>
-  <div data-controller="infinite-scroll" 
-       data-infinite-scroll-page-value="1" 
-       data-infinite-scroll-status-value="<%= params[:status] %>"
-       id="document-status-page">
+  <div id="document-status-page">
     <h1><%= params[:status].titleize %></h1>
     <%= render partial: "list", locals: { documents: @documents } %>
   </div>

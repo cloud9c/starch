@@ -1,4 +1,6 @@
-<div id="document-list" data-infinite-scroll-target="items">
+<div id="document-list" data-controller="documents--list" 
+       data-documents--list-page-value="1" 
+       data-documents--list-status-value="<%= params[:status] %>">
   <% if @documents.present? %>
     <% @documents.each do |document| %>
       <%= turbo_frame_tag "preview_#{document.id}", src: preview_document_path(document) do %>

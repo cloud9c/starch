@@ -90,3 +90,6 @@ end
 
 # inspect job queues
 gem "mission_control-jobs"
+
+# AJAX header defaults
+gem "requestjs-rails"

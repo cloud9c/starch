@@ -11,4 +11,4 @@ if ('serviceWorker' in navigator) {
     .catch(function(error) {
       console.log('Service Worker registration failed:', error);
     });
-}
+}import "@rails/request.js"
