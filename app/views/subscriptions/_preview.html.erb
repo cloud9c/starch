@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(subscription) do %>
+<%= turbo_frame_tag dom_id(subscription, "preview") do %>
   <div id="<%= dom_id(subscription) %>">
 
     <%= render 'channel/preview', channel: subscription.channel %>

@@ -1,4 +1,4 @@
-module EntryHelper
+module EntryUtils
   extend self
 
   mattr_reader :cache_duration, default: 7.days
@@ -10,7 +10,11 @@ module EntryHelper
     if entry_data.id.present?
       parts << entry_data.id
     else
-      parts << HttpHelper.remove_protocol_and_host(entry_data.url) if entry_data.url
+      if entry_data.url
+        entry_url = Url.new(entry_data.url)
+        parts << entry_url.remove_protocol_and_host
+      end
+
       parts << entry_data.published.iso8601 if entry_data.published
       parts << entry_data.title if entry_data.title
     end
@@ -27,7 +31,7 @@ module EntryHelper
   end
 
   def get_new_and_updated(feed_url, feed_content)
-    feed = FeedHelper.parse(feed_content) rescue nil
+    feed = ChannelUtils.parse_feed(feed_content) rescue nil
 
     Rails.logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
 
@@ -102,19 +106,19 @@ module EntryHelper
   end
 
   def get_raw_entry_data(entry_data)
-    url = HttpHelper.normalize_url(entry_data.url)
-    content = EntryHelper.format_content(entry_data.content || entry_data.summary, url)
+    url = Url.normalize(entry_data.url)
+    content = self.format_content(entry_data.content || entry_data.summary, url)
     description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
       source_type: :rss,
-      title: EntryHelper.format_text(entry_data.title),
-      description: EntryHelper.format_text(description),
-      author: EntryHelper.format_text(entry_data.author),
+      title: self.format_text(entry_data.title),
+      description: self.format_text(description),
+      author: self.format_text(entry_data.author),
       published_at: entry_data.published || Time.current,
       url: url,
       content: content,
-      thumbnail_url: EntryHelper.extract_thumbnail(content)
+      thumbnail_url: self.extract_thumbnail(content)
     }
   end
 
@@ -122,13 +126,13 @@ module EntryHelper
     parsed_data = ReadingParser.extract(url)
     return {} unless parsed_data
 
-    content = EntryHelper.format_content(parsed_data["content"], url)
+    content = self.format_content(parsed_data["content"], url)
 
     result = {
       content: content,
-      thumbnail_url: EntryHelper.extract_thumbnail(content),
-      title: EntryHelper.format_text(parsed_data["title"]),
-      author: EntryHelper.format_text(parsed_data["byline"]),
+      thumbnail_url: self.extract_thumbnail(content),
+      title: self.format_text(parsed_data["title"]),
+      author: self.format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
     }
 
@@ -145,17 +149,21 @@ module EntryHelper
   end
 
   def convert_links_to_absolute(doc, base_url)
+    base = Url.new(base_url)
+
     doc.css("img, iframe, video, audio, source").each do |element|
       if element["src"] && !element["src"].empty?
-        element["src"] = HttpHelper.get_absolute_url(element["src"], base_url)
+        element["src"] = base.to_absolute(element["src"])
       end
     end
 
     doc.css("object").each do |element|
       if element["data"] && !element["data"].empty?
-        element["data"] = HttpHelper.get_absolute_url(element["data"], base_url)
+        element["data"] = base.to_absolute(element["data"])
       end
     end
+
+    doc
   end
 
   def is_new?(stable_id)

@@ -1,3 +1,5 @@
-<%= turbo_stream.replace "subscription_#{@subscription.id}" do %>
-  <%= render partial: "subscription", locals: { subscription: @subscription } %>
+<% if @subscription %>
+  <%= turbo_stream.replace dom_id(@subscription) do %>
+    <%= render partial: "subscriptions/preview", locals: { subscription: @subscription } %>
+  <% end %>
 <% end %>

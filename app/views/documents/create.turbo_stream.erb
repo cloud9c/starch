@@ -1,5 +1,5 @@
 <% if @document %>
   <%= turbo_stream.append "document_list" do %>
-    <%= render @document %>
+    <%= render partial: "documents/preview" %>
   <% end %>
 <% end %>

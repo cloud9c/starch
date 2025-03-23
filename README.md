@@ -1,18 +1,19 @@
 # product
 - motto: human intelligence; design your own algorithm; curation
 
-# FIX NOW NOW NOW
+# p0
 
 - fallback image / proxy images that dont allow CORS
-- search autocomplete
+- search autocomplete for subscriptions
+- show content preview as description if no description
 
-# AFTER FIX NOW
+# p1
 
 - error message if subscription fails
 - timelimit for trying to get website (hackernew.com as example)
 - extraction is blocking
 
-## DO LATER
+## p2
 
 - www -> root domain
 

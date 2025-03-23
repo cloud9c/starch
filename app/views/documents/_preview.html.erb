@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "preview_#{document.id}" do %>
+<%= turbo_frame_tag dom_id(document, "preview") do %>
   <%= link_to document_path(document, view_extracted: document.view_extracted?),
       data: { turbo_frame: "_top",
               controller: "documents--preview",

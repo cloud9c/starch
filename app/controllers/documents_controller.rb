@@ -25,10 +25,7 @@ class DocumentsController < ApplicationController
   end
 
   def preview
-    @document = Document.owned_by_user
-                      .select(:id, :description, :title, :author, :thumbnail_url, :published_at, :entry_id, :url, :updated_at)
-                      .find(params[:id])
-                      .with_view_preferences
+    @document = Document.for_preview.find(params[:id]).with_view_preferences.with_description
 
     document_user_state = @document.document_states.find_by(user_id: Current.user.id)
     @seen = document_user_state&.seen || false

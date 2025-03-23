@@ -13,8 +13,7 @@ class Channel < ApplicationRecord
     headers["If-Modified-Since"] = self.polled_at.httpdate if self.polled_at
     headers["If-None-Match"] = self.etag if self.etag
 
-    response = HttpHelper.get(self.feed_url, headers)
-
+    response = Url.get(self.feed_url, headers)
     return false unless response
 
     self.polled_at = Time.current
@@ -22,35 +21,92 @@ class Channel < ApplicationRecord
 
     return false if response.status == 304
 
-    self.feed_content = HttpHelper.body_to_s(response)
+    self.feed_content = ChannelUtils.body_to_s(response)
     save!
 
     true
   end
 
   def update_metadata
-    feed = FeedHelper.parse(self.feed_content) rescue nil
+    feed = ChannelUtils.parse_feed(self.feed_content) rescue nil
     return unless feed
 
-    feed_url = HttpHelper.normalize_url(feed.try(:feed_url)) || self.feed_url
-    url = HttpHelper.normalize_url(
-      feed.try(:url) || HttpHelper.get_base_url(feed_url)
+    feed_url = Url.normalize(feed.try(:feed_url)) || self.feed_url
+
+    url = Url.normalize(
+      feed.try(:url) || Url.new(feed_url).base_url
     )
 
     attributes = {
-      title: EntryHelper.format_text(feed.try(:title)),
-      description: EntryHelper.format_text(feed.try(:description)),
+      title: EntryUtils.format_text(feed.try(:title)),
+      description: EntryUtils.format_text(feed.try(:description)),
       feed_url: feed_url,
       url: url,
-      icon: HttpHelper.get_icon(url)
+      icon: ChannelUtils.get_icon(url)
     }.compact
 
     update(attributes) unless attributes.empty?
   end
 
+  def poll
+    result = EntryUtils.get_new_and_updated(self.feed_url, self.feed_content)
+
+    result[:new].each do |entry_data|
+      self.create_entry(entry_data)
+    end
+
+    result[:updated].each do |entry_data|
+      self.update_entry(entry_data)
+    end
+
+    return if self.initial_poll_complete?
+
+    self.with_lock do
+      # double check after locking
+      return if self.initial_poll_complete?
+
+      self.update(initial_poll_complete: true)
+
+      self.subscriptions.each do |subscription|
+        subscription.add_recent_entries
+      end
+    end
+  end
+
   private
 
   def schedule_initial_update
-    UpdateChannelJob.perform_now(id, true)
+    UpdateChannelJob.perform_now(id)
+  end
+
+  def create_entry(entry_data)
+    entry = self.entries.create(
+      stable_id: EntryUtils.get_stable_id(self.feed_url, entry_data),
+      fingerprint: EntryUtils.get_fingerprint(entry_data)
+    )
+
+    raw_entry_data = EntryUtils.get_raw_entry_data(entry_data)
+    document = entry.create_document(raw_entry_data)
+
+    if document.published_at > self.created_at
+      users = entry.channel.users
+
+      document_states = users.map do |user|
+        { user_id: user.id, document_id: document.id }
+      end
+
+      DocumentState.insert_all!(document_states)
+
+      document.update_search_index
+
+      # warm up extracted document
+      ExtractDocumentJob.perform_later(document.id)
+    end
+  end
+
+  def update_entry(entry_data)
+    stable_id = EntryUtils.get_stable_id(self.feed_url, entry_data)
+    existing_entry = Entry.find_by(stable_id: stable_id)
+    existing_entry&.update_from_feed(entry_data)
   end
 end

@@ -56,13 +56,30 @@ class Document < ApplicationRecord
     end
   end
 
+  def self.for_preview
+    owned_by_user
+      .select(:id, :description, :title, :author, :thumbnail_url, :published_at, :entry_id, :url, :updated_at)
+  end
+
   def with_view_preferences
     return self unless view_extracted?
 
-    if !extracted_data.empty?
+    unless extracted_data.blank?
       [ :title, :description, :content, :thumbnail_url ].each do |attr|
-        self[attr] = extracted_data[attr] if extracted_data[attr].present?
+        self[attr] = extracted_data[attr] unless extracted_data[attr].blank?
       end
+    end
+
+    self
+  end
+
+  def with_description
+    return self unless description.blank?
+
+    content_doc = Document.select(:content).find(id)
+    if content_doc.content.present?
+      preview_text = EntryUtils.format_text(content_doc.content.strip.gsub(/\s+/, " "))[0...300]
+      self.description = preview_text
     end
 
     self
@@ -72,7 +89,7 @@ class Document < ApplicationRecord
     return {} unless url
 
     Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 7.day) do
-      result = EntryHelper.get_extracted_entry_data(url)
+      result = EntryUtils.get_extracted_entry_data(url)
 
       result.delete(:title) if self.title
       result.delete(:author) if self.author

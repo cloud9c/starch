@@ -14,7 +14,7 @@ class Entry < ApplicationRecord
   }
 
   def update_from_feed(entry_data)
-    update!(fingerprint: EntryHelper.get_fingerprint(entry_data))
+    update!(fingerprint: EntryUtils.get_fingerprint(entry_data))
     update_document(entry_data)
     self
   end
@@ -22,7 +22,7 @@ class Entry < ApplicationRecord
   private
 
   def update_document(entry_data)
-    raw_data = EntryHelper.get_raw_entry_data(entry_data)
+    raw_data = EntryUtils.get_raw_entry_data(entry_data)
     document.update!(raw_data)
   end
 end
