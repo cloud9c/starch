@@ -1,5 +1,3 @@
-ALLOWED_IPS = Rails.application.credentials.dig(:tailscale, :allowed_ips) || []
-
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
@@ -23,14 +21,5 @@ Rails.application.routes.draw do
     end
   end
 
-
-  if Rails.env.development?
-    mount MissionControl::Jobs::Engine, at: "/jobs"
-  else
-    constraints lambda { |request|
-      ALLOWED_IPS.include?(request.remote_ip)
-    } do
-      mount MissionControl::Jobs::Engine, at: "/jobs"
-    end
-  end
+  mount MissionControl::Jobs::Engine, at: "/jobs"
 end
