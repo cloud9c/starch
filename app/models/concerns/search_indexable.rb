@@ -2,9 +2,9 @@ module SearchIndexable
   extend ActiveSupport::Concern
 
   included do
-    after_create :create_search_index
+    after_create :upsert_search_index
     after_update :update_search_index
-    after_destroy :remove_search_index
+    after_destroy :destroy_search_index
   end
 
   def update_search_index
@@ -21,13 +21,7 @@ module SearchIndexable
 
   private
 
-  def create_search_index
-    SearchEngine.client.collections[self.class.search_collection_name]
-                  .documents
-                  .create(search_attributes)
-  end
-
-  def remove_search_index
+  def destroy_search_index
     SearchEngine.client.collections[self.class.search_collection_name]
                   .documents[id.to_s]
                   .delete
