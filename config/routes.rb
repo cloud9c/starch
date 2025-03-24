@@ -1,6 +1,6 @@
-Rails.application.routes.draw do
-  get "up" => "rails/health#show", as: :rails_health_check
+ALLOWED_IPS = Rails.application.credentials.dig(:tailscale, :allowed_ips) || []
 
+Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
@@ -21,5 +21,11 @@ Rails.application.routes.draw do
     end
   end
 
-  mount MissionControl::Jobs::Engine, at: "/jobs"
+  constraints lambda { |request|
+    ALLOWED_IPS.include?(request.remote_ip) ||
+    IPAddr.new('100.64.0.0/10').include?(IPAddr.new(request.remote_ip))
+  } do
+    get "up" => "rails/health#show", as: :rails_health_check
+    mount MissionControl::Jobs::Engine, at: "/jobs"
+  end
 end
