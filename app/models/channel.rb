@@ -31,7 +31,7 @@ class Channel < ApplicationRecord
     feed = ChannelUtils.parse_feed(self.feed_content) rescue nil
     return unless feed
 
-    feed_url = Url.normalize(feed.try(:feed_url)) || self.feed_url
+    feed_url = Url.normalize(feed.try(:feed_url) || self.feed_url)
 
     url = Url.normalize(
       feed.try(:url) || Url.new(feed_url).base_url

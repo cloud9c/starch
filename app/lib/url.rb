@@ -2,6 +2,8 @@ class Url
   attr_reader :uri
 
   def initialize(url, normalize = true)
+    return nil if url.blank?
+
     if !normalize
       @uri = URI.parse(url)
       return
