@@ -8,31 +8,21 @@ module SearchIndexable
   end
 
   def update_search_index
-    SearchEngine.client.collections[self.class.search_collection_name]
-                  .documents[id.to_s]
-                  .update(search_attributes)
+    search_collection.documents[id.to_s].update(search_attributes)
   end
 
   def upsert_search_index
-    SearchEngine.client.collections[self.class.search_collection_name]
-                  .documents
-                  .upsert(search_attributes)
+    search_collection.documents.upsert(search_attributes)
   end
 
   private
 
   def destroy_search_index
-    SearchEngine.client.collections[self.class.search_collection_name]
-                  .documents[id.to_s]
-                  .delete
+    search_collection.documents[id.to_s]&.delete
   end
 
   def search_attributes
     raise NotImplementedError, "#{self.class} must implement search_attributes method"
-  end
-
-  def search_document
-    SearchEngine.client.collections[self.class.search_collection_name]
   end
 
   class_methods do
