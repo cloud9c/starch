@@ -23,6 +23,7 @@ proxy:
   hosts: 
     - starchapp.com
     - www.starchapp.com
+  forward_headers: true
 
 # Credentials for your image host.
 registry:

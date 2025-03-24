@@ -22,6 +22,7 @@ proxy:
   ssl: true
   hosts: 
     - staging.starchapp.com
+  forward_headers: true
 
 # Credentials for your image host.
 registry:

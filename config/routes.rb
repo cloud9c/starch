@@ -24,9 +24,13 @@ Rails.application.routes.draw do
   end
 
 
-  constraints lambda { |request|
-    ALLOWED_IPS.include?(request.remote_ip)
-  } do
+  if Rails.env.development?
     mount MissionControl::Jobs::Engine, at: "/jobs"
+  else
+    constraints lambda { |request|
+      ALLOWED_IPS.include?(request.remote_ip)
+    } do
+      mount MissionControl::Jobs::Engine, at: "/jobs"
+    end
   end
 end
