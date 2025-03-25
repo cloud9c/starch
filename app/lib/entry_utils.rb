@@ -112,15 +112,16 @@ module EntryUtils
     origin = UrlUtils.normalize(url)
 
     doc.css("img, iframe, video, audio, source").each do |element|
-      if element["src"] && !element["src"].empty?
+      if element["src"]
         element["src"] = URI.join(origin, element["src"]).to_s
       end
     end
 
     doc.css("object").each do |element|
-      if element["data"] && !element["data"].empty?
+      if element["data"]
         element["data"] = URI.join(origin, element["data"]).to_s
       end
+    end
 
     doc.to_html
   end
