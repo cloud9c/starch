@@ -24,19 +24,10 @@ class Url
     @uri.to_s
   end
 
-  def get(headers = {})
-    return nil unless @uri
-
-    response = HTTPX.plugin(:follow_redirects).get(@uri.to_s, headers: headers)
-    return nil if response.error
-
-    response
-  end
-
   def to_absolute(path)
     return path if Url.is_absolute?(path)
 
-    uri = URI.join(base_url, path) rescue nil
+    uri = URI.join(self.origin, path) rescue nil
     uri ? uri.to_s : nil
   end
 
@@ -44,7 +35,7 @@ class Url
     @uri && @uri.scheme =~ /\A(http|https)\z/
   end
 
-  def base_url
+  def origin
     return nil unless @uri
 
     if @uri.port == @uri.default_port
@@ -64,13 +55,6 @@ class Url
   def self.normalize(url)
     instance = new(url)
     instance.uri ? instance.to_s : nil
-  end
-
-  # Static method for making GET requests to arbitrary URLs
-  def self.get(url, headers = {})
-    response = HTTPX.plugin(:follow_redirects).get(url, headers: headers)
-    return nil if response.error
-    response
   end
 
   def self.is_absolute?(path)

@@ -148,18 +148,18 @@ module EntryUtils
     end
   end
 
-  def convert_links_to_absolute(doc, base_url)
-    base = Url.new(base_url)
+  def convert_links_to_absolute(doc, origin_url)
+    origin = Url.new(origin_url)
 
     doc.css("img, iframe, video, audio, source").each do |element|
       if element["src"] && !element["src"].empty?
-        element["src"] = base.to_absolute(element["src"])
+        element["src"] = origin.to_absolute(element["src"])
       end
     end
 
     doc.css("object").each do |element|
       if element["data"] && !element["data"].empty?
-        element["data"] = base.to_absolute(element["data"])
+        element["data"] = origin.to_absolute(element["data"])
       end
     end
 

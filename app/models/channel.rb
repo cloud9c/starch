@@ -13,8 +13,9 @@ class Channel < ApplicationRecord
     headers["If-Modified-Since"] = self.polled_at.httpdate if self.polled_at
     headers["If-None-Match"] = self.etag if self.etag
 
-    response = Url.get(self.feed_url, headers)
-    return false unless response
+    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
+    response = http.get(self.feed_url, headers: headers)
+    return false if response.error
 
     self.polled_at = Time.current
     self.etag = response.headers[:Etag]
@@ -34,7 +35,7 @@ class Channel < ApplicationRecord
     feed_url = Url.normalize(feed.try(:feed_url) || self.feed_url)
 
     url = Url.normalize(
-      feed.try(:url) || Url.new(feed_url).base_url
+      feed.try(:url) || Url.new(feed_url).origin
     )
 
     attributes = {
