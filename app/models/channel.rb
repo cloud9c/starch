@@ -32,11 +32,11 @@ class Channel < ApplicationRecord
     feed = ChannelUtils.parse_feed(self.feed_content) rescue nil
     return unless feed
 
-    feed_url = Url.normalize(feed.try(:feed_url) || self.feed_url)
+    feed_url = UrlUtils.normalize(feed.try(:feed_url) || self.feed_url).to_s
 
-    url = Url.normalize(
-      feed.try(:url) || Url.new(feed_url).origin
-    )
+    url = UrlUtils.normalize(
+      feed.try(:url) || UrlUtils.get_origin(UrlUtils.normalize(feed_url))
+    ).to_s
 
     attributes = {
       title: EntryUtils.format_text(feed.try(:title)),

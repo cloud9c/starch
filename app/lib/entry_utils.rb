@@ -11,7 +11,10 @@ module EntryUtils
       parts << entry_data.id
     else
       if entry_data.url
-        entry_url = Url.new(entry_data.url)
+        uri = URI(entry_data.url)
+        result = [ uri.userinfo, uri.path, uri.query, uri.fragment ].compact.join
+        result.empty? || result == "/" ? uri.to_s : result
+
         parts << entry_url.without_protocol_and_host
       end
 
@@ -106,24 +109,24 @@ module EntryUtils
     end
 
     # convert relative to absolute links
-    origin = Url.new(url)
+    origin = UrlUtils.normalize(url)
 
     doc.css("img, iframe, video, audio, source").each do |element|
       if element["src"] && !element["src"].empty?
-        element["src"] = origin.with_path(element["src"])
+        element["src"] = URI.join(origin, element["src"]).to_s
       end
     end
 
     doc.css("object").each do |element|
       if element["data"] && !element["data"].empty?
-        element["data"] = origin.with_path(element["data"])
+        element["data"] = URI.join(origin, element["data"]).to_s
       end
 
     doc.to_html
   end
 
   def get_raw_entry_data(entry_data)
-    url = Url.normalize(entry_data.url)
+    url = UrlUtils.normalize(entry_data.url)
     content = self.format_html(entry_data.content || entry_data.summary, url)
     description = entry_data.summary if entry_data.summary && entry_data.content
 

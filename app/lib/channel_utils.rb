@@ -10,23 +10,21 @@ module ChannelUtils
   end
 
   def get_feed_url(url, discover = true)
-    url_instance = Url.new(url)
+    normalized_url = UrlUtils.normalize(url)
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(url_instance.to_s, headers: headers)
+    response = http.get(normalized_url, headers: headers)
     return nil if response.error
 
     feed = self.parse_feed(body_to_s(response)) rescue nil
-    return (feed.try(:feed_url) || url_instance.to_s) if feed
+    return (feed.try(:feed_url) || normalized_url) if feed
 
     if discover
       html = body_to_s(response)
       path = extract_feed_url(html)
       return nil unless path
 
-      feed_url = url_instance.with_path(path)
-      return nil unless feed_url
-
+      feed_url = URI.join(normalized_url, path).to_s
       get_feed_url(feed_url, false)
     end
   end
@@ -41,7 +39,7 @@ module ChannelUtils
   end
 
   def get_icon(url)
-    origin = Url.new(url).origin
+    origin = UrlUtils.get_origin(UrlUtils.normalize(url))
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(origin, headers: headers)
@@ -51,7 +49,7 @@ module ChannelUtils
     candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
 
     absolute_candidates = candidates.map do |href|
-      origin.with_path(href)
+      URI.join(origin, href).to_s
     end.compact
 
     ranked_images = absolute_candidates.first(5).map do |abs_url|
