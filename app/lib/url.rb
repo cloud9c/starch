@@ -24,7 +24,7 @@ class Url
     @uri.to_s
   end
 
-  def to_absolute(path)
+  def with_path(path)
     return path if Url.is_absolute?(path)
 
     uri = URI.join(self.origin, path) rescue nil
@@ -45,7 +45,7 @@ class Url
     end
   end
 
-  def remove_protocol_and_host
+  def without_protocol_and_host
     return nil unless @uri
 
     result = [ @uri.userinfo, @uri.path, @uri.query, @uri.fragment ].compact.join

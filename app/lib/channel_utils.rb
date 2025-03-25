@@ -24,7 +24,7 @@ module ChannelUtils
       path = extract_feed_url(html)
       return nil unless path
 
-      feed_url = url_instance.to_absolute(path)
+      feed_url = url_instance.with_path(path)
       return nil unless feed_url
 
       get_feed_url(feed_url, false)
@@ -51,7 +51,7 @@ module ChannelUtils
     candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
 
     absolute_candidates = candidates.map do |href|
-      origin.to_absolute(href)
+      origin.with_path(href)
     end.compact
 
     ranked_images = absolute_candidates.first(5).map do |abs_url|

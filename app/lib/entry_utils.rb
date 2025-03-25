@@ -12,7 +12,7 @@ module EntryUtils
     else
       if entry_data.url
         entry_url = Url.new(entry_data.url)
-        parts << entry_url.remove_protocol_and_host
+        parts << entry_url.without_protocol_and_host
       end
 
       parts << entry_data.published.iso8601 if entry_data.published
@@ -96,18 +96,35 @@ module EntryUtils
     nil
   end
 
-  def format_content(html, url)
+  def format_html(html, url)
     doc = Nokogiri::HTML(html)
 
-    open_links_in_new_tab(doc)
-    convert_links_to_absolute(doc, url)
+    # open links in new tab
+    doc.css("a").each do |link|
+      link["target"] = "_blank"
+      link["rel"] = "noopener noreferrer"
+    end
+
+    # convert relative to absolute links
+    origin = Url.new(url)
+
+    doc.css("img, iframe, video, audio, source").each do |element|
+      if element["src"] && !element["src"].empty?
+        element["src"] = origin.with_path(element["src"])
+      end
+    end
+
+    doc.css("object").each do |element|
+      if element["data"] && !element["data"].empty?
+        element["data"] = origin.with_path(element["data"])
+      end
 
     doc.to_html
   end
 
   def get_raw_entry_data(entry_data)
     url = Url.normalize(entry_data.url)
-    content = self.format_content(entry_data.content || entry_data.summary, url)
+    content = self.format_html(entry_data.content || entry_data.summary, url)
     description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
@@ -126,7 +143,7 @@ module EntryUtils
     parsed_data = ReadingParser.extract(url)
     return {} unless parsed_data
 
-    content = self.format_content(parsed_data["content"], url)
+    content = self.format_html(parsed_data["content"], url)
 
     result = {
       content: content,
@@ -140,31 +157,6 @@ module EntryUtils
   end
 
   private
-
-  def open_links_in_new_tab(doc)
-    doc.css("a").each do |link|
-      link["target"] = "_blank"
-      link["rel"] = "noopener noreferrer"
-    end
-  end
-
-  def convert_links_to_absolute(doc, origin_url)
-    origin = Url.new(origin_url)
-
-    doc.css("img, iframe, video, audio, source").each do |element|
-      if element["src"] && !element["src"].empty?
-        element["src"] = origin.to_absolute(element["src"])
-      end
-    end
-
-    doc.css("object").each do |element|
-      if element["data"] && !element["data"].empty?
-        element["data"] = origin.to_absolute(element["data"])
-      end
-    end
-
-    doc
-  end
 
   def is_new?(stable_id)
     return false if Rails.cache.exist?("feed_entry:#{stable_id}")
