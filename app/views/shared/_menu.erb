@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "menu" do %>
   <div>
     <% on_root = current_page?(root_path) || current_page?(documents_path) %>
-    <% turbo_option = on_root ? { turbo_frame: "documents" } : { turbo: false } %>
+    <% turbo_option = on_root ? { turbo_frame: "document-previews" } : { turbo: false } %>
     <% filter_path = on_root ? documents_path : root_path %>
     
     <%= link_to "Inbox", "#{filter_path}?status=inbox", data: turbo_option %>

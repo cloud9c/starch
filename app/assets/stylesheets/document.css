@@ -1,19 +1,18 @@
-#documents {
+#document-list {
 	width: 100%;
+	display: flex;
+	flex-direction: column;
+	border-right: 1px solid lightgray;
 }
 
-#document-status-page {
-	width: 100%;
+#document-previews {
+	width: min(100%, 30em);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-#document-list {
-	display: flex;
-	flex-direction: column;
-	width: min(100%, 40em);
-}
+/*preview stuff*/
 
 .document-preview {
 	display: block;
@@ -32,6 +31,7 @@
 .document-preview-main {
 	width: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
 	gap: 1em;
 }
@@ -48,15 +48,28 @@
 	border-radius: 0.5em;
 }
 
-.document {
-	display: flex;
-	width: 100%;
-	padding: 0 1.5em;
-	justify-content: center;
+.document-preview-description {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.5em;
+	height: 4.5em;
+	max-height: 4.5em;
 }
 
-#document-content {
-	width: min(100%, 45em);
+/* document show */
+
+#document-show {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	padding: 1em;
+}
+
+.document-content {
+	width: min(100%, 40em);
 }
 
 .document-title {
@@ -67,20 +80,20 @@
 	font-weight: normal;
 }
 
-#document-body {
+.document-body {
 	margin-bottom: 1em;
 }
 
-#document-body p {
+.document-body p {
 	margin-bottom: 1em;
 }
 
-#document-body * {
+.document-body * {
 	max-width: 100%;
 	height: auto;
 }
 
-#document-body figure {
+.document-body figure {
 	margin: 2em 0;
 }
 
@@ -94,15 +107,4 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-}
-
-.document-preview-description {
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	line-height: 1.5em;
-	height: 4.5em;
-	max-height: 4.5em;
 }

@@ -1,29 +1,32 @@
-<div id="<%= dom_id(@document) %>" class="document">
-  <div id="document-content">
+<%= turbo_frame_tag "document-show" do %>
+  <% if @document.present? %>
+    <div id="<%= dom_id(@document) %>" class="document-content">
+      <header class="document-header">
+        <%= render 'channel/preview', channel: @document.channel %>
+        
+        <hgroup>
+          <h1 class="document-title"><%= @document.title %></h1>
+          <p class="document-description"><%= @document.description %></p>
+        </hgroup>
 
-    <header id="document-header">
-      <%= render 'channel/preview', channel: @document.channel %>
+        <div class="document-metadata-row">
+          <p class="document-author"><%= @document.author %></p>
+          <% if @document.published_at %>
+            <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+          <% end %>
+        </div>
+
+        <%= button_to "Delete", document_path(@document), 
+        method: :delete %>
+      </header>
+
+      <hr/>
       
-      <hgroup>
-        <h1 class="document-title"><%= @document.title %></h1>
-        <p class="document-description"><%= @document.description %></p>
-      </hgroup>
-
-      <div class="document-metadata-row">
-        <p class="document-author"><%= @document.author %></p>
-        <% if @document.published_at %>
-          <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
-        <% end %>
-      </div>
-
-      <%= button_to "Delete", document_path(@document), 
-      method: :delete %>
-    </header>
-
-    <hr/>
-    
-    <article id="document-body">
-      <%= render_document_html @document.content %>
-    </article>
-  </div>
-</div>
+      <article class="document-body">
+        <%= render_document_html @document.content %>
+      </article>
+    </div>
+  <% else %>
+    <div>hello</div>
+  <% end %>
+<% end %>

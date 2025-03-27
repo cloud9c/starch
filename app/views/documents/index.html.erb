@@ -1,6 +1,3 @@
-<%= turbo_frame_tag "documents" do %>
-  <div id="document-status-page">
-    <h1><%= params[:status].titleize %></h1>
-    <%= render partial: "list", locals: { documents: @documents } %>
-  </div>
+<%= turbo_frame_tag "document-previews" do %>
+  <%= render partial: "list", locals: { documents: @documents } %>
 <% end %>

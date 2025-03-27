@@ -38,6 +38,8 @@ class DocumentsController < ApplicationController
     document_user_state = @document.document_states.find_by(user_id: Current.user.id)
     document_user_state.update(read: true) if document_user_state.present?
     @document = @document.with_view_preferences
+
+    render :show
   end
 
   def destroy

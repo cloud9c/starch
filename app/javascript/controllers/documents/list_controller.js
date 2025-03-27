@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { FetchRequest } from '@rails/request.js'
 
-export default class extends Controller {
+export default class InfiniteScrollController extends Controller {
   static values = { 
     page: { type: Number, default: 1 },
     loading: { type: Boolean, default: false },
@@ -10,55 +10,62 @@ export default class extends Controller {
     status: { type: String, default: 'inbox' }
   }
   
-  initialize() {
-    this.scroll = this.scroll.bind(this)
-  }
-  
   connect() {
-    window.addEventListener("scroll", this.scroll)
+    this.scrollHandler = () => this.handleScroll()
+    window.addEventListener("scroll", this.scrollHandler)
   }
   
   disconnect() {
-    window.removeEventListener("scroll", this.scroll)
+    window.removeEventListener("scroll", this.scrollHandler)
   }
   
-  scroll() {
+  handleScroll() {
     if (this.loadingValue || !this.hasNextPageValue) return
     
-    const scrollPosition = window.scrollY + window.innerHeight
-    const bottomPosition = document.body.scrollHeight - this.thresholdValue
+    const { scrollY, innerHeight } = window
+    const { scrollHeight } = document.body
+    const hasReachedThreshold = scrollY + innerHeight >= scrollHeight - this.thresholdValue
     
-    if (scrollPosition >= bottomPosition) {
+    if (hasReachedThreshold) {
       this.loadMore()
     }
   }
   
   async loadMore() {
+    console.log("LOADING NOW")
     this.loadingValue = true
     const nextPage = this.pageValue + 1
     
-    let url = `/documents?page=${nextPage}`
+    try {
+      const url = this.buildUrl(nextPage)
+      const request = await new FetchRequest('GET', url, {
+          headers: {
+            "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
+          }
+        }).perform()
+      
+      if (request.response.status === 204) {
+        this.hasNextPageValue = false
+      } else if (request.ok) {
+        this.pageValue = nextPage
+        const html = await request.text
+        Turbo.renderStreamMessage(html)
+      }
+    } catch (error) {
+      console.error("Error loading more content:", error)
+    } finally {
+      this.loadingValue = false
+    }
+  }
+  
+  buildUrl(page) {
+    const url = new URL('/documents', window.location.origin)
+    url.searchParams.append('page', page)
     
     if (this.statusValue) {
-      url += `&status=${this.statusValue}`
+      url.searchParams.append('status', this.statusValue)
     }
-
-    const request = new FetchRequest('GET', url, {
-    headers: {
-      "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
-    }
-  })
-    const response = await request.perform()
-  
-    if (response.status === 204) {
-      this.hasNextPageValue = false
-      this.loadingValue = false
-    } else if (response.ok) {
-      this.pageValue = nextPage
-      const html = await response.text
-      this.loadingValue = false
-      
-      Turbo.renderStreamMessage(html)
-    }
+    
+    return url.toString()
   }
 }
