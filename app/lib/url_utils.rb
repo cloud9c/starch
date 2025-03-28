@@ -6,7 +6,6 @@ module UrlUtils
 
     url = "https://#{url}" unless url.to_s.start_with?("http://", "https://")
     url = url.chomp("/")
-    @uri = URI.parse(url)
   end
 
   def get_origin(url)

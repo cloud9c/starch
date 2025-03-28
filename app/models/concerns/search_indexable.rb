@@ -8,17 +8,17 @@ module SearchIndexable
   end
 
   def update_search_index
-    search_collection.documents[id.to_s].update(search_attributes)
+    self.class.search_collection.documents[id.to_s].update(search_attributes)
   end
 
   def upsert_search_index
-    search_collection.documents.upsert(search_attributes)
+    self.class.search_collection.documents.upsert(search_attributes)
   end
 
   private
 
   def destroy_search_index
-    search_collection.documents[id.to_s]&.delete
+    self.class.search_collection.documents[id.to_s]&.delete
   end
 
   def search_attributes
@@ -39,7 +39,7 @@ module SearchIndexable
     end
 
     def search_collection
-      SearchEngine.client.collections[self.class.search_collection_name]
+      SearchEngine.client.collections[search_collection_name]
     end
   end
 end

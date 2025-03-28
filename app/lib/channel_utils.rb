@@ -13,7 +13,7 @@ module ChannelUtils
     normalized_url = UrlUtils.normalize(url)
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(normalized_url, headers: headers)
+    response = http.get(normalized_url)
     return nil if response.error
 
     feed = self.parse_feed(body_to_s(response)) rescue nil
@@ -25,7 +25,7 @@ module ChannelUtils
       return nil unless path
 
       feed_url = URI.join(normalized_url, path).to_s
-      get_feed_url(feed_url, false)
+      return get_feed_url(feed_url, false)
     end
   end
 
@@ -42,7 +42,7 @@ module ChannelUtils
     origin = UrlUtils.get_origin(UrlUtils.normalize(url))
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(origin, headers: headers)
+    response = http.get(origin)
     return unless response
 
     doc = Nokogiri::HTML(body_to_s(response))
