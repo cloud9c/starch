@@ -4,13 +4,3 @@
 	height: 100%;
 	overflow: auto;
 }
-
-.home-aside {
-	overflow: auto;
-	flex-shrink: 0;
-}
-
-.home-main {
-	height: 100%;
-	overflow: auto;
-}

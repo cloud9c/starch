@@ -21,5 +21,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "feed" => "documents#feed"
+
   mount MissionControl::Jobs::Engine, at: "/jobs"
 end

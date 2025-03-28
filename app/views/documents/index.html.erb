@@ -1,3 +1,15 @@
 <%= turbo_frame_tag "document-previews" do %>
-  <%= render partial: "list", locals: { documents: @documents } %>
+  <div id="document-list" data-controller="documents--list" 
+         data-documents--list-page-value="1" 
+         data-documents--list-status-value="<%= params[:status] %>">
+    <% if @documents.present? %>
+      <% @documents.each do |document| %>
+        <%= turbo_frame_tag dom_id(document, "preview"), src: preview_document_path(document) do %>
+          <%= render 'documents/preview_skeleton' %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>No documents found.</p>
+    <% end %>
+  </div>
 <% end %>

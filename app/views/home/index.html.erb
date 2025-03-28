@@ -1,4 +1,1 @@
-<%= turbo_frame_tag "home" do %>
-  <%= turbo_frame_tag "document-previews", src: documents_path, class: "home-aside" %>
-  <%= turbo_frame_tag "document-show", src: @initial_document ? document_path(@initial_document) : "", class: "home-main" %>
-<% end %>
+<%= turbo_frame_tag "document-previews", src: documents_path%>

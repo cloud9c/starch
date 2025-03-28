@@ -16,3 +16,10 @@ body {
 	letter-spacing:var(--letter-spacing);
 	line-height:var(--line-height);
 }
+
+main {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
