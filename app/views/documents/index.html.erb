@@ -7,7 +7,7 @@
 <div id="document-list" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
   <% if @unread_documents.any? %>
-    <h3 data-read="false">New for you</h3>
+    <h3>New for you</h3>
     <div id="unread-documents-section">
       <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
     </div>
@@ -18,7 +18,7 @@
   <% end %>
   
   <% if @read_documents.any? %>
-    <h3 data-read="true">Previously seen</h3>
+    <h3>Previously seen</h3>
     <div id="read-documents-section">
       <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
     </div>
