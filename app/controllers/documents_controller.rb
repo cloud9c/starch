@@ -11,10 +11,10 @@ class DocumentsController < ApplicationController
                                  .includes(entry: :channel)
                                  .where(document_states: { user: Current.user.id, status: status.to_sym })
                                  .where(subscriptions: { user_id: Current.user.id })
-                                 .order('document_states.read' => :desc, 'documents.published_at' => :desc)
+                                 .order("document_states.read" => :desc, "documents.published_at" => :desc)
                                  .limit(per_page)
                                  .offset((page - 1) * per_page)
-                                 .select('document_states.read, documents.*, subscriptions.view_extracted')
+                                 .select("document_states.read, documents.*, subscriptions.view_extracted")
 
     documents = queried_documents
     .map do |doc|

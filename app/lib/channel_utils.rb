@@ -25,7 +25,7 @@ module ChannelUtils
       return nil unless path
 
       feed_url = URI.join(normalized_url, path).to_s
-      return get_feed_url(feed_url, false)
+      get_feed_url(feed_url, false)
     end
   end
 
