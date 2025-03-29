@@ -1,15 +1,22 @@
-<%= turbo_frame_tag "document-previews" do %>
-  <div id="document-list" data-controller="documents--list" 
-         data-documents--list-page-value="1" 
-         data-documents--list-status-value="<%= params[:status] %>">
-    <% if @documents.present? %>
-      <% @documents.each do |document| %>
-        <%= turbo_frame_tag dom_id(document, "preview"), src: preview_document_path(document) do %>
-          <%= render 'documents/preview_skeleton' %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <p>No documents found.</p>
-    <% end %>
-  </div>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
 <% end %>
+
+<div id="document-list" data-controller="documents--list" 
+             data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
+  <% if @unread_documents.any? %>
+    <h1>New for you</h1>
+    <% @unread_documents.each do |document| %>
+      <%= render "documents/preview", document: document %>
+    <% end %>
+  <% elsif @unread_documents.empty? %>
+    <p><%= @read_documents.present? ? "Nothing new for you!" : "You're all clear." %></p>
+  <% end %>
+  
+  <% if @read_documents.any? %>
+    <h1>Previously seen</h1>
+    <% @read_documents.each do |document| %>
+      <%= render "documents/preview", document: document %>
+    <% end %>
+  <% end %>
+</div>

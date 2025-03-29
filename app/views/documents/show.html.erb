@@ -1,4 +1,8 @@
-<%= turbo_frame_tag "document-show" do %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+<div id="document-show">
   <% if @document.present? %>
     <div id="<%= dom_id(@document) %>" class="document-content">
       <header class="document-header">
@@ -29,4 +33,4 @@
   <% else %>
     <div>hello</div>
   <% end %>
-<% end %>
+</div>

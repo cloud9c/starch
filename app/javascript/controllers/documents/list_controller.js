@@ -5,9 +5,7 @@ export default class DocumentsListController extends Controller {
   static values = { 
     page: { type: Number, default: 1 },
     loading: { type: Boolean, default: false },
-    hasNextPage: { type: Boolean, default: true },
-    threshold: { type: Number, default: 500 },
-    status: { type: String, default: 'inbox' }
+    query: { type: String }
   }
   
   connect() {
@@ -20,11 +18,11 @@ export default class DocumentsListController extends Controller {
   }
   
   handleScroll() {
-    if (this.loadingValue || !this.hasNextPageValue) return
+    if (this.loadingValue) return
     
     const { scrollY, innerHeight } = window
     const { scrollHeight } = document.body
-    const hasReachedThreshold = scrollY + innerHeight >= scrollHeight - this.thresholdValue
+    const hasReachedThreshold = scrollY + innerHeight >= scrollHeight - 500
     
     if (hasReachedThreshold) {
       this.loadMore()
@@ -32,12 +30,15 @@ export default class DocumentsListController extends Controller {
   }
   
   async loadMore() {
-    console.log("LOADING NOW")
     this.loadingValue = true
     const nextPage = this.pageValue + 1
     
     try {
-      const url = this.buildUrl(nextPage)
+      const url = new URL(`/documents/list`, window.location.origin)
+      const searchParams = new URLSearchParams(this.queryValue)
+      searchParams.set("page", nextPage)
+      url.search = searchParams.toString()
+
       const request = await new FetchRequest('GET', url, {
           headers: {
             "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
@@ -45,7 +46,7 @@ export default class DocumentsListController extends Controller {
         }).perform()
       
       if (request.response.status === 204) {
-        this.hasNextPageValue = false
+        this.disconnect()
       } else if (request.ok) {
         this.pageValue = nextPage
         const html = await request.text
@@ -56,16 +57,5 @@ export default class DocumentsListController extends Controller {
     } finally {
       this.loadingValue = false
     }
-  }
-  
-  buildUrl(page) {
-    const url = new URL('/documents', window.location.origin)
-    url.searchParams.append('page', page)
-    
-    if (this.statusValue) {
-      url.searchParams.append('status', this.statusValue)
-    }
-    
-    return url.toString()
   }
 }

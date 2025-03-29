@@ -10,10 +10,9 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  scope :owned_by_user, ->(status = nil) {
-    query = Current.user.document_states
-    query = query.where(status: status) if status.present?
-    where(id: query.select(:document_id))
+  scope :without_content, -> { 
+    column_names = Document.column_names - ['content']
+    select(column_names.map { |c| "documents.#{c}" })
   }
 
   def self.search(query, options = {})
@@ -54,11 +53,6 @@ class Document < ApplicationRecord
     else
       false
     end
-  end
-
-  def self.for_preview
-    owned_by_user
-      .select(:id, :description, :title, :author, :thumbnail_url, :published_at, :entry_id, :url, :updated_at)
   end
 
   def with_view_preferences

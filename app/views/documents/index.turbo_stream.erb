@@ -1,7 +1,8 @@
 <%= turbo_stream.append "document-list" do %>
-  <% @documents.each do |document| %>
-    <%= turbo_frame_tag dom_id(document, "preview"), src: preview_document_path(document) do %>
-      <%= render 'documents/preview_skeleton' %>
-    <% end %>
+  <% @unread_documents.each do |document| %>
+    <%= render "documents/preview", document: document %>
+  <% end %>
+  <% @read_documents.each do |document| %>
+    <%= render "documents/preview", document: document %>
   <% end %>
 <% end %>

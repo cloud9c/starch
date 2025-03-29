@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  root "home#index"
+  root "documents#index"
 
   resource :session do
     get :verify
@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   resources :documents do
     member do
       get :preview
-      post :seen
     end
   end
 

@@ -9,6 +9,8 @@ class Subscription < ApplicationRecord
   has_many :entries, through: :channel
   has_many :documents, through: :entries
 
+  after_destroy :remove_document_states
+
   validates :channel_id, presence: true, uniqueness: { scope: :user_id }
 
   def add_recent_entries
@@ -21,5 +23,11 @@ class Subscription < ApplicationRecord
         document: document
       )
     end
+
+    Rails.logger.debug "#{recent_entries.inspect}"
+  end
+
+  def remove_document_states
+    DocumentState.where(user_id: user_id, document_id: documents.pluck(:id), status: :inbox).destroy_all
   end
 end
