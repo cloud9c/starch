@@ -5,20 +5,22 @@
 <h1>Inbox</h1>
 
 <div id="document-list" data-controller="documents--list" 
-             data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
+     data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
   <% if @unread_documents.any? %>
-    <h3>New for you</h3>
-    <% @unread_documents.each do |document| %>
-      <%= render "documents/preview", document: document %>
-    <% end %>
+    <h3 data-read="false">New for you</h3>
+    <div id="unread-documents-section">
+      <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
+    </div>
   <% elsif @unread_documents.empty? %>
-    <p><%= @read_documents.present? ? "Nothing new for you!" : "You're all clear." %></p>
+    <p>
+      <%= @read_documents.present? ? "Nothing new for you!" : "You're all clear." %>
+    </p>
   <% end %>
   
   <% if @read_documents.any? %>
-    <h3>Previously seen</h3>
-    <% @read_documents.each do |document| %>
-      <%= render "documents/preview", document: document %>
-    <% end %>
+    <h3 data-read="true">Previously seen</h3>
+    <div id="read-documents-section">
+      <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
+    </div>
   <% end %>
 </div>

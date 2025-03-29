@@ -1,9 +1,0 @@
-<%= turbo_frame_tag "subscription_list" do %>
-  <% if @subscriptions.present? %>
-    <% @subscriptions.each do |subscription| %>
-      <%= render partial: "subscriptions/preview", locals: { subscription: subscription } %>
-    <% end %>
-  <% else %>
-    <p>No subscriptions found.</p>
-  <% end %>
-<% end %>

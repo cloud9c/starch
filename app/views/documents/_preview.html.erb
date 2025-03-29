@@ -1,28 +1,24 @@
-<%= link_to document_path(document),
-    data: { 
-      turbo_frame: "_top",
-      turbo_permanent: "true"
-    },
-    id: dom_id(document),
+<%= link_to document_path(preview),
+    id: dom_id(preview),
     class: "document-preview" do %>
   <header class="document-preview-title">
-    <%= render 'channel/preview', channel: document.entry.channel %>
+    <%= render 'channel/preview', channel: preview.entry.channel %>
 
-    <% if document.published_at %>
-      <p><%= document.published_at.strftime("%b %d, %Y") %></p>
+    <% if preview.published_at %>
+      <p><%= preview.published_at.strftime("%b %d, %Y") %></p>
     <% end %>
   </header>
   <main class="document-preview-main">
     <div class="document-preview-left">
-      <h3><%= document.title %></h3>
+      <h3><%= preview.title %></h3>
       <div class="document-preview-metadata">
-        <p class="document-preview-description"><%= document.description %></p>
-        <p><%= document.author %></p>
+        <p class="document-preview-description"><%= preview.description %></p>
+        <p><%= preview.author %></p>
       </div>
     </div>
     <div>
-      <% if document.thumbnail_url %>
-        <img src="<%= document.thumbnail_url %>" 
+      <% if preview.thumbnail_url %>
+        <img src="<%= preview.thumbnail_url %>" 
              width="160"
            height="120"
            alt="Thumbnail"/>

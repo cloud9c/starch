@@ -10,5 +10,11 @@
           data: { disable_with: "Adding..." } %>
     <% end %>
   </turbo-frame>
-  <%= render "list" %>
+  <turbo-frame id="subscription_list">
+    <% if @subscriptions.present? %>
+      <%= render partial: 'subscriptions/preview', collection: @subscriptions, cached: true %>
+    <% else %>
+      <p>No subscriptions found.</p>
+    <% end %>
+  </turbo-frame>
 <% end %>

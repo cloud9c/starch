@@ -1,8 +1,7 @@
-<%= turbo_stream.append "document-list" do %>
-  <% @unread_documents.each do |document| %>
-    <%= render "documents/preview", document: document %>
-  <% end %>
-  <% @read_documents.each do |document| %>
-    <%= render "documents/preview", document: document %>
-  <% end %>
+<%= turbo_stream.append  "unread-documents-section" do %>
+  <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
+<% end %>
+
+<%= turbo_stream.append  "read-documents-section" do %>
+  <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
 <% end %>
