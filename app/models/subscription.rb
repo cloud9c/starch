@@ -23,8 +23,6 @@ class Subscription < ApplicationRecord
         document: document
       )
     end
-
-    Rails.logger.debug "#{recent_entries.inspect}"
   end
 
   def remove_document_states

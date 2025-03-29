@@ -13,8 +13,6 @@ class SearchController < ApplicationController
       filter_by: params[:filter]
     })
 
-    Rails.logger.debug "documents #{documents.inspect}"
-
     document_ids = documents["hits"]
       .map { |hit| hit.dig("document", "id") }
       .compact
