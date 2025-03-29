@@ -2,15 +2,15 @@
   <h1>Login</h1>
 
   <% if @show_verification %>
-    <%= form_with(url: verify_session_path) do |form| %>
-    <div>
-      <%= form.label :verification_code, "Enter verification code" %>
-      <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-    </div>
-    <%= form.submit "Verify code" %>
-  <% end %>
+    <%= form_with(url: verify_session_path, data: { turbo: false }) do |form| %>
+      <div>
+        <%= form.label :verification_code, "Enter verification code" %>
+        <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
+      </div>
+      <%= form.submit "Verify code" %>
+    <% end %>
   <% else %>
-    <%= form_with(url: session_path) do |form| %>
+    <%= form_with(url: session_path, data: { turbo: false }) do |form| %>
       <div>
         <%= form.label :email_address, "Email" %>
         <%= form.email_field :email_address %>

@@ -2,10 +2,12 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
+<h1>Inbox</h1>
+
 <div id="document-list" data-controller="documents--list" 
              data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
   <% if @unread_documents.any? %>
-    <h1>New for you</h1>
+    <h3>New for you</h3>
     <% @unread_documents.each do |document| %>
       <%= render "documents/preview", document: document %>
     <% end %>
@@ -14,7 +16,7 @@
   <% end %>
   
   <% if @read_documents.any? %>
-    <h1>Previously seen</h1>
+    <h3>Previously seen</h3>
     <% @read_documents.each do |document| %>
       <%= render "documents/preview", document: document %>
     <% end %>
