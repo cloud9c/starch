@@ -34,7 +34,7 @@ export default class DocumentsListController extends Controller {
     const nextPage = this.pageValue + 1
     
     try {
-      const url = new URL(`/documents/list`, window.location.origin)
+      const url = new URL(`/documents`, window.location.origin)
       const searchParams = new URLSearchParams(this.queryValue)
       searchParams.set("page", nextPage)
       url.search = searchParams.toString()

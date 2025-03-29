@@ -6,15 +6,18 @@ class DocumentsController < ApplicationController
     page = params[:page] ? params[:page].to_i : 1
     per_page = 10
 
-    documents_with_read = Document.joins(:document_states)
-                            .without_content
-                            .select('document_states.read')
-                            .where(document_states: { user: Current.user.id, status: status.to_sym })
-                            .order('document_states.read' => :desc, 'documents.published_at' => :desc)
-                            .limit(per_page)
-                            .offset((page - 1) * per_page)
+    queried_documents = Document.joins(:document_states)
+                                 .joins(entry: { channel: :subscriptions })
+                                 .includes(entry: :channel)
+                                 .where(document_states: { user: Current.user.id, status: status.to_sym })
+                                 .where(subscriptions: { user_id: Current.user.id })
+                                 .order('document_states.read' => :desc, 'documents.published_at' => :desc)
+                                 .limit(per_page)
+                                 .offset((page - 1) * per_page)
+                                 .select('document_states.read, documents.*, subscriptions.view_extracted')
 
-    documents = documents_with_read.map do |doc|
+    documents = queried_documents
+    .map do |doc|
       doc.with_view_preferences
       doc.with_description
       doc
@@ -37,8 +40,6 @@ class DocumentsController < ApplicationController
 
   def show
     document_state = DocumentState.find_by!(document: params[:id], user: Current.user.id)
-    document_state.update(read: true)
-
     @document = document_state.document.with_view_preferences
 
     render :show
@@ -52,5 +53,12 @@ class DocumentsController < ApplicationController
     else
       head :unprocessable_entity
     end
+  end
+
+  def read
+    document_state = DocumentState.find_by!(document: params[:id], user: Current.user.id)
+    document_state.update(read: true)
+
+    head :ok
   end
 end

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :documents do
     member do
       get :preview
+      post :read
     end
   end
 

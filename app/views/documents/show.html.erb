@@ -2,7 +2,7 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-show">
+<div id="document-show" data-controller="documents--show">
   <% if @document.present? %>
     <div id="<%= dom_id(@document) %>" class="document-content">
       <header class="document-header">

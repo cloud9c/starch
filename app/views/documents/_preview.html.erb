@@ -1,4 +1,4 @@
-<%= link_to document_path(document, view_extracted: document.view_extracted?),
+<%= link_to document_path(document),
     data: { 
       turbo_frame: "_top",
       turbo_permanent: "true"
@@ -6,7 +6,7 @@
     id: dom_id(document),
     class: "document-preview" do %>
   <header class="document-preview-title">
-    <%= render 'channel/preview', channel: document.channel %>
+    <%= render 'channel/preview', channel: document.entry.channel %>
 
     <% if document.published_at %>
       <p><%= document.published_at.strftime("%b %d, %Y") %></p>

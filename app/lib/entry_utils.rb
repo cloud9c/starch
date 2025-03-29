@@ -163,7 +163,7 @@ module EntryUtils
   private
 
   def is_new?(stable_id)
-    return false if Rails.cache.exist?("feed_entry:#{stable_id}")
+    return false if Rails.cache.exist?("entry/stable_id/#{stable_id}")
     return false if Entry.exists?(stable_id: stable_id)
     true
   end
@@ -172,8 +172,8 @@ module EntryUtils
     return false if is_new?(stable_id)
 
     # Check cache first
-    if Rails.cache.exist?("feed_entry:#{stable_id}")
-      old_fingerprint = Rails.cache.read("feed_fingerprint:#{stable_id}")
+    if Rails.cache.exist?("entry/stable_id/#{stable_id}")
+      old_fingerprint = Rails.cache.read("entry/stable_id/#{stable_id}/fingerprint")
       return old_fingerprint != new_fingerprint
     end
 
@@ -186,11 +186,11 @@ module EntryUtils
   end
 
   def cache_entry(stable_id, fingerprint)
-    Rails.cache.write("feed_entry:#{stable_id}", true, expires_in: cache_duration)
+    Rails.cache.write("entry/stable_id/#{stable_id}", true, expires_in: cache_duration)
     update_entry_cache(stable_id, fingerprint)
   end
 
   def update_entry_cache(stable_id, fingerprint)
-    Rails.cache.write("feed_fingerprint:#{stable_id}", fingerprint, expires_in: cache_duration)
+    Rails.cache.write("entry/stable_id/#{stable_id}/fingerprint", fingerprint, expires_in: cache_duration)
   end
 end

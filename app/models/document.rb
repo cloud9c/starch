@@ -10,11 +10,6 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
-  scope :without_content, -> { 
-    column_names = Document.column_names - ['content']
-    select(column_names.map { |c| "documents.#{c}" })
-  }
-
   def self.search(query, options = {})
     search_params = {
       q: query,
@@ -43,20 +38,13 @@ class Document < ApplicationRecord
     })
   end
 
-  def view_extracted?
-    return @view_extracted unless @view_extracted.nil?
-
-    subscription = channel&.subscriptions&.find_by(user_id: Current.user&.id)
-    @view_extracted = if subscription
-      cache_key = "subscription/#{subscription.id}/#{subscription.updated_at.to_i}/view_extracted"
-      Rails.cache.fetch(cache_key, expires_in: 1.hour) { subscription.view_extracted || false }
-    else
-      false
-    end
-  end
-
   def with_view_preferences
-    return self unless view_extracted?
+    if self[:view_extracted] == 0
+      return self
+    elsif self[:view_extracted].nil?
+      subscription = channel.subscriptions.find_by(user_id: Current.user.id, channel_id: channel.id)
+      return self unless subscription.view_extracted
+    end
 
     unless extracted_data.blank?
       [ :title, :description, :content, :thumbnail_url ].each do |attr|
@@ -70,9 +58,8 @@ class Document < ApplicationRecord
   def with_description
     return self unless description.blank?
 
-    content_doc = Document.select(:content).find(id)
-    if content_doc.content.present?
-      preview_text = EntryUtils.format_text(content_doc.content.strip.gsub(/\s+/, " "))[0...300]
+    if self.has_attribute?(:content)
+      preview_text = EntryUtils.format_text(self.content.strip.gsub(/\s+/, " "))[0...300]
       self.description = preview_text
     end
 
