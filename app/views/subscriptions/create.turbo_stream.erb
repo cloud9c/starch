@@ -1,5 +1,5 @@
 <% if @subscription %>
   <%= turbo_stream.append "subscriptions" do %>
-      <%= render partial: "subscriptions/preview", locals: { subscription: @subscription } %>
+      <%= render partial: "subscriptions/preview", locals: { preview: @subscription }, cached: true %>
   <% end %>
 <% end %>
