@@ -89,4 +89,12 @@
 
 	--color-main: 100% 0 0;
 	--bg-main: oklch(var(--color-main));
+
+	--body-padding: 1em;
+}
+
+@media (max-width: 100ch) {
+	:root {
+		--body-padding: 0em;
+	}
 }
