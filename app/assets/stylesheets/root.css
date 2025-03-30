@@ -35,8 +35,8 @@
 	--line-height: 1.3;
 	--line-height-loose: 1.6;
 
-	--lch-paper: 98% 0.005 96;
-	--lch-paper-dark: 95% 0.01 96;
+	--lch-paper: 99% 0.0025 96;
+	--lch-paper-dark: 98% 0.005 96;
 
 	--lch-gray-lighter: 90% 0.005 96;
 	--lch-gray-light: 85% 0.005 96;
@@ -55,7 +55,7 @@
 	--color-text: oklch(var(--lch-text));
 	--color-text-light: oklch(var(--lch-text-light));
 
-	--color-shadow: oklch(var(--lch-gray-dark) / 0.25);
+	--color-shadow: oklch(var(--lch-gray-dark) / 0.15);
 
 	--lch-blue: 54% 0.23 255;
 /*	--lch-blue-light: 95% 0.03 255;
@@ -88,7 +88,7 @@
 
 
 	--color-main: 100% 0 0;
-	--bg-main: oklch(var(--color-main));
+	--bg-main: oklch(var(--lch-paper));
 
 	--body-padding: 1em;
 }
