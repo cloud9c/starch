@@ -1,0 +1,55 @@
+.document-content {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+.document-header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+
+.document-title {
+	font-weight: 600;
+	line-height: 1;
+}
+
+.document-title > a[href] {
+	text-decoration: none;
+}
+
+.document-title > a[href]:hover, .document-title > a[href]:focus {
+	text-decoration: underline;
+}
+
+.document-author {
+	font-weight: normal;
+}
+
+.document-body {
+	font-family: var(--font-serif);
+	font-size: var(--text-lg);
+	line-height: var(--line-height-loose);
+	margin-bottom: 1em;
+}
+
+.document-body p {
+	margin-bottom: 1em;
+}
+
+.document-body * {
+	max-width: 100%;
+	height: auto;
+}
+
+.document-body figure {
+	margin: 2em 0;
+}
+
+.document-metadata-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	text-transform: uppercase;
+}

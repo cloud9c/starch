@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { FetchRequest } from '@rails/request.js'
 
-export default class DocumentsListController extends Controller {
+export default class extends Controller {
   static values = { 
     page: { type: Number, default: 1 },
     loading: { type: Boolean, default: false },

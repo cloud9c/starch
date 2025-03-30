@@ -1,19 +1,19 @@
 <nav id="navbar">
-  <div style="display: flex;gap: 1em">
+  <div id="navbar-menu">
     <% on_root = current_page?(root_path) || current_page?(documents_path) %>
     <% filter_path = on_root ? documents_path : root_path %>
     
     <%# link_to "Later", "#{filter_path}?status=later", data: { turbo_frame: "_top" } %>
     <%# link_to "Archive", "#{filter_path}?status=archive", data: { turbo_frame: "_top" } %>
-    <h3>
+    <h5>
       <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
-    </h3>
-    <h3>
+    </h5>
+    <h5>
       <%= link_to "Feed", feed_path %>
-    </h3>
-    <h3>
-      <%= link_to "Subscriptions", subscriptions_path %>
-    </h3>
+    </h5>
+    <h5>
+      <%= link_to "Subs", subscriptions_path %>
+    </h5>
   </div>
 
   <search class="searchbar">
@@ -24,11 +24,11 @@
     <% end %>
   </search>
 
-  <div>
+  <div id="navbar-account">
     <% if authenticated? %>
-      <%= button_to "Logout", session_path, method: :delete %>
+      <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
     <% else %>
-      <%= button_to "Sign in", new_session_path, method: :get %>
+      <%= button_to "Sign in", new_session_path, method: :get, class: "btn" %>
     <% end %>
   </div>
 </nav>

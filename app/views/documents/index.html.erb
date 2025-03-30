@@ -2,24 +2,32 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-list" data-controller="documents--list" 
+<div id="document-inbox" class="sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
-  <% if @unread_documents.any? %>
-    <div id="unread-documents-section" class="document-preview-section">
-      <h3 class="document-inbox-title">New for you</h3>
+
+    <h1 class="content-header">Inbox</h1>
+
+  <div id="unread-documents-section" class="document-preview-section">
+    <% if @unread_documents.any? %>
+      <div class="document-inbox-title-row">
+        <h3 class="document-inbox-title">New for you</h3>
+      </div>
       <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
-    </div>
-  <% elsif @unread_documents.empty? %>
-    <div class="document-inbox-nothing-new">
-      <span>
-        <%= @read_documents.present? ? "Nothing new for you." : "You're all clear." %>
-      </span>
-    </div>
-  <% end %>
+    <% elsif @unread_documents.empty? %>
+      <div class="document-inbox-nothing-new">
+        <span>
+          <%= @read_documents.present? ? "Nothing new for you." : "You're all clear." %>
+        </span>
+      </div>
+    <% end %>
+  </div>
   
   <% if @read_documents.any? %>
-    <div id="read-documents-section" class="document-preview-section">
-      <h3 class="document-inbox-title">Previously seen</h3>
+    <div id="read-documents-section" class="sheet document-preview-section" data-controller="documents--hide-read"  data-action="click->documents--hide-read#toggle">
+      <div class="document-inbox-title-row">
+        <h3 class="document-inbox-title">Previously seen</h3>
+        <button class="btn-icon btn-icon--caret-down" title="Hide" data-documents--hide-read-target="toggleButton"></button>
+      </div>
       <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
     </div>
   <% end %>

@@ -1,6 +1,61 @@
-#subscription_list {
+#subscription-list {
   display: flex;
   flex-direction: column;
   gap: 1em;
   margin-top: 1em;
+  padding: 1em;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius);
+}
+
+#add-subscription {
+  display: flex;
+  gap: 1em;
+}
+
+#feed_url {
+  width: 100%;
+}
+
+.subscription-preview {
+  display: flex;
+  gap: 0.5em;
+  border-bottom: 1px solid var(--color-border-light);
+  padding: 0.5em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subscription-preview:last-child {
+  border-bottom: none;
+}
+
+.subscription-actions {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.subscription-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.subscription-content {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.subscription-title {
+  font-weight: 600;
+}
+
+.subscription-description {
+  color: var(--color-text-light);
+}
+
+.subscription-icon {
+  display: flex;
+  align-items: center;
 }

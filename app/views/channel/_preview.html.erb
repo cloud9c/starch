@@ -3,5 +3,5 @@
     <source srcset="<%= channel.icon %>"/>
     <%= image_tag "icons/rss.svg", width: 24, alt: "#{channel.title} icon" %>
   </picture>
-  <p><%= channel.title || channel.feed_url %></p>
+  <span><%= channel.title || channel.feed_url %></span>
 </div>

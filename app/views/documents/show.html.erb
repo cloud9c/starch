@@ -2,39 +2,36 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-show" data-controller="documents--show">
-  <% if @document.present? %>
-    <div id="<%= dom_id(@document) %>" class="document-content">
-      <header class="document-header">
-        <%= render 'channel/preview', channel: @document.channel %>
-        
-        <hgroup>
-          <h1 class="document-title">
-            <a href="<%= @document.url %>" target="_blank">
-              <%= @document.title %>
-            </a>
-          </h1>
-          <p class="document-description"><%= @document.description %></p>
-        </hgroup>
-
-        <div class="document-metadata-row">
-          <p class="document-author"><%= @document.author %></p>
-          <% if @document.published_at %>
-            <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
-          <% end %>
-        </div>
-
-        <%= button_to "Delete", document_path(@document), data: {
-          turbo: false
-        },
-        method: :delete %>
-      </header>
+<div class="sheet" data-controller="documents--show"> 
+  <div id="<%= dom_id(@document) %>" class="content document-content">
+    <header class="document-header">
+      <%= render 'channel/preview', channel: @document.channel %>
       
-      <article class="document-body">
-        <%= render_document_html @document.content %>
-      </article>
-    </div>
-  <% else %>
-    <div>hello</div>
-  <% end %>
+      <hgroup>
+        <h1 class="document-title">
+          <a href="<%= @document.url %>" target="_blank">
+            <%= @document.title %>
+          </a>
+        </h1>
+        <p class="document-description"><%= @document.description %></p>
+      </hgroup>
+
+      <div class="document-metadata-row">
+        <p class="document-author"><%= @document.author %></p>
+        <% if @document.published_at %>
+          <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+        <% end %>
+      </div>
+
+      <%= button_to "Delete", document_path(@document), data: {
+        turbo: false
+      },
+      class: "btn",
+      method: :delete %>
+    </header>
+    
+    <article class="document-body">
+      <%= render_document_html @document.content %>
+    </article>
+  </div>
 </div>

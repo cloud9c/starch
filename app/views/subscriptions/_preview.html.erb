@@ -1,22 +1,29 @@
-<div id="<%= dom_id(preview, "preview") %>">
-  <%= render 'channel/preview', channel: preview.channel, cached: true %>
+<div id="<%= dom_id(preview, "preview") %>" class="subscription-preview">
+  <div class="subscription-content">
+    <picture class="subscription-icon">
+      <source srcset="<%= preview.channel.icon %>"/>
+      <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon" %>
+    </picture>
+    <div class="subscription-text">
+      <span class="subscription-title"><%= preview.channel.title || preview.channel.feed_url %></span>
+      <span class="subscription-description"><%= preview.channel.url %></span>
+    </div>
+  </div>
 
-  <p><%= preview.channel.feed_url %></p>
-  <p><%= preview.channel.url %></p>
-  
-  <%= form_with(model: preview, html: { autocomplete: 'off' }) do |form| %>
-    <div>
+  <div class="subscription-actions">
+    <%= form_with(model: preview, html: { autocomplete: 'off', class: "checkbox" }) do |form| %>
       <%= form.check_box :view_extracted, 
           onchange: 'this.form.requestSubmit()', 
           id: "view_extracted_#{preview.id}" %>
-      <%= form.label :view_extracted, "View extracted content", 
+      <%= form.label :view_extracted, "Extract", 
           for: "view_extracted_#{preview.id}" %>
-    </div>
-  <% end %>
-  
-  <%= button_to subscription_path(preview), 
-        method: :delete,
-        form: { data: { turbo_confirm: "Are you sure?" } } do %>
-    Delete
-  <% end %>
+    <% end %>
+
+    <%= button_to subscription_path(preview), 
+          method: :delete,
+          form: { data: { turbo_confirm: "Are you sure?" } },
+          class: "btn" do %>
+      Delete
+    <% end %>
+  </div>
 </div>
