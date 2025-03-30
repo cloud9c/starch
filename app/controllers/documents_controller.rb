@@ -32,7 +32,7 @@ class DocumentsController < ApplicationController
         if documents.empty?
           head :no_content
         else
-          render :index
+          render :index, status: documents.length == per_page ? :ok : :partial_content
         end
       end
     end

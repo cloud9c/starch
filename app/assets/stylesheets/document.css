@@ -10,15 +10,20 @@
 .document-preview {
 	display: block;
 	padding: 1em 0;
-	border-bottom: 1px solid lightgray;
+	border-bottom: 1px solid var(--color-border);
 	text-decoration: none;
 	color: inherit;
 	width: 100%;
+	color: var(--color-text-light);
+}
+
+.document-preview-header {
+	display: flex;
+	justify-content: space-between;
 }
 
 .document-preview-title {
-	display: flex;
-	justify-content: space-between;
+	color: var(--color-text);
 }
 
 .document-preview-main {
@@ -27,6 +32,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	gap: 1em;
+	align-items: start;
 }
 
 .document-preview-left {
@@ -69,11 +75,22 @@
 	font-weight: 600;
 }
 
+.document-title > a[href] {
+	text-decoration: none;
+}
+
+.document-title > a[href]:hover, .document-title > a[href]:focus {
+	text-decoration: underline;
+}
+
 .document-author {
 	font-weight: normal;
 }
 
 .document-body {
+	font-family: var(--font-serif);
+	font-size: 125%;
+	line-height: var(--line-height-loose);
 	margin-bottom: 1em;
 }
 

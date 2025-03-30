@@ -3,9 +3,9 @@
     <% on_root = current_page?(root_path) || current_page?(documents_path) %>
     <% filter_path = on_root ? documents_path : root_path %>
     
+    <%# link_to "Later", "#{filter_path}?status=later", data: { turbo_frame: "_top" } %>
+    <%# link_to "Archive", "#{filter_path}?status=archive", data: { turbo_frame: "_top" } %>
     <%= link_to "Inbox", "#{filter_path}?status=inbox", data: { turbo_frame: "_top" } %>
-    <%= link_to "Later", "#{filter_path}?status=later", data: { turbo_frame: "_top" } %>
-    <%= link_to "Archive", "#{filter_path}?status=archive", data: { turbo_frame: "_top" } %>
     <%= link_to "Feed", feed_path, data: { turbo: false } %>
     <%= link_to "Subscriptions", subscriptions_path, data: { turbo: false } %>
   </div>

@@ -45,7 +45,7 @@ export default class DocumentsListController extends Controller {
           }
         }).perform()
       
-      if (request.response.status === 204) {
+      if (request.response.status === 204 || request.response.status === 206) {
         this.disconnect()
       } else if (request.ok) {
         this.pageValue = nextPage

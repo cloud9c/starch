@@ -1,7 +1,51 @@
+@font-face {
+  font-family: 'Newsreader';
+  src: url('Newsreader-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Newsreader';
+  src: url('Newsreader-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Gantari';
+  src: url('Gantari-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gantari';
+  src: url('Gantari-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: italic;
+}
+
 :root {
+	--font-serif: 'Newsreader', Georgia, Times, serif;
+	--font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 	--font-size: clamp(0.75rem, 2.225vw, 1rem);
 	--letter-spacing: -0.0015em;
 	--line-height: 1.3;
+	--line-height-loose: 1.6;
+
+	--lch-gray-lighter: 85% 0.005 96;
+	--lch-gray-light: 75% 0.005 96;
+	--lch-gray: 50% 0.005 96;
+	--lch-gray-dark: 25% 0.005 96;
+
+	--color-border: oklch(var(--lch-gray-lighter));
+	--color-text: oklch(var(--lch-gray-dark));
+	--color-text-light: oklch(var(--lch-gray));
+
+	--lch-blue: 54% 0.23 255;
+	--lch-blue-light: 95% 0.03 255;
+	--lch-blue-dark: 80% 0.08 255;
 }
 
 html, body {
@@ -12,9 +56,12 @@ html, body {
 body {
 	display: flex;
 	flex-direction: column;
+	font-family: var(--font-sans);
 	font-size: var(--font-size);
-	letter-spacing:var(--letter-spacing);
-	line-height:var(--line-height);
+	letter-spacing: var(--letter-spacing);
+	line-height: var(--line-height);
+
+	color: var(--color-text);
 }
 
 main {
@@ -22,4 +69,8 @@ main {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+a {
+	color: var(--color-text);
 }

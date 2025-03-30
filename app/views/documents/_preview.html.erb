@@ -1,7 +1,7 @@
 <%= link_to document_path(preview),
     id: dom_id(preview),
     class: "document-preview" do %>
-  <header class="document-preview-title">
+  <header class="document-preview-header">
     <%= render 'channel/preview', channel: preview.entry.channel %>
 
     <% if preview.published_at %>
@@ -10,7 +10,7 @@
   </header>
   <main class="document-preview-main">
     <div class="document-preview-left">
-      <h3><%= preview.title %></h3>
+      <h3 class="document-preview-title"><%= preview.title %></h3>
       <div class="document-preview-metadata">
         <p class="document-preview-description"><%= preview.description %></p>
         <p><%= preview.author %></p>

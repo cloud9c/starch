@@ -9,7 +9,11 @@
         <%= render 'channel/preview', channel: @document.channel %>
         
         <hgroup>
-          <h1 class="document-title"><%= @document.title %></h1>
+          <h1 class="document-title">
+            <a href="<%= @document.url %>" target="_blank">
+              <%= @document.title %>
+            </a>
+          </h1>
           <p class="document-description"><%= @document.description %></p>
         </hgroup>
 
