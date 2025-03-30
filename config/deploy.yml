@@ -7,8 +7,7 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    hosts:
-      - starchapp.com
+    - starchapp.com
   job:
     hosts:
       - starchapp.com
@@ -20,10 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  hosts: 
-    - starchapp.com
-    - www.starchapp.com
-  forward_headers: true
+  host: starchapp.com
 
 # Credentials for your image host.
 registry:
