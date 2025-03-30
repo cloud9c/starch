@@ -7,10 +7,10 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    - starchapp.com
+    - 45.76.2.10
   job:
     hosts:
-      - starchapp.com
+      - 45.76.2.10
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -99,8 +99,8 @@ accessories:
       --api-key=xyz 
       --listen-port 8108 
       --enable-cors
-    host: starchapp.com
-    port: 8108
+    host: 45.76.2.10
+    port: 127.0.0.1:8108:8108
     volumes:
       - "typesense-data:/data"
     env:
@@ -112,4 +112,4 @@ accessories:
     image: ghcr.io/cloud9c/reading_parser
     cmd: 'npm start'
     host: starchapp.com
-    port: 3001
+    port: 127.0.0.1:3001:3001
