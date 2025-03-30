@@ -1,5 +1,0 @@
-<% if @subscription %>
-  <%= turbo_stream.replace dom_id(@subscription) do %>
-    <%= render "subscriptions/preview", subscription: @subscription, cached: true %>
-  <% end %>
-<% end %>

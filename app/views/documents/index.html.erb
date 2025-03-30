@@ -2,24 +2,24 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<h1>Inbox</h1>
-
 <div id="document-list" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
   <% if @unread_documents.any? %>
-    <h3>New for you</h3>
-    <div id="unread-documents-section">
+    <div id="unread-documents-section" class="document-preview-section">
+      <h3 class="document-inbox-title">New for you</h3>
       <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
     </div>
   <% elsif @unread_documents.empty? %>
-    <p>
-      <%= @read_documents.present? ? "Nothing new for you!" : "You're all clear." %>
-    </p>
+    <div class="document-inbox-nothing-new">
+      <span>
+        <%= @read_documents.present? ? "Nothing new for you." : "You're all clear." %>
+      </span>
+    </div>
   <% end %>
   
   <% if @read_documents.any? %>
-    <h3>Previously seen</h3>
-    <div id="read-documents-section">
+    <div id="read-documents-section" class="document-preview-section">
+      <h3 class="document-inbox-title">Previously seen</h3>
       <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
     </div>
   <% end %>

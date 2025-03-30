@@ -1,6 +1,28 @@
 <nav id="navbar">
-  <%= render 'shared/searchbar' %>
-  <%= render "shared/menu" %>
+  <div style="display: flex;gap: 1em">
+    <% on_root = current_page?(root_path) || current_page?(documents_path) %>
+    <% filter_path = on_root ? documents_path : root_path %>
+    
+    <%# link_to "Later", "#{filter_path}?status=later", data: { turbo_frame: "_top" } %>
+    <%# link_to "Archive", "#{filter_path}?status=archive", data: { turbo_frame: "_top" } %>
+    <h3>
+      <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
+    </h3>
+    <h3>
+      <%= link_to "Feed", feed_path %>
+    </h3>
+    <h3>
+      <%= link_to "Subscriptions", subscriptions_path %>
+    </h3>
+  </div>
+
+  <search class="searchbar">
+    <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
+      <div class="searchfield-container">
+      <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search" %>
+      </div>
+    <% end %>
+  </search>
 
   <div>
     <% if authenticated? %>

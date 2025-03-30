@@ -27,7 +27,9 @@ class DocumentsController < ApplicationController
     @read_documents = documents.select { |doc| doc.read == 1 }
 
     respond_to do |format|
-      format.html
+      format.html do
+        render :index, status: documents.length == per_page ? :ok : :partial_content
+      end
       format.turbo_stream do
         if documents.empty?
           head :no_content

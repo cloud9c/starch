@@ -5,15 +5,15 @@
     <%= render 'channel/preview', channel: preview.entry.channel, cached: true %>
 
     <% if preview.published_at %>
-      <p><%= preview.published_at.strftime("%b %d, %Y") %></p>
+      <p><%= preview.published_at.strftime("%b %d, %Y") %></span>
     <% end %>
   </header>
-  <main class="document-preview-main">
+  <div class="document-preview-main">
     <div class="document-preview-left">
       <h3 class="document-preview-title"><%= preview.title %></h3>
+      <p class="document-preview-description"><%= preview.description %></p>
       <div class="document-preview-metadata">
-        <p class="document-preview-description"><%= preview.description %></p>
-        <p><%= preview.author %></p>
+        <span><%= preview.author %></span>
       </div>
     </div>
     <div>
@@ -24,5 +24,5 @@
            alt="Thumbnail"/>
       <% end %>
     </div>
-  </main>
+  </div>
 <% end %>

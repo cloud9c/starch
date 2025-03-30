@@ -1,6 +1,5 @@
 class Subscription < ApplicationRecord
   include UserOwnable
-  include Turbo::Broadcastable
 
   belongs_to :channel
   has_many :subscriptions_tags, dependent: :destroy

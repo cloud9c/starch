@@ -1,7 +1,0 @@
-<search>
-  <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }, class: "searchbar") do |form| %>
-    <div class="searchfield-container">
-    <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search" %>
-    </div>
-  <% end %>
-</search>

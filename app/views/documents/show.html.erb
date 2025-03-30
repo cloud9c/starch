@@ -24,11 +24,11 @@
           <% end %>
         </div>
 
-        <%= button_to "Delete", document_path(@document), 
+        <%= button_to "Delete", document_path(@document), data: {
+          turbo: false
+        },
         method: :delete %>
       </header>
-
-      <hr/>
       
       <article class="document-body">
         <%= render_document_html @document.content %>
