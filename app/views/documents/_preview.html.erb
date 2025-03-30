@@ -2,7 +2,7 @@
     id: dom_id(preview),
     class: "document-preview" do %>
   <header class="document-preview-header">
-    <%= render 'channel/preview', channel: preview.entry.channel %>
+    <%= render 'channel/preview', channel: preview.entry.channel, cached: true %>
 
     <% if preview.published_at %>
       <p><%= preview.published_at.strftime("%b %d, %Y") %></p>

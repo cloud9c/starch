@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(preview, "preview") do %>
   <div id="<%= dom_id(preview) %>">
 
-    <%= render 'channel/preview', channel: preview.channel %>
+    <%= render 'channel/preview', channel: preview.channel, cached: true %>
 
     <p><%= preview.channel.feed_url %></p>
     <p><%= preview.channel.url %></p>
