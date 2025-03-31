@@ -5,3 +5,7 @@
 <%= turbo_stream.append  "read-documents-section" do %>
   <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
 <% end %>
+
+<%= turbo_stream.append "documents-section" do %>
+  <%= render partial: 'documents/preview', collection: @documents, cached: true %>
+<% end %>

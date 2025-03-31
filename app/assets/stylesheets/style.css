@@ -35,6 +35,7 @@ body {
 }
 
 .content-header {
+	font-family: var(--font-serif);
 	text-align: center;
 	margin-bottom: 0.5em;
 	width: 100%;
@@ -206,4 +207,22 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 .searchbar:has(input:focus-visible) {
 	outline: var(--focus-ring);
 	background-color: var(--color-link-hover)
+}
+
+.form--email {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	max-width: 20em;
+	margin: 0 auto;
+}
+
+.form--email input[type="submit"] {
+	text-align: center;
+}
+
+.form--email label {
+	width: 100%;
+	text-align: center;
+	font-size: var(--text-xl);
 }

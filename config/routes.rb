@@ -11,13 +11,14 @@ Rails.application.routes.draw do
     post :verify
   end
 
-  get "search" => "search#index"
-
   resources :subscriptions
   resources :documents do
     member do
       get :preview
       post :read
+    end
+    collection do
+      get :search
     end
   end
 

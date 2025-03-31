@@ -14,18 +14,18 @@ class Document < ApplicationRecord
     search_params = {
       q: query,
       query_by: "title,description,content",
-      per_page: options[:per_page] || 20,
-      page: options[:page] || 1,
+      per_page: options[:per_page],
+      page: options[:page],
       filter_by: "user_ids:=[#{Current.user_or_raise!.id}]",
-      select_fields: "document_id"
+      include_fields: "id"
     }
-    collection = SearchEngine.client.collections[search_collection_name]
-    result = collection.documents.search(search_params)
+
+    result = self.search_collection.documents.search(search_params)
     result
   end
 
   def self.create_search_collection
-    SearchEngine.client.collections.create({
+    self.search_collection.create({
       name: search_collection_name,
       fields: [
         { name: "user_ids", type: "int32[]" },
