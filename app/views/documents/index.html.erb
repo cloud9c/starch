@@ -22,13 +22,11 @@
     <% end %>
   </div>
   
-  <% if @read_documents.any? %>
-    <div id="read-documents-section" class="sheet document-preview-section" data-controller="documents--hide-read"  data-action="click->documents--hide-read#toggle">
-      <div class="document-inbox-title-row">
-        <h3 class="document-inbox-title">Previously seen</h3>
-        <button class="btn-icon" data-documents--hide-read-target="toggleButton"></button>
-      </div>
-      <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
+  <div id="read-documents-section" class="sheet document-preview-section" data-controller="documents--hide-read"  data-action="click->documents--hide-read#toggle">
+    <div class="document-inbox-title-row">
+      <h3 class="document-inbox-title">Previously seen</h3>
+      <button class="btn-icon" data-documents--hide-read-target="toggleButton"></button>
     </div>
-  <% end %>
+    <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
+  </div>
 </div>
