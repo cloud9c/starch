@@ -182,14 +182,14 @@ input[type="checkbox"]:focus-visible {
   outline: var(--focus-ring);
 }
 
-input[type="text"] {
+input[type="text"], input[type="email"] {
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius);
 	padding: 0.5em 1em;
 	background: white;
 }
 
-input[type="text"]:focus-visible {
+input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 	outline: var(--focus-ring);
   background-color: var(--color-link-hover)
 }
