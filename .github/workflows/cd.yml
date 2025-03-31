@@ -41,25 +41,20 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Install dependencies
-        run: |
-          gem install specific_install
-          gem specific_install https://github.com/basecamp/kamal.git 
-
       - uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to Staging
         if: github.ref == 'refs/heads/main'
-        run: kamal deploy -c config/deploy.staging.yml
+        run: bundle exec kamal deploy -c config/deploy.staging.yml
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
       
       - name: Deploy to Production
         if: github.ref == 'refs/heads/prod'
-        run: kamal deploy
+        run: bundle exec kamal deploy
         env:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
