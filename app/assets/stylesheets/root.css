@@ -36,7 +36,7 @@
 	--line-height-loose: 1.6;
 
 	--lch-paper: 99% 0.0025 96;
-	--lch-paper-dark: 98% 0.005 96;
+	--lch-paper-dark: 90% 0.005 96;
 
 	--lch-gray-lighter: 90% 0.005 96;
 	--lch-gray-light: 85% 0.005 96;
@@ -88,7 +88,7 @@
 
 
 	--color-main: 100% 0 0;
-	--bg-main: oklch(var(--lch-paper));
+	--bg-main: oklch(var(--lch-paper-dark));
 
 	--body-padding: 1em;
 }

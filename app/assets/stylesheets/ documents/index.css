@@ -35,7 +35,7 @@
 }
 
 #read-documents-section {
-	background: var(--bg-paper-dark);
+	background: var(--bg-paper);
 	box-shadow: none;
 	border: 1px solid var(--color-border);
 	cursor: pointer;
