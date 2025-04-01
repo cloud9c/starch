@@ -24,18 +24,15 @@ class Document < ApplicationRecord
     result
   end
 
-  def self.create_search_collection
-    self.search_collection.create({
-      name: search_collection_name,
-      fields: [
-        { name: "user_ids", type: "int32[]" },
-        { name: "title", type: "string", optional: true },
-        { name: "description", type: "string", optional: true },
-        { name: "url", type: "string", optional: true },
-        { name: "published_at", type: "int64", optional: true },
-        { name: "content", type: "string", optional: true }
-      ]
-    })
+  def self.search_schema
+    [
+      { name: "user_ids", type: "int32[]" },
+      { name: "title", type: "string", optional: true },
+      { name: "description", type: "string", optional: true },
+      { name: "url", type: "string", optional: true },
+      { name: "published_at", type: "int64", optional: true },
+      { name: "content", type: "string", optional: true }
+    ]
   end
 
   def with_view_preferences

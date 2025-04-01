@@ -39,6 +39,13 @@ module SearchIndexable
     end
 
     def create_search_collection
+      SearchEngine.client.collections.create({
+        name: self.search_collection_name,
+        fields: self.search_schema
+      })
+    end
+
+    def search_schema
       raise NotImplementedError, "#{self} must implement create_collection class method"
     end
 
