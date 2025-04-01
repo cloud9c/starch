@@ -1,17 +1,15 @@
 <div class="sheet">
   <div class="content">
-    <h1 class="content-header">Login or sign up</h1>
+    <h1 class="content-header">Starch</h1>
 
     <% if @show_verification %>
-      <%= form_with(url: verify_session_path, data: { turbo: false }, class: "form--email") do |form| %>
-        <div>
-          <%= form.label :verification_code, "Enter verification code" %>
-          <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-        </div>
+      <%= form_with(url: verify_session_path, data: { turbo: false }, class: "login-form") do |form| %>
+        <%= form.label :verification_code, "Enter verification code" %>
+        <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
         <%= form.submit "Verify code" %>
       <% end %>
     <% else %>
-      <%= form_with(url: session_path, data: { turbo: false }, class: "form--email") do |form| %>
+      <%= form_with(url: session_path, data: { turbo: false }, class: "login-form") do |form| %>
         <%= form.label :email_address, "Enter your email" %>
         <%= form.email_field :email_address %>
         <%= form.submit "Continue" %>

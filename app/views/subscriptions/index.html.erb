@@ -11,11 +11,7 @@
     <% end %>
 
     <div id="subscription-list">
-      <% if @subscriptions.present? %>
-        <%= render partial: 'subscriptions/preview', collection: @subscriptions, cached: true %>
-      <% else %>
-        <p>No subscriptions found.</p>
-      <% end %>
+      <%= render partial: 'subscriptions/preview', collection: @subscriptions, cached: true %>
     </div>
   </div>
 </div>

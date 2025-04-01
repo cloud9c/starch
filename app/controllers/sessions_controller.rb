@@ -60,4 +60,8 @@ class SessionsController < ApplicationController
     destroy_session
     redirect_to new_session_path
   end
+
+  def send_to_root
+    redirect_to root_path
+  end
 end

@@ -1,4 +1,4 @@
-#subscription-list {
+#subscription-list:has(.subscription-preview) {
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -6,10 +6,6 @@
   border: 1px solid var(--color-border-light);
   border-radius: var(--border-radius);
   background: white;
-}
-
-#subscription-list .no-subscriptions-found {
-  padding: 1em;
 }
 
 #add-subscription {
