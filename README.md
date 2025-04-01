@@ -1,6 +1,10 @@
 # product
 - motto: human intelligence; design your own algorithm; curation
 
+# bugs
+- flash ui
+- allow api calls for unread and read individually
+
 # p0
 
 - fallback image / proxy images that dont allow CORS

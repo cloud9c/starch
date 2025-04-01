@@ -16,20 +16,11 @@ class SubscriptionsController < ApplicationController
 
   def update
     @subscription = Current.user.subscriptions.find(params[:id])
-    if @subscription.update(subscription_params)
-      cache_key = "subscription/#{@subscription.id}/#{@subscription.updated_at.to_i}/view_extracted"
-      Rails.cache.delete(cache_key)
-    end
+    @subscription.update(params.require(:subscription).permit(:view_extracted))
   end
 
   def destroy
     @subscription = Current.user.subscriptions.find(params[:id])
     head :unprocessable_entity unless @subscription.destroy!
-  end
-
-  private
-
-  def subscription_params
-    params.require(:subscription).permit(:view_extracted)
   end
 end
