@@ -8,6 +8,10 @@
   background: white;
 }
 
+#subscription-list .no-subscriptions-found {
+  padding: 1em;
+}
+
 #add-subscription {
   display: flex;
   gap: 1em;

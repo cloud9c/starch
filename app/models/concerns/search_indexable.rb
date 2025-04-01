@@ -8,7 +8,7 @@ module SearchIndexable
   end
 
   def update_search_index
-    self.class.search_collection.documents[id.to_s].update(search_attributes)
+    self.class.search_collection.documents[id.to_s]&.update(search_attributes)
   end
 
   def upsert_search_index
