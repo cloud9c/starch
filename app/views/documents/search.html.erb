@@ -8,7 +8,7 @@
    <h1 class="content-header">Search</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
-      <%= render partial: 'documents/preview', collection: @documents, cached: true %>
+      <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted]  %>
     <% else %>
       <div class="document-inbox-nothing-new">
         <span>No results.</span>

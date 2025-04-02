@@ -12,7 +12,7 @@
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">New for you</h3>
       </div>
-      <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
+      <%= render partial: 'documents/preview', collection: @unread_documents, cached: ->(document) { [document, document.view_extracted] } %>
     <% elsif @unread_documents.empty? %>
       <div class="document-inbox-nothing-new">
         <span>
@@ -27,6 +27,6 @@
       <h3 class="document-inbox-title">Previously seen</h3>
       <button class="btn-icon" data-documents--hide-read-target="toggleButton"></button>
     </div>
-    <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
+    <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
   </div>
 </div>
