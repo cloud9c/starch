@@ -30,12 +30,12 @@ export default class extends Controller {
 
   updateButtonIcon(isHidden) {
     if (isHidden) {
-      this.toggleButtonTarget.classList.remove("btn-icon--caret-down")
-      this.toggleButtonTarget.classList.add("btn-icon--caret-up")
+      this.toggleButtonTarget.classList.remove("btn-icon--minus")
+      this.toggleButtonTarget.classList.add("btn-icon--plus")
       this.toggleButtonTarget.title = "Show"
     } else {
-      this.toggleButtonTarget.classList.remove("btn-icon--caret-up")
-      this.toggleButtonTarget.classList.add("btn-icon--caret-down")
+      this.toggleButtonTarget.classList.remove("btn-icon--plus")
+      this.toggleButtonTarget.classList.add("btn-icon--minus")
       this.toggleButtonTarget.title = "Hide"
     }
   }

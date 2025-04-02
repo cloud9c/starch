@@ -125,14 +125,13 @@ h6 {
 	pointer-events: auto;
 }
 
-.btn-icon--caret-down {
-	background-image: url('/icons/caret-down.svg');
+.btn-icon--plus {
+	background-image: url('/icons/plus.svg');
 }
 
-.btn-icon--caret-up {
-	background-image: url('/icons/caret-up.svg');
+.btn-icon--minus {
+	background-image: url('/icons/minus.svg');
 }
-
 
 .checkbox {
 	display: flex;
