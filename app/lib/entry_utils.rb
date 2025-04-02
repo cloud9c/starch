@@ -139,7 +139,7 @@ module EntryUtils
       published_at: entry_data.published || Time.current,
       url: url,
       content: content,
-      thumbnail_url: self.extract_thumbnail(content)
+      thumbnail_url: entry_data.media_thumbnail_url || self.extract_thumbnail(content)
     }
   end
 
@@ -151,7 +151,7 @@ module EntryUtils
 
     result = {
       content: content,
-      thumbnail_url: self.extract_thumbnail(content),
+      thumbnail_url: self.extract_thumbnail(parsed_data),
       title: self.format_text(parsed_data["title"]),
       author: self.format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
