@@ -103,7 +103,7 @@ module EntryUtils
     doc = Nokogiri::HTML(html)
 
     # open links in new tab
-    doc.css("a").each do |link|
+    doc.css('a[href]:not([href^="#"])').each do |link|
       link["target"] = "_blank"
       link["rel"] = "noopener noreferrer"
     end

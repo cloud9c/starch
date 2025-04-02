@@ -14,7 +14,6 @@
 
 .document-title {
 	font-weight: 600;
-	line-height: 1;
 }
 
 .document-title > a[href] {
@@ -40,6 +39,14 @@
 	margin-bottom: 1em;
 }
 
+.document-body blockquote > * {
+  margin-left: 1.25em;
+}
+
+.document-body blockquote {
+  border-left: 4px solid var(--color-border);
+}
+
 .document-body * {
 	max-width: 100%;
 	height: auto;
@@ -47,6 +54,16 @@
 
 .document-body figure {
 	margin: 2em 0;
+}
+
+.document-body ol li, .document-body ul li {
+  margin: 0.5em 0 0 2em;
+}
+
+.document-body h1, .document-body h2, .document-body h3, .document-body h4, .document-body h5, .document-body h6 {
+  margin: 1em 0 .625em;
+  font-weight: 600;
+  font-family: var(--font-sans);
 }
 
 .document-metadata-row {

@@ -70,12 +70,12 @@ body {
 }
 
 a {
-	color: var(--color-text);
+	color: inherit;
 	text-decoration: underline;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-weight: bold;
+  line-height: var(--line-height-tight);
 }
 
 h1 {
@@ -206,4 +206,44 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 .searchbar:has(input:focus-visible) {
 	outline: var(--focus-ring);
 	background-color: var(--color-link-hover)
+}
+
+details summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: .4em;
+  justify-content: start;
+  position: relative;
+  user-select: none;
+}
+
+details summary::before {
+    content: "";
+    background: url("/icons/caret-right.svg") center center/100% auto no-repeat;
+    min-width: .6875em;
+    width: .6875em;
+    height: 1.075em;
+    transition: transform var(--transition);
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+ol, ul {
+  list-style: initial;
+}
+
+sub, sup {
+  font-size: var(--text-sm);
+  margin-left: 0.25em;
+}
+
+sup {
+  vertical-align: super;
+}
+
+sub {
+  vertical-align: sub;
 }
