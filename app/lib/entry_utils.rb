@@ -151,7 +151,7 @@ module EntryUtils
 
     result = {
       content: content,
-      thumbnail_url: self.extract_thumbnail(parsed_data),
+      thumbnail_url: self.extract_thumbnail(content),
       title: self.format_text(parsed_data["title"]),
       author: self.format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
