@@ -42,7 +42,7 @@ body {
 }
 
 .sheet {
-	border-radius: 1em 1em 0 0;
+	border-radius: 0.5em 0.5em 0 0;
 	flex: 1;
 	background: white;
 	box-shadow: 0 0 3em var(--color-shadow);
