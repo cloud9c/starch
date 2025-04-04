@@ -22,6 +22,7 @@ module ChannelUtils
     if discover
       html = body_to_s(response)
       path = extract_feed_url(html)
+
       return nil unless path
 
       feed_url = URI.join(normalized_url, path).to_s

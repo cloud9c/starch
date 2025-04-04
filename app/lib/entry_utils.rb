@@ -139,7 +139,7 @@ module EntryUtils
       published_at: entry_data.published || Time.current,
       url: url,
       content: content,
-      thumbnail_url: entry_data.media_thumbnail_url || self.extract_thumbnail(content)
+      thumbnail_url: entry_data.try("media_thumbnail_url") || self.extract_thumbnail(content)
     }
   end
 
