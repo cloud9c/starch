@@ -33,6 +33,10 @@
 	font-size: var(--text-lg);
 	line-height: var(--line-height-loose);
 	margin-bottom: 1em;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .document-body p {
@@ -71,4 +75,14 @@
 	align-items: center;
 	justify-content: space-between;
 	text-transform: uppercase;
+}
+
+.document-body .video-container {
+    display: flex;
+    justify-content: center;
+}
+
+.document-body .video-container iframe {
+    aspect-ratio: 16 / 9;
+    width: 100% !important;
 }
