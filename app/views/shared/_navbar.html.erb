@@ -1,21 +1,9 @@
 <nav id="navbar">
-  <div id="navbar-menu">
-    <details>
-      <summary class="btn">
-        Inbox
-      </summary>
-
-      <turbo-frame id="navigation-menu" target="_top">
-        <% on_root = current_page?(root_path) || current_page?(documents_path) %>
-        <% filter_path = on_root ? documents_path : root_path %>
-
-        <%= link_to "Later", "#{filter_path}?status=later" %>
-        <%= link_to "Archive", "#{filter_path}?status=archive" %>
-        <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
-        <%= link_to "Feed", feed_path %>
-        <%= link_to "Subscriptions", subscriptions_path %>
-      </turbo-frame>
-    </details>
+  <div id="navbar--logo-container">
+    <%= link_to root_path, id: "navbar--logo" do %>
+      <%= image_tag "icons/rss.svg", alt: "Logo", class: "logo" %>
+      <h5>Starch</h5>
+    <% end %>
   </div>
 
   <search class="searchbar">
@@ -26,7 +14,7 @@
     <% end %>
   </search>
 
-  <div id="navbar-account">
+  <div id="navbar--account">
     <% if authenticated? %>
       <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
     <% else %>

@@ -10,29 +10,22 @@
 	gap: 1em;
 }
 
-#navbar-menu {
+#navbar--logo-container {
   display: flex;
 	flex: 1;
   align-items: center;
 }
 
-#navbar-menu summary {
-
-}
-
-#navbar-menu summary::marker {
-  content: none;
-}
-
-#navigation-menu {
-  position: absolute;
-  background: red;
+#navbar--logo {
   display: flex;
-  flex-direction: column;
-  padding: 1em;
+  gap: 0.25em;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: var(--font-sans);
+  align-items: center;
 }
 
-#navbar-account {
+#navbar--account {
 	display: flex;
 	justify-content: flex-end;
 	flex: 1;

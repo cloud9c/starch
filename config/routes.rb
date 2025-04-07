@@ -24,5 +24,9 @@ Rails.application.routes.draw do
 
   get "feed" => "documents#feed"
 
+  namespace :my do
+    get :navigation
+  end
+
   mount MissionControl::Jobs::Engine, at: "/jobs"
 end

@@ -29,7 +29,7 @@
 :root {
 	--font-serif: 'Newsreader', Georgia, Times, serif;
 	--font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-	--font-size: clamp(0.75rem, 2.225vw, 1rem);
+	--font-size: clamp(1rem, 2.225vw, 1.125rem);
 
 	--letter-spacing: -0.0015em;
 	--line-height: 1.3em;
