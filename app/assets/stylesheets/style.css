@@ -34,10 +34,9 @@ body {
 	width: var(--content-width);
 }
 
-.content-header {
+.content--header {
 	font-family: var(--font-serif);
 	text-align: center;
-	margin-bottom: 0.5em;
 	width: 100%;
 }
 

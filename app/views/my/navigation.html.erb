@@ -1,3 +1,10 @@
-<%= turbo_frame_tag :my_navigation do %>
-    <h1 class="content-header">Inbox</h1>
-<% end %>
+<turbo-frame id="my_navigation">
+    <% on_root = current_page?(root_path) || current_page?(documents_path) %>
+    <% filter_path = on_root ? documents_path : root_path %>
+
+    <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
+    <%= link_to "Later", "#{filter_path}?status=later" %>
+    <%= link_to "Archive", "#{filter_path}?status=archive" %>
+    <%= link_to "Feed", feed_path %>
+    <%= link_to "Subscriptions", subscriptions_path %>
+</turbo-frame>

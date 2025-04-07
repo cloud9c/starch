@@ -5,7 +5,7 @@
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
 
-  <%= turbo_frame_tag :my_navigation, src: "my/navigation" %>
+  <%= render "shared/content_header", title: params[:status].titleize %>
 
   <div id="unread-documents-section" class="document-preview-section">
     <% if @unread_documents.any? %>

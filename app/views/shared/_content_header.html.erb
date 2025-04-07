@@ -1,0 +1,7 @@
+<details class="content--header-container">
+  <summary>
+    <h1 class="content--header"><%= title %></h1>
+    <%= image_tag "icons/caret-down.svg", alt: "Expand navgiation menu" %>
+  </summary>
+<%= turbo_frame_tag :my_navigation, src: "my/navigation", target: "_top" %>
+</details>

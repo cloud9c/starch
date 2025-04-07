@@ -4,6 +4,10 @@ class DocumentsController < ApplicationController
   @@per_page = 10
 
   def index
+    unless DocumentState.statuses.keys.include?(params[:status])
+      params[:status] = "inbox"
+    end
+
     status = params[:status] ||= "inbox"
     page = params[:page] ? params[:page].to_i : 1
 
