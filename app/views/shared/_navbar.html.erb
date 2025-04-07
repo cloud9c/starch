@@ -1,19 +1,21 @@
 <nav id="navbar">
   <div id="navbar-menu">
-    <% on_root = current_page?(root_path) || current_page?(documents_path) %>
-    <% filter_path = on_root ? documents_path : root_path %>
-    
-    <%# link_to "Later", "#{filter_path}?status=later", data: { turbo_frame: "_top" } %>
-    <%# link_to "Archive", "#{filter_path}?status=archive", data: { turbo_frame: "_top" } %>
-    <h5>
-      <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
-    </h5>
-    <%# <h5> %>
-    <%#   <%= link_to "Feed", feed_path %>
-    <%# </h5> %>
-    <h5>
-      <%= link_to "Subs", subscriptions_path %>
-    </h5>
+    <details>
+      <summary class="btn">
+        Inbox
+      </summary>
+
+      <turbo-frame id="navigation-menu" target="_top">
+        <% on_root = current_page?(root_path) || current_page?(documents_path) %>
+        <% filter_path = on_root ? documents_path : root_path %>
+
+        <%= link_to "Later", "#{filter_path}?status=later" %>
+        <%= link_to "Archive", "#{filter_path}?status=archive" %>
+        <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
+        <%= link_to "Feed", feed_path %>
+        <%= link_to "Subscriptions", subscriptions_path %>
+      </turbo-frame>
+    </details>
   </div>
 
   <search class="searchbar">

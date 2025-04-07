@@ -11,9 +11,25 @@
 }
 
 #navbar-menu {
-	display: flex;
-	gap: 1em;
+  display: flex;
 	flex: 1;
+  align-items: center;
+}
+
+#navbar-menu summary {
+
+}
+
+#navbar-menu summary::marker {
+  content: none;
+}
+
+#navigation-menu {
+  position: absolute;
+  background: red;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
 }
 
 #navbar-account {

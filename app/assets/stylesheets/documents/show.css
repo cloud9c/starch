@@ -86,3 +86,27 @@
     aspect-ratio: 16 / 9;
     width: 100% !important;
 }
+
+.document-body details summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: .4em;
+  justify-content: start;
+  position: relative;
+  user-select: none;
+}
+
+.document-body details summary::before {
+    content: "";
+    background: url("/icons/caret-right.svg") center center/100% auto no-repeat;
+    min-width: .6875em;
+    width: .6875em;
+    height: 1.075em;
+    transition: transform var(--transition);
+}
+
+.document-body details[open] summary::before {
+    transform: rotate(90deg);
+}
+
