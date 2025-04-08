@@ -12,8 +12,8 @@
 
 #navbar--logo-container {
   display: flex;
-	flex: 1;
   align-items: center;
+  flex: 1 0 auto;
 }
 
 #navbar--logo {
@@ -28,11 +28,17 @@
 #navbar--account {
 	display: flex;
 	justify-content: flex-end;
-	flex: 1;
+	flex: 1 0 auto;
 }
 
 #navbar .searchbar {
 	flex: var(--content-width);
+}
+
+@media (max-width: 100ch) {
+  #navbar .searchbar {
+    display: none
+  }
 }
 
 .searchfield-container {
