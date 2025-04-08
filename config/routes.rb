@@ -12,17 +12,18 @@ Rails.application.routes.draw do
   end
 
   resources :subscriptions
+
   resources :documents do
     member do
       get :preview
       post :read
     end
-    collection do
-      get :search
-    end
   end
 
-  get "feed" => "documents#feed"
+  get "later" => "documents#later", as: :later
+  get "archive" => "documents#archive", as: :archive
+  get "search" => "documents#search", as: :search
+  get "feed" => "documents#feed", as: :feed
 
   namespace :my do
     get :navigation
