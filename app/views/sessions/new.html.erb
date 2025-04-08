@@ -1,7 +1,6 @@
 <div class="sheet">
+  <h1 class="sheet__header">Starch</h1>
   <div class="content">
-    <%= render "shared/content_header", title: "Starch", no_navigation: true %>
-
     <% if @show_verification %>
       <%= form_with(url: verify_session_path, data: { turbo: false }, class: "login-form") do |form| %>
         <%= form.label :verification_code, "Enter verification code" %>

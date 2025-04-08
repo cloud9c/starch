@@ -3,11 +3,10 @@
 <% end %>
 
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "status=inbox" %>">
+     data-documents__list-query-value="<%= "status=inbox" %>">
+  <h1 class="sheet__header">Inbox</h1>
 
-  <%= render "shared/content_header", title: "Inbox" %>
-
-  <div id="unread-documents-section" class="document-preview-section">
+  <div id="inbox__unread-section" class="document-preview-section">
     <% if @unread_documents.any? %>
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">New for you</h3>
@@ -22,11 +21,13 @@
     <% end %>
   </div>
   
-  <div id="read-documents-section" class="sheet document-preview-section" data-controller="documents--hide-read"  data-action="click->documents--hide-read#toggle">
-    <div class="document-inbox-title-row">
-      <h3 class="document-inbox-title">Previously seen</h3>
-      <button class="btn-icon" data-documents--hide-read-target="toggleButton"></button>
-    </div>
+  <details id="inbox__read-section" class="document-preview-section" data-controller="documents--hide-read">
+    <summary>
+      <div class="document-inbox-title-row">
+        <h3 class="document-inbox-title">Previously seen</h3>
+        <button class="btn-icon"></button>
+      </div>
+    </summary>
     <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
-  </div>
+  </details>
 </div>

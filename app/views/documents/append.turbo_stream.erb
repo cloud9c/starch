@@ -1,8 +1,8 @@
-<%= turbo_stream.append  "unread-documents-section" do %>
+<%= turbo_stream.append  "inbox__unread-section" do %>
   <%= render partial: 'documents/preview', collection: @unread_documents, cached: true %>
 <% end %>
 
-<%= turbo_stream.append  "read-documents-section" do %>
+<%= turbo_stream.append  "inbox__read-section" do %>
   <%= render partial: 'documents/preview', collection: @read_documents, cached: true %>
 <% end %>
 

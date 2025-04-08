@@ -25,7 +25,7 @@
 
   <body>
     <%= render "shared/flash" %>
-    <%= render 'shared/navbar' %>
+    <%= render 'shared/navbar' if authenticated? %>
     <main class="main">
       <%= yield %>
     </main>

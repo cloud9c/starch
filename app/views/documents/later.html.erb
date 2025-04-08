@@ -2,10 +2,10 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-inbox" class="sheet" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "status=later" %>">
-  <%= render "shared/content_header", title: "Later" %>
-  <div class="document-preview-section" id="documents-section">
+<div id="document-inbox" class="sheet" data-controller="documents__list" 
+     data-documents__list-query-value="<%= "status=later" %>">
+  <h1 class="sheet__header">Later</h1>
+  <div class="document-preview-section content" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
     <% else %>

@@ -29,6 +29,7 @@
 :root {
 	--font-serif: 'Newsreader', Georgia, Times, serif;
 	--font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 	--font-size: clamp(1rem, 2.225vw, 1.125rem);
 
 	--letter-spacing: -0.0015em;
@@ -36,31 +37,34 @@
 	--line-height-loose: 1.6em;
   --line-height-tight: 1.16em;
 
-	--lch-paper: 99% 0.0025 96;
-	--lch-paper-dark: 90% 0.005 96;
-
-	--lch-gray-lighter: 90% 0.005 96;
-	--lch-gray-light: 85% 0.005 96;
-	--lch-gray: 80% 0.005 96;
-	--lch-gray-dark: 50% 0.005 96;
-
-	--lch-text-light: 50% 0.005 96;
+  --lch-white: 100% 0 0;
+  --lch-yellow: 92% 0.16 90;
+  --lch-green: 87% 0.16 150;
+  --lch-red: 75% 0.16 28;
+  --lch-orange: 75% 0.16 60;
+  --lch-blue: 75% 0.14 230;
+  --lch-dark-blue: 50% 0.16 230;
+  --lch-purple: 75% 0.14 295;
+  --lch-paper: 98% 0.01 90;
+  --lch-offwhite: 98.5% 0 0;
+	--lch-gray-lighter: 92% 0 0;
+	--lch-gray-light: 85% 0 0;
+	--lch-gray: 80% 0 0;
+	--lch-gray-dark: 50% 0 0;
+	--lch-text-light: 50% 0 0;
 	--lch-text: 25% 0.005 96;
 
 	--color-border-dark: oklch(var(--lch-gray));
-	--color-border: oklch(var(--lch-gray-light));
-	--color-border-light: oklch(var(--lch-gray-lighter));
-
-	--border-radius: 0.25em;
-
+	--color-border: oklch(var(--lch-gray-lighter));
+  --color-link: oklch(var(--lch-dark-blue));
+	--color-link-hover: oklch(var(--lch-dark-blue) / 0.10);
 	--color-text: oklch(var(--lch-text));
 	--color-text-light: oklch(var(--lch-text-light));
+	--color-shadow: oklch(var(--lch-gray-dark) / 0.20);
+  --color-main: oklch(var(--lch-yellow));
+  --color-paper: oklch(var(--lch-paper));
 
-	--color-shadow: oklch(var(--lch-gray-dark) / 0.15);
-
-	--lch-blue: 54% 0.23 255;
-  --lch-blue-light: 95% 0.03 255;
-	--lch-blue-dark: 80% 0.08 255;
+	--focus-ring: 1px solid oklch(var(--lch-blue));
 
 	--text-sm: 0.875em;
 	--text-base: 1em;
@@ -72,27 +76,19 @@
 	--text-5xl: 2.5em;
 	--text-6xl: 2.875em;
 
-	--bg-paper: oklch(var(--lch-paper));
-	--bg-paper-dark: oklch(var(--lch-paper-dark));
-
+	--bg-offwhite: oklch(var(--lch-offwhite));
+  --bg-gray: oklch(var(--lch-gray-light));
 	--bg-selected: oklch(var(--lch-blue));
-
-  --color-link: oklch(var(--lch-blue));
-	--color-link-hover: oklch(var(--lch-blue) / 0.04);
-	--bg-opaque: oklch(100% 0 0 / 0.95);
-
-	--focus-ring: 1px solid oklch(var(--lch-blue));
+	--bg-opaque: oklch(var(--lch-paper) / 0.90);
+	--bg-main: oklch(var(--lch-paper));
 
 	--transition: 0.1s ease;
 
 	--content-width: min(100%, 40em);
+
 	--sheet-width: min(100%, 60em);
-
-
-	--color-main: 100% 0 0;
-	--bg-main: oklch(var(--lch-paper-dark));
-
 	--body-padding: 1em;
+	--border-radius: 0.25em;
 }
 
 @media (max-width: 100ch) {

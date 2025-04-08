@@ -1,10 +1,11 @@
-<nav id="navbar">
-  <div id="navbar--logo-container">
-    <%= link_to root_path, id: "navbar--logo" do %>
+<nav id="navbar" data-controller="scroll-toggle">
+  <details id="navbar__logo-container">
+    <summary id="navbar__logo">
       <%= image_tag "icons/rss.svg", alt: "Starch logo" %>
       <h5>Starch</h5>
-    <% end %>
-  </div>
+    </summary>
+    <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
+  </details>
 
   <search class="searchbar">
     <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
@@ -14,7 +15,7 @@
     <% end %>
   </search>
 
-  <div id="navbar--account">
+  <div id="navbar__account">
     <% if authenticated? %>
       <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
     <% else %>

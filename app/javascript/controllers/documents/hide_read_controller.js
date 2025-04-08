@@ -1,42 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["toggleButton"]
-
   connect() {
-    const hideRead = localStorage.getItem("hideRead") === "true"
-    
-    if (hideRead) {
-      this.element.classList.add("hide-read")
-    } else {
-      this.element.classList.remove("hide-read")
-    }
+    const openRead = localStorage.getItem("openRead") === "true";
 
-    this.updateButtonIcon(hideRead)
+    this.element.open = openRead;
+    this.element.addEventListener("toggle", this.updateStorage.bind(this));
+    this.element.addEventListener("click", () => {
+      if (event.target !== this.element) return;
+
+       event.preventDefault()
+      this.element.open = !this.element.open;
+    })
   }
   
-  toggle(event) {
-    if (event.target.closest('.document-preview')) {
-      return;
-    }
-
-    this.element.classList.toggle("hide-read")
-
-    const isHidden = this.element.classList.contains("hide-read")
-    localStorage.setItem("hideRead", isHidden)
-
-    this.updateButtonIcon(isHidden)
-  }
-
-  updateButtonIcon(isHidden) {
-    if (isHidden) {
-      this.toggleButtonTarget.classList.remove("btn-icon--minus")
-      this.toggleButtonTarget.classList.add("btn-icon--plus")
-      this.toggleButtonTarget.title = "Show"
-    } else {
-      this.toggleButtonTarget.classList.remove("btn-icon--plus")
-      this.toggleButtonTarget.classList.add("btn-icon--minus")
-      this.toggleButtonTarget.title = "Hide"
-    }
+  updateStorage() {
+    localStorage.setItem("openRead", this.element.open);
   }
 }

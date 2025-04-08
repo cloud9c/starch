@@ -1,7 +1,6 @@
 <div class="sheet">
+  <h1 class="sheet__header">Subscriptions</h1>
   <div class="content">
-    <%= render "shared/content_header", title: "Subscriptions" %>
-
     <%= form_with(url: subscriptions_path, id: "add-subscription") do |f| %>
       <%= f.text_field :feed_url, 
           placeholder: "Enter link",

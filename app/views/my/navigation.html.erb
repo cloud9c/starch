@@ -1,30 +1,30 @@
 <turbo-frame id="my_navigation">
-    <%= link_to root_path do %>
+    <%= link_to root_path, class: "btn" do %>
       <%= image_tag "icons/star-fill.svg" %>
       <span>Inbox<span>
     <% end %>
 
-    <%= link_to later_path do %>
+    <%= link_to later_path, class: "btn" do %>
       <%= image_tag "icons/clock-fill.svg" %>
       <span>Later<span>
     <% end %>
 
-    <%= link_to feed_path do %>
+    <%= link_to feed_path, class: "btn" do %>
       <%= image_tag "icons/newspaper-clipping-fill.svg" %>
       <span>Feed<span>
     <% end %>
 
-    <%= link_to subscriptions_path do %>
+    <%= link_to subscriptions_path, class: "btn" do %>
       <%= image_tag "icons/plus-circle-fill.svg" %>
       <span>Subscriptions<span>
     <% end %>
 
-    <%= link_to search_path do %>
+    <%= link_to search_path, class: "btn" do %>
       <%= image_tag "icons/binoculars-fill.svg" %>
       <span>Search<span>
     <% end %>
 
-    <%= link_to archive_path do %>
+    <%= link_to archive_path, class: "btn" do %>
       <%= image_tag "icons/archive-fill.svg" %>
       <span>Archive<span>
     <% end %>
