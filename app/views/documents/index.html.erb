@@ -3,9 +3,9 @@
 <% end %>
 
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "status=#{params[:status]}" %>">
+     data-documents--list-query-value="<%= "status=inbox" %>">
 
-  <%= render "shared/content_header", title: params[:status].titleize %>
+  <%= render "shared/content_header", title: "Inbox" %>
 
   <div id="unread-documents-section" class="document-preview-section">
     <% if @unread_documents.any? %>

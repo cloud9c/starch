@@ -10,11 +10,17 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
+  @@per_page = 10
+
+  def self.per_page
+    @@per_page
+  end
+
   def self.search(query, options = {})
     search_params = {
       q: query,
       query_by: "title,description,content",
-      per_page: options[:per_page],
+      per_page: @@per_page,
       page: options[:page],
       filter_by: "user_ids:=[#{Current.user_or_raise!.id}]",
       include_fields: "id"
@@ -33,6 +39,31 @@ class Document < ApplicationRecord
       { name: "published_at", type: "int64", optional: true },
       { name: "content", type: "string", optional: true }
     ]
+  end
+
+  def self.query(user_id, options = {})
+    query = Document.joins(:document_states)
+                    .joins(entry: { channel: :subscriptions })
+                    .includes(entry: :channel)
+                    .where(document_states: { user: user_id })
+                    .order("document_states.read" => :asc, "documents.published_at" => :desc)
+    
+    query = query.where(document_states: { status: options[:status] }) if options[:status].present?
+    
+    query = query.where(id: options[:ids]) if options[:ids].present?
+    
+    if options[:page].present?
+      query = query.limit(@@per_page)
+                  .offset((options[:page] - 1) * @@per_page)
+    end
+    
+    query = query.select("document_states.read, documents.*, subscriptions.view_extracted")
+    
+    query.map do |doc|
+      doc.with_view_preferences
+      doc.with_description
+      doc
+    end
   end
 
   def with_view_preferences

@@ -1,10 +1,31 @@
 <turbo-frame id="my_navigation">
-    <% on_root = current_page?(root_path) || current_page?(documents_path) %>
-    <% filter_path = on_root ? documents_path : root_path %>
+    <%= link_to root_path do %>
+      <%= image_tag "icons/star-fill.svg" %>
+      <span>Inbox<span>
+    <% end %>
 
-    <%= link_to "Inbox", "#{filter_path}?status=inbox" %>
-    <%= link_to "Later", "#{filter_path}?status=later" %>
-    <%= link_to "Archive", "#{filter_path}?status=archive" %>
-    <%= link_to "Feed", feed_path %>
-    <%= link_to "Subscriptions", subscriptions_path %>
+    <%= link_to later_path do %>
+      <%= image_tag "icons/clock-fill.svg" %>
+      <span>Later<span>
+    <% end %>
+
+    <%= link_to feed_path do %>
+      <%= image_tag "icons/newspaper-clipping-fill.svg" %>
+      <span>Feed<span>
+    <% end %>
+
+    <%= link_to subscriptions_path do %>
+      <%= image_tag "icons/plus-circle-fill.svg" %>
+      <span>Subscriptions<span>
+    <% end %>
+
+    <%= link_to search_path do %>
+      <%= image_tag "icons/binoculars-fill.svg" %>
+      <span>Search<span>
+    <% end %>
+
+    <%= link_to archive_path do %>
+      <%= image_tag "icons/archive-fill.svg" %>
+      <span>Archive<span>
+    <% end %>
 </turbo-frame>

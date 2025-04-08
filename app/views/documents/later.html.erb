@@ -3,8 +3,8 @@
 <% end %>
 
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
-  <%= render "shared/content_header", title: "Search" %>
+     data-documents--list-query-value="<%= "status=later" %>">
+  <%= render "shared/content_header", title: "Later" %>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>

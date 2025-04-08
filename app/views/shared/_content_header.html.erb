@@ -1,9 +1,6 @@
 <details class="content--header-container">
   <summary>
     <h1 class="content--header"><%= title %></h1>
-    <% unless local_assigns[:no_navigation] %>
-      <%= image_tag "icons/caret-down.svg", alt: "Expand navgiation menu" %>
-    <% end %>
   </summary>
     <% unless local_assigns[:no_navigation] %>
       <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
