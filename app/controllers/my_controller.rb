@@ -1,3 +1,2 @@
 class MyController < ApplicationController
-
 end
