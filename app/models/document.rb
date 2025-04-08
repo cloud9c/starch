@@ -47,18 +47,18 @@ class Document < ApplicationRecord
                     .includes(entry: :channel)
                     .where(document_states: { user: user_id })
                     .order("document_states.read" => :asc, "documents.published_at" => :desc)
-    
+
     query = query.where(document_states: { status: options[:status] }) if options[:status].present?
-    
+
     query = query.where(id: options[:ids]) if options[:ids].present?
-    
+
     if options[:page].present?
       query = query.limit(@@per_page)
                   .offset((options[:page] - 1) * @@per_page)
     end
-    
+
     query = query.select("document_states.read, documents.*, subscriptions.view_extracted")
-    
+
     query.map do |doc|
       doc.with_view_preferences
       doc.with_description
