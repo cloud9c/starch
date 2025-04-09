@@ -1,7 +1,7 @@
 <nav id="navbar" data-controller="scroll-toggle">
   <details id="navbar__logo-container">
     <summary id="navbar__logo">
-      <%= image_tag "icons/rss.svg", alt: "Starch logo" %>
+      <img src="/icon.svg" alt="Starch logo">
       <h5>Starch</h5>
     </summary>
     <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>

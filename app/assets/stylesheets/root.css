@@ -38,14 +38,14 @@
   --line-height-tight: 1.16em;
 
   --lch-white: 100% 0 0;
-  --lch-yellow: 92% 0.16 90;
-  --lch-green: 87% 0.16 150;
+  --lch-yellow: 82% 0.16 90;
+  --lch-green: 62% 0.16 150;
   --lch-red: 75% 0.16 28;
   --lch-orange: 75% 0.16 60;
   --lch-blue: 75% 0.14 230;
   --lch-dark-blue: 50% 0.16 230;
   --lch-purple: 75% 0.14 295;
-  --lch-paper: 98% 0.01 90;
+  --lch-paper: 95% 0.01 90;
   --lch-offwhite: 98.5% 0 0;
 	--lch-gray-lighter: 92% 0 0;
 	--lch-gray-light: 85% 0 0;

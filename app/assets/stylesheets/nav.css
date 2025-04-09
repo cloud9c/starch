@@ -23,7 +23,7 @@
 #navbar__logo {
   height: 100%;
   display: flex;
-  gap: 0.25em;
+  gap: 0.5em;
   text-decoration: none;
   font-weight: bold;
   font-family: var(--font-sans);
@@ -31,6 +31,11 @@
   user-select: none;
   align-items: center;
   width: fit-content;
+}
+
+#navbar__logo img {
+  width: 1.5em;
+  height: 1.5em;
 }
 
 #navbar__logo::marker {
