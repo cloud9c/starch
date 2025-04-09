@@ -32,28 +32,29 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 	--font-size: clamp(1rem, 2.225vw, 1rem);
 
-	--letter-spacing: -0.0015em;
+	--letter-spacing: -0.0015rem;
 	--line-height: 1.3em;
 	--line-height-loose: 1.6em;
   --line-height-tight: 1.16em;
 
-	--text-sm: 0.875em;
-	--text-base: 1em;
-	--text-lg: 1.125em;
-	--text-xl: 1.25em;
-	--text-2xl: 1.5em;
-	--text-3xl: 1.875em;
-	--text-4xl: 2.25em;
-	--text-5xl: 2.5em;
+  --text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 1.875rem;
+	--text-4xl: 2.25rem;
+	--text-5xl: 2.5rem;
 
 	--transition: 0.1s ease;
 
-	--content-width: min(100%, 40em);
-	--sheet-width: min(100%, 60em);
-  --navbar-width: min(100%, 75em);
+	--content-width: min(100%, 40rem);
+	--sheet-width: min(100%, 60rem);
+  --navbar-width: min(100%, 75rem);
 
-	--body-padding: 1em;
-	--border-radius: 0.25em;
+	--body-padding: 1rem;
+	--border-radius: 0.25rem;
 
   /* neutrals - from light to dark */
   --lch-white: 100% 0 0;
@@ -65,12 +66,12 @@
   --lch-gray-dark: 50% 0 0;
   --lch-gray-darker: 30% 0 0;
   --lch-gray-darkest: 20% 0 0;
-  --lch-offblack: 15% 0 0;
+  --lch-offblack: 17.5% 0 0;
   --lch-text-light: 50% 0 0;
   --lch-text: 25% 0.005 96;
   --lch-black: 0% 0 0;
 
-  --lch-paper-reversed: 10% 0 0;
+  --lch-paper-reversed: 15% 0 0;
   --lch-text-light-reversed: 50% 0 0;
   --lch-text-reversed: 75% 0 0;
 
@@ -101,11 +102,13 @@
 	--bg-selected: oklch(var(--lch-blue));
 	--bg-opaque: oklch(var(--lch-paper) / 0.90);
 	--bg-main: oklch(var(--lch-paper));
+
+  --text-light-filter: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 }
 
 @media (max-width: 100ch) {
 	:root {
-		--body-padding: 0em;
+		--body-padding: 0rem;
 	}
 }
 

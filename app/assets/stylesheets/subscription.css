@@ -1,7 +1,7 @@
 #subscription-list:has(.subscription-preview) {
   display: flex;
   flex-direction: column;
-  margin-top: 1em;
+  margin-top: 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   background: var(--bg-primary);
@@ -9,7 +9,7 @@
 
 #add-subscription {
   display: flex;
-  gap: 1em;
+  gap: 1rem;
 }
 
 #feed_url {
@@ -18,9 +18,9 @@
 
 .subscription-preview {
   display: flex;
-  gap: 0.5em;
+  gap: 0.5rem;
   border-bottom: 1px solid var(--color-border);
-  padding: 1em;
+  padding: 1rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -31,7 +31,7 @@
 
 .subscription-actions {
   display: flex;
-  gap: 1em;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -43,7 +43,7 @@
 .subscription-content {
   display: flex;
   align-items: center;
-  gap: 1em;
+  gap: 1rem;
 }
 
 .subscription-title {

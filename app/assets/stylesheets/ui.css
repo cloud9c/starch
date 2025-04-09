@@ -3,8 +3,8 @@
 .btn, input[type="submit"] {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
-	padding: 0.5em 1em;
-	font-weight: 600;
+	padding: 0.5em 1rem;
+	font-weight: 500;
 	cursor: pointer;
 	background: var(--bg-primary);
 }
@@ -18,8 +18,8 @@
 .btn-icon {
 	background: url() center center/100% auto no-repeat;
 	content: "";
-	height: 1.5em;
-	width: 1.5em;
+	height: 1.5rem;
+	width: 1.5rem;
 	pointer-events: none;
 	cursor: pointer;
 	pointer-events: auto;
@@ -27,7 +27,7 @@
 
 .checkbox {
 	display: flex;
-	gap: 0.5em;
+	gap: 0.5rem;
 	align-items: center;
 	font-weight: 600;
 }
@@ -73,7 +73,7 @@ input[type="checkbox"]:focus-visible {
 input[type="text"], input[type="email"] {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
-	padding: 0.5em 1em;
+	padding: 0.5em 1rem;
 	background: var(--bg-primary);
 }
 
@@ -86,7 +86,7 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 .searchbar {
 	display: flex;
 	border: 1px solid var(--color-border);
-	border-radius: 2em;
+	border-radius: 2rem;
 	max-width: var(--content-width);
 	background: var(--bg-primary);
 }
@@ -114,16 +114,16 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
   mask-repeat: no-repeat;
   mask-size: 100%;
 	content: "";
-	height: 1.25em;
-	width: 1.25em;
+	height: 1.25rem;
+	width: 1.25rem;
 	pointer-events: none;
   position: absolute;
-  left: 0.5em;
+  left: 0.5rem;
 }
 
 .searchbar input[type="search"] {
   width: 100%;
-  padding: 0.5em 0.5em 0.5em 2.2em;
+  padding: 0.5em 0.5em 0.5em 2.2rem;
 }
 
 input::placeholder {

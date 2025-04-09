@@ -22,6 +22,31 @@ export default class extends Controller {
         const navMenu = document.querySelector("#navbar__logo-container");
         navMenu.open = !navMenu.open;
         break;
+      case "1":
+        redirect();
+        break;
+      case "2":
+        redirect("later");
+        break;
+      case "3":
+        redirect("feed");
+        break;
+      case "4":
+        redirect("subscriptions");
+        break;
+      case "5":
+        redirect("search");
+        break;
+      case "6":
+        redirect("archive");
+        break;
     }
   }
+}
+
+function redirect(path="", baseUrl = window.location.origin) {
+  const formattedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  
+  const redirectUrl = `${formattedBaseUrl}/${path}`;
+  window.location.href = redirectUrl;
 }
