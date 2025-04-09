@@ -31,6 +31,8 @@ export default class extends Controller {
         }
         break;
       case "Escape":
+        this.searchField.blur();
+        break;
       case "Backspace":
         if (event.key === "Backspace" && !event.metaKey) break;
         this.searchField.value = ""

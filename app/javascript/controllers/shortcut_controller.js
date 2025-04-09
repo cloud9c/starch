@@ -10,7 +10,12 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (event.target !== this.element) return;
+    const isInInputField = 
+        event.target.tagName === 'INPUT' || 
+        event.target.tagName === 'TEXTAREA' || 
+        event.target.isContentEditable;
+
+    if (isInInputField) return;
 
     switch (event.key) {
       case "/":
