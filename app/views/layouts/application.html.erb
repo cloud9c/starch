@@ -23,7 +23,7 @@
     <%= yield :head %>
   </head>
 
-  <body>
+  <body data-controller=<%= "shortcut" if authenticated? %>>
     <%= render "shared/flash" %>
     <%= render 'shared/navbar' if authenticated? %>
     <main class="main">
