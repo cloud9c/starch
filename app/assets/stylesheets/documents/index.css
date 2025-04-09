@@ -45,7 +45,7 @@
 	background: var(--bg-offwhite);
   flex: 0;
   padding-top: 0;
-  border-top: 2px dashed var(--color-border-dark);
+  border-top: 2px dashed var(--color-border);
 }
 
 #inbox__read-section[open] {

@@ -1,25 +1,27 @@
-<nav id="navbar" data-controller="scroll-toggle">
-  <details id="navbar__logo-container">
-    <summary id="navbar__logo">
-      <img src="/icon.svg" alt="Starch logo">
-      <h5>Starch</h5>
-    </summary>
-    <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
-  </details>
+<div id="navbar__container" data-controller="scroll-toggle">
+  <nav id="navbar">
+    <details id="navbar__logo-container">
+      <summary id="navbar__logo">
+        <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
+        <h5>Starch</h5>
+      </summary>
+      <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
+    </details>
 
-  <search class="searchbar">
-    <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
-      <div class="searchfield-container">
-      <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search" %>
-      </div>
-    <% end %>
-  </search>
+    <search class="searchbar">
+      <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
+        <div class="searchfield-container">
+        <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search" %>
+        </div>
+      <% end %>
+    </search>
 
-  <div id="navbar__account">
-    <% if authenticated? %>
-      <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
-    <% else %>
-      <%= button_to "Sign in", new_session_path, method: :get, class: "btn" %>
-    <% end %>
-  </div>
-</nav>
+    <div id="navbar__account">
+      <% if authenticated? %>
+        <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
+      <% else %>
+        <%= button_to "Sign in", new_session_path, method: :get, class: "btn" %>
+      <% end %>
+    </div>
+  </nav>
+</div>

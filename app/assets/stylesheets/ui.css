@@ -9,8 +9,10 @@
 	background: white;
 }
 
-.btn:hover, .btn:active, input[type="submit"]:hover, input[type="submit"]:active {
+.btn:hover, .btn:active, input[type="submit"]:hover, input[type="submit"]:active,
+.searchbar:has(input:focus-visible), input[type="checkbox"]:hover {
 	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), white;
+  border-color: var(--color-border-dark);
 }
 
 .btn-icon {
@@ -34,7 +36,7 @@ input[type="checkbox"] {
   appearance: none;
   width: 18px;
   height: 18px;
-  border: 1px solid var(--color-border-dark);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   outline: none;
   cursor: pointer;
@@ -42,10 +44,6 @@ input[type="checkbox"] {
   vertical-align: middle;
   margin: 0;
   background: white;
-}
-
-input[type="checkbox"]:hover {
-  background-color: var(--color-link-hover)
 }
 
 input[type="checkbox"]:checked {
@@ -73,7 +71,7 @@ input[type="checkbox"]:focus-visible {
 }
 
 input[type="text"], input[type="email"] {
-	border: 1px solid var(--color-border-dark);
+	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 	padding: 0.5em 1em;
 	background: white;
@@ -81,12 +79,12 @@ input[type="text"], input[type="email"] {
 
 input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 	outline: var(--focus-ring);
-  background-color: var(--color-link-hover)
+  background-color: var(--color-link-hover);
+  border-color: var(--color-border);
 }
 
 .searchbar {
 	display: flex;
-	padding: 0.5em;
 	border: 1px solid var(--color-border);
 	border-radius: 2em;
 	max-width: var(--content-width);
@@ -96,4 +94,38 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 .searchbar:has(input:focus-visible) {
 	outline: var(--focus-ring);
 	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), white;
+  border-color: var(--color-border);
+}
+
+.searchbar form {
+  flex: 1;
+}
+
+.searchfield-container {
+	display: flex;
+	align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.searchfield-container::after {
+  background-color: var(--color-text-light);
+  mask-image: url(/icons/search.svg);
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+	content: "";
+	height: 1.25em;
+	width: 1.25em;
+	pointer-events: none;
+  position: absolute;
+  left: 0.5em;
+}
+
+.searchbar input[type="search"] {
+  width: 100%;
+  padding: 0.5em 0.5em 0.5em 2.2em;
+}
+
+input::placeholder {
+  color: var(--color-text-light)
 }

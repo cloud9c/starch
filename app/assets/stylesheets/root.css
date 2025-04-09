@@ -84,8 +84,9 @@
 	--transition: 0.1s ease;
 
 	--content-width: min(100%, 40em);
-
 	--sheet-width: min(100%, 60em);
+  --navbar-width: min(100%, 75em);
+
 	--body-padding: 1em;
 	--border-radius: 0.25em;
 }
