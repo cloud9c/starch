@@ -92,7 +92,6 @@
 }
 
 #my_navigation a {
-  width: 15em;
   display: flex;
   text-decoration: none;
   align-items: center;
