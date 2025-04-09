@@ -6,12 +6,12 @@
 	padding: 0.5em 1em;
 	font-weight: 600;
 	cursor: pointer;
-	background: white;
+	background: var(--bg-primary);
 }
 
 .btn:hover, .btn:active, input[type="submit"]:hover, input[type="submit"]:active,
 .searchbar:has(input:focus-visible), input[type="checkbox"]:hover {
-	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), white;
+	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), var(--bg-primary);
   border-color: var(--color-border-dark);
 }
 
@@ -43,7 +43,7 @@ input[type="checkbox"] {
   position: relative;
   vertical-align: middle;
   margin: 0;
-  background: white;
+  background: var(--bg-primary);
 }
 
 input[type="checkbox"]:checked {
@@ -74,7 +74,7 @@ input[type="text"], input[type="email"] {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 	padding: 0.5em 1em;
-	background: white;
+	background: var(--bg-primary);
 }
 
 input[type="text"]:focus-visible, input[type="email"]:focus-visible {
@@ -88,12 +88,12 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 	border: 1px solid var(--color-border);
 	border-radius: 2em;
 	max-width: var(--content-width);
-	background: white;
+	background: var(--bg-primary);
 }
 
 .searchbar:has(input:focus-visible) {
 	outline: var(--focus-ring);
-	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), white;
+	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), var(--bg-primary);
   border-color: var(--color-border);
 }
 

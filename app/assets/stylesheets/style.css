@@ -45,7 +45,7 @@ body {
 .sheet {
 	border-radius: 0.5em 0.5em 0 0;
 	flex: 1;
-	background: white;
+	background: var(--bg-primary);
 	box-shadow: 0 0 0.5em var(--color-shadow);
   padding-top: 2em;
   border: 1px solid var(--color-border);
