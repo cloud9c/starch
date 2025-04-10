@@ -30,9 +30,9 @@
 	--font-serif: 'Newsreader', Georgia, Times, serif;
 	--font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-	--font-size: clamp(1rem, 2.225vw, 1rem);
+	--font-size: clamp(1em, 2.225vw, 1em);
 
-	--letter-spacing: -0.0015rem;
+	--letter-spacing: -0.0015em;
 	--line-height: 1.3em;
 	--line-height-loose: 1.6em;
   --line-height-tight: 1.16em;
@@ -49,12 +49,12 @@
 
 	--transition: 0.1s ease;
 
-	--content-width: min(100%, 40rem);
-	--sheet-width: min(100%, 60rem);
-  --navbar-width: min(100%, 75rem);
+	--content-width: min(100%, 40em);
+	--sheet-width: min(100%, 60em);
+  --navbar-width: min(100%, 75em);
 
-	--body-padding: 1rem;
-	--border-radius: 0.25rem;
+	--body-padding: 1em;
+	--border-radius: 0.25em;
 
   /* neutrals - from light to dark */
   --lch-white: 100% 0 0;
@@ -111,10 +111,10 @@
 	--bg-opaque: oklch(var(--lch-paper) / 0.90);
 	--bg-main: oklch(var(--lch-paper));
 
-  --text-secondary-filter: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
+  --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 
   @media (max-width: 100ch) {
-    --body-padding: 0rem;
+    --body-padding: 0em;
   }
 
   @media (prefers-color-scheme: dark) {

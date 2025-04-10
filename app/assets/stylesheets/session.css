@@ -1,8 +1,8 @@
 .login-form {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
-	max-width: 20rem;
+	gap: 1em;
+	max-width: 20em;
 	margin: 0 auto;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .login {
-  margin-top: 2rem;
+  margin-top: 2em;
 
   @media (max-width: 100ch) {
     margin-top: 0;

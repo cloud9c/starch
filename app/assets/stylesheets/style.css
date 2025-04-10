@@ -31,14 +31,14 @@ body {
 
 .content {
 	width: var(--content-width);
-	padding: 0 1em 1rem;
+	padding: 0 1em 1em;
 }
 
 .sheet__header {
 	text-align: center;
 	width: 100%;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.5em;
+  padding-bottom: 0.5em;
   font-weight: 600;
 }
 
@@ -47,7 +47,7 @@ body {
 	flex: 1;
 	background: var(--bg-primary);
 	box-shadow: 0 0 0.5em var(--color-shadow);
-  padding-top: 2rem;
+  padding-top: 2em;
   border: 1px solid var(--color-border);
 
 	display: flex;
@@ -99,7 +99,7 @@ ol, ul {
 
 sub, sup {
   font-size: var(--text-sm);
-  margin-left: 0.25rem;
+  margin-left: 0.25em;
 }
 
 sup {
@@ -112,8 +112,4 @@ sub {
 
 details summary::-webkit-details-marker {
   display: none;
-}
-
-.icon {
-  filter: var(--text-secondary-filter)
 }

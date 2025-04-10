@@ -1,23 +1,22 @@
 # product
 - motto: human intelligence; design your own algorithm; curation
 
-# bugs
-- flash ui
-- allow api calls for unread and read individually
-
 # p0
-
-- fallback image / proxy images that dont allow CORS
-- search autocomplete for subscriptions
-- show content preview as description if no description
+- flash ui
+- extraction is blocking
+- go back arrow
 
 # p1
 
+- fallback image / proxy images that dont allow CORS
+- search autocomplete for subscriptions
+
+# p2
+
 - error message if subscription fails
 - timelimit for trying to get website (hackernew.com as example)
-- extraction is blocking
 
-## p2
+# plater
 
 - www -> root domain
 
