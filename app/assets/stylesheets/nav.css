@@ -6,6 +6,7 @@
 	gap: 1rem;
   z-index: 1;
   margin: 0 auto;
+  align-items: center;
 }
 
 #navbar__container {
@@ -44,10 +45,11 @@
 
 #navbar__logo::after {
   content: "";
-  background: url("/icons/caret-down.svg") center center/100% auto no-repeat;
+  mask-image: url("/icons/caret-down.svg");
+  mask-size: 100%;
+  background: var(--color-text-light);
   width: 1rem;
   height: 1rem;
-  filter: var(--text-light-filter);
 }
 
 #navbar__logo-container[open] #navbar__logo::after {
@@ -62,13 +64,12 @@
 
 #navbar .searchbar {
 	flex: var(--content-width);
-}
 
-@media (max-width: 100ch) {
-  #navbar .searchbar {
+  @media (max-width: 100ch) {
     display: none
   }
 }
+
 
 #my_navigation {
   z-index: 2;
@@ -91,16 +92,22 @@
   gap: 0.5rem;
   border: none;
   counter-increment: item-counter;
+  border-radius: var(--border-radius);
 }
 
-#my_navigation a::after {
-  content: "1";
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-light);
-  content: counter(item-counter);
-  padding-left: 0.5rem;
+#my_navigation a:hover, #my_navigation a:focus {
+  background: var(--bg-link-hover);
+}
+
+@media (min-width: 100ch) {
+  #my_navigation a::after {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    content: counter(item-counter);
+    padding-left: 0.5rem;
+  }
 }
 
 #my_navigation a img {

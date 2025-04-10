@@ -54,17 +54,11 @@ body {
 	flex-direction: column;
 	width: var(--sheet-width);
 	align-items: center;
-}
 
-@media (max-width: 100ch) {
-	#main {
-		background: none;
-	}
-
-	.sheet {
-		border: none;
-		border-radius: 0;
-	}
+  @media (max-width: 100ch) {
+    border: none;
+    border-radius: 0;
+  }
 }
 
 a {
@@ -121,6 +115,6 @@ details summary::-webkit-details-marker {
   display: none;
 }
 
-.icon, .btn-icon {
-  filter: var(--text-light-filter)
+.icon {
+  filter: var(--text-secondary-filter)
 }

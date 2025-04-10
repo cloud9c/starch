@@ -1,28 +1,34 @@
-
-
-.btn, input[type="submit"] {
-	border: 1px solid var(--color-border);
+.btn {
 	border-radius: var(--border-radius);
-	padding: 0.5em 1rem;
+	padding: 0.4em 0.8rem;
 	font-weight: 500;
 	cursor: pointer;
-	background: var(--bg-primary);
+	background: var(--bg-input);
+  color: var(--color-text-light);
 }
 
-.btn:hover, .btn:active, input[type="submit"]:hover, input[type="submit"]:active,
-.searchbar:has(input:focus-visible), input[type="checkbox"]:hover {
-	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), var(--bg-primary);
-  border-color: var(--color-border-dark);
+.btn:hover, .btn:focus {
+  background: var(--bg-input-hover);
 }
 
 .btn-icon {
-	background: url() center center/100% auto no-repeat;
+  background: var(--color-text-secondary);
+	mask-size: 100%;
 	content: "";
-	height: 1.5rem;
-	width: 1.5rem;
+	height: 1.25rem;
+	width: 1.25rem;
 	pointer-events: none;
 	cursor: pointer;
 	pointer-events: auto;
+  vertical-align: middle;
+}
+
+.btn-icon__danger:hover, .btn-icon__danger:focus {
+  background: var(--color-danger);
+}
+
+.icon--trash {
+  mask-image: url(/icons/trash.svg);
 }
 
 .checkbox {
@@ -47,10 +53,15 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--bg-selected);
+  background-color: var(--bg-input-hover);
+}
+
+input[type="checkbox"] + label {
+  user-select: none;
 }
 
 label {
+  color: var(--color-text-secondary);
 	cursor: pointer;
 }
 
@@ -58,10 +69,10 @@ input[type="checkbox"]:checked::after {
   content: '';
   position: absolute;
   left: 5px;
-  top: 1px;
+  top: 2px;
   width: 6px;
   height: 10px;
-  border: solid white;
+  border: solid var(--color-text-light);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -79,7 +90,7 @@ input[type="text"], input[type="email"] {
 
 input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 	outline: var(--focus-ring);
-  background-color: var(--color-link-hover);
+  background-color: var(--bg-link-hover);
   border-color: var(--color-border);
 }
 
@@ -93,7 +104,7 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 
 .searchbar:has(input:focus-visible) {
 	outline: var(--focus-ring);
-	background: linear-gradient(var(--color-link-hover), var(--color-link-hover)), var(--bg-primary);
+	background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
   border-color: var(--color-border);
 }
 
@@ -109,7 +120,7 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 }
 
 .searchfield-container::after {
-  background-color: var(--color-text-light);
+  background-color: var(--color-text-secondary);
   mask-image: url(/icons/search.svg);
   mask-repeat: no-repeat;
   mask-size: 100%;
@@ -127,5 +138,5 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 }
 
 input::placeholder {
-  color: var(--color-text-light)
+  color: var(--color-text-secondary)
 }

@@ -22,8 +22,7 @@
     <%= button_to subscription_path(preview), 
           method: :delete,
           form: { data: { turbo_confirm: "Are you sure?" } },
-          class: "btn" do %>
-      Delete
+          class: "btn-icon icon--trash btn-icon__danger" do %>
     <% end %>
   </div>
 </div>

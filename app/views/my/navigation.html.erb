@@ -1,31 +1,19 @@
 <turbo-frame id="my_navigation">
-    <%= link_to root_path, class: "btn" do %>
-      <%= image_tag "icons/star-fill.svg", class: "icon" %>
-      <span>Inbox<span>
+  <% 
+  navigation_items = [
+    { path: root_path, icon: "icons/star-fill.svg", text: "Inbox" },
+    { path: later_path, icon: "icons/clock-fill.svg", text: "Later" },
+    { path: feed_path, icon: "icons/newspaper-clipping-fill.svg", text: "Feed" },
+    { path: subscriptions_path, icon: "icons/plus-circle-fill.svg", text: "Subscriptions" },
+    { path: search_path, icon: "icons/binoculars-fill.svg", text: "Search" },
+    { path: archive_path, icon: "icons/archive-fill.svg", text: "Archive" }
+  ]
+  %>
+  
+  <% navigation_items.each_with_index do |item, index| %>
+    <%= link_to item[:path], data: { controller: "shortcut", "shortcut-hotkey-value": (index + 1).to_s } do %>
+      <%= image_tag item[:icon], class: "icon" %>
+      <span><%= item[:text] %></span>
     <% end %>
-
-    <%= link_to later_path, class: "btn" do %>
-      <%= image_tag "icons/clock-fill.svg", class: "icon" %>
-      <span>Later<span>
-    <% end %>
-
-    <%= link_to feed_path, class: "btn" do %>
-      <%= image_tag "icons/newspaper-clipping-fill.svg", class: "icon" %>
-      <span>Feed<span>
-    <% end %>
-
-    <%= link_to subscriptions_path, class: "btn" do %>
-      <%= image_tag "icons/plus-circle-fill.svg", class: "icon" %>
-      <span>Subscriptions<span>
-    <% end %>
-
-    <%= link_to search_path, class: "btn" do %>
-      <%= image_tag "icons/binoculars-fill.svg", class: "icon" %>
-      <span>Search<span>
-    <% end %>
-
-    <%= link_to archive_path, class: "btn" do %>
-      <%= image_tag "icons/archive-fill.svg", class: "icon" %>
-      <span>Archive<span>
-    <% end %>
+  <% end %>
 </turbo-frame>

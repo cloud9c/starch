@@ -9,13 +9,10 @@ export default class extends Controller {
     this.element.removeEventListener("keydown", this.handleKeydown.bind(this))
   }
 
-  get searchField() {
-    return this.element.querySelector("#q");
-  }
  
   handleKeydown(event) {
     if (event.key === "Enter") {
-      if (this.searchField.value.trim() !== "") {
+      if (this.element.value.trim() !== "") {
         this.element.submit()
       } else {
         event.preventDefault()
@@ -24,18 +21,18 @@ export default class extends Controller {
 
     switch (event.key) {
       case "Enter":
-        if (this.searchField.value.trim() !== "") {
+        if (this.element.value.trim() !== "") {
           this.element.submit()
         } else {
           event.preventDefault()
         }
         break;
       case "Escape":
-        this.searchField.blur();
+        this.element.blur();
         break;
       case "Backspace":
         if (event.key === "Backspace" && !event.metaKey) break;
-        this.searchField.value = ""
+        this.element.value = ""
         break;
     }
   }

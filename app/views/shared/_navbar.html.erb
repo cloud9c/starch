@@ -1,6 +1,6 @@
 <div id="navbar__container" data-controller="scroll-toggle">
   <nav id="navbar">
-    <details id="navbar__logo-container" data-controller="popup-menu">
+    <details id="navbar__logo-container" data-controller="popup-menu shortcut" data-shortcut-hotkey-value="h H" >
       <summary id="navbar__logo">
         <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
         <h5>Starch</h5>
@@ -8,10 +8,10 @@
       <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
     </details>
 
-    <search class="searchbar" data-controller="search">
-      <%= form_with(url: search_path, method: :get, data: { controller: "searchbar" }) do |form| %>
+    <search class="searchbar" >
+      <%= form_with(url: search_path, method: :get) do |form| %>
         <div class="searchfield-container">
-        <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search" %>
+          <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search", data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
         </div>
       <% end %>
     </search>

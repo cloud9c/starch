@@ -1,10 +1,3 @@
-#document-inbox {
-	padding-bottom: 0;
-	padding-left: 0;
-	padding-right: 0;
-	width: var(--sheet-width);
-}
-
 .document-preview-section {
 	display: flex;
 	flex-direction: column;
@@ -63,16 +56,9 @@
 }
 
 #inbox__read-section .btn-icon {
-  background-image: url('/icons/caret-up.svg');
+  mask-image: url('/icons/caret-up.svg');
 }
 
 #inbox__read-section[open] .btn-icon {
   transform: rotate(180deg);
-}
-
-@media (max-width: 100ch) {
-	#document-inbox {
-		padding-left: 0;
-		padding-right: 0;
-	}
 }

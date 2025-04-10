@@ -18,10 +18,8 @@
 
 .login {
   margin-top: 2rem;
-}
 
-@media (max-width: 100ch) {
-  .login {
+  @media (max-width: 100ch) {
     margin-top: 0;
   }
 }

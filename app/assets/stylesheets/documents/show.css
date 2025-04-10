@@ -20,10 +20,6 @@
 	text-decoration: none;
 }
 
-.document-title > a[href]:hover, .document-title > a[href]:focus {
-	text-decoration: underline;
-}
-
 .document-author {
 	font-weight: normal;
 }
@@ -39,7 +35,7 @@
   gap: 1rem;
 }
 
-.document-content a:hover, .document-content a:focus {
+.document-body a:hover, .document-body a:focus {
   color: var(--color-link)
 }
 
@@ -58,6 +54,11 @@
 .document-body * {
 	max-width: 100%;
 	height: auto;
+}
+
+.document-body img {
+  width: max-content;
+  margin: 0 auto;
 }
 
 .document-body figure {
@@ -86,9 +87,10 @@
     justify-content: center;
 }
 
-.document-body .video-container iframe {
+.document-body iframe {
     aspect-ratio: 16 / 9;
     width: 100% !important;
+    border: none;
 }
 
 .document-body details summary {
@@ -103,12 +105,13 @@
 
 .document-body details summary::before {
     content: "";
-    background: url("/icons/caret-right.svg") center center/100% auto no-repeat;
+    mask-image: url("/icons/caret-right.svg");
+    mask-size: 100%
     min-width: .6875rem;
     width: .6875rem;
     height: 1.075rem;
     transition: transform var(--transition);
-    filter: var(--text-light-filter);
+    color: var(--color-text-light);
 }
 
 .document-body details[open] summary::before {

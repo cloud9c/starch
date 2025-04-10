@@ -1,12 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static values = {
+    hotkey: String
+  }
+
   connect() {
-    this.element.addEventListener("keydown", this.handleKeydown.bind(this))
+    document.addEventListener("keydown", this.handleKeydown.bind(this))
   }
 
   disconnect() {
-    this.element.removeEventListener("keydown", this.handleKeydown.bind(this))
+    document.removeEventListener("keydown", this.handleKeydown.bind(this))
   }
 
   handleKeydown(event) {
@@ -14,44 +18,33 @@ export default class extends Controller {
         event.target.tagName === 'INPUT' || 
         event.target.tagName === 'TEXTAREA' || 
         event.target.isContentEditable;
-
+    
     if (isInInputField) return;
 
-    switch (event.key) {
-      case "/":
-        event.preventDefault();
-        document.querySelector("#q").focus();
+    const hotkeys = this.hotkeyValue.split(/[\s,]+/);
+
+    if (hotkeys.includes(event.key)) {
+      event.preventDefault();
+      this.performDefaultAction();
+    }
+  }
+
+  performDefaultAction() {
+    const tagName = this.element.tagName.toLowerCase();
+    
+    switch(tagName) {
+      case 'a':
+        Turbo.visit(this.element.getAttribute('href'));
+        break; 
+      case 'details':
+        this.element.open = !this.element.open;
         break;
-      case "h":
-      case "H":
-        const navMenu = document.querySelector("#navbar__logo-container");
-        navMenu.open = !navMenu.open;
+      case 'button':
+        this.element.click();
         break;
-      case "1":
-        redirect();
-        break;
-      case "2":
-        redirect("later");
-        break;
-      case "3":
-        redirect("feed");
-        break;
-      case "4":
-        redirect("subscriptions");
-        break;
-      case "5":
-        redirect("search");
-        break;
-      case "6":
-        redirect("archive");
+      case 'input':
+        this.element.focus();
         break;
     }
   }
-}
-
-function redirect(path="", baseUrl = window.location.origin) {
-  const formattedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-  
-  const redirectUrl = `${formattedBaseUrl}/${path}`;
-  window.location.href = redirectUrl;
 }

@@ -23,7 +23,7 @@
     <summary>
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">Previously seen</h3>
-        <button class="btn-icon"></button>
+        <span class="btn-icon"></span>
       </div>
     </summary>
     <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
