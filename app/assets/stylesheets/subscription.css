@@ -23,6 +23,11 @@
   padding: 1rem;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 100ch) {
+    flex-direction: column;
+    align-items: start;
+  }
 }
 
 .subscription-preview:last-child {
@@ -52,9 +57,16 @@
 
 .subscription-description {
   color: var(--color-text-secondary);
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  max-width: 40ch;
 }
 
 .subscription-icon {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
