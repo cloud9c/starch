@@ -36,7 +36,11 @@
 }
 
 .document-body a:hover, .document-body a:focus {
-  color: var(--color-link)
+  color: var(--color-link);
+}
+
+.document-body a {
+  text-decoration: underline;
 }
 
 .document-body p {
