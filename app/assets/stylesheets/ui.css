@@ -12,7 +12,7 @@
 }
 
 .btn-icon:not(.btn) {
-  background: var(--color-text-secondary);
+  background: var(--color-text);
 }
 
 .btn.btn-icon::before {
@@ -81,7 +81,7 @@ input[type="checkbox"] + label {
 }
 
 label {
-  color: var(--color-text-secondary);
+  color: var(--color-text);
 	cursor: pointer;
 }
 

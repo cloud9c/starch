@@ -50,7 +50,7 @@
   content: "";
   mask-image: url("/icons/caret-down.svg");
   mask-size: 100%;
-  background: var(--color-text-light);
+  background: var(--color-text-secondary);
   width: 1em;
   height: 1em;
 }
