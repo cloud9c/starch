@@ -1,5 +1,9 @@
 <% content_for(:title) { 'Feed' } %>
 
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
 <div class="sheet">
   <h1 class="sheet__header">Feed</h1>
   <div class="content">

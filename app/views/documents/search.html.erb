@@ -1,5 +1,9 @@
 <% content_for(:title) { "Search" } %>
 
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
 <div id="document-inbox" class="sheet" data-controller="documents__list" 
      data-documents__list-query-value="<%= "q=#{params[:query]}" %>">
   <h1 class="sheet__header">Search</h1>

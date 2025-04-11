@@ -1,5 +1,9 @@
 <% content_for(:title) { "Inbox" } %>
 
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
      data-documents__list-query-value="<%= "status=inbox" %>">
   <h1 class="sheet__header">Inbox</h1>

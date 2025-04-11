@@ -1,5 +1,9 @@
 <% content_for(:title) { "Archive" } %>
 
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
 <div id="document-inbox" class="sheet" data-controller="documents__list" 
      data-documents__list-query-value="<%= "status=archive" %>">
   <h1 class="sheet__header">Archive</h1>
