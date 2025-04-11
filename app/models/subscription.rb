@@ -21,6 +21,9 @@ class Subscription < ApplicationRecord
         user_id: user_id,
         document: document
       )
+
+      # warm up extracted document
+      ExtractDocumentJob.perform_later(document.id)
     end
   end
 
