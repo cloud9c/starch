@@ -23,13 +23,10 @@
     <% end %>
   </div>
   
-  <details id="inbox__read-section" class="document-preview-section" data-controller="documents--hide-read">
-    <summary>
-      <div class="document-inbox-title-row">
-        <h3 class="document-inbox-title">Previously seen</h3>
-        <span class="btn-icon"></span>
-      </div>
-    </summary>
+  <div id="inbox__read-section" class="document-preview-section" data-controller="documents--hide-read">
+    <div class="document-inbox-title-row">
+      <h3 class="document-inbox-title">Previously seen</h3>
+    </div>
     <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
-  </details>
+  </div>
 </div>

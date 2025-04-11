@@ -1,6 +1,6 @@
 .btn {
 	border-radius: var(--border-radius);
-	padding: 0.4em 0.8em;
+	padding: 0.5em 1em;
 	font-weight: 500;
 	cursor: pointer;
 	background: var(--bg-input);
@@ -11,15 +11,15 @@
   background: var(--bg-input-hover);
 }
 
-.btn-icon:not(.btn) {
+.btn-icon {
   background: var(--color-text);
 }
 
-.btn.btn-icon::before {
+.btn--icon::before {
   background: var(--color-text-light);
 }
 
-.btn-icon:not(.btn), .btn.btn-icon::before {
+.btn-icon, .btn.btn--icon::before {
   display: block;
 	mask-size: 100%;
 	content: "";
@@ -28,11 +28,11 @@
 	cursor: pointer;
 }
 
-.btn-icon__danger:hover, .btn-icon__danger:focus {
+.btn-icon--danger:hover, .btn-icon--danger:focus {
   background: var(--color-danger);
 }
 
-.btn.btn-icon {
+.btn--icon {
   position: relative;
   display: flex;
   gap: 0.4em;
@@ -47,8 +47,10 @@
   filter: var(--filter-text-secondary)
 }
 
-.icon--trash:not(.btn) {
-  mask-image: url(/icons/trash.svg);
+:not(.btn) {
+  &.icon--trash {
+    mask-image: url(/icons/trash.svg);
+  }
 }
 
 .checkbox {
@@ -73,7 +75,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--bg-input-hover);
+  background-color: var(--bg-input);
 }
 
 input[type="checkbox"] + label {

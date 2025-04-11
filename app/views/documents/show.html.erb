@@ -24,12 +24,6 @@
           <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
         <% end %>
       </div>
-
-      <%= button_to "Delete", document_path(@document), data: {
-        turbo: false
-      },
-      class: "btn",
-      method: :delete %>
     </header>
     
     <article class="document-body">
@@ -37,4 +31,6 @@
       <%= render_document_html @document.content %>
     </article>
   </div>
+
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
 </div>

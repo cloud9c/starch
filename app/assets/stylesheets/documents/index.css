@@ -39,26 +39,9 @@
   flex: 0;
   padding-top: 0;
   border-top: 2px dashed var(--color-border);
-}
-
-#inbox__read-section[open] {
-  background: var(--bg-secondary);
-}
-
-#inbox__read-section summary {
-  padding-top: 1.5em;
-  width: 100%;
   cursor: pointer;
 }
 
-#inbox__read-section summary::marker {
-  content: none;
-}
-
-#inbox__read-section .btn-icon {
-  mask-image: url('/icons/caret-up.svg');
-}
-
-#inbox__read-section[open] .btn-icon {
-  transform: rotate(180deg);
+#inbox__read-section .document-inbox-title-row {
+  padding-top: 1.5em;
 }

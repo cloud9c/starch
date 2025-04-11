@@ -28,6 +28,11 @@
 	color: var(--color-text);
 	font-size: var(--text-base);
   font-weight: 500;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .document-preview-main {
@@ -64,4 +69,9 @@
 
 .document-preview-metadata {
 	text-transform: uppercase;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

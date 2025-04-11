@@ -27,37 +27,35 @@
 }
 
 :root {
-  /* Typography */
-  --font-serif: 'Newsreader', Georgia, Times, serif;
-  --font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+	--font-serif: 'Newsreader', Georgia, Times, serif;
+	--font-sans: 'Gantari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-  
-  /* Base typography settings */
-  --font-size: clamp(1em, 2.225vw, 1em);
-  --letter-spacing: -0.0015em;
-  --line-height: 1.3em;
-  --line-height-loose: 1.6em;
+	--font-size: clamp(1em, 2.225vw, 1em);
+
+	--letter-spacing: -0.0015em;
+	--line-height: 1.3em;
+	--line-height-loose: 1.6em;
   --line-height-tight: 1.16em;
-  
-  /* Text sizes */
+
   --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 2.5rem;
-  
-  /* Layout */
-  --transition: 0.1s ease;
-  --content-width: min(100%, 50em);
-  --sheet-width: 100%;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 1.875rem;
+	--text-4xl: 2.25rem;
+	--text-5xl: 2.5rem;
+
+	--transition: 0.1s ease;
+
+	--content-width: min(100%, 40em);
+	--sheet-width: min(100%, 60em);
   --navbar-width: min(100%, 75em);
-  --border-radius: 0.25em;
-  
-  /* LCH color definitions */
+
+	--body-padding: 1em;
+	--border-radius: 0.25em;
+
   --lch-white: 100% 0 0;
   --lch-offwhite: 98.5% 0 0;
   --lch-paper: 95% 0.01 90;
@@ -68,14 +66,13 @@
   --lch-gray-darker: 30% 0 0;
   --lch-gray-darkest: 20% 0 0;
   --lch-offblack: 17.5% 0 0;
-  --lch-black: 0% 0 0;
-  
-  --lch-text: 25% 0.005 96;
   --lch-text-secondary: 50% 0 0;
-  --lch-text-light: 85% 0 0;
+  --lch-text: 25% 0.005 96;
+  --lch-black: 0% 0 0;
+
   --lch-text-secondary-light: 70% 0 0;
-  
-  /* Colors */
+  --lch-text-light: 85% 0 0;
+
   --lch-red: 60% 0.20 28;
   --lch-orange: 75% 0.16 60;
   --lch-yellow: 82% 0.16 90;
@@ -84,39 +81,48 @@
   --lch-blue: 55% 0.22 265;
   --lch-blue-dark: 50% 0.22 265;
   --lch-purple: 75% 0.14 295;
-  
-  /* Semantic variables */
-  --focus-ring: 2px solid oklch(var(--lch-blue-light));
-  --color-border-dark: oklch(var(--lch-gray));
-  --color-border: oklch(var(--lch-gray-light));
+
+	--focus-ring: 2px solid oklch(var(--lch-blue-light));
+
+	--color-border-dark: oklch(var(--lch-gray));
+	--color-border: oklch(var(--lch-gray-light));
   --color-link: oklch(var(--lch-blue-light));
-  --color-text: oklch(var(--lch-text));
-  --color-text-secondary: oklch(var(--lch-text-secondary));
+	--color-text: oklch(var(--lch-text));
+	--color-text-secondary: oklch(var(--lch-text-secondary));
+
   --color-text-light: oklch(var(--lch-offwhite));
+
   --color-danger: oklch(var(--lch-red));
-  --color-shadow: oklch(var(--lch-gray-dark) / 0.20);
+
+	--color-shadow: oklch(var(--lch-gray-dark) / 0.20);
   --color-main: oklch(var(--lch-yellow));
   --color-paper: oklch(var(--lch-paper));
-  
+
   --bg-primary: oklch(var(--lch-white));
-  --bg-secondary: oklch(var(--lch-offwhite));
+	--bg-secondary: oklch(var(--lch-offwhite));
   --bg-gray: oklch(var(--lch-gray-light));
-  --bg-link-hover: oklch(var(--lch-blue) / 0.10);
+
+	--bg-link-hover: oklch(var(--lch-blue) / 0.10);
   --bg-input: oklch(var(--lch-blue));
-  --bg-input-hover: oklch(var(--lch-blue-dark));
-  --bg-opaque: oklch(var(--lch-paper) / 0.90);
-  --bg-main: oklch(var(--lch-paper));
-  
+	--bg-input-hover: oklch(var(--lch-blue-dark));
+	--bg-opaque: oklch(var(--lch-paper) / 0.90);
+	--bg-main: oklch(var(--lch-paper));
+
   --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
-  
-  /* Dark theme overrides */
+
+  @media (max-width: 100ch) {
+    --body-padding: 0em;
+  }
+
   @media (prefers-color-scheme: dark) {
     --lch-paper: 15% 0 0;
-    --lch-blue-light: 55% 0.20 265;
-    --lch-blue: 50% 0.20 265;
-    --lch-blue-dark: 45% 0.20 265;
-    
+
+    --lch-blue-light: 60% 0.22 265;
+    --lch-blue: 55% 0.22 265;
+    --lch-blue-dark: 50% 0.22 265;
+
     --focus-ring: 2px solid oklch(var(--lch-blue));
+
     --color-border-dark: oklch(var(--lch-gray-dark));
     --color-border: oklch(var(--lch-gray-darker));
     --color-link: oklch(var(--lch-blue-light));
@@ -124,10 +130,13 @@
     --color-text-secondary: oklch(var(--lch-text-secondary-light));
     --color-shadow: oklch(var(--lch-black) / 0.20);
     --color-paper: oklch(var(--lch-paper-dark));
+
     --color-text-light: oklch(var(--lch-gray-lighter));
-    
+
     --bg-link-hover: oklch(var(--lch-blue-dark) / 0.10);
     --bg-primary: oklch(var(--lch-gray-darkest));
     --bg-secondary: oklch(var(--lch-offblack));
   }
 }
+
+
