@@ -4,7 +4,7 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="sheet" data-controller="documents--show"> 
+<div class="sheet" data-controller="documents--show scroll-toggle"> 
   <div id="<%= dom_id(@document) %>" class="content document-content">
     <header class="document-header">
       <%= render 'channel/preview', channel: @document.channel %>

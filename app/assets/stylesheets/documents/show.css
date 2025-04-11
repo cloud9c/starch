@@ -1,124 +1,131 @@
 .document-content {
-	display: flex;
-	flex-direction: column;
-	gap: 2em;
+  display: flex;
+  flex-direction: column;
 }
 
 .document-header {
-	display: flex;
-	flex-direction: column;
-	gap: 0.5em;
-	border-bottom: 1px solid var(--color-border);
-	padding-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 .document-title {
-	font-weight: 600;
-}
-
-.document-title > a[href] {
-	text-decoration: none;
+  font-weight: 600;
+  
+  > a[href] {
+    text-decoration: none;
+  }
 }
 
 .document-author {
-	font-weight: normal;
-}
-
-.document-body {
-	font-family: var(--font-serif);
-	font-size: var(--text-lg);
-	line-height: var(--line-height-loose);
-	margin-bottom: 1em;
-
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.document-body a:hover, .document-body a:focus {
-  color: var(--color-link);
-}
-
-.document-body a {
-  text-decoration: underline;
-}
-
-.document-body p {
-	margin-bottom: 1em;
-}
-
-.document-body blockquote > * {
-  margin-left: 1.25em;
-}
-
-.document-body blockquote {
-  border-left: 4px solid var(--color-border);
-}
-
-.document-body * {
-	max-width: 100%;
-	height: auto;
-}
-
-.document-body img {
-  width: max-content;
-  margin: 0 auto;
-}
-
-.document-body figure {
-	margin: 2em 0;
-}
-
-.document-body ol li, .document-body ul li {
-  margin: 0.5em 0 0 2em;
-}
-
-.document-body h1, .document-body h2, .document-body h3, .document-body h4, .document-body h5, .document-body h6 {
-  margin: 1em 0 .625em;
-  font-weight: 600;
-  font-family: var(--font-sans);
+  font-weight: normal;
 }
 
 .document-metadata-row {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
 }
 
-.document-body .video-container {
+.document-body {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: var(--line-height-loose);
+  margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  
+  a {
+    text-decoration: underline;
+    
+    &:hover, &:focus {
+      color: var(--color-link);
+    }
+  }
+  
+  p {
+    margin-bottom: 1em;
+  }
+  
+  blockquote {
+    border-left: 4px solid var(--color-border);
+    
+    > * {
+      margin-left: 1.25em;
+    }
+  }
+  
+  *:not(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  img {
+    width: max-content;
+    margin: 0 auto;
+  }
+  
+  figure {
+    margin: 2em 0;
+  }
+  
+  ol, ul {
+    li {
+      margin: 0.5em 0 0 2em;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin: 1em 0 .625em;
+    font-weight: 600;
+    font-family: var(--font-sans);
+  }
+
+  .video-container {
     display: flex;
     justify-content: center;
-}
-
-.document-body iframe {
+  }
+  
+  iframe {
     aspect-ratio: 16 / 9;
     width: 100% !important;
     border: none;
-}
+  }
+  
+  details {
+    summary {
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      
+      &::before {
+        content: "";
+        mask-image: url("/icons/caret-right.svg");
+        mask-size: 100%;
+        width: 0.8em;
+        height: 0.8em;
+        transition: transform var(--transition);
+        background: var(--color-text);
+        margin-right: 0.5em;
+      }
+    }
+    
+    &[open] summary::before {
+      transform: rotate(90deg);
+    }
+  }
 
-.document-body details summary {
-  align-items: center;
-  cursor: pointer;
-  display: flex;
-  gap: .4em;
-  justify-content: start;
-  position: relative;
-  user-select: none;
-}
-
-.document-body details summary::before {
-    content: "";
-    mask-image: url("/icons/caret-right.svg");
-    mask-size: 100%
-    min-width: .6875em;
-    width: .6875em;
-    height: 1.075em;
-    transition: transform var(--transition);
-    color: var(--color-text-light);
-}
-
-.document-body details[open] summary::before {
-    transform: rotate(90deg);
+  pre code {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--color-border);
+    display: block;
+    overflow: auto;
+  }
 }
 

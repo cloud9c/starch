@@ -2,23 +2,27 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
+    this.lastScrollTop = 0
     this.boundScrollHandler = this.handleScroll.bind(this)
-    window.addEventListener("scroll", this.boundScrollHandler)
-    
-    this.handleScroll()
+    this.element.addEventListener("scroll", this.boundScrollHandler)
   }
   
   disconnect() {
-    window.removeEventListener("scroll", this.boundScrollHandler)
+    this.element.removeEventListener("scroll", this.boundScrollHandler)
   }
   
-  handleScroll() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  handleScroll(event) {
+    const currentScrollTop = this.element.scrollTop
     
-    if (scrollTop > 0) {
-      this.element.classList.add("navbar--scrolled")
+    if (currentScrollTop > this.lastScrollTop) {
+      // Scrolling down
+      this.element.classList.add("sheet--scrolled-down")
     } else {
-      this.element.classList.remove("navbar--scrolled")
+      // Scrolling up
+      this.element.classList.remove("sheet--scrolled-down")
     }
+    
+    // Update last scroll position
+    this.lastScrollTop = currentScrollTop
   }
 }

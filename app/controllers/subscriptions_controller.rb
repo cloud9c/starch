@@ -4,7 +4,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    feed_url = ChannelUtils.get_feed_url(params[:feed_url])
+    feed_url = ChannelUtils.find_feed_url(params[:feed_url])
     return head :unprocessable_entity unless feed_url
 
     channel = Channel.find_or_create_by!(feed_url: feed_url)

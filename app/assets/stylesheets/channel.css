@@ -7,4 +7,5 @@
 
 .channel-container picture {
   display: flex;
+  flex-shrink: 0;
 }

@@ -32,16 +32,9 @@ body {
 	padding: 0 1em 1em;
 }
 
-.sheet__header {
-	text-align: center;
-	width: 100%;
-  margin-bottom: 0.5em;
-  padding-bottom: 0.5em;
-  font-weight: 600;
-}
 
 .sheet {
-	border-radius: 1.5em 1.5em 0 0;
+	border-radius: 2em 2em 0 0;
 	flex: 1;
 	background: var(--bg-primary);
   padding-top: 2em;
@@ -57,7 +50,14 @@ body {
     border: none;
     border-radius: 0;
   }
-  position: relative;
+
+  .sheet__header {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
+    font-weight: 600;
+  }
 }
 
 a {
@@ -109,6 +109,8 @@ sub {
   vertical-align: sub;
 }
 
-details summary::-webkit-details-marker {
-  display: none;
+details summary {
+  &::-webkit-details-marker, &::marker {
+    content: none;
+  }
 }

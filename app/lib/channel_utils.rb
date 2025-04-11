@@ -9,34 +9,44 @@ module ChannelUtils
     response.body.to_s.force_encoding("UTF-8")
   end
 
-  def get_feed_url(url, discover = true)
+  def find_feed_url(url)
     normalized_url = UrlUtils.normalize(url)
+    attempts = [
+      normalized_url, 
+      extract_feed_url(normalized_url), 
+      UrlUtils.get_origin(normalized_url)
+    ]
+    
+    attempts.compact.each do |attempt_url|
+      feed_url = get_feed_url(attempt_url)
+      return feed_url if feed_url
+    end
+    
+    nil
+  end
 
+  def get_feed_url(url)
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(normalized_url)
+    response = http.get(url)
     return nil if response.error
 
     feed = self.parse_feed(body_to_s(response)) rescue nil
-    return (feed.try(:feed_url) || normalized_url) if feed
-
-    if discover
-      html = body_to_s(response)
-      path = extract_feed_url(html)
-
-      return nil unless path
-
-      feed_url = URI.join(normalized_url, path).to_s
-      get_feed_url(feed_url, false)
-    end
+    return (feed.try(:feed_url) || url) if feed
+    
+    nil
   end
 
   def extract_feed_url(html)
-    doc = Nokogiri::HTML(html)
-
-    path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
-           doc.at('link[type="application/rss+xml"]')&.[]("href")
-
-    path
+    return nil unless html.is_a?(String)
+    
+    begin
+      doc = Nokogiri::HTML(html)
+      path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
+            doc.at('link[type="application/rss+xml"]')&.[]("href")
+      path
+    rescue
+      nil
+    end
   end
 
   def get_icon(url)

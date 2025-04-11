@@ -1,56 +1,45 @@
 .btn {
-	border-radius: var(--border-radius);
-	padding: 0.5em 1em;
-	font-weight: 500;
-	cursor: pointer;
-	background: var(--bg-input);
+  border-radius: var(--border-radius);
+  padding: 0.5em 1em;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--bg-input);
   color: var(--color-text-light);
-}
-
-.btn:hover, .btn:focus {
-  background: var(--bg-input-hover);
-}
-
-.btn-icon {
-  background: var(--color-text);
-}
-
-.btn--icon::before {
-  background: var(--color-text-light);
-}
-
-.btn-icon, .btn.btn--icon::before {
-  display: block;
-	mask-size: 100%;
-	content: "";
-	height: 1.25em;
-	width: 1.25em;
-	cursor: pointer;
-}
-
-.btn-icon--danger:hover, .btn-icon--danger:focus {
-  background: var(--color-danger);
-}
-
-.btn--icon {
-  position: relative;
-  display: flex;
-  gap: 0.4em;
-  align-items: center;
-
-  &.icon--plus::before {
-    mask-image: url(/icons/plus.svg) ;
+  
+  &:hover, &:focus {
+    background: var(--bg-input-hover);
+  }
+  
+  &.btn--icon {
+    &::before {
+      display: block;
+      mask-size: 100%;
+      content: "";
+      height: 1.25em;
+      width: 1.25em;
+      cursor: pointer;
+      background: var(--color-text-light);
+    }
+    
+    &:not(:empty) {
+      position: relative;
+      display: flex;
+      gap: 0.4em;
+      align-items: center;
+    }
+    
+    &.icon--trash::before {
+      mask-image: url(/icons/trash.svg);
+    }
+    
+    &.icon--plus::before {
+      mask-image: url(/icons/plus.svg);
+    }
   }
 }
 
 .icon {
   filter: var(--filter-text-secondary)
-}
-
-:not(.btn) {
-  &.icon--trash {
-    mask-image: url(/icons/trash.svg);
-  }
 }
 
 .checkbox {
@@ -72,14 +61,30 @@ input[type="checkbox"] {
   vertical-align: middle;
   margin: 0;
   background: var(--bg-primary);
-}
 
-input[type="checkbox"]:checked {
-  background-color: var(--bg-input);
-}
+  &:checked {
+    background-color: var(--bg-input);
+  }
 
-input[type="checkbox"] + label {
-  user-select: none;
+  & + label {
+    user-select: none;
+  }
+
+  &:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid var(--color-text-light);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring);
+  }
 }
 
 label {
@@ -87,33 +92,17 @@ label {
 	cursor: pointer;
 }
 
-input[type="checkbox"]:checked::after {
-  content: '';
-  position: absolute;
-  left: 5px;
-  top: 2px;
-  width: 6px;
-  height: 10px;
-  border: solid var(--color-text-light);
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-input[type="checkbox"]:focus-visible {
-  outline: var(--focus-ring);
-}
-
 input[type="text"], input[type="email"] {
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 	padding: 0.5em 1em;
 	background: var(--bg-primary);
-}
 
-input[type="text"]:focus-visible, input[type="email"]:focus-visible {
-	outline: var(--focus-ring);
-  background-color: var(--bg-link-hover);
-  border-color: var(--color-border);
+  &:focus-visible {
+    outline: var(--focus-ring);
+    background-color: var(--bg-link-hover);
+    border-color: var(--color-border);
+  }
 }
 
 .searchbar {
@@ -122,41 +111,42 @@ input[type="text"]:focus-visible, input[type="email"]:focus-visible {
 	border-radius: 2em;
 	max-width: var(--content-width);
 	background: var(--bg-primary);
-}
 
-.searchbar:has(input:focus-visible) {
-	outline: var(--focus-ring);
-	background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
-  border-color: var(--color-border);
-}
+  &:has(input:focus-visible) {
+    outline: var(--focus-ring);
+    background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
+    border-color: var(--color-border);
+  }
 
-.searchbar form {
-  flex: 1;
-}
+  form {
+    flex: 1;
+  }
 
-.searchfield-container {
-	display: flex;
-	align-items: center;
-  flex: 1;
-  position: relative;
-}
+  .searchfield-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    position: relative;
 
-.searchfield-container::after {
-  background-color: var(--color-text-secondary);
-  mask-image: url(/icons/search.svg);
-  mask-repeat: no-repeat;
-  mask-size: 100%;
-	content: "";
-	height: 1.25em;
-	width: 1.25em;
-	pointer-events: none;
-  position: absolute;
-  left: 0.5em;
-}
+    &::after {
+      background-color: var(--color-text-secondary);
+      mask-image: url(/icons/search.svg);
+      mask-repeat: no-repeat;
+      mask-size: 100%;
+      content: "";
+      height: 1.25em;
+      width: 1.25em;
+      pointer-events: none;
+      position: absolute;
+      left: 0.5em;
+    }
+  }
 
-.searchbar input[type="search"] {
-  width: 100%;
-  padding: 0.5em 0.5em 0.5em 2.2em;
+
+  input[type="search"] {
+    width: 100%;
+    padding: 0.5em 0.5em 0.5em 2.2em;
+  }
 }
 
 input::placeholder {

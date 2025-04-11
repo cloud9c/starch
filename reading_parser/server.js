@@ -23,13 +23,10 @@ app.post('/parse', async (req, res) => {
     });
   }
 
-  let html = await response.text();
-  html = html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '');
-  html = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
-
   const domWindow = new JSDOM('').window;
   const purify = createDOMPurify(domWindow);
 
+  const html = await response.text();
   const cleanHTML = purify.sanitize(html);
 
   const cleanDOM = new JSDOM(cleanHTML, domOptions);

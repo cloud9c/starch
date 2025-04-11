@@ -123,6 +123,16 @@ module EntryUtils
       end
     end
 
+    # remove all id attributes
+    doc.css("*[id]").each do |element|
+      element.remove_attribute("id")
+    end
+
+    # remove all class attributes
+    doc.css("*[class]").each do |element|
+      element.remove_attribute("class")
+    end
+
     doc.to_html
   end
 

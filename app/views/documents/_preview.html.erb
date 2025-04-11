@@ -16,13 +16,11 @@
         <span><%= preview.author %></span>
       </div>
     </div>
-    <div>
-      <% if preview.thumbnail_url %>
-        <img src="<%= preview.thumbnail_url %>" 
-             width="160"
-           height="120"
-           alt="Thumbnail"/>
-      <% end %>
-    </div>
+    <% if preview.thumbnail_url %>
+      <img src="<%= preview.thumbnail_url %>" 
+            width="160"
+          height="120"
+          alt="Thumbnail"/>
+    <% end %>
   </div>
 <% end %>

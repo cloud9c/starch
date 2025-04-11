@@ -33,22 +33,22 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   
   /* Base typography settings */
-  --font-size: clamp(1em, 2.225vw, 1em);
+  --font-size: clamp(1rem, 2.225vw, 1.25rem);
   --letter-spacing: -0.0015em;
   --line-height: 1.3em;
   --line-height-loose: 1.6em;
-  --line-height-tight: 1.16em;
+  --line-height-tight: 1.1em;
   
   /* Text sizes */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 2.5rem;
+  --text-xs: 0.75em;
+  --text-sm: 0.875em;
+  --text-base: 1em;
+  --text-lg: 1.125em;
+  --text-xl: 1.25em;
+  --text-2xl: 1.5em;
+  --text-3xl: 1.875em;
+  --text-4xl: 2.25em;
+  --text-5xl: 2.5em;
   
   /* Layout */
   --transition: 0.1s ease;
@@ -101,7 +101,7 @@
   --bg-primary: oklch(var(--lch-white));
   --bg-secondary: oklch(var(--lch-offwhite));
   --bg-gray: oklch(var(--lch-gray-light));
-  --bg-link-hover: oklch(var(--lch-blue) / 0.10);
+  --bg-link-hover: oklch(var(--lch-blue) / 0.05);
   --bg-input: oklch(var(--lch-blue));
   --bg-input-hover: oklch(var(--lch-blue-dark));
   --bg-opaque: oklch(var(--lch-paper) / 0.90);
@@ -126,7 +126,7 @@
     --color-paper: oklch(var(--lch-paper-dark));
     --color-text-light: oklch(var(--lch-gray-lighter));
     
-    --bg-link-hover: oklch(var(--lch-blue-dark) / 0.10);
+    --bg-link-hover: oklch(var(--lch-blue) / 0.20);
     --bg-primary: oklch(var(--lch-gray-darkest));
     --bg-secondary: oklch(var(--lch-offblack));
   }
