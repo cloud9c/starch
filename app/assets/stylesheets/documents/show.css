@@ -39,6 +39,7 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
+  word-break: break-word;
   
   a {
     text-decoration: underline;
@@ -60,14 +61,28 @@
     }
   }
   
-  *:not(img) {
-    max-width: 100%;
+  * {
+    max-width: var(--sheet-width);
     height: auto;
   }
-  
+ 
+  table,
+  th,
+  td {
+    border: 1px solid var(--color-border);
+    border-collapse: collapse;
+    padding: 0.5em;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  table, pre code {
+    overflow-x: scroll;
+    display: block;
+  }
+
   img {
     width: max-content;
-    margin: 0 auto;
   }
   
   figure {
@@ -125,7 +140,6 @@
     background-color: var(--bg-secondary);
     border: 1px solid var(--color-border);
     display: block;
-    overflow: auto;
+    font-family: var(--font-mono);
   }
 }
-

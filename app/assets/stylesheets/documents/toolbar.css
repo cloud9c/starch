@@ -5,8 +5,10 @@
   flex-direction: column;
   gap: 1em;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
+}
 
-  @media(max-width: 75em) {
+@media(max-width: 75em) {
+  #document_toolbar {
     flex-direction: row;
     background: var(--bg-primary);
     border: 1px solid var(--color-border);
@@ -19,9 +21,9 @@
 
     transition: all var(--transition);
   }
-}
 
-.sheet--scrolled-down #document_toolbar {
-  transform: translateY(calc(100% + 1em));
-  box-shadow: none;
+  .sheet--scrolled-down #document_toolbar {
+    transform: translateY(calc(100% + 1em));
+    box-shadow: none;
+  }
 }

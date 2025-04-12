@@ -13,8 +13,9 @@ body {
 	color: var(--color-text);
 	background: var(--bg-main);
 
-	overflow: auto;
 	height: 100vh;
+
+  overflow: hidden;
 }
 
 .main {
@@ -44,7 +45,7 @@ body {
 	flex-direction: column;
 	width: var(--sheet-width);
 	align-items: center;
-  overflow: auto;
+  overflow-y: auto;
 
   @media (max-width: 100ch) {
     border: none;
