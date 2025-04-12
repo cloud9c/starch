@@ -5,7 +5,7 @@
   cursor: pointer;
   background: var(--bg-input);
   color: var(--color-text-light);
-  
+
   &:hover, &:focus {
     background: var(--bg-input-hover);
   }
@@ -34,6 +34,19 @@
     
     &.icon--plus::before {
       mask-image: url(/icons/plus.svg);
+    }
+  }
+
+  &.btn--ghost {
+    background: none;
+    padding: 0.5em;
+
+    &:hover, &:focus {
+
+    }
+
+    &.btn--icon::before {
+      background: var(--color-text);
     }
   }
 }
@@ -67,6 +80,7 @@ input[type="checkbox"] {
   }
 
   & + label {
+    cursor: pointer;
     user-select: none;
   }
 
@@ -89,7 +103,6 @@ input[type="checkbox"] {
 
 label {
   color: var(--color-text);
-	cursor: pointer;
 }
 
 input[type="text"], input[type="email"] {
