@@ -15,14 +15,11 @@ export default class extends Controller {
     const currentScrollTop = this.element.scrollTop
     
     if (currentScrollTop > this.lastScrollTop) {
-      // Scrolling down
       this.element.classList.add("sheet--scrolled-down")
     } else {
-      // Scrolling up
       this.element.classList.remove("sheet--scrolled-down")
     }
     
-    // Update last scroll position
     this.lastScrollTop = currentScrollTop
   }
 }
