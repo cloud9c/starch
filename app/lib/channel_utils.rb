@@ -12,16 +12,16 @@ module ChannelUtils
   def find_feed_url(url)
     normalized_url = UrlUtils.normalize(url)
     attempts = [
-      normalized_url, 
-      extract_feed_url(normalized_url), 
+      normalized_url,
+      extract_feed_url(normalized_url),
       UrlUtils.get_origin(normalized_url)
     ]
-    
+
     attempts.compact.each do |attempt_url|
       feed_url = get_feed_url(attempt_url)
       return feed_url if feed_url
     end
-    
+
     nil
   end
 
@@ -32,13 +32,13 @@ module ChannelUtils
 
     feed = self.parse_feed(body_to_s(response)) rescue nil
     return (feed.try(:feed_url) || url) if feed
-    
+
     nil
   end
 
   def extract_feed_url(html)
     return nil unless html.is_a?(String)
-    
+
     begin
       doc = Nokogiri::HTML(html)
       path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
