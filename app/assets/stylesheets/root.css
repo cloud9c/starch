@@ -52,7 +52,7 @@
   
   /* Layout */
   --transition: 0.1s ease;
-  --content-width: min(100%, 50em);
+  --content-width: min(100%, 37.5em);
   --sheet-width: 100%;
   --navbar-width: min(100%, 75em);
   --border-radius: 0.25em;

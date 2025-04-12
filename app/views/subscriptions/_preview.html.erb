@@ -4,7 +4,7 @@
       <source srcset="<%= preview.channel.icon %>"/>
       <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon" %>
     </picture>
-    <a class="subscription-text" href=<%= preview.channel.url %>>
+    <a class="subscription-text" href=<%= preview.channel.url %> target="_blank">
       <span class="subscription-title"><%= preview.channel.title || preview.channel.feed_url %></span>
       <span class="subscription-description"><%= preview.channel.url %></span>
     </a>

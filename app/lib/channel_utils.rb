@@ -2,7 +2,7 @@ module ChannelUtils
   extend self
 
   def parse_feed(content)
-    Feedjira.parse(content)
+    Feedjira.parse(content) rescue nil
   end
 
   def body_to_s(response)
@@ -13,7 +13,6 @@ module ChannelUtils
     normalized_url = UrlUtils.normalize(url)
     attempts = [
       normalized_url,
-      extract_feed_url(normalized_url),
       UrlUtils.get_origin(normalized_url)
     ]
 
@@ -25,32 +24,38 @@ module ChannelUtils
     nil
   end
 
-  def get_feed_url(url)
+  def get_feed_url(url, should_extract=true)
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(url)
     return nil if response.error
 
-    feed = self.parse_feed(body_to_s(response)) rescue nil
-    return (feed.try(:feed_url) || url) if feed
+    mime_type = response.headers["content-type"];
+    body = body_to_s(response);
 
-    nil
+    Rails.logger.debug mime_type
+
+    if should_extract && mime_type.include?("text/html")
+      return get_feed_url(extract_feed_url(body, url), false)
+    end
+
+    feed = parse_feed(body)
+    return (feed.try(:feed_url) || url) if feed
   end
 
-  def extract_feed_url(html)
+  def extract_feed_url(html, url)
     return nil unless html.is_a?(String)
+    
+    doc = Nokogiri::HTML(html)
+    path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
+          doc.at('link[type="application/rss+xml"]')&.[]("href")
+   
+    origin = UrlUtils.get_origin(url)
 
-    begin
-      doc = Nokogiri::HTML(html)
-      path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
-            doc.at('link[type="application/rss+xml"]')&.[]("href")
-      path
-    rescue
-      nil
-    end
+    URI.join(origin, path).to_s
   end
 
   def get_icon(url)
-    origin = UrlUtils.get_origin(UrlUtils.normalize(url))
+    origin = UrlUtils.get_origin(url)
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(origin)

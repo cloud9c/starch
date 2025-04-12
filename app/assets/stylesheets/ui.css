@@ -9,7 +9,11 @@
   &:hover, &:focus {
     background: var(--bg-input-hover);
   }
-  
+
+  &:focus {
+    outline: var(--focus-ring);
+  }
+
   &.btn--icon {
     &::before {
       display: block;
