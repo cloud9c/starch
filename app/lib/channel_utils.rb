@@ -32,8 +32,6 @@ module ChannelUtils
     mime_type = response.headers["content-type"];
     body = body_to_s(response);
 
-    Rails.logger.debug mime_type
-
     if should_extract && mime_type.include?("text/html")
       return get_feed_url(extract_feed_url(body, url), false)
     end
