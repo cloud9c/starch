@@ -33,7 +33,6 @@ body {
 	padding: 0 1em 1em;
 }
 
-
 .sheet {
 	border-radius: 2em 2em 0 0;
 	flex: 1;
@@ -113,5 +112,8 @@ sub {
 details summary {
   &::-webkit-details-marker, &::marker {
     content: none;
+  }
+  &::-webkit-details-marker {
+    display: none;
   }
 }

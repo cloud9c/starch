@@ -10,11 +10,11 @@ export default class extends Controller {
   
   connect() {
     this.scrollHandler = () => this.handleScroll()
-    window.addEventListener("scroll", this.scrollHandler)
+    this.element.addEventListener("scroll", this.scrollHandler)
   }
   
   disconnect() {
-    window.removeEventListener("scroll", this.scrollHandler)
+    this.element.removeEventListener("scroll", this.scrollHandler)
   }
   
   handleScroll() {
@@ -44,7 +44,7 @@ export default class extends Controller {
             "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
           }
         }).perform()
-      
+     
       if (request.response.status === 204 || request.response.status === 206) {
         this.disconnect()
       } else if (request.ok) {
