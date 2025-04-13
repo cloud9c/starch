@@ -33,7 +33,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   
   /* Base typography settings */
-  --font-size: clamp(1rem, 2.225vw, 1.25rem);
+  --font-size: clamp(1rem, 2.225vw, 1rem);
   --letter-spacing: -0.0015em;
   --line-height: 1.3em;
   --line-height-loose: 1.6em;

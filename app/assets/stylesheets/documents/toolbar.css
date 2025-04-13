@@ -10,7 +10,7 @@
   }
 }
 
-@media(max-width: 75em) {
+@media(max-width: 100ch) {
   #document_toolbar {
     flex-direction: row;
     background: var(--bg-primary);
