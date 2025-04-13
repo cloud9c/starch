@@ -39,16 +39,23 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 1em;
-    align-items: start;
-    
-    img {
+    align-items: stretch;
+   
+    .document-preview-thumbnail {
+      display: flex;
+      aspect-ratio: 1/1;
+      min-height: 5.375em;
+    }
+
+    .document-preview-thumbnail img {
       border-radius: 0.5em;
-      height: 8em;
       aspect-ratio: 1 / 1;
+      height: 100%;
+      flex: 1;
       object-fit: cover;
     }
   }
-  
+
   .document-preview-left {
     min-width: 0;
     width: 100%;
@@ -60,15 +67,6 @@
   .document-preview-description {
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .document-preview-metadata {
-    text-transform: uppercase;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
