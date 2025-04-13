@@ -70,12 +70,15 @@ class Document < ApplicationRecord
   end
 
   def with_view_preferences
-    if self[:view_extracted] == 0
-      return self
-    elsif self[:view_extracted].nil?
-      subscription = channel.subscriptions.find_by(user_id: Current.user.id, channel_id: channel.id)
-      return self unless subscription.view_extracted
-    end
+    should_extract =
+      if (self[:view_extracted])
+        ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
+      else
+        subscription = channel.subscriptions.select(:view_extracted).find_by(user_id: Current.user.id, channel_id: channel.id)
+        subscription&.view_extracted
+      end
+
+    return self unless should_extract
 
     unless extracted_data.blank?
       [ :title, :description, :content, :thumbnail_url ].each do |attr|

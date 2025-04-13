@@ -33,11 +33,14 @@ module ChannelUtils
     body = body_to_s(response)
 
     if should_extract && mime_type.include?("text/html")
+      extracted_feed_url = extract_feed_url(body, url)
+      return nil unless extracted_feed_url
+
       return get_feed_url(extract_feed_url(body, url), false)
     end
 
     feed = parse_feed(body)
-    (feed.try(:feed_url) || url) if feed
+    return (feed.try(:feed_url) || url) if feed
   end
 
   def extract_feed_url(html, url)
@@ -46,6 +49,8 @@ module ChannelUtils
     doc = Nokogiri::HTML(html)
     path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
           doc.at('link[type="application/rss+xml"]')&.[]("href")
+
+    return nil unless path
 
     origin = UrlUtils.get_origin(url)
 

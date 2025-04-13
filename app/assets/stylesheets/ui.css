@@ -32,6 +32,11 @@
   &.btn--secondary {
     background: none;
     border: 1px solid var(--color-border);
+    color: var(--color-text);
+
+    &.btn--icon::before {
+      background: var(--color-text);
+    }
 
     &:hover {
       background: var(--bg-secondary);
@@ -68,7 +73,6 @@
 
 .toggle {
   padding: 0.8em;
-  border-radius: var(--border-radius);
   cursor: pointer;
   
   &::before {
@@ -80,7 +84,11 @@
   }
 
   &:checked {
-    background: var(--bg-input);
+    background: var(--bg-input-secondary);
+
+    &::before {
+      background: var(--color-text-secondary-light);
+    }
   }
 }
     
@@ -146,7 +154,7 @@ input[type="checkbox"] {
     height: 10px;
     border: solid var(--color-text-light);
     border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+    transform: rotate(45deg);https://theoatmeal.com/
   }
 
   &:focus-visible {

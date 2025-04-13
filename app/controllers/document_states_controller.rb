@@ -1,6 +1,6 @@
 class DocumentStatesController < ApplicationController
   def create
-    permitted = params.permit(:status, :document_id)
+    permitted = params.expect(document_state: [:status, :document_id])
 
     DocumentState.create(status: permitted[:status], document_id: permitted[:document_id], user: Current.user)
   end

@@ -24,6 +24,10 @@
 
     transition: all var(--transition);
 
+    .toggle {
+      border-radius: 0.5em;
+    }
+
     .toggle-group {
       flex-direction: row;
       border: none;
