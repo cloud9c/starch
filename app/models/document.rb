@@ -46,7 +46,7 @@ class Document < ApplicationRecord
                     .joins(entry: { channel: :subscriptions })
                     .includes(entry: :channel)
                     .order("document_states.read" => :asc, "documents.published_at" => :desc)
-    
+
     if options[:status].present?
       query = query.where(document_states: { status: options[:status], user: user_id })
     end

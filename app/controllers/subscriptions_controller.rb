@@ -19,7 +19,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    permitted = params.expect(subscription: [:view_extracted, :to_inbox])
+    permitted = params.expect(subscription: [ :view_extracted, :to_inbox ])
 
     @subscription = Current.user.subscriptions.find(params[:id])
     @subscription.update(permitted)

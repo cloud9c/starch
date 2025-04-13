@@ -24,29 +24,29 @@ module ChannelUtils
     nil
   end
 
-  def get_feed_url(url, should_extract=true)
+  def get_feed_url(url, should_extract = true)
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(url)
     return nil if response.error
 
-    mime_type = response.headers["content-type"];
-    body = body_to_s(response);
+    mime_type = response.headers["content-type"]
+    body = body_to_s(response)
 
     if should_extract && mime_type.include?("text/html")
       return get_feed_url(extract_feed_url(body, url), false)
     end
 
     feed = parse_feed(body)
-    return (feed.try(:feed_url) || url) if feed
+    (feed.try(:feed_url) || url) if feed
   end
 
   def extract_feed_url(html, url)
     return nil unless html.is_a?(String)
-    
+
     doc = Nokogiri::HTML(html)
     path = doc.at('link[type="application/atom+xml"]')&.[]("href") ||
           doc.at('link[type="application/rss+xml"]')&.[]("href")
-   
+
     origin = UrlUtils.get_origin(url)
 
     URI.join(origin, path).to_s

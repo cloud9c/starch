@@ -6,7 +6,7 @@ class DocumentStatesController < ApplicationController
   end
 
   def update
-    permitted = params.expect(document_state: [:status, :document_id])
+    permitted = params.expect(document_state: [ :status, :document_id ])
 
     document_state = DocumentState.find_by(document_id: permitted[:document_id], user: Current.user)
 
