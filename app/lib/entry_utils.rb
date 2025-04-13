@@ -1,7 +1,8 @@
 module EntryUtils
   extend self
 
-  mattr_reader :cache_duration, default: 7.days
+  CACHE_DURATION = 7.days
+  ENTRY_LIMIT = 300
 
   def get_stable_id(feed_url, entry_data)
     parts = []
@@ -43,7 +44,7 @@ module EntryUtils
     new_entries = []
     updated_entries = []
 
-    feed.entries.each do |entry_data|
+    feed.entries.first(ENTRY_LIMIT).each do |entry_data|
       stable_id = get_stable_id(feed_url, entry_data)
       fingerprint = get_fingerprint(entry_data)
 
@@ -196,11 +197,11 @@ module EntryUtils
   end
 
   def cache_entry(stable_id, fingerprint)
-    Rails.cache.write("entry/stable_id/#{stable_id}", true, expires_in: cache_duration)
+    Rails.cache.write("entry/stable_id/#{stable_id}", true, expires_in: CACHE_DURATION)
     update_entry_cache(stable_id, fingerprint)
   end
 
   def update_entry_cache(stable_id, fingerprint)
-    Rails.cache.write("entry/stable_id/#{stable_id}/fingerprint", fingerprint, expires_in: cache_duration)
+    Rails.cache.write("entry/stable_id/#{stable_id}/fingerprint", fingerprint, expires_in: CACHE_DURATION)
   end
 end

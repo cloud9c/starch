@@ -91,6 +91,9 @@ class Channel < ApplicationRecord
     raw_entry_data = EntryUtils.get_raw_entry_data(entry_data)
     document = entry.create_document(raw_entry_data)
 
+    # warm up extracted document
+    ExtractDocumentJob.perform_later(document.id)
+
     if document.published_at > self.created_at
       users = entry.channel.subscriptions.to_inbox.users
 
@@ -99,11 +102,7 @@ class Channel < ApplicationRecord
       end
 
       DocumentState.insert_all!(document_states)
-
       document.update_search_index
-
-      # warm up extracted document
-      ExtractDocumentJob.perform_later(document.id)
     end
   end
 
