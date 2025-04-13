@@ -4,7 +4,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    permitted = params.expect(subscription: [:feed_url, :to_inbox])
+    permitted = params.expect(subscription: [ :feed_url, :to_inbox ])
 
     feed_url = ChannelUtils.find_feed_url(permitted[:feed_url])
     return head :unprocessable_entity unless feed_url

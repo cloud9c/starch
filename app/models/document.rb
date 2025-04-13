@@ -71,7 +71,7 @@ class Document < ApplicationRecord
 
   def with_view_preferences
     should_extract =
-      if (self[:view_extracted])
+      if self[:view_extracted]
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
       else
         subscription = channel.subscriptions.select(:view_extracted).find_by(user_id: Current.user.id, channel_id: channel.id)

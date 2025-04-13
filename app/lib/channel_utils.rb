@@ -40,7 +40,7 @@ module ChannelUtils
     end
 
     feed = parse_feed(body)
-    return (feed.try(:feed_url) || url) if feed
+    (feed.try(:feed_url) || url) if feed
   end
 
   def extract_feed_url(html, url)
