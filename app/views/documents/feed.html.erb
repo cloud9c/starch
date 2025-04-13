@@ -4,9 +4,15 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="sheet">
+<div id="document-inbox" class="sheet" data-controller="documents--list" 
+     data-documents--list-query-value="<%= "" %>">
   <h1 class="sheet__header">Feed</h1>
-  <div class="content">
-		<p>work in progress...</p>
-	</div>
+  <div class="document-preview-section content" id="documents-section">
+    <% if @documents.any? %>
+      <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
+    <% else %>
+      <div class="document-inbox-nothing-new">
+        <span>No results.</span>
+      </div>
+    <% end %>
 </div>

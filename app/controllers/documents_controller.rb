@@ -13,6 +13,14 @@ class DocumentsController < ApplicationController
     respond_with_pagination(:index, documents)
   end
 
+  def feed
+    @documents = Document.query(Current.user.id, {
+      page: params[:page] ? params[:page].to_i : 1
+    })
+
+    respond_with_pagination(:feed, @documents)
+  end
+
   def later
     @documents = Document.query(Current.user.id, {
       status: :later,
@@ -31,25 +39,20 @@ class DocumentsController < ApplicationController
     respond_with_pagination(:archive, @documents)
   end
 
-  def show
-    document_state = DocumentState.find_by!(document: params[:id], user: Current.user.id)
-    @document = document_state.document.with_view_preferences
-
-    render :show
+  def toolbar
+    @document_state = DocumentState.find_or_initialize_by(document_id: params[:id], user: Current.user)
   end
 
-  def destroy
-    document_state = DocumentState.find_by!(document: params[:id], user: Current.user.id)
+  def show
+    document = Document.find(params[:id])
 
-    if document_state.destroy
-      redirect_to root_path, notice: "Document was successfully deleted."
-    else
-      head :unprocessable_entity
+    if document.channel&.subscriptions.exists?(user_id: Current.user.id)
+      @document = document.with_view_preferences
     end
   end
 
   def read
-    document_state = DocumentState.find_by!(document: params[:id], user: Current.user.id)
+    document_state = DocumentState.find_by!(document_id: params[:id], user: Current.user)
     document_state.update(read: true)
 
     head :ok
@@ -92,6 +95,8 @@ class DocumentsController < ApplicationController
   end
 
   def respond_with_pagination(view_name, documents)
+    Rails.logger.debug documents.length
+
     respond_to do |format|
       format.html do
         render view_name, status: documents.length == Document.per_page ? :ok : :partial_content

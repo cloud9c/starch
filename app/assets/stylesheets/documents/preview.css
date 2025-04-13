@@ -45,6 +45,7 @@
       border-radius: 0.5em;
       height: 8em;
       aspect-ratio: 1 / 1;
+      object-fit: cover;
     }
   }
   

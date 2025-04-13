@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_29_203747) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_12_200853) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -82,6 +82,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_29_203747) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "view_extracted", default: false
+    t.boolean "to_inbox", default: false, null: false
     t.index ["channel_id"], name: "index_subscriptions_on_channel_id"
     t.index ["user_id", "channel_id"], name: "index_subscriptions_on_user_id_and_channel_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"

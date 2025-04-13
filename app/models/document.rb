@@ -42,19 +42,22 @@ class Document < ApplicationRecord
   end
 
   def self.query(user_id, options = {})
-    query = Document.joins(:document_states)
+    query = Document.left_joins(:document_states)
                     .joins(entry: { channel: :subscriptions })
                     .includes(entry: :channel)
-                    .where(document_states: { user: user_id })
                     .order("document_states.read" => :asc, "documents.published_at" => :desc)
+    
+    if options[:status].present?
+      query = query.where(document_states: { status: options[:status], user: user_id })
+    end
 
-    query = query.where(document_states: { status: options[:status] }) if options[:status].present?
-
-    query = query.where(id: options[:ids]) if options[:ids].present?
+    if options[:id].present?
+      query = query.where(id: options[:ids])
+    end
 
     if options[:page].present?
       query = query.limit(@@per_page)
-                  .offset((options[:page] - 1) * @@per_page)
+                   .offset((options[:page] - 1) * @@per_page)
     end
 
     query = query.select("document_states.read, documents.*, subscriptions.view_extracted")

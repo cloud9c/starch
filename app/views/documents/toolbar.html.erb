@@ -1,5 +1,14 @@
-<turbo-frame id="document_toolbar">
-  <button class="btn btn--icon icon--trash"></button>
-  <button class="btn btn--icon icon--trash"></button>
-  <button class="btn btn--icon icon--trash"></button>
+<turbo-frame id="document_toolbar" target="_top">
+  <%= form_with model: @document_state do |form| %>
+    <%= form.hidden_field :document_id, value: params[:id] %>
+    <fieldset class="toggle-group">
+      <% DocumentState.statuses.keys.each do |status| %>
+        <%= form.radio_button :status, status, 
+                             checked: (@document_state&.status == status),
+                             class: "toggle icon--#{status}",
+                             onchange: "this.form.requestSubmit()",
+                             "aria-label": "Toggle {status}"%>
+      <% end %>
+    </fieldset>
+  <% end %>
 </turbo-frame>

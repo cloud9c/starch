@@ -60,6 +60,8 @@ class Channel < ApplicationRecord
       self.update_entry(entry_data)
     end
 
+    # initial polling logic
+
     return if self.initial_poll_complete?
 
     self.with_lock do
@@ -68,7 +70,7 @@ class Channel < ApplicationRecord
 
       self.update(initial_poll_complete: true)
 
-      self.subscriptions.each do |subscription|
+      self.subscriptions.to_inbox.each do |subscription|
         subscription.add_recent_entries
       end
     end
@@ -90,7 +92,7 @@ class Channel < ApplicationRecord
     document = entry.create_document(raw_entry_data)
 
     if document.published_at > self.created_at
-      users = entry.channel.users
+      users = entry.channel.subscriptions.to_inbox.users
 
       document_states = users.map do |user|
         { user_id: user.id, document_id: document.id }

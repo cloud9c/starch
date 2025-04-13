@@ -32,7 +32,8 @@ export default class extends Controller {
   async loadMore() {
     this.loadingValue = true
     const nextPage = this.pageValue + 1
-    
+    console.log(this.queryValue)
+
     try {
       const url = new URL(window.location.pathname, window.location.origin)
       const searchParams = new URLSearchParams(this.queryValue)
@@ -44,7 +45,7 @@ export default class extends Controller {
             "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
           }
         }).perform()
-     
+    
       if (request.response.status === 204 || request.response.status === 206) {
         this.disconnect()
       } else if (request.ok) {

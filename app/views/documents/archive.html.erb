@@ -4,8 +4,8 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-inbox" class="sheet" data-controller="documents__list" 
-     data-documents__list-query-value="<%= "status=archive" %>">
+<div id="document-inbox" class="sheet" data-controller="documents--list" 
+     data-documents--list-query-value="<%= "status=archive" %>">
   <h1 class="sheet__header">Archive</h1>
   <div class="document-preview-section content" id="documents-section">
     <% if @documents.any? %>

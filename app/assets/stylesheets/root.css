@@ -80,9 +80,9 @@
   --lch-orange: 75% 0.16 60;
   --lch-yellow: 82% 0.16 90;
   --lch-green: 62% 0.16 150;
-  --lch-blue-light: 60% 0.22 265;
-  --lch-blue: 55% 0.22 265;
-  --lch-blue-dark: 50% 0.22 265;
+  --lch-blue-light: 60% 0.16 265;
+  --lch-blue: 55% 0.16 265;
+  --lch-blue-dark: 50% 0.16 265;
   --lch-purple: 75% 0.14 295;
   
   /* Semantic variables */
@@ -104,6 +104,7 @@
   --bg-link-hover: oklch(var(--lch-blue) / 0.05);
   --bg-input: oklch(var(--lch-blue));
   --bg-input-hover: oklch(var(--lch-blue-dark));
+  --bg-input-ghost-hover: oklch(var(--lch-blue-light) / 0.20)
   --bg-opaque: oklch(var(--lch-paper) / 0.90);
   --bg-main: oklch(var(--lch-paper));
   
@@ -112,9 +113,9 @@
   /* Dark theme overrides */
   @media (prefers-color-scheme: dark) {
     --lch-paper: 15% 0 0;
-    --lch-blue-light: 55% 0.20 265;
-    --lch-blue: 50% 0.20 265;
-    --lch-blue-dark: 45% 0.20 265;
+    --lch-blue-light: 55% 0.16 265;
+    --lch-blue: 50% 0.16 265;
+    --lch-blue-dark: 45% 0.16 265;
     
     --focus-ring: 2px solid oklch(var(--lch-blue));
     --color-border-dark: oklch(var(--lch-gray-dark));
@@ -127,6 +128,7 @@
     --color-text-light: oklch(var(--lch-gray-lighter));
     
     --bg-link-hover: oklch(var(--lch-blue) / 0.20);
+    --bg-input-ghost-hover: oklch(var(--lch-blue) / 0.20);
     --bg-primary: oklch(var(--lch-gray-darkest));
     --bg-secondary: oklch(var(--lch-offblack));
   }

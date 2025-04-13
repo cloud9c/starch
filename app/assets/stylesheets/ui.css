@@ -1,6 +1,6 @@
 .btn {
   border-radius: var(--border-radius);
-  padding: 0.5em 1em;
+  padding: 0.4em 0.8em;
   font-weight: 500;
   cursor: pointer;
   background: var(--bg-input);
@@ -14,45 +14,94 @@
     outline: var(--focus-ring);
   }
 
-  &.btn--icon {
-    &::before {
-      display: block;
-      mask-size: 100%;
-      content: "";
-      height: 1.25em;
-      width: 1.25em;
-      cursor: pointer;
-      background: var(--color-text-light);
-    }
-    
-    &:not(:empty) {
-      position: relative;
-      display: flex;
-      gap: 0.4em;
-      align-items: center;
-    }
-    
-    &.icon--trash::before {
-      mask-image: url(/icons/trash.svg);
-    }
-    
-    &.icon--plus::before {
-      mask-image: url(/icons/plus.svg);
-    }
-  }
+
 
   &.btn--ghost {
     background: none;
     padding: 0.5em;
 
     &:hover, &:focus {
-
+      background: var(--bg-input-ghost-hover)
     }
-
+   
     &.btn--icon::before {
       background: var(--color-text);
     }
   }
+
+  &.btn--secondary {
+    background: none;
+    border: 1px solid var(--color-border);
+
+    &:hover {
+      background: var(--bg-secondary);
+    }
+  }
+}
+
+.btn--icon, .toggle {
+  &::before {
+    display: block;
+    mask-size: 100%;
+    content: "";
+    height: 1.25em;
+    width: 1.25em;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: var(--color-text-light);
+  }
+  
+  &:not(:empty) {
+    position: relative;
+    display: flex;
+    gap: 0.4em;
+    align-items: center;
+  }
+
+}
+
+.toggle-group {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+.toggle {
+  padding: 0.8em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  
+  &::before {
+    background: var(--color-text-secondary)
+  }
+
+  &:hover {
+    background: var(--bg-input-ghost-hover);
+  }
+
+  &:checked {
+    background: var(--bg-input);
+  }
+}
+    
+.icon--trash::before {
+  mask-image: url(/icons/trash.svg);
+}
+
+.icon--plus::before {
+  mask-image: url(/icons/plus.svg);
+}
+
+.icon--inbox::before {
+  mask-image: url(/icons/inbox.svg);
+}
+
+.icon--later::before {
+  mask-image: url(/icons/later.svg);
+}
+
+.icon--archive::before {
+  mask-image: url(/icons/archive.svg);
 }
 
 .icon {
@@ -146,7 +195,11 @@ input[type="text"], input[type="email"] {
     position: relative;
 
     &::after {
-      background-color: var(--color-text-secondary);
+      background-c
+.toggle {
+  padding: 0.8em;
+  background: var(--color-text-secondary)
+}olor: var(--color-text-secondary);
       mask-image: url(/icons/search.svg);
       mask-repeat: no-repeat;
       mask-size: 100%;
@@ -169,3 +222,4 @@ input[type="text"], input[type="email"] {
 input::placeholder {
   color: var(--color-text-secondary)
 }
+

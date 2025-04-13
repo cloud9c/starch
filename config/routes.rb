@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :document_states, only: [:create, :update]
+
   get "later" => "documents#later", as: :later
   get "archive" => "documents#archive", as: :archive
   get "search" => "documents#search", as: :search

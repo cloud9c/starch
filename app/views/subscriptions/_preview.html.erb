@@ -1,22 +1,26 @@
 <div id="<%= dom_id(preview, "preview") %>" class="subscription-preview">
-  <div class="subscription-content">
-    <picture class="subscription-icon">
+  <div class="subscription-preview__content">
+    <picture class="subscription-preview__icon">
       <source srcset="<%= preview.channel.icon %>"/>
-      <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon" %>
+      <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon"%>
     </picture>
-    <a class="subscription-text" href=<%= preview.channel.url %> target="_blank">
-      <span class="subscription-title"><%= preview.channel.title || preview.channel.feed_url %></span>
-      <span class="subscription-description"><%= preview.channel.url %></span>
+    <a class="subscription-preview__text" href=<%= preview.channel.url %> target="_blank">
+      <span class="subscription-preview__title"><%= preview.channel.title || preview.channel.feed_url %></span>
+      <span class="subscription-preview__description"><%= preview.channel.url %></span>
     </a>
   </div>
 
-  <div class="subscription-actions">
-    <%= form_with(model: preview, html: { autocomplete: 'off', class: "checkbox" }) do |form| %>
+  <div class="subscription-preview__actions">
+    <%= form_with(model: preview, html: {class: "checkbox" }) do |form| %>
+      <%= form.check_box :to_inbox, 
+          onchange: 'this.form.requestSubmit()' %>
+      <%= form.label :to_inbox, "Inbox" %>
+    <% end %>
+
+    <%= form_with(model: preview, html: { class: "checkbox" }) do |form| %>
       <%= form.check_box :view_extracted, 
-          onchange: 'this.form.requestSubmit()', 
-          id: "view_extracted_#{preview.id}" %>
-      <%= form.label :view_extracted, "Extract", 
-          for: "view_extracted_#{preview.id}" %>
+          onchange: 'this.form.requestSubmit()' %>
+      <%= form.label :view_extracted, "Extract" %>
     <% end %>
 
     <%= button_to subscription_path(preview), 

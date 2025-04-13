@@ -10,6 +10,8 @@ class Subscription < ApplicationRecord
 
   validates :channel_id, presence: true, uniqueness: { scope: :user_id }
 
+  scope :to_inbox, -> { where(to_inbox: true) }
+
   def add_recent_entries
     recent_entries = channel.entries.recent
 
