@@ -195,11 +195,7 @@ input[type="text"], input[type="email"] {
     position: relative;
 
     &::after {
-      background-c
-.toggle {
-  padding: 0.8em;
-  background: var(--color-text-secondary)
-}olor: var(--color-text-secondary);
+      background-color: var(--color-text-secondary);
       mask-image: url(/icons/search.svg);
       mask-repeat: no-repeat;
       mask-size: 100%;
