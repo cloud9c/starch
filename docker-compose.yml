@@ -2,6 +2,7 @@ name: starch
 services:
   typesense:
     image: typesense/typesense:27.1
+    container_name: starch-typesense
     restart: on-failure
     ports:
       - "8108:8108"
@@ -12,6 +13,7 @@ services:
       - starch-network
   reading-parser:
     build: ./reading_parser
+    container_name: starch-reading-parser
     restart: on-failure
     ports:
       - "3001:3001"

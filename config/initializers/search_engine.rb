@@ -5,7 +5,7 @@ module SearchEngine
     @client = Typesense::Client.new(
       nodes: [
         {
-          host: "typesense",
+          host: "starch-typesense",
           port: 8108,
           protocol: "http"
         }
