@@ -26,19 +26,10 @@
       </div>
     </header>
 
-    
-    <div>
-      <template shadowrootmode="closed">
-          <%= stylesheet_link_tag :reset, "data-turbo-track": "reload" %>
-          <%= stylesheet_link_tag :root, "data-turbo-track": "reload" %>
-          <%= stylesheet_link_tag :style, "data-turbo-track": "reload" %>
-          <%= stylesheet_link_tag :"documents/show", "data-turbo-track": "reload" %>
-
-          <article class="document-body">
-            <%= render_video @document %>
-            <%= render_document_html @document.content, @document.url %>
-          </article>
-      </template>
+    <article class="document-body">
+      <%= render_video @document %>
+      <%= render_document_html @document.content, @document.url %>
+    </article>
     </div>
   </div>
 
