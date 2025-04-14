@@ -97,17 +97,17 @@
 }
 
 .nav__tooltip {
-  display: none;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 1em;
 }
 
-@media (min-width: 100ch) {
+@media (max-width: 100ch) {
   .nav__tooltip {
-    text-align: center;
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--color-text-secondary);
-    width: fit-content;
-    margin: 0 auto;
-    margin-top: 1em;
+    display: none;
   }
 }
