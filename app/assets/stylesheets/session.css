@@ -1,9 +1,7 @@
-.login {
-  margin-top: 2em;
-  
-  @media (max-width: 100ch) {
+.login.sheet {
     margin-top: 0;
-  }
+    border-radius: 0;
+    border-top: none;
 }
 
 .login-form {

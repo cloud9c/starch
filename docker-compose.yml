@@ -1,5 +1,5 @@
 services:
-  starch-typesense:
+  typesense:
     image: typesense/typesense:27.1
     restart: on-failure
     ports:
@@ -7,7 +7,7 @@ services:
     volumes:
       - ./tmp/typesense-data:/data
     command: '--data-dir /data --api-key=xyz --enable-cors'
-  starch-reading-parser:
+  reading-parser:
     build: ./reading_parser
     restart: on-failure
     ports:
