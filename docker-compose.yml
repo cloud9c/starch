@@ -1,3 +1,4 @@
+name: starch
 services:
   typesense:
     image: typesense/typesense:27.1
@@ -7,6 +8,8 @@ services:
     volumes:
       - ./tmp/typesense-data:/data
     command: '--data-dir /data --api-key=xyz --enable-cors'
+    networks:
+      - starch-network
   reading-parser:
     build: ./reading_parser
     restart: on-failure
@@ -15,6 +18,8 @@ services:
     volumes:
       - ./reading_parser:/app
     command: 'pnpm start'
+    networks:
+      - starch-network
   web:
     image: ruby:3.4
     working_dir: /app
@@ -23,3 +28,9 @@ services:
     ports:
       - "3000:3000"
     command: 'bash -c "bundle install && bundle exec rails server -p 3000 -b 0.0.0.0"'
+    networks:
+      - starch-network
+
+networks:
+  starch-network:
+    external: true

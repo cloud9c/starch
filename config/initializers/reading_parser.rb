@@ -2,7 +2,7 @@ module ReadingParser
   extend self
 
   def extract(url)
-    service_uri = "http://starch-reading-parser:3001/parse"
+    service_uri = "http://reading-parser:3001/parse"
     headers = { "Content-Type" => "application/json" }
     response = HTTPX.post(service_uri, json: { url: url }, headers: headers)
 
