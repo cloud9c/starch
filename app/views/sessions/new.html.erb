@@ -1,7 +1,8 @@
 <% content_for(:title) { 'Sign in to Starch' } %>
 
 <div class="sheet login">
-  <h1 class="sheet__header">Starch</h1>
+  <%= image_tag "/icon.svg", class: "login__logo" %>
+  <h1 class="sheet__header">Welcome to Starch.</h1>
   <div class="content">
     <% if @show_verification %>
       <%= form_with(url: verify_session_path, data: { turbo: false }, class: "login-form") do |form| %>

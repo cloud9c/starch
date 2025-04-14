@@ -65,8 +65,7 @@ class Document < ApplicationRecord
 
     query.map do |doc|
       doc.with_view_preferences
-      doc.with_description
-      doc
+         .with_description
     end
   end
 

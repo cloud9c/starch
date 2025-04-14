@@ -21,7 +21,7 @@ export default class extends Controller {
     
     if (isInInputField) return;
 
-    const hotkeys = this.hotkeyValue.split(/[\s,]+/);
+    const hotkeys = [this.hotkeyValue, this.hotkeyValue.toUpperCase()]
 
     if (hotkeys.includes(event.key)) {
       event.preventDefault();
@@ -31,7 +31,8 @@ export default class extends Controller {
 
   performDefaultAction() {
     const tagName = this.element.tagName.toLowerCase();
-    
+    const inputType = this.element.getAttribute('type');
+
     switch(tagName) {
       case 'a':
         Turbo.visit(this.element.getAttribute('href'));
@@ -43,7 +44,12 @@ export default class extends Controller {
         this.element.click();
         break;
       case 'input':
-        this.element.focus();
+        if (inputType === 'radio') {
+          this.element.checked = true;
+          this.element.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          this.element.focus();
+        }
         break;
     }
   }

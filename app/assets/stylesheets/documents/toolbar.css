@@ -11,7 +11,7 @@
   }
 }
 
-@media(max-width: 100ch) {
+@media(max-width: 120ch) {
   #document_toolbar {
     flex-direction: row;
     background: var(--bg-primary);
@@ -36,8 +36,12 @@
     }
   }
 
-  .sheet--scrolled-down #document_toolbar {
+  .sheet.sheet--scrolled-down + #document_toolbar {
     transform: translateY(calc(100% + 1em));
     box-shadow: none;
+  }
+
+  .shortcut-hotkey::after {
+    display: none;
   }
 }

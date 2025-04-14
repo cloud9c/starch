@@ -89,20 +89,25 @@
       background: var(--bg-link-hover);
     }
     
-    @media (min-width: 100ch) {
-      &::after {
-        margin-left: auto;
-        font-family: var(--font-mono);
-        font-size: var(--text-xs);
-        color: var(--color-text-secondary);
-        content: counter(item-counter);
-        padding-left: 0.5em;
-      }
-    }
-    
     img {
       width: 1.5em;
       height: 1.5em;
     }
+  }
+}
+
+.nav__tooltip {
+  display: none;
+}
+
+@media (min-width: 100ch) {
+  .nav__tooltip {
+    text-align: center;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 1em;
   }
 }

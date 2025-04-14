@@ -69,28 +69,26 @@
   display: flex;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
-}
 
-.toggle {
-  padding: 0.8em;
-  cursor: pointer;
-  
-  &::before {
-    background: var(--color-text-secondary)
-  }
-
-  &:hover {
-    background: var(--bg-input-ghost-hover);
-  }
-
-  &:checked {
-    background: var(--bg-input-secondary);
-
+  .toggle {
+    padding: 0.8em;
+    cursor: pointer;
+    display: flex;
+    
     &::before {
-      background: var(--color-text-secondary-light);
+      background: var(--color-text-secondary)
+    }
+
+    &:hover {
+      background: var(--bg-input-ghost-hover);
+    }
+
+    &:checked {
+      background: var(--bg-input-secondary);
     }
   }
 }
+
     
 .icon--trash::before {
   mask-image: url(/icons/trash.svg);
@@ -226,4 +224,21 @@ input[type="text"], input[type="email"] {
 input::placeholder {
   color: var(--color-text-secondary)
 }
+    
+@media (min-width: 100ch) {
+  .shortcut-hotkey {
+    position: relative;
+    vertical-align: middle;
+  }
 
+  .shortcut-hotkey::after {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    content: attr(data-shortcut-hotkey-value);
+    padding-left: 1em;
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+}

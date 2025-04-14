@@ -11,9 +11,11 @@
   %>
   
   <% navigation_items.each_with_index do |item, index| %>
-    <%= link_to item[:path], data: { controller: "shortcut", "shortcut-hotkey-value": (index + 1).to_s } do %>
+    <%= link_to item[:path], data: { controller: "shortcut", "shortcut-hotkey-value": (index + 1).to_s }, class: "shortcut-hotkey" do %>
       <%= image_tag item[:icon], class: "icon" %>
       <span><%= item[:text] %></span>
     <% end %>
   <% end %>
+
+  <span class="nav__tooltip">Toggle with <code>H</code></span>
 </turbo-frame>

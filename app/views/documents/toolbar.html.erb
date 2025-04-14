@@ -1,13 +1,21 @@
 <turbo-frame id="document_toolbar" target="_top">
+  <% 
+  toolbar_items = {
+    "inbox" => "i",
+    "later" => "l",
+    "archive" => "a"
+  }
+  %>
   <%= form_with model: @document_state do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
     <fieldset class="toggle-group">
       <% DocumentState.statuses.keys.each do |status| %>
         <%= form.radio_button :status, status, 
                              checked: (@document_state&.status == status),
-                             class: "toggle icon--#{status}",
+                             class: "toggle icon--#{status} shortcut-hotkey",
                              onchange: "this.form.requestSubmit()",
-                             "aria-label": "Toggle {status}"%>
+                             "aria-label": "Send to #{status.titleize} status",
+                             data: {controller: "shortcut", "shortcut-hotkey-value": toolbar_items[status]} %>
       <% end %>
     </fieldset>
   <% end %>

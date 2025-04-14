@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
   invisible_captcha only: :create, on_spam: :send_to_root
 
   def new
+    redirect_to root_path if authenticated?
+
     @show_verification = flash[:show_verification]
   end
 
