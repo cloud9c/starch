@@ -25,6 +25,8 @@ class SubscriptionsController < ApplicationController
 
     @subscription = Current.user.subscriptions.find(params[:id])
     @subscription.update(permitted)
+
+    head :ok
   end
 
   def destroy
