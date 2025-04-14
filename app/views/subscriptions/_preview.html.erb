@@ -11,13 +11,13 @@
   </div>
 
   <div class="subscription-preview__actions">
-    <%= form_with(model: preview, html: {class: "checkbox" }) do |form| %>
+    <%= form_with(model: preview, html: {class: "checkbox" }, namespace: dom_id(preview)) do |form| %>
       <%= form.check_box :to_inbox, 
           onchange: 'this.form.requestSubmit()' %>
       <%= form.label :to_inbox, "Inbox" %>
     <% end %>
 
-    <%= form_with(model: preview, html: { class: "checkbox" }) do |form| %>
+    <%= form_with(model: preview, html: { class: "checkbox" }, namespace: dom_id(preview)) do |form| %>
       <%= form.check_box :view_extracted, 
           onchange: 'this.form.requestSubmit()' %>
       <%= form.label :view_extracted, "Extract" %>
