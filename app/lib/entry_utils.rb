@@ -100,46 +100,9 @@ module EntryUtils
     nil
   end
 
-  def format_html(html, url)
-    doc = Nokogiri::HTML(html)
-
-    # open links in new tab
-    doc.css('a[href]:not([href^="#"])').each do |link|
-      link["target"] = "_blank"
-      link["rel"] = "noopener noreferrer"
-    end
-
-    # convert relative to absolute links
-    origin = UrlUtils.normalize(url)
-
-    doc.css("img, iframe, video, audio, source").each do |element|
-      if element["src"]
-        element["src"] = URI.join(origin, element["src"]).to_s
-      end
-    end
-
-    doc.css("object").each do |element|
-      if element["data"]
-        element["data"] = URI.join(origin, element["data"]).to_s
-      end
-    end
-
-    # remove all id attributes
-    doc.css("*[id]").each do |element|
-      element.remove_attribute("id")
-    end
-
-    # remove all class attributes
-    doc.css("*[class]").each do |element|
-      element.remove_attribute("class")
-    end
-
-    doc.to_html
-  end
-
   def get_raw_entry_data(entry_data)
     url = UrlUtils.normalize(entry_data.url)
-    content = self.format_html(entry_data.content || entry_data.summary, url)
+    content = entry_data.content || entry_data.summary
     description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
@@ -158,7 +121,7 @@ module EntryUtils
     parsed_data = ReadingParser.extract(url)
     return {} unless parsed_data
 
-    content = self.format_html(parsed_data["content"], url)
+    content = parsed_data["content"]
 
     result = {
       content: content,

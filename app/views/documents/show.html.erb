@@ -25,11 +25,21 @@
         <% end %>
       </div>
     </header>
+
     
-    <article class="document-body">
-      <%= render_video @document %>
-      <%= render_document_html @document.content %>
-    </article>
+    <div>
+      <template shadowrootmode="closed">
+          <%= stylesheet_link_tag :reset, "data-turbo-track": "reload" %>
+          <%= stylesheet_link_tag :root, "data-turbo-track": "reload" %>
+          <%= stylesheet_link_tag :style, "data-turbo-track": "reload" %>
+          <%= stylesheet_link_tag :"documents/show", "data-turbo-track": "reload" %>
+
+          <article class="document-body">
+            <%= render_video @document %>
+            <%= render_document_html @document.content, @document.url %>
+          </article>
+      </template>
+    </div>
   </div>
 
   <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>

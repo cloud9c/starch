@@ -49,6 +49,8 @@ class Document < ApplicationRecord
 
     if options[:status].present?
       query = query.where(document_states: { status: options[:status], user: user_id })
+    else
+      query = query.where(subscriptions: { user_id: user_id })
     end
 
     if options[:id].present?

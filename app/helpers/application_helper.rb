@@ -1,6 +1,6 @@
 module ApplicationHelper
-  def render_document_html(html)
-    sanitize(html,
+  def render_document_html(html, url)
+    sanitized_html = sanitize(html,
       tags: %w[
         h1 h2 h3 h4 h5 h6 h7 h8 br b i strong em a pre code img tt div ins del sup sub
         p ol ul table thead tbody tfoot blockquote dl dt dd kbd q samp var hr ruby rt
@@ -22,6 +22,29 @@ module ApplicationHelper
         tabindex target title type usemap valign value
         vspace itemprop id
       ])
+
+    doc = Nokogiri::HTML(sanitized_html)
+
+    # convert all urls to absolute
+    base = UrlUtils.normalize(url)
+
+    url_related_attributes = %w[href src longdesc cite poster action usemap]
+    url_related_attributes.each do |attr|
+      doc.css("[#{attr}]").each do |element|
+        begin
+          element[attr] = URI.join(base, element[attr]).to_s if element[attr].present?
+        rescue URI::InvalidURIError
+          element.remove_attribute(attr)
+        end
+      end
+    end
+
+    # sandbox iframes
+    doc.css("iframe").each do |iframe|
+      iframe[attr] = 'allow-scripts allow-same-origin' unless iframe['sandbox']
+    end
+
+    doc.to_html.html_safe
   end
 
   def render_video(document)

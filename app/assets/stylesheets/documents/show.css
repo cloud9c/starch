@@ -33,7 +33,7 @@
 
 .document-body {
   font-family: var(--font-serif);
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   line-height: var(--line-height-loose);
   margin-bottom: 1em;
   display: flex;
@@ -41,7 +41,7 @@
   gap: 1em;
   word-break: break-word;
   
-  a {
+  a[href] {
     text-decoration: underline;
     
     &:hover, &:focus {
