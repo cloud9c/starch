@@ -62,7 +62,7 @@ class DocumentsController < ApplicationController
     query = params[:q]
     page = params[:page] ? params[:page].to_i : 1
 
-    unless query
+    unless query.present?
       @documents = []
       return respond_with_pagination(:search, @documents)
     end

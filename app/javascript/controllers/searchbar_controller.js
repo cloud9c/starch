@@ -11,18 +11,10 @@ export default class extends Controller {
 
  
   handleKeydown(event) {
-    if (event.key === "Enter") {
-      if (this.element.value.trim() !== "") {
-        this.element.submit()
-      } else {
-        event.preventDefault()
-      }
-    }
-
     switch (event.key) {
       case "Enter":
         if (this.element.value.trim() !== "") {
-          this.element.submit()
+          this.element.closest("form").submit()
         } else {
           event.preventDefault()
         }

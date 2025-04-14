@@ -49,7 +49,7 @@ class Document < ApplicationRecord
 
     if options[:status].present?
       query = query.where(document_states: { status: options[:status], user: user_id })
-    elsif options[:id].present?
+    elsif options[:ids].present?
       query = query.where(id: options[:ids])
     else
       query = query.where(subscriptions: { user_id: user_id })
