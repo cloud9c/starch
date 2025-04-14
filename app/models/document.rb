@@ -42,25 +42,26 @@ class Document < ApplicationRecord
   end
 
   def self.query(user_id, options = {})
-    query = Document.left_joins(:document_states)
-                    .joins(entry: { channel: :subscriptions })
-                    .includes(entry: :channel)
-                    .order("document_states.read" => :asc, "documents.published_at" => :desc)
-
-    if options[:status].present?
-      query = query.where(document_states: { status: options[:status], user: user_id })
-    elsif options[:ids].present?
-      query = query.where(id: options[:ids])
-    else
-      query = query.where(subscriptions: { user_id: user_id })
-    end
+    query = Document.joins(entry: { channel: :subscriptions })
+                    .where(subscriptions: { user_id: user_id })
+                    .joins(:document_states)
+                    .where(document_states: { user_id: user_id })
+                    .includes(entry: { channel: :subscriptions })
 
     if options[:page].present?
       query = query.limit(@@per_page)
                    .offset((options[:page] - 1) * @@per_page)
     end
 
-    query = query.select("document_states.read, documents.*, subscriptions.view_extracted")
+    if options[:status].present?
+      query = query.where(document_states: { status: options[:status]})
+                   .order("document_states.read" => :asc)
+    elsif options[:ids].present?
+      query = query.where(id: options[:ids])
+    end
+
+    query = query.order("documents.published_at" => :desc)
+                 .select("document_states.read, documents.*, subscriptions.view_extracted")
 
     query.map do |doc|
       doc.with_view_preferences
@@ -74,7 +75,7 @@ class Document < ApplicationRecord
       if self[:view_extracted]
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
       else
-        subscription = channel.subscriptions.select(:view_extracted).find_by(user_id: Current.user.id, channel_id: channel.id)
+        subscription = channel&.subscriptions&.find { |s| s.user_id == Current.user.id }
         subscription&.view_extracted
       end
 

@@ -7,7 +7,7 @@ module ReadingParser
     response = HTTPX.post(service_uri, json: { url: url }, headers: headers)
 
     if response.error
-      Rails.logger.error "ReadingParser error: Unexpected error #{response.error}"
+      Rails.logger.error "ReadingParser error: Unexpected error from #{url}, #{response.error}"
       return nil
     end
 

@@ -35,4 +35,3 @@ services:
 
 networks:
   starch-network:
-    external: true
