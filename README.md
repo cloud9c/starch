@@ -2,7 +2,6 @@
 - motto: human intelligence; design your own algorithm; curation
 
 # p0
-- flash ui
 - go back arrow
 
 # p1
@@ -12,7 +11,6 @@
 
 # p2
 
-- error message if subscription fails
 - timelimit for trying to get website (hackernew.com as example)
 
 # plater
@@ -29,7 +27,6 @@
 - changing document status
 - tagging subscriptions
 
-- support youtube
 - support mobile/offline app
 - uploading custom docs
 
