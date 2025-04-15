@@ -1,10 +1,10 @@
 <% content_for(:title) { 'Sign in to Starch' } %>
 
 <div class="sheet login">
-  <%= image_tag "/icon.svg", class: "login__logo" %>
-  <h1 class="sheet__header">Welcome to Starch.</h1>
   <div class="content" id="login__content">
-    <%= form_with(url: session_path, class: "login-form") do |form| %>
+    <%= image_tag "/icon.svg", class: "login__logo" %>
+    <h1 class="sheet__header">Welcome to Starch.</h1>
+    <%= form_with(url: session_path, id: "login__form") do |form| %>
       <%= form.label :email_address, "Enter your email" %>
       <%= form.email_field :email_address, required: true %>
       <%= form.submit "Continue", class: "btn" %>

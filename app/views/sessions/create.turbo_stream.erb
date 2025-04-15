@@ -4,7 +4,7 @@
   <% end %>
 <% end %>
 <% if @flash && @flash[:show_verification] %>
-  <%= turbo_stream.replace "login__content" do %>
+  <%= turbo_stream.replace "login__form" do %>
     <%= form_with(url: verify_session_path, class: "login-form") do |form| %>
       <%= form.label :verification_code, "Enter verification code" %>
       <%= form.text_field :verification_code, pattern: "[0-9]*", required: true, inputmode: "numeric" %>

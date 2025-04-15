@@ -11,7 +11,7 @@
     border-top: none;
   }
 
-  .login-form {
+  #login__form {
     padding-top: 1em;
     display: flex;
     flex-direction: column;
