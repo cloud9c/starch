@@ -17,17 +17,17 @@ class SubscriptionsController < ApplicationController
 
     to_inbox = ActiveModel::Type::Boolean.new.cast(permitted[:to_inbox])
 
-    subscription = Current.user.subscriptions.find_or_create_by(channel: channel) do |sub|
-      sub.to_inbox = to_inbox
-    end
+    subscription = Current.user.subscriptions.find_or_initialize_by(channel: channel, to_inbox: to_inbox)
 
-    if subscription.persisted?
+    unless subscription.new_record?
       @flash = { alert: "Subscription already exists" }
       return render status: :conflict
     end
 
+    subscription.save
+    subscription.add_recent_entries if channel.initial_poll_complete?
+
     @subscription = subscription
-    @subscription.add_recent_entries if channel.initial_poll_complete?
   end
 
   def update

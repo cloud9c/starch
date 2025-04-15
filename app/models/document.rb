@@ -92,7 +92,7 @@ class Document < ApplicationRecord
   def with_description
     return self unless description.blank?
 
-    if self.has_attribute?(:content)
+    if self.content.present?
       preview_text = EntryUtils.format_text(self.content.strip.gsub(/\s+/, " "))[0...300]
       self.description = preview_text
     end
