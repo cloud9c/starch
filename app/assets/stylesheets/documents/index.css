@@ -41,8 +41,21 @@
 
   .document-inbox-title {
     text-transform: uppercase;
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
     font-weight: 600;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    #inbox__unread-section &::after {
+      content: '';
+      height: 1px;
+      background: var(--color-main);
+      flex: 1;
+      opacity: 75%;
+    }
   }
 
   .document-inbox-nothing-new {
