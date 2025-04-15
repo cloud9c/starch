@@ -5,37 +5,33 @@ class SessionsController < ApplicationController
 
   def new
     redirect_to root_path if authenticated?
-
-    @show_verification = flash[:show_verification]
   end
 
   def create
+    @flash = {}
+
     user = User.find_or_initialize_by(email_address: params[:email_address])
+
     unless user.save
-      flash[:alert] = user.errors.full_messages.to_sentence
-      redirect_to new_session_path and return
+      return @flash[:alert] = user.errors.full_messages.to_sentence
     end
 
     magic_link_token = user.generate_magic_link
     verification = user.generate_verification
 
     ### TODO: remove
-
     if user.email_address === "test@example.com"
       user.verify
       authenticate_session_for(user)
-      redirect_to root_path and return
+      return redirect_to root_path(format: :html)
     end
-
     ###
 
     unless user.send_login_email(magic_link_token, verification.code)
-      flash[:alert] = "We couldn't send your login email at this time. Please try again later."
-      redirect_to new_session_path and return
+      return @flash[:alert] = "We couldn't send your login email at this time. Please try again later."
     end
 
-    flash[:show_verification] = true
-    redirect_to new_session_path
+    @flash[:show_verification] = true
   end
 
   def verify
@@ -44,18 +40,23 @@ class SessionsController < ApplicationController
     if user
       user.verify
       authenticate_session_for(user)
-      redirect_to root_path and return
+      return redirect_to root_path(format: :html)
     end
 
-    flash[:alert] =
+    @flash = {}
+
+    @flash[:alert] =
       if params[:token]
         "We were unable to verify you with this link."
       elsif params[:verification_code]
         "There was an error verifying your code."
       end
 
-    flash[:show_verification] = true
-    redirect_to new_session_path()
+    @flash[:show_verification] = true
+
+    respond_to do |format|
+      format.turbo_stream { render template: "sessions/create", formats: [ :turbo_stream ] }
+    end
   end
 
   def destroy

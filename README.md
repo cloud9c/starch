@@ -3,7 +3,6 @@
 
 # p0
 - flash ui
-- extraction is blocking
 - go back arrow
 
 # p1

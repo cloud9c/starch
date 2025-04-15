@@ -96,13 +96,16 @@
   --color-text-secondary: oklch(var(--lch-text-secondary));
   --color-text-secondary-light: oklch(var(--lch-text-secondary-light));
   --color-text-light: oklch(var(--lch-gray-50));
+  --color-text-reversed: oklch(var(--lch-text-light));
+  --color-text-secondary-reversed: oklch(var(--lch-text-secondary-light));
   --color-danger: oklch(var(--lch-red));
-  --color-shadow: oklch(var(--lch-gray-500) / 0.20);
+  --color-shadow: oklch(var(--lch-gray-400));
   --color-main: oklch(var(--lch-yellow));
   --color-paper: oklch(var(--lch-gray-100));
   
   --bg-primary: oklch(var(--lch-white));
   --bg-secondary: oklch(var(--lch-gray-50));
+  --bg-reversed: var(--color-text);
   --bg-gray: oklch(var(--lch-gray-300));
   --bg-link-hover: oklch(var(--lch-blue) / 0.05);
   --bg-input: oklch(var(--lch-blue));
@@ -126,7 +129,9 @@
     --color-link: oklch(var(--lch-blue-light));
     --color-text: oklch(var(--lch-text-light));
     --color-text-secondary: oklch(var(--lch-text-secondary-light));
-    --color-shadow: oklch(var(--lch-black) / 0.20);
+    --color-text-reversed: oklch(var(--lch-text));
+    --color-text-secondary-reversed: oklch(var(--lch-text-secondary));
+    --color-shadow: oklch(var(--lch-black));
     --color-paper: oklch(var(--lch-gray-100-dark));
     --color-text-light: oklch(var(--lch-gray-200));
     

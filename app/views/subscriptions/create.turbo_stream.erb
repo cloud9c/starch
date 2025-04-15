@@ -3,3 +3,8 @@
       <%= render "subscriptions/preview", preview: @subscription, cached: true %>
   <% end %>
 <% end %>
+<% if @flash %>
+  <%= turbo_stream.replace "flash" do %>
+    <%= render "shared/flash", flash: @flash %>
+  <% end %>
+<% end %>

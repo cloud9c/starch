@@ -6,12 +6,10 @@ class SubscriptionsController < ApplicationController
   def create
     permitted = params.expect(subscription: [ :feed_url, :to_inbox ])
 
-    feed_url = ChannelUtils.find_feed_url(permitted[:feed_url])
+    flash.now[:notice] = '* * * Working hard to fulfill your request... * * *'
 
-    unless feed_url
-      @flash = { alert: "Couldn't find an RSS/Atom feed" }
-      return render status: :bad_request
-    end
+    feed_url = ChannelUtils.find_feed_url(permitted[:feed_url])
+    return render unless feed_url
 
     channel = Channel.find_or_create_by!(feed_url: feed_url)
 
@@ -20,11 +18,7 @@ class SubscriptionsController < ApplicationController
     subscription = Current.user.subscriptions.find_or_create_by(channel: channel) do |sub|
       sub.to_inbox = to_inbox
     end
-
-    if subscription.persisted?
-      @flash = { alert: "Subscription already exists" }
-      return render status: :conflict
-    end
+    return render if subscription.persisted?
 
     @subscription = subscription
     @subscription.add_recent_entries if channel.initial_poll_complete?

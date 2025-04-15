@@ -7,6 +7,8 @@
       <%= f.text_field :feed_url, 
           placeholder: "Enter link",
           autocomplete: "off",
+          inputmode: "url",
+          "aria-label": "Enter RSS or Atom feed URL",
           required: true %>
       <%= f.button "Add to inbox",
         class: "btn btn--icon icon--inbox",

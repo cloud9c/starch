@@ -11,6 +11,7 @@ module ChannelUtils
 
   def find_feed_url(url)
     normalized_url = UrlUtils.normalize(url)
+
     attempts = [
       normalized_url,
       UrlUtils.get_origin(normalized_url)

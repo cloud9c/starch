@@ -3,20 +3,12 @@
 <div class="sheet login">
   <%= image_tag "/icon.svg", class: "login__logo" %>
   <h1 class="sheet__header">Welcome to Starch.</h1>
-  <div class="content">
-    <% if @show_verification %>
-      <%= form_with(url: verify_session_path, data: { turbo: false }, class: "login-form") do |form| %>
-        <%= form.label :verification_code, "Enter verification code" %>
-        <%= form.text_field :verification_code, maxlength: 6, pattern: "[0-9]*" %>
-        <%= form.submit "Verify code", class: "btn" %>
-      <% end %>
-    <% else %>
-      <%= form_with(url: session_path, data: { turbo: false }, class: "login-form") do |form| %>
-        <%= form.label :email_address, "Enter your email" %>
-        <%= form.email_field :email_address %>
-        <%= form.submit "Continue", class: "btn" %>
-        <%= invisible_captcha %>
-      <% end %>
+  <div class="content" id="login__content">
+    <%= form_with(url: session_path, class: "login-form") do |form| %>
+      <%= form.label :email_address, "Enter your email" %>
+      <%= form.email_field :email_address, required: true %>
+      <%= form.submit "Continue", class: "btn" %>
+      <%= invisible_captcha %>
     <% end %>
   </div>
 </div>

@@ -128,3 +128,37 @@ em, i {
 code {
   font-family: var(--font-mono);
 }
+
+#flash {
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  top: 2em;
+  gap: 1em;
+  pointer-events: none;
+}
+
+.flash-item {
+  padding: 0.5em 1.5em;
+  background: var(--bg-reversed);
+  color: var(--color-text-reversed);
+  border-radius: 2em;
+  box-shadow: 0 0 1em var(--color-shadow);
+  opacity: 0;
+  animation: fadeInOut 4s linear forwards;
+  pointer-events: auto;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
