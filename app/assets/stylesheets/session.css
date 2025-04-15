@@ -1,8 +1,15 @@
 .login {
+  #login__content {
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+  }
+
   .login__logo {
     width: 4em;
     height: 4em;
-    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &.sheet {
@@ -12,7 +19,6 @@
   }
 
   #login__form {
-    padding-top: 1em;
     display: flex;
     flex-direction: column;
     gap: 1em;
