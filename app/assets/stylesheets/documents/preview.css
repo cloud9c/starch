@@ -71,4 +71,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  time {
+    white-space: nowrap;
+  }
 }

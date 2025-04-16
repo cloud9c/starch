@@ -5,7 +5,19 @@
     <%= render 'channel/preview', channel: preview.entry.channel, cached: true %>
 
     <% if preview.published_at %>
-      <p><%= preview.published_at.strftime("%b %d, %Y") %></span>
+      <% 
+        now = Time.now
+        published = preview.published_at 
+        display_text = case
+                      when published.to_date == now.to_date then published.strftime("%l:%M %p").strip
+                      when published.year == now.year then published.strftime("%b %d")
+                      else published.strftime("%b %d, %Y")
+                      end
+      %>
+      <time title="<%= published.strftime('%B %d, %Y at %l:%M%p %Z') %>" 
+            datetime="<%= published.iso8601 %>">
+        <%= display_text %>
+      </time>
     <% end %>
   </header>
   <div class="document-preview-main">

@@ -11,7 +11,7 @@
 
 # p2
 
-- timelimit for trying to get website (hackernew.com as example)
+- notifications
 
 # plater
 

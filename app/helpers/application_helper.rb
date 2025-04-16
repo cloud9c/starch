@@ -27,7 +27,6 @@ module ApplicationHelper
 
     # convert all urls to absolute
     base = UrlUtils.normalize(url)
-
     url_related_attributes = %w[href src longdesc cite poster action usemap]
     url_related_attributes.each do |attr|
       doc.css("[#{attr}]").each do |element|
@@ -42,6 +41,12 @@ module ApplicationHelper
     # sandbox iframes
     doc.css("iframe").each do |iframe|
       iframe[attr] = "allow-scripts allow-same-origin" unless iframe["sandbox"]
+    end
+
+    # remove ids and classes
+    doc.css("[id], [class]").each do |element|
+      element.remove_attribute("id")
+      element.remove_attribute("class")
     end
 
     doc.to_html.html_safe
