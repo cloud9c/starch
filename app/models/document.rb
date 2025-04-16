@@ -56,12 +56,14 @@ class Document < ApplicationRecord
     if options[:status].present?
       query = query.where(document_states: { status: options[:status] })
                    .order("document_states.read" => :asc)
+                   .order("document_states.updated_at" => :desc)
     elsif options[:ids].present?
       query = query.where(id: options[:ids])
     end
 
     query = query.order("documents.published_at" => :desc)
-                 .select("document_states.read, documents.*, subscriptions.view_extracted")
+
+    query = query.select("document_states.read, documents.*, subscriptions.view_extracted")
 
     query.map do |doc|
       doc.with_view_preferences
