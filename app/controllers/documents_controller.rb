@@ -87,7 +87,7 @@ class DocumentsController < ApplicationController
 
   def read_all
     DocumentState.where(user: Current.user, status: :inbox, read: false).update_all(read: true)
-    @flash = { notice: "Marking all as seen"}
+    @flash = { notice: "Marking all as seen" }
   end
 
   def archive_all
