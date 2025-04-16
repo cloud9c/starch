@@ -40,7 +40,7 @@ module ApplicationHelper
 
     # sandbox iframes
     doc.css("iframe").each do |iframe|
-      iframe[attr] = "allow-scripts allow-same-origin" unless iframe["sandbox"]
+      iframe["sandbox"] = "allow-scripts allow-same-origin" unless iframe["sandbox"]
     end
 
     # remove ids and classes
