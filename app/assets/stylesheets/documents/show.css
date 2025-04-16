@@ -142,4 +142,8 @@
     display: block;
     font-family: var(--font-mono);
   }
+
+  ruby rt {
+    font-size: var(--text-xs);
+  }
 }

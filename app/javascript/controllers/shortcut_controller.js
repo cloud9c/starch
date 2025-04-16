@@ -14,12 +14,11 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    const isInInputField = 
-        event.target.tagName === 'INPUT' || 
-        event.target.tagName === 'TEXTAREA' || 
-        event.target.isContentEditable;
-    
-    if (isInInputField) return;
+    const nodeName = this.element.nodeName.toLowerCase();
+    if (this.element.nodeType === 1 && (nodeName === "textarea" ||
+        (nodeName === "input" && /^(?:text|email|number|search|tel|url|password)$/i.test(this.element.type)))) {
+      return
+    }
 
     const hotkeys = [this.hotkeyValue, this.hotkeyValue.toUpperCase()]
 
