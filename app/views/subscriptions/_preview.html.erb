@@ -11,22 +11,25 @@
   </div>
 
   <div class="subscription-preview__actions">
-    <%= form_with(model: preview, html: {class: "checkbox" }, namespace: dom_id(preview)) do |form| %>
+    <%= form_with(model: preview,  namespace: dom_id(preview)) do |form| %>
       <%= form.check_box :to_inbox, 
-          onchange: 'this.form.requestSubmit()' %>
-      <%= form.label :to_inbox, "Inbox" %>
+          class: "toggle icon--inbox",
+          onchange: 'this.form.requestSubmit()',
+          "aria-label": "Send to inbox" %>
     <% end %>
 
-    <%= form_with(model: preview, html: { class: "checkbox" }, namespace: dom_id(preview)) do |form| %>
+    <%= form_with(model: preview, namespace: dom_id(preview)) do |form| %>
       <%= form.check_box :view_extracted, 
-          onchange: 'this.form.requestSubmit()' %>
-      <%= form.label :view_extracted, "Extract" %>
+          class: "toggle icon--extract",
+          onchange: 'this.form.requestSubmit()',
+          "aria-label": "Extract full content" %>
     <% end %>
 
     <%= button_to subscription_path(preview), 
           method: :delete,
           form: { data: { turbo_confirm: "Are you sure?" } },
-          class: "btn btn--icon icon--trash btn--ghost" do %>
+          class: "btn btn--icon icon--trash btn--ghost",
+          "aria-label": "Delete subscription" do %>
     <% end %>
   </div>
 </div>

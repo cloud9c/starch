@@ -12,7 +12,7 @@
     <% if @unread_documents.any? %>
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">New for you</h3>
-        <%= button_to read_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon btn--main icon--eye" do %>
+        <%= button_to read_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon btn--main icon--read" do %>
           Mark all as seen
         <% end %>
       </div>

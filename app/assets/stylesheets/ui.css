@@ -88,26 +88,27 @@
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
 
-  .toggle {
-    padding: 0.8em;
-    cursor: pointer;
-    display: flex;
-    
-    &::before {
-      background: var(--color-text-secondary)
-    }
+}
 
-    &:hover {
-      background: var(--bg-input-ghost-hover);
-    }
+.toggle {
+  padding: 0.5em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: flex;
+  
+  &::before {
+    background: var(--color-text-secondary)
+  }
 
-    &:checked {
-      background: var(--bg-input-secondary);
-    }
+  &:hover {
+    background: var(--bg-input-ghost-hover);
+  }
+
+  &:checked {
+    background: var(--bg-input-secondary);
   }
 }
 
-    
 .icon--trash::before {
   mask-image: url(/icons/trash.svg);
 }
@@ -128,22 +129,26 @@
   mask-image: url(/icons/archive.svg);
 }
 
-.icon--eye::before {
-  mask-image: url(/icons/eye.svg);
+.icon--read::before {
+  mask-image: url(/icons/read.svg);
+}
+
+.icon--extract::before {
+  mask-image: url(/icons/extract.svg);
 }
 
 .icon {
   filter: var(--filter-text-secondary)
 }
 
-.checkbox {
+.checkbox-container {
 	display: flex;
 	gap: 0.5em;
 	align-items: center;
 	font-weight: 600;
 }
 
-input[type="checkbox"] {
+.checkbox {
   appearance: none;
   width: 18px;
   height: 18px;
