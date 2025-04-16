@@ -49,6 +49,7 @@ body {
   @media (max-width: 100ch) {
     border: none;
     border-radius: 0;
+    padding-bottom: 6em;
   }
 
   .sheet__header {
