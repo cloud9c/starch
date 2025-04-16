@@ -32,6 +32,7 @@ class SessionsController < ApplicationController
     end
 
     @flash[:show_verification] = true
+    @flash[:email_address] = params[:email_address]
   end
 
   def verify
@@ -51,8 +52,6 @@ class SessionsController < ApplicationController
       elsif params[:verification_code]
         "There was an error verifying your code."
       end
-
-    @flash[:show_verification] = true
 
     respond_to do |format|
       format.turbo_stream { render template: "sessions/create", formats: [ :turbo_stream ] }

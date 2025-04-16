@@ -35,4 +35,8 @@
       font-size: var(--text-xl);
     }
   }
+
+  .login__email-address {
+    font-weight: 600;
+  }
 }

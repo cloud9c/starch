@@ -1,0 +1,4 @@
+<turbo-stream action="remove" targets="#inbox__read-section .document-preview"></turbo-stream>
+<%= turbo_stream.replace "flash" do %>
+  <%= render "shared/flash", flash: @flash %>
+<% end %>

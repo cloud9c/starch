@@ -19,6 +19,11 @@ Rails.application.routes.draw do
       post :read
       get :toolbar
     end
+
+    collection do
+      post :archive_all
+      post :read_all
+    end
   end
 
   resources :document_states, only: [ :create, :update ]

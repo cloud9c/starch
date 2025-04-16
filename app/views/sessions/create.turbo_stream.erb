@@ -5,10 +5,13 @@
 <% end %>
 <% if @flash && @flash[:show_verification] %>
   <%= turbo_stream.replace "login__form" do %>
-    <%= form_with(url: verify_session_path, class: "login-form") do |form| %>
-      <%= form.label :verification_code, "Enter verification code" %>
+    <%= form_with(url: verify_session_path, id: "login__form") do |form| %>
+      <%= form.label :verification_code do %>
+        <p>Enter the code sent to</p>
+        <p class="login__email-address"><%= @flash[:email_address] %></p>
+      <% end %>
       <%= form.text_field :verification_code, pattern: "[0-9]*", required: true, inputmode: "numeric" %>
-      <%= form.submit "Verify code", class: "btn" %>
+      <%= form.submit "Verify email address", class: "btn" %>
       <%= invisible_captcha %>
     <% end %>
   <% end %>

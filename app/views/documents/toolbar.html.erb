@@ -14,7 +14,7 @@
                              checked: (@document_state&.status == status),
                              class: "toggle icon--#{status} shortcut-hotkey",
                              onchange: "this.form.requestSubmit()",
-                             "aria-label": "Send to #{status.titleize} status",
+                             "aria-label": "Send to #{status.titleize}",
                              data: {controller: "shortcut", "shortcut-hotkey-value": toolbar_items[status]} %>
       <% end %>
     </fieldset>

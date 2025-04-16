@@ -12,6 +12,9 @@
     <% if @unread_documents.any? %>
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">New for you</h3>
+        <%= button_to read_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon btn--main icon--eye" do %>
+          Mark all as seen
+        <% end %>
       </div>
       <%= render partial: 'documents/preview', collection: @unread_documents, cached: ->(document) { [document, document.view_extracted] } %>
     <% elsif @unread_documents.empty? %>
@@ -26,6 +29,9 @@
   <div id="inbox__read-section" class="document-preview-section" data-controller="documents--hide-read">
     <div class="document-inbox-title-row">
       <h3 class="document-inbox-title">Previously seen</h3>
+      <%= button_to archive_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon icon--archive" do %>
+        Archive all
+      <% end %>
     </div>
     <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
   </div>

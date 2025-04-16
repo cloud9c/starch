@@ -46,7 +46,7 @@ class DocumentsController < ApplicationController
   def show
     document = Document.find(params[:id])
 
-    if document.channel&.subscriptions.exists?(user_id: Current.user.id)
+    if document.channel&.subscriptions.exists?(user: Current.user)
       @document = document.with_view_preferences
     end
   end
@@ -83,6 +83,16 @@ class DocumentsController < ApplicationController
     })
 
     respond_with_pagination(:search, @documents)
+  end
+
+  def read_all
+    DocumentState.where(user: Current.user, status: :inbox, read: false).update_all(read: true)
+    @flash = { notice: "Marking all as seen"}
+  end
+
+  def archive_all
+    DocumentState.where(user: Current.user, status: :inbox).update_all(status: :archive)
+    @flash = { notice: "Archiving all read documents" }
   end
 
   private

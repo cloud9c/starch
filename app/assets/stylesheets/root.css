@@ -101,6 +101,7 @@
   --color-danger: oklch(var(--lch-red));
   --color-shadow: oklch(var(--lch-gray-400));
   --color-main: oklch(var(--lch-yellow));
+  --color-main-light: oklch(var(--lch-yellow) / 0.75);
   --color-paper: oklch(var(--lch-gray-100));
   
   --bg-primary: oklch(var(--lch-white));

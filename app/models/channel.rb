@@ -95,7 +95,7 @@ class Channel < ApplicationRecord
     ExtractDocumentJob.perform_later(document.id)
 
     if document.published_at > self.created_at
-      users = entry.channel.subscriptions.to_inbox.users
+      users = entry.channel.subscriptions.to_inbox.map(&:user).uniq
 
       document_states = users.map do |user|
         { user_id: user.id, document_id: document.id }

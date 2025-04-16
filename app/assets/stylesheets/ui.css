@@ -15,7 +15,6 @@
   }
 
 
-
   &.btn--ghost {
     background: none;
     padding: 0.5em;
@@ -40,6 +39,25 @@
 
     &:hover {
       background: var(--bg-secondary);
+    }
+  }
+
+  &.btn--main {
+    border-color: var(--color-main-light);
+    color: var(--color-main-light);
+
+    &&:before {
+      background: var(--color-main-light);
+    }
+  }
+
+  &.btn--sm {
+    font-size: var(--text-sm);
+    padding: 0.2em 0.6em;
+
+    &::before {
+      height: 1.125em;
+      width: 1.125em;
     }
   }
 }
@@ -108,6 +126,10 @@
 
 .icon--archive::before {
   mask-image: url(/icons/archive.svg);
+}
+
+.icon--eye::before {
+  mask-image: url(/icons/eye.svg);
 }
 
 .icon {
