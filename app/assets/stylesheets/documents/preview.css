@@ -21,16 +21,15 @@
     display: flex;
     justify-content: space-between;
     text-transform: uppercase;
+    gap: 1em;
   }
   
   .document-preview-title {
     color: var(--color-text);
     font-size: var(--text-lg);
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-overflow: clip;
   }
   
   .document-preview-main {
