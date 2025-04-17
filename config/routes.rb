@@ -40,12 +40,12 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
-  match "/:code", 
-  to: "errors#show", 
-  via: :all, 
-  constraints: { 
+  match "/:code",
+  to: "errors#show",
+  via: :all,
+  constraints: {
     code: Regexp.new(
       ErrorsController::VALID_STATUS_CODES.join("|")
-    ) 
-  }  
+    )
+  }
 end

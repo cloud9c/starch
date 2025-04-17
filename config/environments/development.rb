@@ -71,6 +71,6 @@ Rails.application.configure do
   config.generators.apply_rubocop_autocorrect_after_generate!
 
   config.web_console.permissions = [ "127.0.0.0/8", "::1", "172.19.0.0/16" ]
-  
+
   config.consider_all_requests_local = false
 end

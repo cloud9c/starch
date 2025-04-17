@@ -12,7 +12,7 @@ module ChannelUtils
   def find_feed_url(url)
     begin
       normalized_url = UrlUtils.normalize(url)
-    rescue 
+    rescue
       return nil
     end
 
