@@ -8,12 +8,6 @@
 
 
 #document-inbox {
-
-  &:has(#inbox__unread-section ).sheet {
-    background: var(--bg-secondary);
-    padding-top: 0;
-  }
-
   #inbox__unread-section {
     flex: 1;
     border-bottom: none;
@@ -25,6 +19,7 @@
     flex: 0;
     padding-top: 0;
     border-top: 2px dashed var(--color-border);
+    background: var(--bg-secondary);
 
     .document-inbox-title-row {
       padding-top: 1.5em;

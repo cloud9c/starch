@@ -55,7 +55,6 @@ body {
 
   @media (max-width: 100ch) {
     border-radius: 0;
-    padding-bottom: 6em;
   }
 
   .sheet__header {
