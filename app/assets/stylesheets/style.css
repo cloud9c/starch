@@ -47,16 +47,21 @@ body {
   overflow-y: auto;
 
   @media (max-width: 100ch) {
-    border: none;
     border-radius: 0;
     padding-bottom: 6em;
   }
 
   .sheet__header {
     text-align: center;
-    width: 100%;
-    margin-bottom: 0.5em;
+    width: var(--content-width);
     font-weight: 600;
+    display: flex;
+    background: var(--bg-primary);
+    align-items: center;
+    padding: 0 1em 0;
+    margin-bottom: 0.5em;
+    justify-content: center;
+    gap: 0.5em;
   }
 }
 

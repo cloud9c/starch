@@ -6,9 +6,8 @@
 
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=inbox" %>">
-  <h1 class="sheet__header">Inbox</h1>
-
   <div id="inbox__unread-section" class="document-preview-section">
+    <h1 class="sheet__header">Inbox</h1>
     <% if @unread_documents.any? %>
       <div class="document-inbox-title-row">
         <h3 class="document-inbox-title">New for you</h3>

@@ -15,6 +15,14 @@
   }
 }
 
+@media (max-width: 100ch) {
+  body:has(.sheet.sheet--scrolled-down) {
+    #navbar__container {
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+}
+
 #navbar__container {
   width: 100%;
   z-index: 1;

@@ -8,13 +8,20 @@
 
 
 #document-inbox {
+
+  &:has(#inbox__unread-section ).sheet {
+    background: var(--bg-secondary);
+    padding-top: 0;
+  }
+
   #inbox__unread-section {
     flex: 1;
     border-bottom: none;
+    background: var(--bg-primary);
+    padding-top: 2em;
   }
 
   #inbox__read-section {
-    background: var(--bg-secondary);
     flex: 0;
     padding-top: 0;
     border-top: 2px dashed var(--color-border);
@@ -30,7 +37,6 @@
 
   .document-inbox-title-row {
     display: flex;
-    width: 100%;
     justify-content: space-between;
     width: var(--content-width);
     align-items: center;
@@ -48,15 +54,17 @@
     align-items: center;
     gap: 0.5em;
 
-    &::after {
-      content: '';
-      height: 1px;
-      background: var(--color-border);
-      flex: 1;
-    }
-
     #inbox__unread-section &::after {
       background: var(--color-main-light);
+      content: '';
+      height: 1px;
+      flex: 1;
+    }
+  }
+
+  #inbox__unread-section:has(.document-preview) {
+    .sheet__header::before, .sheet__header::after {
+      display: none;
     }
   }
 

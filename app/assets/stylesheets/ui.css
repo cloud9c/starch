@@ -24,7 +24,7 @@
     }
    
     &.btn--icon::before {
-      background: var(--color-text);
+      background: var(--color-text-secondary);
     }
   }
 
@@ -80,7 +80,6 @@
     gap: 0.4em;
     align-items: center;
   }
-
 }
 
 .toggle-group {
