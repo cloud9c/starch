@@ -3,9 +3,15 @@ module UrlUtils
 
   def normalize(url)
     raise ArgumentError, "URL cannot be blank" if url.blank?
-
+    
     url = "https://#{url}" unless url.to_s.start_with?("http://", "https://")
-    url = url.chomp("/")
+    uri = URI.parse(url)
+
+    unless uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
+      raise ArgumentError, "Invalid URL format"
+    end
+    
+    url.chomp("/")
   end
 
   def get_origin(url)

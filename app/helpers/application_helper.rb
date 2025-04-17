@@ -25,13 +25,14 @@ module ApplicationHelper
 
     doc = Nokogiri::HTML(sanitized_html)
 
-    # convert all urls to absolute
+    # convert all urls to absolute + open in new tab
     base = UrlUtils.normalize(url)
     url_related_attributes = %w[href src longdesc cite poster action usemap]
     url_related_attributes.each do |attr|
       doc.css("[#{attr}]").each do |element|
         begin
           element[attr] = URI.join(base, element[attr]).to_s if element[attr].present?
+          element["target"] = "_blank"
         rescue URI::InvalidURIError
           element.remove_attribute(attr)
         end

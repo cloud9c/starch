@@ -20,8 +20,6 @@ export default class extends Controller {
       return
     }
 
-    console.log(nodeName, this.element)
-
     const hotkeys = [this.hotkeyValue, this.hotkeyValue.toUpperCase()]
 
     if (hotkeys.includes(event.key)) {

@@ -33,6 +33,13 @@ body {
 	padding: 0 1em 1em;
 }
 
+.content--center {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+}
+
 .sheet {
 	border-radius: 2em 2em 0 0;
 	flex: 1;

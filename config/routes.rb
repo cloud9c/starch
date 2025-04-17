@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "errors/show"
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
@@ -38,4 +39,13 @@ Rails.application.routes.draw do
   end
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
+
+  match "/:code", 
+  to: "errors#show", 
+  via: :all, 
+  constraints: { 
+    code: Regexp.new(
+      ErrorsController::VALID_STATUS_CODES.join("|")
+    ) 
+  }  
 end
