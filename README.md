@@ -18,6 +18,8 @@
 
 - www -> root domain
 
+- search should include extracted version
+
 - replace subscription skeleton without refresh 
 - offline search
 
