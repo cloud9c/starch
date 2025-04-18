@@ -23,4 +23,3 @@ module RenderHelper
     end
   end
 end
-

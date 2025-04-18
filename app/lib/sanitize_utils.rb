@@ -59,5 +59,3 @@ module SanitizeUtils
     doc.to_html
   end
 end
-
-
