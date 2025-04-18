@@ -7,8 +7,8 @@ class DocumentsController < ApplicationController
       page: params[:page] ? params[:page].to_i : 1
     })
 
-    @unread_documents = documents.select { |doc| doc.read == 0 }
-    @read_documents = documents.select { |doc| doc.read == 1 }
+    @unread_documents = documents.select { |doc| doc[:read] == 0 }
+    @read_documents = documents.select { |doc| doc[:read] == 1 }
 
     respond_with_pagination(:index, documents)
   end

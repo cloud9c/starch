@@ -67,6 +67,13 @@ module EntryUtils
     text.gsub(/\s+/, " ").strip
   end
 
+  def format_description(html)
+    text = EntryUtils.format_text(html)
+    return nil if text.empty?
+
+    text.strip.gsub(/\s+/, " ")[0...300]
+  end
+
   def extract_thumbnail(html, min_width: 100, min_height: 100)
     doc = Nokogiri::HTML(html)
 
@@ -102,7 +109,7 @@ module EntryUtils
 
   def get_raw_entry_data(entry_data)
     url = UrlUtils.normalize(entry_data.url)
-    content = entry_data.content || entry_data.summary
+    content = SanitizeUtils.clean_html(entry_data.content || entry_data.summary, url)
     description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
@@ -112,7 +119,7 @@ module EntryUtils
       author: self.format_text(entry_data.author),
       published_at: entry_data.published || Time.current,
       url: url,
-      content: SanitizeUtils.clean_html(content, url),
+      content: content,
       thumbnail_url: entry_data.try(:media_thumbnail_url) || self.extract_thumbnail(content)
     }
   end

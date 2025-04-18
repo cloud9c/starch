@@ -10,7 +10,6 @@
     <%= form.hidden_field :document_id, value: params[:id] %>
     <fieldset class="toggle-group">
       <% DocumentState.statuses.keys.each do |status| %>
-        <% Rails.logger.debug "status #{@document_state&.status}" %>
         <%= form.radio_button :status, status, 
                              checked: (@document_state&.status == status unless @initialized),
                              class: "toggle icon--#{status} shortcut-hotkey",

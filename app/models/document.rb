@@ -66,37 +66,51 @@ class Document < ApplicationRecord
     query = query.select("documents.*, subscriptions.view_extracted")
 
     query.map do |doc|
-      doc.with_view_preferences
-         .with_description
+      view_extracted = ActiveModel::Type::Boolean.new.cast(doc.view_extracted)
+      cache_key = "#{doc.cache_key_with_version}/view_preference?view_extracted=#{view_extracted}"
+
+      Rails.cache.fetch(cache_key, expires_in: 7.day) do
+        doc.with_view_preferences(skip_wait: true)
+          .force_description
+      end
     end
   end
 
-  def with_view_preferences
+  def force_description
+    unless self[:description].present?
+      self[:description] = EntryUtils.format_description(content)
+    end
+
+    self
+  end
+
+  def with_view_preferences(skip_wait: false)
     should_extract =
-      if self[:view_extracted]
+      if self[:view_extracted].present?
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
       else
         subscription = channel&.subscriptions&.find { |s| s.user_id == Current.user.id }
         subscription&.view_extracted
       end
 
-    return self unless should_extract
-
-    unless extracted_data.blank?
-      [ :title, :description, :content, :thumbnail_url ].each do |attr|
-        self[attr] = extracted_data[attr] unless extracted_data[attr].blank?
-      end
+    if !should_extract
+      self.description = EntryUtils.format_description(content)
+      return self
+    elsif skip_wait && !Rails.cache.exist?("#{cache_key_with_version}/extracted_data")
+      ExtractDocumentJob.perform_later(self.id)
+      return self
     end
 
-    self
-  end
+    preferences = {
+      thumbnail_url: extracted_data[:thumbnail_url],
+      content: extracted_data[:content],
+      published_at: self.published_at || extracted_data[:published_at],
+      title: self.title || extracted_data[:title],
+      author: self.author || extracted_data[:author]
+    }.compact
 
-  def with_description
-    return self unless description.blank?
-
-    if self.content.present?
-      preview_text = EntryUtils.format_text(self.content.strip.gsub(/\s+/, " "))[0...300]
-      self.description = preview_text
+    preferences.each do |attr, value|
+      self[attr] = value unless value.nil?
     end
 
     self
@@ -104,16 +118,15 @@ class Document < ApplicationRecord
 
   def extracted_data
     return {} unless url
-
-    Rails.cache.fetch("#{cache_key_with_version}/extracted_data", expires_in: 7.day) do
-      result = EntryUtils.get_extracted_entry_data(url)
-
-      result.delete(:title) if self.title
-      result.delete(:author) if self.author
-      result.delete(:published_at) if self.published_at
-
-      result
+    
+    cache_key = "#{cache_key_with_version}/extracted_data"
+    result = Rails.cache.fetch(cache_key, expires_in: 7.day) do
+      EntryUtils.get_extracted_entry_data(url)
     end
+
+    Rails.cache.delete("#{cache_key_with_version}/view_preference?view_extracted=true")
+
+    result
   end
 
   private
