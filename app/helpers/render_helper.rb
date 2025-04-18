@@ -1,6 +1,5 @@
 module RenderHelper
   extend self
-  MD_RENDERER = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
 
   def render_video(document)
     youtube_regex = /^(?:https?:\/\/)?(?:(?:www\.)?youtube.com\/watch\?v=|youtu.be\/)(\w+)$/

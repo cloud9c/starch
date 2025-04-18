@@ -12,3 +12,9 @@ if ('serviceWorker' in navigator) {
       console.log('Service Worker registration failed:', error);
     });
 }import "@rails/request.js"
+
+import LocalTime from "local-time"
+LocalTime.start()
+document.addEventListener("turbo:morph", () => {
+  LocalTime.run()
+})
