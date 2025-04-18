@@ -41,6 +41,7 @@ class DocumentsController < ApplicationController
 
   def toolbar
     @document_state = DocumentState.find_or_initialize_by(document_id: params[:id], user: Current.user)
+    @initialized = @document_state.new_record?
   end
 
   def show
@@ -52,9 +53,11 @@ class DocumentsController < ApplicationController
   end
 
   def read
-    document_state = DocumentState.find_by!(document_id: params[:id], user: Current.user)
-    document_state.update(read: true)
+    document_state = DocumentState.find_by(document_id: params[:id], user: Current.user)
 
+    return head :no_content if document_state.nil?
+
+    document_state.update(read: true)
     head :ok
   end
 
