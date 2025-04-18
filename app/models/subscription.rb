@@ -15,7 +15,7 @@ class Subscription < ApplicationRecord
   def add_recent_entries
     recent_entries = channel.entries.recent
 
-    recent_entries.each do |entry|
+    recent_entries.reverse_each do |entry|
       document = entry.document
       DocumentState.create(
         user_id: user_id,

@@ -126,7 +126,7 @@ class Document < ApplicationRecord
       description: description,
       url: url,
       published_at: published_at&.to_i,
-      content: content
+      content: Nokogiri::HTML(content).text
     }
   end
 end

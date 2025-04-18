@@ -93,3 +93,5 @@ gem "mission_control-jobs"
 
 # AJAX header defaults
 gem "requestjs-rails"
+
+gem "redcarpet", "~> 3.6"

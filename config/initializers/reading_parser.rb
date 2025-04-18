@@ -10,6 +10,7 @@ module ReadingParser
     return nil if response.status != 200
 
     article = JSON.parse(response.body.to_s)
+    article["content"] = SanitizeUtils.sanitize_html(article["content"], url)
     article
   end
 end
