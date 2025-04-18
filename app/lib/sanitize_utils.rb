@@ -26,7 +26,7 @@ module SanitizeUtils
         tabindex target title type usemap valign value
         vspace itemprop id
       ])
-    sanitized_html.html_safe
+    sanitized_html.html_safe unless sanitized_html.nil?
   end
 
   def clean_html(html, url)
