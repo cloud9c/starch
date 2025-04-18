@@ -2,9 +2,6 @@ const express = require('express');
 const { Readability, isProbablyReaderable } = require('@mozilla/readability');
 const { JSDOM } = require('jsdom');
 const createDOMPurify = require('dompurify');
-const TurndownService = require('turndown')
-
-const turndownService = new TurndownService()
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));
@@ -43,10 +40,6 @@ app.post('/parse', async (req, res) => {
   // parse via @mozilla/readability
   const reader = new Readability(cleanDocument);
   const article = reader.parse();
-
-  // html -> md
-  const markdown = turndownService.turndown(article.content)
-  article.content = markdown.replace(/\n+/g, '');
 
   res.json(article);
 });

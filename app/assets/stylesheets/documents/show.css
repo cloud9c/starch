@@ -42,9 +42,6 @@
   font-size: var(--text-base);
   line-height: var(--line-height-loose);
   margin-bottom: 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
   word-break: break-word;
   
   a[href] {
