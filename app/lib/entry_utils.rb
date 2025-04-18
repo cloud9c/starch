@@ -112,7 +112,7 @@ module EntryUtils
       author: self.format_text(entry_data.author),
       published_at: entry_data.published || Time.current,
       url: url,
-      content: content,
+      content: SanitizeUtils.clean_html(content, url),
       thumbnail_url: entry_data.try(:media_thumbnail_url) || self.extract_thumbnail(content)
     }
   end
@@ -121,7 +121,7 @@ module EntryUtils
     parsed_data = ReadingParser.extract(url)
     return {} unless parsed_data
 
-    content = parsed_data["content"]
+    content = SanitizeUtils.clean_html(parsed_data["content"], url)
 
     result = {
       content: content,
