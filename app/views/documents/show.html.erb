@@ -28,7 +28,7 @@
 
     <article class="document-body">
       <%= render_video @document %>
-      <%= (SanitizeUtils.sanitize_html @document.content).html_safe %>
+      <%= SanitizeUtils.sanitize_html @document.content %>
     </article>
     </div>
   </div>

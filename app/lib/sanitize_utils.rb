@@ -4,7 +4,7 @@ module SanitizeUtils
   SANITIZER = Rails::HTML5::SafeListSanitizer.new
 
   def sanitize_html(html)
-    SANITIZER.sanitize(html,
+    sanitized_html = SANITIZER.sanitize(html,
       tags: %w[
         h1 h2 h3 h4 h5 h6 h7 h8 br b i strong em a pre code img tt div ins del sup sub
         p ol ul table thead tbody tfoot blockquote dl dt dd kbd q samp var hr ruby rt
@@ -26,6 +26,7 @@ module SanitizeUtils
         tabindex target title type usemap valign value
         vspace itemprop id
       ])
+    sanitized_html.html_safe
   end
 
   def clean_html(html, url)
