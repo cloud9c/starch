@@ -66,13 +66,8 @@ class Document < ApplicationRecord
     query = query.select("documents.*, subscriptions.view_extracted")
 
     query.map do |doc|
-      view_extracted = ActiveModel::Type::Boolean.new.cast(doc.view_extracted)
-      cache_key = "#{doc.cache_key_with_version}/view_preference?view_extracted=#{view_extracted}"
-
-      Rails.cache.fetch(cache_key, expires_in: 7.day) do
-        doc.with_view_preferences(skip_wait: true)
-          .force_description
-      end
+      doc.with_view_preferences(skip_wait: true)
+        .force_description
     end
   end
 
@@ -123,8 +118,6 @@ class Document < ApplicationRecord
     result = Rails.cache.fetch(cache_key, expires_in: 7.day) do
       EntryUtils.get_extracted_entry_data(url)
     end
-
-    Rails.cache.delete("#{cache_key_with_version}/view_preference?view_extracted=true")
 
     result
   end
