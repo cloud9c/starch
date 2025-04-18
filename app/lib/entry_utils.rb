@@ -69,7 +69,7 @@ module EntryUtils
 
   def format_description(html)
     text = EntryUtils.format_text(html)
-    return nil if text.empty?
+    return nil if text.nil?
 
     text.strip.gsub(/\s+/, " ")[0...300]
   end
