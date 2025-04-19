@@ -42,8 +42,7 @@ class Document < ApplicationRecord
   end
 
   def self.query(user_id, options = {})
-    query = Document.joins(entry: { channel: :subscriptions })
-                    .where(subscriptions: { user_id: user_id })
+    query = Document.left_joins(entry: { channel: :subscriptions })
                     .includes(entry: { channel: :subscriptions })
 
     if options[:page].present?
@@ -59,6 +58,8 @@ class Document < ApplicationRecord
       query = query.select("document_states.read")
     elsif options[:ids].present?
       query = query.where(id: options[:ids])
+    else
+      query = query.where(subscriptions: { user_id: user_id })
     end
 
     query = query.order("documents.published_at" => :desc)
