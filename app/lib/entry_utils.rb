@@ -44,7 +44,8 @@ module EntryUtils
     new_entries = []
     updated_entries = []
 
-    feed.entries.first(ENTRY_LIMIT).each do |entry_data|
+    # Process entries in reverse order so oldest come first
+    feed.entries.first(ENTRY_LIMIT).reverse_each do |entry_data|
       stable_id = get_stable_id(feed_url, entry_data)
       fingerprint = get_fingerprint(entry_data)
 
