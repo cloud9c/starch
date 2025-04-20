@@ -34,7 +34,7 @@ export default class extends Controller {
 
     switch(tagName) {
       case 'a':
-        Turbo.visit(this.element.getAttribute('href'));
+        this.element.click();
         break; 
       case 'details':
         this.element.open = !this.element.open;

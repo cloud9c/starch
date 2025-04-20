@@ -66,7 +66,7 @@
   --lch-gray-400: 80% 0 0;
   --lch-gray-500: 50% 0 0;
   --lch-gray-600: 45% 0 0;
-  --lch-gray-700: 40% 0 0;
+  --lch-gray-700: 35% 0 0;
   --lch-gray-800: 30% 0 0;
   --lch-gray-900: 20% 0 0;
   --lch-gray-950: 17.5% 0 0;
@@ -126,7 +126,7 @@
     
     --focus-ring: 2px solid oklch(var(--lch-blue));
     --color-border-dark: oklch(var(--lch-gray-500));
-    --color-border: oklch(var(--lch-gray-800));
+    --color-border: oklch(var(--lch-gray-700));
     --color-link: oklch(var(--lch-blue-light));
     --color-text: oklch(var(--lch-text-light));
     --color-text-secondary: oklch(var(--lch-text-secondary-light));

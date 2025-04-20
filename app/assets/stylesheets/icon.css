@@ -1,0 +1,35 @@
+.icon {
+  filter: var(--filter-text-secondary)
+}
+
+.icon--trash::before {
+  mask-image: url(/icons/trash.svg);
+}
+
+.icon--plus::before {
+  mask-image: url(/icons/plus.svg);
+}
+
+.icon--inbox::before {
+  mask-image: url(/icons/inbox.svg);
+}
+
+.icon--later::before {
+  mask-image: url(/icons/later.svg);
+}
+
+.icon--archive::before {
+  mask-image: url(/icons/archive.svg);
+}
+
+.icon--read::before {
+  mask-image: url(/icons/read.svg);
+}
+
+.icon--extract::before {
+  mask-image: url(/icons/extract.svg);
+}
+
+.icon--arrow-left::before {
+  mask-image: url(/icons/arrow-left.svg);
+}

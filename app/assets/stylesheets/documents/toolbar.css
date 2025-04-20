@@ -1,7 +1,5 @@
 #document_toolbar {
-  display: flex;
   position: absolute;
-  flex-direction: column;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
   margin-top: 2em;
@@ -9,11 +7,16 @@
   .toggle-group {
     flex-direction: column;
   }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
 }
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    flex-direction: row;
     background: var(--bg-primary);
     border: 1px solid var(--color-border);
     padding: 0.4em;
@@ -24,6 +27,14 @@
     left: initial;
 
     transition: all var(--transition);
+
+    form {
+      flex-direction: row;
+    }
+
+    a {
+      border: none;
+    }
 
     .toggle {
       border-radius: 0.5em;

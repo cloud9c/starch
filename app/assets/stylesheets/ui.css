@@ -1,4 +1,5 @@
 .btn {
+  display: flex;
   border-radius: var(--border-radius);
   padding: 0.4em 0.8em;
   font-weight: 500;
@@ -17,7 +18,6 @@
 
   &.btn--ghost {
     background: none;
-    padding: 0.5em;
 
     &:hover, &:focus {
       background: var(--bg-input-ghost-hover)
@@ -80,6 +80,10 @@
     gap: 0.4em;
     align-items: center;
   }
+
+  &:empty {
+    padding: 0.5em;
+  }
 }
 
 .toggle-group {
@@ -106,38 +110,6 @@
   &:checked {
     background: var(--bg-input-secondary);
   }
-}
-
-.icon--trash::before {
-  mask-image: url(/icons/trash.svg);
-}
-
-.icon--plus::before {
-  mask-image: url(/icons/plus.svg);
-}
-
-.icon--inbox::before {
-  mask-image: url(/icons/inbox.svg);
-}
-
-.icon--later::before {
-  mask-image: url(/icons/later.svg);
-}
-
-.icon--archive::before {
-  mask-image: url(/icons/archive.svg);
-}
-
-.icon--read::before {
-  mask-image: url(/icons/read.svg);
-}
-
-.icon--extract::before {
-  mask-image: url(/icons/extract.svg);
-}
-
-.icon {
-  filter: var(--filter-text-secondary)
 }
 
 .checkbox-container {
@@ -264,7 +236,6 @@ input::placeholder {
     color: var(--color-text-secondary);
     content: attr(data-shortcut-hotkey-value);
     padding-left: 1em;
-    opacity: 0.5;
     text-transform: uppercase;
   }
 }
