@@ -94,7 +94,7 @@ class DocumentsController < ApplicationController
   end
 
   def archive_all
-    DocumentState.where(user: Current.user, status: :inbox).update_all(status: :archive)
+    DocumentState.where(user: Current.user, status: :inbox, read: true).update_all(status: :archive)
     @flash = { notice: "Archiving all read documents" }
   end
 
