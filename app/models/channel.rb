@@ -15,7 +15,7 @@ class Channel < ApplicationRecord
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(self.feed_url, headers: headers)
-    return false if response.error
+    response.raise_for_status
 
     self.polled_at = Time.current
     self.etag = response.headers[:Etag]
@@ -61,7 +61,6 @@ class Channel < ApplicationRecord
     end
 
     # initial polling logic
-
     return if self.initial_poll_complete?
 
     self.with_lock do
