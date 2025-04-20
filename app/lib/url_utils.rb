@@ -10,8 +10,6 @@ module UrlUtils
     unless uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
       raise ArgumentError, "Invalid URL format"
     end
-
-    url.chomp("/")
   end
 
   def get_origin(url)
