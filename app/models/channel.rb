@@ -17,13 +17,11 @@ class Channel < ApplicationRecord
     response = http.get(self.feed_url, headers: headers)
     response.raise_for_status
 
-    self.polled_at = Time.current
-    self.etag = response.headers[:Etag]
+    update(polled_at: Time.current, etag: response.headers[:Etag])
 
     return false if response.status == 304
 
-    self.feed_content = ChannelUtils.body_to_s(response)
-    save!
+    update(feed_content: ChannelUtils.body_to_s(response))
 
     true
   end
