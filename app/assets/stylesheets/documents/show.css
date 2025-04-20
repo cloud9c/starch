@@ -43,6 +43,7 @@
   line-height: var(--line-height-loose);
   margin-bottom: 1em;
   word-break: break-word;
+  font-size: var(--text-lg);
   
   a[href] {
     text-decoration: underline;
