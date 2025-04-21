@@ -50,7 +50,7 @@
     gap: 0.5em;
 
     #inbox__unread-section &::after {
-      background: var(--color-main-light);
+      background: var(--color-main);
       content: '';
       height: 1px;
       flex: 1;

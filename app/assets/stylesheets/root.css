@@ -81,6 +81,7 @@
   --lch-red: 60% 0.20 28;
   --lch-orange: 75% 0.16 60;
   --lch-yellow: 82% 0.16 90;
+  --lch-yellow-dark: 60% 0.16 90;
   --lch-green: 62% 0.16 150;
   --lch-blue-light: 60% 0.16 265;
   --lch-blue: 55% 0.16 265;
@@ -100,8 +101,7 @@
   --color-text-secondary-reversed: oklch(var(--lch-text-secondary-light));
   --color-danger: oklch(var(--lch-red));
   --color-shadow: oklch(var(--lch-gray-400));
-  --color-main: oklch(var(--lch-yellow));
-  --color-main-light: oklch(var(--lch-yellow) / 0.75);
+  --color-main: oklch(var(--lch-yellow-dark));
   --color-paper: oklch(var(--lch-gray-100));
   
   --bg-primary: oklch(var(--lch-white));
@@ -133,6 +133,7 @@
     --color-text-reversed: oklch(var(--lch-text));
     --color-text-secondary-reversed: oklch(var(--lch-text-secondary));
     --color-shadow: oklch(var(--lch-black));
+    --color-main: oklch(var(--lch-yellow) / 0.75);
     --color-paper: oklch(var(--lch-gray-100-dark));
     --color-text-light: oklch(var(--lch-gray-200));
     

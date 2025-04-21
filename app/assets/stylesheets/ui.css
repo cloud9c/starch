@@ -45,11 +45,11 @@
   }
 
   &.btn--main {
-    border-color: var(--color-main-light);
-    color: var(--color-main-light);
+    border-color: var(--color-main);
+    color: var(--color-main);
 
     &&:before {
-      background: var(--color-main-light);
+      background: var(--color-main);
     }
   }
 
