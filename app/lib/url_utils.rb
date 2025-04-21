@@ -2,20 +2,21 @@ module UrlUtils
   extend self
 
   def normalize(url)
-    raise ArgumentError, "URL cannot be blank" if url.blank?
+    return nil if url.nil?
 
     url = "https://#{url}" unless url.start_with?("http://", "https://")
     uri = URI.parse(url)
 
-    unless uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
-      raise ArgumentError, "Invalid URL format"
-    end
+    return nil unless uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
 
     url
   end
 
   def get_origin(url)
-    uri = URI(normalize(url))
+    normalized_url = normalize(url)
+    return nil if normalized_url.nil?
+
+    uri = URI(normalized_url)
     "#{uri.scheme}://#{uri.host}#{uri.port == uri.default_port ? '' : ':' + uri.port.to_s}"
   end
 end
