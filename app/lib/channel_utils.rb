@@ -63,17 +63,15 @@ module ChannelUtils
   end
 
   def get_icon(url)
-    origin = UrlUtils.get_origin(url)
-
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(origin)
-    return unless response
+    response = http.get(url)
+    return nil unless response
 
     doc = Nokogiri::HTML(body_to_s(response))
     candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
 
     absolute_candidates = candidates.map do |href|
-      URI.join(origin, href).to_s
+      URI.join(url, href).to_s
     end.compact
 
     ranked_images = absolute_candidates.first(5).map do |abs_url|

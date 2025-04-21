@@ -30,18 +30,16 @@ class Channel < ApplicationRecord
     feed = ChannelUtils.parse_feed(self.feed_content) rescue nil
     return unless feed
 
-    feed_url = UrlUtils.normalize(feed.try(:feed_url) || self.feed_url).to_s
+    feed_url = UrlUtils.normalize(feed.try(:feed_url)) || self.feed_url
 
-    url = UrlUtils.normalize(
-      feed.try(:url) || UrlUtils.get_origin(UrlUtils.normalize(feed_url))
-    ).to_s
+    site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
     attributes = {
       title: EntryUtils.format_text(feed.try(:title)),
       description: EntryUtils.format_text(feed.try(:description)),
       feed_url: feed_url,
-      url: url,
-      icon: ChannelUtils.get_icon(url)
+      url: site_url,
+      icon: ChannelUtils.get_icon(site_url)
     }.compact
 
     update(attributes) unless attributes.empty?
