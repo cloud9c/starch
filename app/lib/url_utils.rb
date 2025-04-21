@@ -11,7 +11,7 @@ module UrlUtils
       raise ArgumentError, "Invalid URL format"
     end
 
-    return url
+    url
   end
 
   def get_origin(url)
