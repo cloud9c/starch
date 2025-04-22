@@ -21,7 +21,7 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     margin: 0;
     background: var(--bg-primary);
@@ -29,8 +29,6 @@
     width: 100%;
     justify-content: center;
     border-top: 1px solid var(--color-border);
-
-    transition: all var(--transition);
 
     form {
       flex-direction: row;
@@ -54,4 +52,8 @@
   .shortcut-hotkey::after {
     display: none;
   }
+}
+
+.sheet:has(#document_toolbar) {
+  position: relative;
 }
