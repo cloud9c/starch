@@ -9,14 +9,14 @@
 
 #document-inbox {
   #inbox__unread-section {
-    flex: 1;
+    flex: 0;
     border-bottom: none;
     background: var(--bg-primary);
     padding-top: 2em;
   }
 
   #inbox__read-section {
-    flex: 0;
+    flex: 1;
     padding-top: 0;
     border-top: 2px dashed var(--color-border);
     background: var(--bg-secondary);
