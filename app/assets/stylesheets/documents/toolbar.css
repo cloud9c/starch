@@ -22,7 +22,7 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    position: static;
+    position: inherit;
     margin: 0;
     background: var(--bg-primary);
     padding: 1em 1em calc(1em + env(safe-area-inset-bottom));
