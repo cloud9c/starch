@@ -12,12 +12,6 @@
   margin-bottom: 2em;
 }
 
-.sheet:has(.document-content) {
-  @media (max-width: 100ch) {
-    padding-bottom: 6em;
-  }
-}
-
 .document-title {
   font-weight: 600;
   
