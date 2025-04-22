@@ -21,7 +21,7 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    position: fixed;
+    position: sticky;
     left: initial;
     bottom: 0;
     margin: 0;
