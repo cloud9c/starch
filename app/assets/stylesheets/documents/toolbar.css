@@ -21,7 +21,8 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    position: sticky;
+    position: fixed;
+    left: initial;
     bottom: 0;
     margin: 0;
     background: var(--bg-primary);
@@ -52,8 +53,4 @@
   .shortcut-hotkey::after {
     display: none;
   }
-}
-
-.sheet:has(#document_toolbar) {
-  position: relative;
 }
