@@ -7,7 +7,6 @@
   position: absolute;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
-  margin-top: 2em;
 
   .toggle-group {
     flex-direction: column;
@@ -22,7 +21,8 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
-    position: inherit;
+    position: fixed;
+    bottom: 0;
     margin: 0;
     background: var(--bg-primary);
     padding: 1em;
