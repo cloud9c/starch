@@ -1,6 +1,4 @@
 class DocumentsController < ApplicationController
-  include CacheableOffline
-
   def index
     documents = Document.query(Current.user.id, {
       status: :inbox,

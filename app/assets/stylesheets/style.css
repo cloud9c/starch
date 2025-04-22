@@ -1,5 +1,6 @@
 html {
 	font-size: 16px;
+  line-height: var(--line-height);
 }
 
 body {
@@ -30,6 +31,7 @@ body {
 .content {
 	width: var(--content-width);
 	padding: 0 1em 1em;
+
 }
 
 .content--center {
@@ -67,39 +69,13 @@ body {
     margin-bottom: 0.5em;
     justify-content: center;
     gap: 0.5em;
+    font-size: var(--text-5xl);
+    line-height: var(--line-height-tight);
   }
 }
 
 a {
 	color: inherit;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  line-height: var(--line-height-tight);
-}
-
-h1 {
-	font-size: var(--text-5xl);
-}
-
-h2 {
-	font-size: var(--text-4xl);
-}
-
-h3 {
-	font-size: var(--text-3xl);
-}
-
-h4 {
-	font-size: var(--text-2xl);
-}
-
-h5 {
-	font-size: var(--text-xl);
-}
-
-h6 {
-	font-size: var(--text-lg);
 }
 
 ol, ul {
@@ -138,6 +114,12 @@ em, i {
 
 code {
   font-family: var(--font-mono);
+}
+
+ol, ul {
+  li {
+    margin: 0.5em 0 0 2em;
+  }
 }
 
 #flash {

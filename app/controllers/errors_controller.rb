@@ -1,4 +1,5 @@
 class ErrorsController < ApplicationController
+  allow_unauthenticated_access
   VALID_STATUS_CODES = %w[400 404 406 422 500].freeze
   def show
     status_code = VALID_STATUS_CODES.include?(params[:code]) ? params[:code] : 500

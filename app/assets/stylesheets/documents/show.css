@@ -14,8 +14,10 @@
 
 .document-title {
   font-weight: 600;
+  font-size: var(--text-3xl);
+  line-height: var(--line-height-tight);
   
-  > a[href] {
+  a[href] {
     text-decoration: none;
   }
 }
@@ -33,115 +35,4 @@
 
 .document-body {
   font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: var(--line-height-loose);
-  margin-bottom: 1em;
-  word-break: break-word;
-  
-  a[href] {
-    text-decoration: underline;
-    
-    &:hover, &:focus {
-      color: var(--color-link);
-    }
-  }
-  
-  p {
-    margin-bottom: 1em;
-  }
-  
-  blockquote {
-    border-left: 4px solid var(--color-border);
-    
-    > * {
-      margin-left: 1.25em;
-    }
-  }
-  
-  * {
-    max-width: var(--sheet-width);
-    height: auto;
-  }
- 
-  table,
-  th,
-  td {
-    border: 1px solid var(--color-border);
-    border-collapse: collapse;
-    padding: 0.5em;
-    vertical-align: top;
-    white-space: nowrap;
-  }
-
-  table, pre code {
-    overflow-x: scroll;
-    display: block;
-  }
-
-  img {
-    width: max-content;
-  }
-  
-  figure {
-    margin: 2em 0;
-  }
-  
-  ol, ul {
-    li {
-      margin: 0.5em 0 0 2em;
-    }
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    margin: 1em 0 .625em;
-    font-weight: 600;
-    font-family: var(--font-sans);
-  }
-
-  .video-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2em;
-  }
-  
-  iframe {
-    aspect-ratio: 16 / 9;
-    width: 100% !important;
-    border: none;
-  }
-  
-  details {
-    summary {
-      cursor: pointer;
-      position: relative;
-      display: flex;
-      align-items: center;
-      
-      &::before {
-        content: "";
-        mask-image: url("/icons/caret-right.svg");
-        mask-size: 100%;
-        width: 0.8em;
-        height: 0.8em;
-        transition: transform var(--transition);
-        background: var(--color-text);
-        margin-right: 0.5em;
-      }
-    }
-    
-    &[open] summary::before {
-      transform: rotate(90deg);
-    }
-  }
-
-  pre code {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--color-border);
-    display: block;
-    font-family: var(--font-mono);
-  }
-
-  ruby rt {
-    font-size: var(--text-sm);
-  }
 }
