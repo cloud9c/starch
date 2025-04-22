@@ -7,10 +7,10 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    - staging.starchapp.com
+    - staging.starch.app
   job:
     hosts:
-      - staging.starchapp.com
+      - staging.starch.app
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: staging.starchapp.com
+  host: staging.starch.app
 
 # Credentials for your image host.
 registry:
@@ -99,7 +99,7 @@ accessories:
       --api-key=xyz 
       --listen-port 8108
       --enable-cors
-    host: staging.starchapp.com
+    host: staging.starch.app
     port: 127.0.0.1:8108:8108
     volumes:
       - "typesense-data:/data"
@@ -111,5 +111,5 @@ accessories:
   reading-parser:
     image: ghcr.io/cloud9c/reading_parser
     cmd: 'npm start'
-    host: staging.starchapp.com
+    host: staging.starch.app
     port: 127.0.0.1:3001:3001

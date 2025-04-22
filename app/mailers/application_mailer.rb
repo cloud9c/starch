@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "support@starchapp.com"
+  default from: "support@starch.app"
   layout "mailer"
 end

@@ -7,10 +7,10 @@ image: cloud9c/starch
 # Deploy to these servers.
 servers:
   web:
-    - starchapp.com
+    - starch.app
   job:
     hosts:
-      - starchapp.com
+      - starch.app
     cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: starchapp.com
+  host: starch.app
 
 # Credentials for your image host.
 registry:
@@ -99,7 +99,7 @@ accessories:
       --api-key=xyz 
       --listen-port 8108 
       --enable-cors
-    host: starchapp.com
+    host: starch.app
     port: 127.0.0.1:8108:8108
     volumes:
       - "typesense-data:/data"
@@ -111,5 +111,5 @@ accessories:
   reading-parser:
     image: ghcr.io/cloud9c/reading_parser
     cmd: 'npm start'
-    host: starchapp.com
+    host: starch.app
     port: 127.0.0.1:3001:3001
