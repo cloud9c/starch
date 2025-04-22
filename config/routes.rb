@@ -49,5 +49,5 @@ Rails.application.routes.draw do
           )
         }
 
-  get '/privacy' => 'public#privacy', as: :privacy
+  get "/privacy" => "public#privacy", as: :privacy
 end
