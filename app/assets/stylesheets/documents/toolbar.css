@@ -1,4 +1,9 @@
+#document_toolbar:is([complete]) {
+  display: flex;
+}
+
 #document_toolbar {
+  display: none;
   position: absolute;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
@@ -17,14 +22,13 @@
 
 @media(max-width: 120ch) {
   #document_toolbar {
+    position: static;
+    margin: 0;
     background: var(--bg-primary);
-    border: 1px solid var(--color-border);
     padding: 0.4em;
-    border-radius: 1em;
-    box-shadow: 0 0 0.5em var(--color-shadow);
-    bottom: 0;
-    margin-bottom: 1em;
-    left: initial;
+    width: 100%;
+    justify-content: center;
+    border-top: 1px solid var(--color-border);
 
     transition: all var(--transition);
 
@@ -45,11 +49,6 @@
       border: none;
       gap: 0.5em;
     }
-  }
-
-  .sheet.sheet--scrolled-down + #document_toolbar {
-    transform: translateY(calc(100% + 1em));
-    box-shadow: none;
   }
 
   .shortcut-hotkey::after {
