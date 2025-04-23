@@ -3,7 +3,6 @@
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
-	padding-bottom: 1em;
 }
 
 .document-list {
@@ -11,12 +10,10 @@
     flex: 0;
     border-bottom: none;
     background: var(--bg-primary);
-    padding-top: 2em;
   }
 
   #inbox__read-section {
     flex: 1;
-    padding-top: 0;
     border-top: 2px dashed var(--color-border);
     background: var(--bg-secondary);
 
