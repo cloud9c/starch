@@ -7,6 +7,7 @@
   position: absolute;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
+  margin-top: 2em;
 
   .toggle-group {
     flex-direction: column;
@@ -19,7 +20,7 @@
   }
 }
 
-@media(max-width: 100ch) {
+@media(max-width: 115ch) {
   #document_toolbar {
     position: sticky;
     left: initial;
@@ -50,7 +51,4 @@
     }
   }
 
-  .shortcut-hotkey::after {
-    display: none;
-  }
 }
