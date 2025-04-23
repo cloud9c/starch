@@ -6,8 +6,7 @@
 	padding-bottom: 1em;
 }
 
-
-#document-inbox {
+.document-list {
   #inbox__unread-section {
     flex: 0;
     border-bottom: none;
@@ -21,7 +20,7 @@
     border-top: 2px dashed var(--color-border);
     background: var(--bg-secondary);
 
-    .document-inbox-title-row {
+    .document-list__title-row {
       padding-top: 1.5em;
     }
 
@@ -30,7 +29,7 @@
     }
   }
 
-  .document-inbox-title-row {
+  .document-list__title-row {
     display: flex;
     justify-content: space-between;
     width: var(--content-width);
@@ -39,7 +38,7 @@
     margin: 0 auto;
   }
 
-  .document-inbox-title {
+  .document-list__title {
     text-transform: uppercase;
     font-size: var(--text-sm);
     font-weight: 600;
@@ -63,7 +62,7 @@
     }
   }
 
-  .document-inbox-nothing-new {
+  .document-list__nothing-new {
     height: 25vh;
     display: flex;
     align-items: center;

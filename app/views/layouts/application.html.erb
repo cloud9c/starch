@@ -22,11 +22,14 @@
     <%= yield :head %>
   </head>
 
-  <body data-controller=<%= "shortcut" if authenticated? %>>
+  <% in_app = authenticated? && !["public", "session"].include?(controller_name) %>
+
+  <body data-controller=<%= "shortcut" if in_app %>>
     <%= render "shared/flash" %>
-    <%= render 'shared/navbar' if authenticated? %>
+    <%= render 'shared/navbar' if in_app %>
     <main class="main">
       <%= yield %>
     </main>
+    <%= render 'shared/bottom_navbar' if in_app %>
   </body>
 </html>

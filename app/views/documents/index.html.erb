@@ -4,13 +4,13 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-inbox" class="sheet" data-controller="documents--list" 
+<div id="index" class="document-list sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=inbox" %>">
   <div id="inbox__unread-section" class="document-preview-section">
     <h1 class="sheet__header">Inbox</h1>
     <% if @unread_documents.any? %>
-      <div class="document-inbox-title-row">
-        <h3 class="document-inbox-title">New for you</h3>
+      <div class="document-list__title-row">
+        <h3 class="document-list__title">New for you</h3>
         <%= button_to read_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon btn--main icon--read",
           data: { turbo_confirm: "Are you sure you want to mark all documents as seen?" } do %>
           Mark all as seen
@@ -18,7 +18,7 @@
       </div>
       <%= render partial: 'documents/preview', collection: @unread_documents, cached: ->(document) { [document, document.view_extracted] } %>
     <% elsif @unread_documents.empty? %>
-      <div class="document-inbox-nothing-new">
+      <div class="document-list__nothing-new">
         <span>
           <%= @read_documents.present? ? "Nothing new for you 😎" : "You're all clear 👏" %>
         </span>
@@ -27,11 +27,8 @@
   </div>
   
   <div id="inbox__read-section" class="document-preview-section" data-controller="documents--hide-read">
-    <div class="document-inbox-title-row">
-      <h3 class="document-inbox-title">Previously seen</h3>
-      <%= button_to archive_all_documents_path, method: :post, class: "btn btn--secondary btn--sm btn--icon icon--archive" do %>
-        Archive all
-      <% end %>
+    <div class="document-list__title-row">
+      <h3 class="document-list__title">Previously seen</h3>
     </div>
     <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
   </div>

@@ -5,7 +5,7 @@
         <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
         <h5>Starch</h5>
       </summary>
-      <%= turbo_frame_tag :my_navigation, src: my_navigation_path, target: "_top" %>
+      <%= render "my/navigation" %>
     </details>
 
     <search class="searchbar" >

@@ -1,0 +1,21 @@
+<div id="my_navigation">
+  <% 
+  navigation_items = [
+    { path: root_path, icon: "inbox", text: "Inbox" },
+    { path: feed_path, icon: "feed", text: "Feed" },
+    { path: later_path, icon: "later", text: "Later" },
+    { path: archive_path, icon: "archive", text: "Archive" },
+    { path: subscriptions_path, icon: "plus-circle-fill", text: "Subscriptions" },
+  ]
+  %>
+  
+  <% navigation_items.each_with_index do |item, index| %>
+    <%= link_to item[:path],
+        data: { controller: "shortcut",
+                "shortcut-hotkey-value": (index + 1).to_s,
+                current: current_page?(item[:path]) ? 'true' : 'false' },
+        class: "shortcut-hotkey icon icon--#{item[:icon]}" do %>
+      <span><%= item[:text] %></span>
+    <% end %>
+  <% end %>
+</div>

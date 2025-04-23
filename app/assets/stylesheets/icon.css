@@ -1,5 +1,25 @@
-.icon {
-  filter: var(--filter-text-secondary)
+.btn--icon, .toggle, .icon {
+  &::before {
+    display: block;
+    mask-size: 100%;
+    content: "";
+    height: 1.25em;
+    width: 1.25em;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: var(--color-text-secondary);
+  }
+  
+  &:not(:empty) {
+    position: relative;
+    display: flex;
+    gap: 0.4em;
+    align-items: center;
+  }
+
+  &:empty {
+    padding: 0.5em;
+  }
 }
 
 .icon--trash::before {
@@ -32,4 +52,12 @@
 
 .icon--arrow-left::before {
   mask-image: url(/icons/arrow-left.svg);
+}
+
+.icon--plus-circle-fill::before {
+  mask-image: url(/icons/plus-circle-fill.svg);
+}
+
+.icon--feed::before {
+  mask-image: url(/icons/feed.svg);
 }
