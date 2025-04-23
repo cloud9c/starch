@@ -157,7 +157,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.10.2)
-    kamal (2.5.2)
+    kamal (2.5.3)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
@@ -443,7 +443,7 @@ DEPENDENCIES
   importmap-rails
   invisible_captcha
   jbuilder
-  kamal (= 2.5.2)
+  kamal (= 2.5.3)
   local_time
   mission_control-jobs
   nokogiri
