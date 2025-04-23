@@ -164,6 +164,7 @@
     gap: 1em;
     overflow: auto;
     margin: 0 auto;
+    max-width: 30em;
 
     a {
       display: flex;
