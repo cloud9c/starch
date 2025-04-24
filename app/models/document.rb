@@ -43,7 +43,6 @@ class Document < ApplicationRecord
 
   def self.query(user_id, options = {})
     query = Document.left_joins(entry: { channel: :subscriptions })
-                    .includes(entry: { channel: :subscriptions })
 
     if options[:page].present?
       query = query.limit(@@per_page)
@@ -64,7 +63,7 @@ class Document < ApplicationRecord
 
     query = query.order("documents.published_at" => :desc)
 
-    query = query.select("documents.*, subscriptions.view_extracted")
+    query = query.select("documents.*, subscriptions.view_extracted").distinct
 
     query.map do |doc|
       doc.with_view_preferences(skip_wait: true)
