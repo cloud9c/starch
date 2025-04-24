@@ -4,6 +4,7 @@
   padding: 1em;
   width: var(--navbar-width);
   margin: 0 auto;
+  gap: 1em;
   align-items: center;
 }
 
