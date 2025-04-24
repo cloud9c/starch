@@ -1,5 +1,5 @@
 .btn {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   border-radius: var(--border-radius);
@@ -34,6 +34,22 @@
    
     &.btn--icon::before {
       background: var(--color-text-secondary);
+    }
+  }
+
+
+  &.btn--outline {
+    background: none;
+
+    border: 1px solid var(--bg-input);
+    color: var(--bg-input);
+
+    &:hover, &:focus {
+      background: var(--bg-input-ghost-hover)
+    }
+   
+    &.btn--icon::before {
+      background: var(--bg-input);
     }
   }
 

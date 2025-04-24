@@ -30,7 +30,10 @@ body {
 .content {
 	width: var(--content-width);
 	padding: 0 1em 1em;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .content--center {

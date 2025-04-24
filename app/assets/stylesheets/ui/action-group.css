@@ -1,4 +1,5 @@
 .action-group {
+  width: 100%;
 
   .action-group__item {
     display: flex;

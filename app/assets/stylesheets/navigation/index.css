@@ -139,4 +139,9 @@
   z-index: 2;
 
   display: flex;
+  width: initial;
+}
+
+.breadcrumb {
+  margin-bottom: 1em;
 }
