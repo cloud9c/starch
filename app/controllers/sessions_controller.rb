@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
     if user.email_address === "test@example.com"
       user.verify
       authenticate_session_for(user)
-      return redirect_to root_path
+      return redirect_to root_path(format: :html)
     end
     ###
 
@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
     if user
       user.verify
       authenticate_session_for(user)
-      return redirect_to root_path
+      return redirect_to root_path(format: :html)
     end
 
     @flash = {}
