@@ -162,7 +162,6 @@
   #my_navigation {
     display: flex;
     padding: 0.5em 0.5em 0.5em;
-    gap: 1em;
     margin: 0 auto;
     max-width: var(--content-width);
 
