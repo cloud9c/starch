@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   resolve("Session") { [ :session ] }
 
   resource :user do
-
   end
   resolve("User") { [ :user ] }
 
