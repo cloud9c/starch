@@ -24,7 +24,7 @@
 
   <% in_app = authenticated? && !["public", "session"].include?(controller_name) %>
 
-  <body data-controller=<%= "shortcut" if in_app %>>
+  <body data-controller=<%= "shortcut" if in_app %> class=<% "native" if turbo_native_app?%>>
     <%= render "shared/flash" %>
     <%= render 'shared/navbar' if in_app %>
     <main class="main">
