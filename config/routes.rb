@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resource :session do
     post :verify
   end
-  resolve("Session") { [:session] }
+  resolve("Session") { [ :session ] }
 
   resources :subscriptions
 
