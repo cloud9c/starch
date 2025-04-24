@@ -21,7 +21,16 @@
     },
     {
       "patterns": [
-        "^/session/new", "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$"
+        "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$"
+      ],
+      "properties": {
+        "context": "default",
+        "presentation": "replace"
+      }
+    },
+    {
+      "patterns": [
+        "^/session/new"
       ],
       "properties": {
         "context": "default",
