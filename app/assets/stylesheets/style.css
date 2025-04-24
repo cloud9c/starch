@@ -15,7 +15,6 @@ body {
 	background: var(--bg-main);
 
   height: 100vh;
-  overflow: hidden;
 }
 
 .main {
