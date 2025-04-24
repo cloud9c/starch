@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   root "documents#index"
 
   resource :session do
-    get :verify
     post :verify
   end
+  resolve("Session") { [:session] }
 
   resources :subscriptions
 

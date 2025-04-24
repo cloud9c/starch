@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
   def create
     @flash = {}
 
-    user = User.find_or_initialize_by(email_address: params[:email_address])
+    email = params.require(:session).permit(:email_address)[:email_address]
+    user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
       return @flash[:alert] = user.errors.full_messages.to_sentence
@@ -32,7 +33,7 @@ class SessionsController < ApplicationController
     end
 
     @flash[:show_verification] = true
-    @flash[:email_address] = params[:email_address]
+    @flash[:email_address] = email
   end
 
   def verify
