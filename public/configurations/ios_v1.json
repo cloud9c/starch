@@ -18,6 +18,16 @@
         "context": "modal",
         "pull_to_refresh_enabled": false
       }
-    }
+    },
+    {
+      "patterns": [
+        "^/session/new", "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$"
+      ],
+      "properties": {
+        "context": "default",
+        "presentation": "replace"
+      }
+    },
   ]
 }
+
