@@ -94,6 +94,7 @@
   --color-border: oklch(var(--lch-gray-300));
   --color-link: oklch(var(--lch-blue-light));
   --color-text: oklch(var(--lch-text));
+  --color-text-dark: oklch(var(--lch-text));
   --color-text-secondary: oklch(var(--lch-text-secondary));
   --color-text-secondary-light: oklch(var(--lch-text-secondary-light));
   --color-text-light: oklch(var(--lch-gray-50));
@@ -144,6 +145,6 @@
     --bg-input-secondary-selected: oklch(var(--lch-gray-500));
     --bg-primary: oklch(var(--lch-gray-900));
     --bg-secondary: oklch(var(--lch-gray-950));
-    --bg-main: oklch(var(--lch-gray-950))
+    --bg-main: oklch(var(--lch-gray-950));
   }
 }

@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   end
   resolve("Session") { [ :session ] }
 
+  resource :user do
+
+  end
+  resolve("User") { [ :user ] }
+
   resources :subscriptions
 
   resources :documents do

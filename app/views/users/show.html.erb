@@ -1,0 +1,12 @@
+<% content_for(:title) { 'Account' } %>
+
+<div class="sheet">
+  <div class="content" id="login__content">
+    <h1 class="sheet__header">Account</h1>
+
+    <div class="action-group action-group--surface">
+      <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "action-group__item icon icon--sign-out" %>
+      <%= link_to "Close your account", user_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to close your account?" }, class: "action-group__item icon icon--x-circle-fill" %>
+    </div>
+  </div>
+</div>

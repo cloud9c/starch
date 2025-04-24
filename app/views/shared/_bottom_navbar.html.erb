@@ -1,5 +1,5 @@
-<% if action_name != "show" %>
+<% unless controller_name == "documents" && action_name == "show" %>
   <div id="bottom-navbar">
-    <%= render "my/navigation" %>
+    <%= render "shared/navigation" %>
   </div>
 <% end %>

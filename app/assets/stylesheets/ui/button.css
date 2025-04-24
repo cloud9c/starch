@@ -1,0 +1,72 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius);
+  padding: 0.4em 0.8em;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--bg-input);
+  color: var(--color-text-light);
+
+  &:hover, &:focus {
+    background: var(--bg-input-hover);
+  }
+
+  &:focus {
+    outline: var(--focus-ring);
+  }
+
+  &.btn--icon::before {
+    background: var(--color-text-light);
+  }
+
+  &.btn--icon:empty {
+    padding: 0.5em;
+  }
+
+  &.btn--ghost {
+    background: none;
+
+    &:hover, &:focus {
+      background: var(--bg-input-ghost-hover)
+    }
+   
+    &.btn--icon::before {
+      background: var(--color-text-secondary);
+    }
+  }
+
+  &.btn--secondary {
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+
+    &.btn--icon::before {
+      background: var(--color-text);
+    }
+
+    &:hover {
+      background: var(--bg-secondary);
+    }
+  }
+
+  &.btn--main {
+    border-color: var(--color-main);
+    color: var(--color-main);
+
+    &&:before {
+      background: var(--color-main);
+    }
+  }
+
+  &.btn--sm {
+    font-size: var(--text-sm);
+    padding: 0.2em 0.6em;
+
+    &::before {
+      height: 1.125em;
+      width: 1.125em;
+    }
+  }
+}

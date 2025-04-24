@@ -25,11 +25,10 @@
           "aria-label": "Extract full content" %>
     <% end %>
 
-    <%= button_to subscription_path(preview), 
+    <%= button_to "", subscription_path(preview), 
           method: :delete,
           form: { data: { turbo_confirm: "Are you sure?" } },
           class: "btn btn--icon icon--trash btn--ghost",
-          "aria-label": "Delete subscription" do %>
-    <% end %>
+          "aria-label": "Delete subscription" %>
   </div>
 </div>

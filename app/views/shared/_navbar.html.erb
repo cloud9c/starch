@@ -5,23 +5,26 @@
         <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
         <h5>Starch</h5>
       </summary>
-      <%= render "my/navigation" %>
+      <%= render "shared/navigation" %>
     </details>
 
     <search class="searchbar" >
       <%= form_with(url: search_path, method: :get) do |form| %>
         <div class="searchfield-container">
-          <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search", data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
+          <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search",
+                                data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
         </div>
       <% end %>
     </search>
 
     <div id="navbar__account">
-      <% if authenticated? %>
-        <%= button_to "Logout", session_path, method: :delete, class: "btn" %>
-      <% else %>
-        <%= button_to "Sign in", new_session_path, method: :get, class: "btn" %>
-      <% end %>
+      <% 
+        first_char = Current.user.email_address[0]
+        ascii_value = first_char.ord
+        hue_value = (ascii_value % 360).to_f
+      %>
+      <%= link_to first_char, user_path,
+        id: "navbar__account__link", "aria-label": "Account", style: "--user-hue: #{hue_value}" %>
     </div>
   </nav>
 </div>

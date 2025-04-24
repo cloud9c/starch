@@ -61,3 +61,15 @@
 .icon--feed::before {
   mask-image: url(/icons/feed.svg);
 }
+
+.icon--account::before {
+  mask-image: url(/icons/account.svg);
+}
+
+.icon--sign-out::before {
+  mask-image: url(/icons/sign-out.svg);
+}
+
+.icon--x-circle-fill::before {
+  mask-image: url(/icons/x-circle-fill.svg);
+}

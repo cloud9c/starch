@@ -1,4 +1,4 @@
-<div id="my_navigation">
+<div id="navigation" class="action-group">
   <% 
   navigation_items = [
     { path: root_path, icon: "inbox", text: "Inbox" },
@@ -14,7 +14,7 @@
         data: { controller: "shortcut",
                 "shortcut-hotkey-value": (index + 1).to_s,
                 current: current_page?(item[:path]) ? 'true' : 'false' },
-        class: "shortcut-hotkey icon icon--#{item[:icon]}" do %>
+        class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item" do %>
       <span><%= item[:text] %></span>
     <% end %>
   <% end %>
