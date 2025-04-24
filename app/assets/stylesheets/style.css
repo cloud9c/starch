@@ -13,8 +13,6 @@ body {
 
 	color: var(--color-text);
 	background: var(--bg-main);
-
-  height: 100vh;
 }
 
 .main {

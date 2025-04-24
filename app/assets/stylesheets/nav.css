@@ -157,7 +157,7 @@
   border-top: 1px solid var(--color-border);
 
   @media (max-width: 100ch) {
-    display: initial;
+    display: block;
   }
 
   #my_navigation {
