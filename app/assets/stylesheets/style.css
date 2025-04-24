@@ -22,7 +22,6 @@ body {
 	width: 100%;
 	margin: 0 auto;
 	flex: 1;
-  overflow: hidden;
 }
 
 .content {
