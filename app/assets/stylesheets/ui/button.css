@@ -41,15 +41,15 @@
   &.btn--outline {
     background: none;
 
-    border: 1px solid var(--bg-input);
-    color: var(--bg-input);
+    border: 1px solid var(--color-link);
+    color: var(--color-link);
 
     &:hover, &:focus {
       background: var(--bg-input-ghost-hover)
     }
    
     &.btn--icon::before {
-      background: var(--bg-input);
+      background: var(--color-link);
     }
   }
 

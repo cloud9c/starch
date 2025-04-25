@@ -1,7 +1,5 @@
-.document-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+.content.content--document {
+  display: block;
 }
 
 .document-header {

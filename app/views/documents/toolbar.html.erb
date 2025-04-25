@@ -1,9 +1,9 @@
 <turbo-frame id="document_toolbar" target="_top">
   <%= form_with model: @document_state do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
-    <a class="btn btn--secondary btn--icon icon--arrow-left shortcut-hotkey" href="#" onclick="history.back(); return false;" aria-label="Go back"
-       data-controller="shortcut" data-shortcut-hotkey-value="b"
-      ></a>
+    <%= link_to "", "javascript:history.back()", class: "btn btn--secondary btn--icon icon--arrow-left shortcut-hotkey",
+        aria: { label: "Go back" }, 
+        data: { controller: "shortcut", shortcut_hotkey_value: "b", turbo_frame: "_top" } %>
 
     <fieldset class="toggle-group">
       <% DocumentState.statuses.keys.each do |status| %>
