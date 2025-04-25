@@ -5,7 +5,7 @@ module UrlUtils
     return nil if url.nil?
 
     url = "https://#{url}" unless url.start_with?("http://", "https://")
-    uri = URI.parse(url)
+    uri = URI.parse(url) rescue return nil
 
     return nil unless uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS)
 
