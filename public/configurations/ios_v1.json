@@ -21,7 +21,7 @@
     },
     {
       "patterns": [
-        "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$"
+        "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$", "^/session/new$"
       ],
       "properties": {
         "context": "default",
@@ -30,11 +30,19 @@
     },
     {
       "patterns": [
-        "^/session/new"
+        "/new$",
       ],
       "properties": {
-        "context": "default",
-        "presentation": "replace"
+        "context": "modal",
+        "pull_to_refresh_enabled": false
+      }
+    },
+    {
+      "patterns": [
+        "^/user$",
+      ],
+      "properties": {
+        "context": "modal"
       }
     }
   ]
