@@ -14,6 +14,7 @@ body {
 	color: var(--color-text);
 
   height: 100dvh;
+  overflow: hidden;
   background: var(--bg-main);
 }
 
@@ -24,6 +25,7 @@ body {
 	width: 100%;
 	margin: 0 auto;
 	flex: 1;
+  overflow-y: auto;
 }
 
 .content {

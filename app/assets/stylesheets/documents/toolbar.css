@@ -22,8 +22,7 @@
 
 @media(max-width: 115ch) {
   #document_toolbar {
-    position: sticky;
-    bottom: 0;
+    position: static;
     gap: 0.5em;
     margin: 0;
     background: var(--bg-primary);
