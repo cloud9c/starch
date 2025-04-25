@@ -73,6 +73,10 @@ body {
     font-size: var(--text-5xl);
     line-height: var(--line-height-tight);
   }
+
+  .native .sheet__header {
+    display: none;
+  }
 }
 
 a {
