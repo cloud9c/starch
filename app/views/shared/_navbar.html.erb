@@ -17,14 +17,16 @@
       <% end %>
     </search>
 
-    <div id="navbar__account">
+    <div id="navbar__account__container">
       <% 
         first_char = Current.user.email_address[0]
         ascii_value = first_char.ord
         hue_value = (ascii_value % 360).to_f
       %>
-      <%= link_to first_char, user_path,
-        id: "navbar__account__link", "aria-label": "Account", style: "--user-hue: #{hue_value}" %>
+      <div id="navbar__account">
+        <%= link_to first_char, user_path,
+          id: "navbar__account__link", "aria-label": "Account", style: "--user-hue: #{hue_value}" %>
+      </div>
     </div>
   </nav>
 </div>

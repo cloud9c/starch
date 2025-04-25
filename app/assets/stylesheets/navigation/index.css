@@ -119,11 +119,10 @@
   }
 }
 
-#navbar__account {
+#navbar__account__container {
   text-align: right;
 
   #navbar__account__link {
-    margin-left: auto;
     background: oklch(80% 0.15 var(--user-hue));
     border-radius: 50%;
     width: 2em;
@@ -136,7 +135,13 @@
     font-weight: 700;
   }
 
-  &:has(#navbar__account__link:focus-visible) {
+  #navbar__account {
+    display: flex;
+    width: fit-content;
+    margin-left: auto;
+  }
+
+  #navbar__account:has(#navbar__account__link:focus-visible) {
     outline: var(--focus-ring);
   }
 }
