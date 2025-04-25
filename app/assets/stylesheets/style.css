@@ -13,7 +13,8 @@ body {
 
 	color: var(--color-text);
 
-  height: 100svh;
+  height: 100dvh;
+  overflow: hidden;
   background: var(--bg-main);
 }
 
