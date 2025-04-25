@@ -16,7 +16,7 @@ body {
   height: 100dvh;
   background: var(--bg-main);
 
-  overflow-y: none;
+  overflow-y: hidden;
 }
 
 .main {
