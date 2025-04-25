@@ -24,12 +24,14 @@
 
   <% in_app = authenticated? && !["public", "session"].include?(controller_name) %>
 
+  <% in_modal = hotwire_native_app? && "#{controller_name}/#{action_name}" == "users/show" %>
+
   <body data-controller=<%= "shortcut" if in_app %> class=<%= "native" if hotwire_native_app?%>>
     <%= render "shared/flash" %>
-    <%= render 'shared/navbar' if in_app %>
+    <%= render 'shared/navbar' if in_app && !in_modal %>
     <main class="main">
       <%= yield %>
     </main>
-    <%= render 'shared/bottom_navbar' if in_app %>
+    <%= render 'shared/bottom_navbar' if in_app && !in_modal %>
   </body>
 </html>
