@@ -147,3 +147,7 @@
 .breadcrumb {
   margin-bottom: 1em;
 }
+
+.native .breadcrumb {
+  display: none;
+}
