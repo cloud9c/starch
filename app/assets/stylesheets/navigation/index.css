@@ -1,5 +1,5 @@
 @media (min-width: 100ch) {
-  body:has(.sheet.sheet--scrolled-down) {
+  body.body--scrolled-down {
     #navbar__container {
       border-bottom: 1px solid var(--color-border);
     }
@@ -10,6 +10,8 @@
   width: 100%;
   z-index: 1;
   background: var(--bg-main);
+  position: sticky;
+  top: 0;
 }
 
 #navbar {
@@ -35,32 +37,37 @@
   @media (max-width: 100ch) {
     display: none;
   }
+
+  #navbar__logo {
+    height: 100%;
+    display: inline-flex;
+    gap: 0.5em;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    
+    &::marker {
+      content: none;
+    }
+    
+    &::after {
+      content: "";
+      mask-image: url("/icons/caret-down.svg");
+      mask-size: 100%;
+      background: var(--color-text-secondary);
+      width: 1em;
+      height: 1em;
+    }
+  }
+
+  :focus-visible {
+    outline: var(--focus-ring);
+  }
 }
 
-#navbar__logo {
-  height: 100%;
-  display: inline-flex;
-  gap: 0.5em;
-  text-decoration: none;
-  font-weight: bold;
-  font-family: var(--font-sans);
-  cursor: pointer;
-  user-select: none;
-  align-items: center;
-  
-  &::marker {
-    content: none;
-  }
-  
-  &::after {
-    content: "";
-    mask-image: url("/icons/caret-down.svg");
-    mask-size: 100%;
-    background: var(--color-text-secondary);
-    width: 1em;
-    height: 1em;
-  }
-}
 
 .searchbar {
 	display: flex;
@@ -73,6 +80,10 @@
     outline: var(--focus-ring);
     background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
     border-color: var(--color-border);
+
+    input[type="search"] {
+      outline: none;
+    }
   }
 
   form {
@@ -115,7 +126,7 @@
 
   #navbar__account__link {
     margin-left: auto;
-    background: oklch(70% 0.15 var(--user-hue));
+    background: oklch(80% 0.15 var(--user-hue));
     border-radius: 50%;
     width: 2em;
     height: 2em;
@@ -125,6 +136,10 @@
     text-transform: uppercase;
     color: var(--color-text-dark);
     font-weight: 700;
+  }
+
+  &:has(#navbar__account__link:focus-visible) {
+    outline: var(--focus-ring);
   }
 }
 

@@ -9,12 +9,13 @@
   background: var(--bg-input);
   color: var(--color-text-light);
 
-  &:hover, &:focus {
+  &:hover{
     background: var(--bg-input-hover);
   }
 
   &:focus {
     outline: var(--focus-ring);
+    outline-width: medium;
   }
 
   &.btn--icon::before {
@@ -28,7 +29,7 @@
   &.btn--ghost {
     background: none;
 
-    &:hover, &:focus {
+    &:hover {
       background: var(--bg-input-ghost-hover)
     }
    
@@ -44,7 +45,7 @@
     border: 1px solid var(--color-link);
     color: var(--color-link);
 
-    &:hover, &:focus {
+    &:hover {
       background: var(--bg-input-ghost-hover)
     }
    

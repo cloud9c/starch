@@ -4,20 +4,20 @@ export default class extends Controller {
   connect() {
     this.lastScrollTop = 0
     this.boundScrollHandler = this.handleScroll.bind(this)
-    this.element.addEventListener("scroll", this.boundScrollHandler)
+    window.addEventListener("scroll", this.boundScrollHandler)
   }
   
   disconnect() {
-    this.element.removeEventListener("scroll", this.boundScrollHandler)
+    window.removeEventListener("scroll", this.boundScrollHandler)
   }
   
   handleScroll(event) {
-    const currentScrollTop = this.element.scrollTop
+    const currentScrollTop = window.scrollY || document.documentElement.scrollTop
     
     if (currentScrollTop > this.lastScrollTop) {
-      this.element.classList.add("sheet--scrolled-down")
+      document.body.classList.add("body--scrolled-down")
     } else {
-      this.element.classList.remove("sheet--scrolled-down")
+      document.body.classList.remove("body--scrolled-down")
     }
     
     this.lastScrollTop = currentScrollTop

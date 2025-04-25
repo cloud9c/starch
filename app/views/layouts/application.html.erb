@@ -26,7 +26,7 @@
 
   <% in_modal = hotwire_native_app? && "#{controller_name}/#{action_name}" == "users/show" %>
 
-  <body data-controller=<%= "shortcut" if in_app %> class=<%= "native" if hotwire_native_app?%>>
+  <body data-controller="<%= "shortcut scroll-toggle" if in_app %>" class="<%= "native" if hotwire_native_app?%>">
     <%= render "shared/flash" %>
     <%= render 'shared/navbar' if in_app && !in_modal %>
     <main class="main">

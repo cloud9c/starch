@@ -54,7 +54,7 @@
   --transition: 0.1s ease;
   --content-width: min(100%, 37.5em);
   --sheet-width: 100%;
-  --navbar-width: min(100%, 75em);
+  --navbar-width: min(100%, 70em);
   --border-radius: 0.25em;
   
   /* LCH color definitions */
@@ -109,7 +109,7 @@
   --bg-secondary: oklch(var(--lch-gray-50));
   --bg-reversed: var(--color-text);
   --bg-gray: oklch(var(--lch-gray-300));
-  --bg-link-hover: oklch(var(--lch-blue) / 0.05);
+  --bg-link-hover: oklch(var(--lch-blue) / 0.10);
   --bg-input: oklch(var(--lch-blue));
   --bg-input-hover: oklch(var(--lch-blue-dark));
   --bg-input-ghost-hover: oklch(var(--lch-gray-100));

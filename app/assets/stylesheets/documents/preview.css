@@ -16,6 +16,12 @@
   &:focus, &:hover {
     background: var(--bg-link-hover);
   }
+
+  @media (any-hover: hover) {
+    &:where(:not(:active):hover) {
+      background: var(--bg-link-hover);
+    }
+  }
   
   .document-preview-header {
     display: flex;
