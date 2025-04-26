@@ -7,7 +7,7 @@
 <div class="document-list sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "status=archive" %>">
   <h1 class="sheet__header">Archive</h1>
-  <div class="document-preview-section content" id="documents-section">
+  <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
     <% else %>
