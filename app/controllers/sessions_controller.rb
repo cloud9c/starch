@@ -14,7 +14,8 @@ class SessionsController < ApplicationController
     user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
-      return @flash[:alert] = user.errors.full_messages.to_sentence
+      @flash[:alert] = user.errors.full_messages.to_sentence
+      return
     end
 
     magic_link_token = user.generate_magic_link
@@ -24,12 +25,16 @@ class SessionsController < ApplicationController
     if user.email_address === "test@example.com"
       user.verify
       authenticate_session_for(user)
-      return redirect_to root_path(format: :html)
+
+      redirect_url = url_from(session[:redirect_url]) || root_path(format: :html)
+      session.delete(:redirect_url)
+      redirect_to redirect_url and return
     end
     ###
 
     unless user.send_login_email(magic_link_token, verification.code)
-      return @flash[:alert] = "We couldn't send your login email at this time. Please try again later."
+      @flash[:alert] = "We couldn't send your login email at this time. Please try again later."
+      return
     end
 
     @flash[:show_verification] = true
@@ -42,7 +47,10 @@ class SessionsController < ApplicationController
     if user
       user.verify
       authenticate_session_for(user)
-      return redirect_to root_path(format: :html)
+      
+      redirect_url = url_from(session[:redirect_url]) || root_path(format: :html)
+      session.delete(:redirect_url)
+      redirect_to redirect_url and return
     end
 
     @flash = {}
