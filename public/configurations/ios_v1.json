@@ -21,15 +21,6 @@
     },
     {
       "patterns": [
-       "^/$", "^/feed$", "^/later$", "^/archive$", "^/subscriptions$", "^/session/new$"
-      ],
-      "properties": {
-        "context": "default",
-        "presentation": "replace"
-      }
-    },
-    {
-      "patterns": [
        "^/\\?format=html$"
       ],
       "properties": {
@@ -39,12 +30,20 @@
     },
     {
       "patterns": [
-        "^/user$",
+        "^/user$"
       ],
       "properties": {
         "context": "modal"
       }
+    },
+    {
+      "patterns": [
+       "/session/new"
+      ],
+      "properties": {
+        "context": "modal",
+        "presentation": "replace"
+      }
     }
   ]
 }
-
