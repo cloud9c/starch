@@ -1,0 +1,11 @@
+.native-only {
+  body:not(.native) & {
+    display: none !important;
+  }
+}
+
+.web-only {
+  body.native & {
+    display: none !important;
+  }
+}

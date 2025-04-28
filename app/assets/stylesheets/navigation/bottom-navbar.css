@@ -4,11 +4,9 @@
   border-top: 1px solid var(--color-border);
 
   @media (max-width: 100ch) {
-    body:not(.native) & {
-      display: block;
-      position: sticky;
-      bottom: 0;
-    }
+    display: block;
+    position: sticky;
+    bottom: 0;
   }
 
   #navigation {

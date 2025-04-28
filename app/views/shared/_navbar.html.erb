@@ -1,34 +1,32 @@
-<% unless controller_name == "documents" && action_name == "show" %>
-  <div id="navbar__container">
-    <nav id="navbar">
-      <details id="navbar__logo-container" data-controller="popup-menu shortcut" data-shortcut-hotkey-value="h" >
-        <summary id="navbar__logo">
-          <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
-          <h5>Starch</h5>
-        </summary>
-        <%= render "shared/navigation" %>
-      </details>
+<div id="navbar__container" class="web-only">
+  <nav id="navbar">
+    <details id="navbar__logo-container" data-controller="popup-menu shortcut" data-shortcut-hotkey-value="h" >
+      <summary id="navbar__logo">
+        <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
+        <h5>Starch</h5>
+      </summary>
+      <%= render "shared/navigation" %>
+    </details>
 
-      <search class="searchbar" >
-        <%= form_with(url: search_path, method: :get) do |form| %>
-          <div class="searchfield-container">
-            <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search",
-                                  data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
-          </div>
-        <% end %>
-      </search>
-
-      <div id="navbar__account__container">
-        <% 
-          first_char = Current.user.email_address[0]
-          ascii_value = first_char.ord
-          hue_value = (ascii_value % 360).to_f
-        %>
-        <div id="navbar__account">
-          <%= link_to first_char, user_path,
-            id: "navbar__account__link", "aria-label": "Account", style: "--user-hue: #{hue_value}" %>
+    <search class="searchbar" >
+      <%= form_with(url: search_path, method: :get) do |form| %>
+        <div class="searchfield-container">
+          <%= form.search_field :q, autocomplete: "off", value: params[:q], placeholder: "Search",
+                                data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
         </div>
+      <% end %>
+    </search>
+
+    <div id="navbar__account__container">
+      <% 
+        first_char = Current.user.email_address[0]
+        ascii_value = first_char.ord
+        hue_value = (ascii_value % 360).to_f
+      %>
+      <div id="navbar__account">
+        <%= link_to first_char, user_path,
+          id: "navbar__account__link", "aria-label": "Account", style: "--user-hue: #{hue_value}" %>
       </div>
-    </nav>
-  </div>
-<% end %>
+    </div>
+  </nav>
+</div>

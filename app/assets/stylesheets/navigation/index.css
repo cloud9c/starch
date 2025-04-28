@@ -23,13 +23,16 @@
   gap: 1em;
   align-items: center;
 
-  :first-child, :last-child {
+  > :first-child, > :last-child {
     flex-grow: 1;
     flex-basis: 0;
   }
 }
 
 #navbar__logo-container {
+  display: flex;
+  min-width: fit-content;
+
   &[open] #navbar__logo::after {
     transform: rotate(180deg);
   }
@@ -39,8 +42,7 @@
   }
 
   #navbar__logo {
-    height: 100%;
-    display: inline-flex;
+    display: flex;
     gap: 0.5em;
     text-decoration: none;
     font-weight: bold;
@@ -48,18 +50,21 @@
     cursor: pointer;
     user-select: none;
     align-items: center;
+    width: fit-content;
     
     &::marker {
       content: none;
     }
     
     &::after {
+      display: block;
       content: "";
       mask-image: url("/icons/caret-down.svg");
       mask-size: 100%;
       background: var(--color-text-secondary);
       width: 1em;
       height: 1em;
+      flex-shrink: 0;
     }
   }
 

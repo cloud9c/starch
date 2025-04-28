@@ -32,4 +32,6 @@
   </div>
 </div>
 
-<%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
+<% content_for :bottom_content do %>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
+<% end %>
