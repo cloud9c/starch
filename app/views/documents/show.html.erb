@@ -30,8 +30,9 @@
       <%= SanitizeUtils.sanitize_html @document.content %>
     </article>
   </div>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
 </div>
 
 <% content_for :bottom_content do %>
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
+  <div></div>
 <% end %>

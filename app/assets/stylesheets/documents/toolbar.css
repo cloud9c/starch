@@ -7,7 +7,6 @@
   position: absolute;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
-  margin-top: 2em;
 
   .toggle-group {
     flex-direction: column;
@@ -49,6 +48,10 @@
       border: none;
       gap: 0.5em;
     }
+
+   .shortcut-hotkey:after {
+     display: none;
+   } 
   }
 
 }
