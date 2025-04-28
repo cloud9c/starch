@@ -52,7 +52,7 @@ class Document < ApplicationRecord
     if options[:status].present?
       query = query.joins(:document_states)
                    .where(document_states: { user_id: user_id, status: options[:status] })
-                   .order("document_states.read" => :asc, "document_states.updated_at" => :desc)
+                   .order("document_states.read" => :asc)
 
       query = query.select("document_states.read")
     elsif options[:ids].present?
