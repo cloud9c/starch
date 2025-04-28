@@ -1,20 +1,15 @@
 class SessionsController < ApplicationController
-  allow_unauthenticated_access only: %i[ new create verify ]
+  allow_unauthenticated_access only: %i[ new create code verify ]
   rate_limit to: 10, within: 3.minutes, only: :create
   invisible_captcha only: :create, on_spam: :send_to_root
-
-  def new
-    redirect_to root_path if authenticated?
-  end
+  before_action :redirect_if_authenticated, except: [:destroy]
 
   def create
-    @flash = {}
-
     email = params.require(:session).permit(:email_address)[:email_address]
     user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
-      @flash[:alert] = user.errors.full_messages.to_sentence
+      @flash = {:alert => user.errors.full_messages.to_sentence}
       return
     end
 
@@ -26,19 +21,22 @@ class SessionsController < ApplicationController
       user.verify
       authenticate_session_for(user)
 
-      redirect_url = url_from(session[:redirect_url]) || root_path(format: :html)
+      redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      redirect_to redirect_url and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
     ###
 
     unless user.send_login_email(magic_link_token, verification.code)
-      @flash[:alert] = "We couldn't send your login email at this time. Please try again later."
+      @flash = {:alert => "We couldn't send your login email at this time. Please try again later."}
       return
     end
 
-    @flash[:show_verification] = true
-    @flash[:email_address] = email
+    redirect_to code_session_path(email_address: email), status: :see_other
+  end
+
+  def code
+    redirect_to new_session_path unless params[:email_address]
   end
 
   def verify
@@ -48,23 +46,19 @@ class SessionsController < ApplicationController
       user.verify
       authenticate_session_for(user)
       
-      redirect_url = url_from(session[:redirect_url]) || root_path(format: :html)
+      redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      redirect_to redirect_url and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
 
-    @flash = {}
-
-    @flash[:alert] =
+    @flash = {
+      :alert =>
       if params[:token]
         "We were unable to verify you with this link."
       elsif params[:verification_code]
         "There was an error verifying your code."
       end
-
-    respond_to do |format|
-      format.turbo_stream { render template: "sessions/create", formats: [ :turbo_stream ] }
-    end
+    }
   end
 
   def destroy
@@ -72,7 +66,13 @@ class SessionsController < ApplicationController
     redirect_to new_session_path
   end
 
+  private
+
   def send_to_root
     redirect_to root_path
+  end
+
+  def redirect_if_authenticated
+    redirect_to root_path if authenticated?
   end
 end

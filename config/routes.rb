@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   root "documents#index"
 
   resource :session do
+    get :code
     post :verify
   end
   resolve("Session") { [ :session ] }
