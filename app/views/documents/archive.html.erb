@@ -5,7 +5,8 @@
 <% end %>
 
 <div class="document-list sheet" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "status=archive" %>">
+                                 data-documents--list-query-value="<%= "status=archive" %>">
+  <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--bottom" %>
   <h1 class="sheet__header">Archive</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>

@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
 
       redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
     ###
 
@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
       
       redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
 
     @flash = {

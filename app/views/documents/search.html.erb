@@ -7,10 +7,14 @@
 <div id="document-inbox" class="sheet" data-controller="documents--list" 
      data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
   <h1 class="sheet__header">Search</h1>
-  <div class="document-preview-section content" id="documents-section">
+  <div class="document-preview-section" id="documents-section">
+    <div class="push-bottom mobile-only content">
+      <%= render "shared/searchbar" %>
+    </div>
+
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
-    <% else %>
+    <% elsif params[:q].present? %>
       <div class="document-inbox-nothing-new">
         <span>No results.</span>
       </div>

@@ -1,6 +1,7 @@
 <% content_for(:title) { "Subscriptions" } %>
 
 <div class="sheet">
+  <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--bottom" %>
   <h1 class="sheet__header">Subscriptions</h1>
   <div class="content subscription-content">
     <%= form_with(model: Subscription, id: "add-subscription") do |f| %>

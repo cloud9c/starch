@@ -27,3 +27,11 @@
     }
   }
 }
+
+.action-group-title {
+  text-transform: uppercase;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 0.5em;
+}

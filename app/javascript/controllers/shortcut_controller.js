@@ -20,7 +20,7 @@ export default class extends Controller {
       return
     }
 
-    const hotkeys = [this.hotkeyValue, this.hotkeyValue.toUpperCase()]
+    const hotkeys = this.hotkeyValue.split(" ").flatMap(key => [key, key.toUpperCase()]);
 
     if (hotkeys.includes(event.key)) {
       event.preventDefault();

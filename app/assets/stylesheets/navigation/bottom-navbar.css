@@ -15,7 +15,7 @@
     margin: 0 auto;
     max-width: var(--content-width);
 
-    a {
+    a.icon {
       display: flex;
       align-items: center;
       flex-direction: column;
@@ -23,7 +23,6 @@
       gap: 0.25em;
       line-height: 1;
       flex: 1 1 0;
-      width: 0;
 
       span {
         width: 100%;
@@ -38,6 +37,14 @@
         width: 2em;
         mask-size: 2em;
       }
+    }
+
+    #navbar__account__container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      font-size: var(--text-xs);
     }
 
     a[data-current=true] {

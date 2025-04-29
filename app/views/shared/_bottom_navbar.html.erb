@@ -1,3 +1,21 @@
 <div id="bottom-navbar" class="web-only">
-  <%= render "shared/navigation" %>
+  <% 
+  navigation_items = [
+    { path: root_path, icon: "inbox", text: "Inbox" },
+    { path: feed_path, icon: "feed", text: "Feed" },
+    { path: later_path, icon: "later", text: "Later" },
+    { path: search_path, icon: "search", text: "Search" },
+    { path: user_path, icon: "user-circle", text: "Me" }
+  ]
+  %>
+
+  <div id="navigation">
+    <% navigation_items.each_with_index do |item, index| %>
+      <%= link_to item[:path],
+          data: { current: current_page?(item[:path]) ? 'true' : 'false' },
+          class: "icon icon--#{item[:icon]}" do %>
+        <span><%= item[:text] %></span>
+      <% end %>
+    <% end %>
+  </div>
 </div>

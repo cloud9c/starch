@@ -12,6 +12,10 @@
   background: var(--bg-main);
   position: sticky;
   top: 0;
+
+  @media (max-width: 100ch) {
+    display: none;
+  }
 }
 
 #navbar {
@@ -36,11 +40,6 @@
   &[open] #navbar__logo::after {
     transform: rotate(180deg);
   }
-
-  @media (max-width: 100ch) {
-    display: none;
-  }
-
   #navbar__logo {
     display: flex;
     gap: 0.5em;
@@ -73,63 +72,11 @@
   }
 }
 
-
-.searchbar {
-	display: flex;
-	border: 1px solid var(--color-border);
-	border-radius: 2em;
-	width: var(--content-width);
-	background: var(--bg-primary);
-
-  &:has(input:focus-visible) {
-    outline: var(--focus-ring);
-    background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
-    border-color: var(--color-border);
-
-    input[type="search"] {
-      outline: none;
-    }
-  }
-
-  form {
-    flex: 1;
-  }
-
-  .searchfield-container {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    position: relative;
-
-    &::after {
-      background-color: var(--color-text-secondary);
-      mask-image: url(/icons/search.svg);
-      mask-repeat: no-repeat;
-      mask-size: 100%;
-      content: "";
-      height: 1.25em;
-      width: 1.25em;
-      pointer-events: none;
-      position: absolute;
-      left: 0.5em;
-    }
-  }
-
-
-  input[type="search"] {
-    width: 100%;
-    padding: 0.5em 0.5em 0.5em 2.2em;
-  }
-
-  @media (max-width: 100ch) {
-    width: 100%;
-  }
-}
-
 #navbar__account__container {
-  text-align: right;
+  display: flex;
+  justify-content: end;
 
-  #navbar__account__link {
+  #navbar__account {
     background: oklch(80% 0.15 var(--user-hue));
     border-radius: 50%;
     width: 2em;
@@ -140,16 +87,6 @@
     text-transform: uppercase;
     color: var(--color-text-dark);
     font-weight: 700;
-  }
-
-  #navbar__account {
-    display: flex;
-    width: fit-content;
-    margin-left: auto;
-  }
-
-  #navbar__account:has(#navbar__account__link:focus-visible) {
-    outline: var(--focus-ring);
   }
 }
 
@@ -167,10 +104,6 @@
 
   display: flex;
   width: initial;
-}
-
-.breadcrumb {
-  margin: 1em 0;
 }
 
 .native .breadcrumb {

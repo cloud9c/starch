@@ -72,3 +72,11 @@
 .icon--x-circle-fill::before {
   mask-image: url(/icons/x-circle-fill.svg);
 }
+
+.icon--search::before {
+  mask-image: url(/icons/search.svg);
+}
+
+.icon--user-circle::before {
+  mask-image: url(/icons/user-circle.svg);
+}

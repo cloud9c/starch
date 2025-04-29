@@ -1,11 +1,16 @@
-<% content_for(:title) { 'Account' } %>
+<% content_for(:title) { 'Me' } %>
 
 <div class="sheet">
   <div class="content">
+    <h1 class="sheet__header">Me</h1>
 
-    <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb" %>
-    <h1 class="sheet__header">Account</h1>
+    <span class="action-group-title">Stuff</span>
+    <div class="action-group action-group--surface push--bottom">
+      <%= link_to "Subscriptions", subscriptions_path, class: "action-group__item icon icon--plus-circle-fill" %>
+      <%= link_to "Archive", archive_path, class: "action-group__item icon icon--archive" %>
+    </div>
 
+    <span class="action-group-title">Account</span>
     <div class="action-group action-group--surface">
       <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "action-group__item icon icon--sign-out" %>
       <%= link_to "Close your account", user_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to close your account?" }, class: "action-group__item icon icon--x-circle-fill" %>

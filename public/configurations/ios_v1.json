@@ -21,23 +21,6 @@
     },
     {
       "patterns": [
-       "^/\\?format=html$"
-      ],
-      "properties": {
-        "context": "default",
-        "presentation": "replace_root"
-      }
-    },
-    {
-      "patterns": [
-        "^/user$"
-      ],
-      "properties": {
-        "context": "modal"
-      }
-    },
-    {
-      "patterns": [
        "/session/new"
       ],
       "properties": {
@@ -47,3 +30,4 @@
     }
   ]
 }
+
