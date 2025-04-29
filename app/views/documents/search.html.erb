@@ -4,18 +4,18 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="document-inbox" class="sheet" data-controller="documents--list" 
+<div class="sheet document-list" data-controller="documents--list" 
      data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
-  <h1 class="sheet__header">Search</h1>
-  <div class="document-preview-section" id="documents-section">
-    <div class="push-bottom mobile-only content">
-      <%= render "shared/searchbar" %>
-    </div>
+    <h1 class="sheet__header">Search</h1>
 
+  <div class="push-bottom mobile-only content">
+    <%= render "shared/searchbar" %>
+  </div>
+  <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
     <% elsif params[:q].present? %>
-      <div class="document-inbox-nothing-new">
+      <div class="document-list__nothing-new">
         <span>No results.</span>
       </div>
     <% end %>

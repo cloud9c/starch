@@ -83,7 +83,15 @@ class DocumentsController < ApplicationController
       ids: document_ids
     })
 
-    respond_with_pagination(:search, @documents)
+    respond_to do |format|
+      format.html do
+        render :search, status: @documents.length == Document.per_page ? :ok : :partial_content
+      end
+
+      format.turbo_stream do
+        render page > 1 ? :append : :search, status: @documents.length == Document.per_page ? :ok : :partial_content
+      end
+    end
   end
 
   def read_all
@@ -101,16 +109,15 @@ class DocumentsController < ApplicationController
   end
 
   def respond_with_pagination(view_name, documents)
-    Rails.logger.debug documents.length
-
     respond_to do |format|
       format.html do
         render view_name, status: documents.length == Document.per_page ? :ok : :partial_content
       end
+
       format.turbo_stream do
         if documents.empty?
           head :no_content
-        else
+        elsif page > 1
           render :append, status: documents.length == Document.per_page ? :ok : :partial_content
         end
       end

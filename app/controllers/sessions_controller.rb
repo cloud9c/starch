@@ -2,14 +2,14 @@ class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[ new create code verify ]
   rate_limit to: 10, within: 3.minutes, only: :create
   invisible_captcha only: :create, on_spam: :send_to_root
-  before_action :redirect_if_authenticated, except: [:destroy]
+  before_action :redirect_if_authenticated, except: [ :destroy ]
 
   def create
     email = params.require(:session).permit(:email_address)[:email_address]
     user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
-      @flash = {:alert => user.errors.full_messages.to_sentence}
+      @flash = { alert: user.errors.full_messages.to_sentence }
       return
     end
 
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
     ###
 
     unless user.send_login_email(magic_link_token, verification.code)
-      @flash = {:alert => "We couldn't send your login email at this time. Please try again later."}
+      @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
       return
     end
 
@@ -45,19 +45,18 @@ class SessionsController < ApplicationController
     if user
       user.verify
       authenticate_session_for(user)
-      
+
       redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
       refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
 
     @flash = {
-      :alert =>
-      if params[:token]
+      alert:       if params[:token]
         "We were unable to verify you with this link."
-      elsif params[:verification_code]
+                   elsif params[:verification_code]
         "There was an error verifying your code."
-      end
+                   end
     }
   end
 

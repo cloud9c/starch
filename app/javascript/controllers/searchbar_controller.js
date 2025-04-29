@@ -14,7 +14,7 @@ export default class extends Controller {
     switch (event.key) {
       case "Enter":
         if (this.element.value.trim() !== "") {
-          this.element.closest("form").submit()
+          this.element.closest("form").requestSubmit()
         } else {
           event.preventDefault()
         }
