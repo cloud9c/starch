@@ -13,8 +13,7 @@ Rails.application.routes.draw do
   end
   resolve("Session") { [ :session ] }
 
-  resource :user do
-  end
+  resource :user
   resolve("User") { [ :user ] }
 
   resources :subscriptions
