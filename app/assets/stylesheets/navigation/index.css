@@ -31,6 +31,17 @@
     flex-grow: 1;
     flex-basis: 0;
   }
+
+  .searchbar {
+    width: 75%;
+    max-width: 20em;
+  }
+
+  #navbar__left {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+  }
 }
 
 #navbar__logo-container {
@@ -92,18 +103,23 @@
 
 #navbar #navigation {
   position: absolute;
-  background: var(--bg-primary);
-  flex-direction: column;
-  border-radius: var(--border-radius);
-  box-shadow: 0 0 0.25em var(--color-shadow);
-
-  border: 1px solid var(--color-border);
-  margin-top: 0.25em;
-  padding: 0.5em;
   z-index: 2;
-
+  left: 0;
+  right: 0;
   display: flex;
-  width: initial;
+  justify-content: center;
+  margin-top: 1em;
+
+  .action-group {
+    border: 1px solid var(--color-border);
+    padding: 0.5em;
+
+    width: fit-content;
+
+    background: var(--bg-primary);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 0.25em var(--color-shadow);
+  }
 }
 
 .native .breadcrumb {

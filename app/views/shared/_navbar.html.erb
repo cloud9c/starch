@@ -1,5 +1,30 @@
 <div id="navbar__container" class="web-only">
   <nav id="navbar">
+    <div id="navbar__left">
+      <% 
+        back_link_config = if controller_name == 'documents' && action_name == 'show'
+          { url: :back, text: "Back" }
+        elsif !current_page?(controller: :documents, action: :index)
+          { url: root_path, text: "Inbox" }
+        end
+      %>
+
+      <% if back_link_config %>
+        <%= link_to back_link_config[:text], back_link_config[:url], 
+              class: "btn btn--primary btn--icon btn--sm icon--arrow-left", 
+              data: { controller: "shortcut", shortcut_hotkey_value: "b", turbo_frame: "_top" } %>
+      <% end %>
+
+      <search class="searchbar searchbar--transparent <%= "hide" if current_page?(controller: :documents, action: :search) %>">
+        <%= form_with(url: search_path, method: :get) do |form| %>
+          <div class="searchfield-container">
+            <%= form.search_field :q, id: nil, autocomplete: "off", value: params[:q], placeholder: "Search", autofocus: false,
+                                  data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
+          </div>
+        <% end %>
+      </search>
+    </div>
+
     <details id="navbar__logo-container" data-controller="popup-menu shortcut" data-shortcut-hotkey-value="h" >
       <summary id="navbar__logo">
         <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
@@ -14,19 +39,19 @@
       ]
         %>
 
-      <div id="navigation" class="action-group">
-        <% navigation_items.each_with_index do |item, index| %>
-          <%= link_to item[:path],
-              data: { controller: "shortcut",
-                      "shortcut-hotkey-value": (index + 1).to_s },
-              class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item" do %>
-            <span><%= item[:text] %></span>
+      <div id="navigation">
+        <div class="action-group">
+          <% navigation_items.each_with_index do |item, index| %>
+            <%= link_to item[:path],
+                data: { controller: "shortcut",
+                        "shortcut-hotkey-value": (index + 1).to_s },
+                class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item" do %>
+              <span><%= item[:text] %></span>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </details>
-
-    <%= render "shared/searchbar" %>
 
     <div id="navbar__account__container">
       <% 

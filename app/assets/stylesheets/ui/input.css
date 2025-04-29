@@ -98,13 +98,21 @@ input::placeholder {
 	display: flex;
 	border: 1px solid var(--color-border);
 	border-radius: 2em;
-	width: var(--content-width);
 	background: var(--bg-primary);
+
+  &.searchbar--transparent {
+    background: none;
+    border: none;
+  }
 
   &:has(input:focus-visible) {
     outline: var(--focus-ring);
     background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
     border-color: var(--color-border);
+
+    &.searchbar--transparent {
+      background: none;
+    }
 
     input[type="search"] {
       outline: none;

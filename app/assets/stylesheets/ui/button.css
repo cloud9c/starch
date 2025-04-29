@@ -8,6 +8,7 @@
   cursor: pointer;
   background: var(--bg-input);
   color: var(--color-text-light);
+  height: fit-content;
 
   &:hover{
     background: var(--bg-input-hover);
@@ -79,7 +80,7 @@
 
   &.btn--sm {
     font-size: var(--text-sm);
-    padding: 0.2em 0.6em;
+    padding: 0.4em 0.6em;
 
     &::before {
       height: 1.125em;
