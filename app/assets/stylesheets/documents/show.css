@@ -1,5 +1,6 @@
 .content.content--document {
   display: block;
+  padding-bottom: 4em;
 }
 
 .document-header {
