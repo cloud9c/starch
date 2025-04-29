@@ -13,10 +13,11 @@
                           pattern: "[0-9]*", 
                           required: true, 
                           inputmode: "numeric",
-                          autocomplete: "off" %>
+                          autocomplete: "off",
+                          autofocus: true %>
             <%= form.submit "Verify email address", class: "btn" %>
       <%= invisible_captcha %>
     <% end %>
-    <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--top" %>
+    <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--top mx-auto" %>
   </div>
 </div>

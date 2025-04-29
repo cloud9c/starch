@@ -30,3 +30,8 @@
 .push--top {
   margin-top: 1em;
 }
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}

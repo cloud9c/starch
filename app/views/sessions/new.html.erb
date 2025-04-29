@@ -4,9 +4,9 @@
   <div class="content" id="login__content">
     <%= image_tag "/icon.svg", class: "login__logo" %>
     <h1 class="sheet__header">Welcome to Starch</h1>
-    <%= form_with(model: Session.new, id: "login__form",) do |form| %>
+    <%= form_with(model: Session.new, id: "login__form") do |form| %>
       <%= form.label :email_address, "Enter your email address" %>
-      <%= form.email_field :email_address, required: true %>
+      <%= form.email_field :email_address, required: true, autofocus: true %>
       <%= form.submit "Continue", class: "btn" %>
       <%= invisible_captcha %>
     <% end %>
