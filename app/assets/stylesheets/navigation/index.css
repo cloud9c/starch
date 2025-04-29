@@ -1,15 +1,7 @@
-@media (min-width: 100ch) {
-  body.body--scrolled-down {
-    #navbar__container {
-      border-bottom: 1px solid var(--color-border);
-    }
-  }
-}
-
 #navbar__container {
   width: 100%;
   z-index: 1;
-  background: var(--bg-main);
+  background: var(--bg-main-opaque);
   position: sticky;
   top: 0;
 

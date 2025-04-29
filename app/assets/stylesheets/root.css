@@ -113,6 +113,7 @@
   --bg-input-hover: oklch(var(--lch-blue-dark));
   --bg-input-ghost-hover: oklch(var(--lch-gray-100));
   --bg-main: oklch(var(--lch-gray-100));
+  --bg-main-opaque: oklch(var(--lch-gray-100) / 0.95);
   --bg-input-secondary: oklch(var(--lch-gray-200));
   --bg-input-secondary-selected: oklch(var(--lch-gray-500));
 
@@ -144,5 +145,6 @@
     --bg-primary: oklch(var(--lch-gray-900));
     --bg-secondary: oklch(var(--lch-gray-950));
     --bg-main: oklch(var(--lch-gray-950));
+    --bg-main-opaque: oklch(var(--lch-gray-950) / 0.95);
   }
 }
