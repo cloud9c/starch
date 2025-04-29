@@ -9,7 +9,7 @@
     <h1 class="sheet__header">Search</h1>
 
   <div class="push-bottom mobile-only content">
-    <%= render "shared/searchbar" %>
+    <%= render "shared/searchbar", on_search_view: true %>
   </div>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>

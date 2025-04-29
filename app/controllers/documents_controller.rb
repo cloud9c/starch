@@ -117,7 +117,7 @@ class DocumentsController < ApplicationController
       format.turbo_stream do
         if documents.empty?
           head :no_content
-        elsif page > 1
+        else
           render :append, status: documents.length == Document.per_page ? :ok : :partial_content
         end
       end
