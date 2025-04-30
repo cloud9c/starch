@@ -3,7 +3,6 @@ module Authentication
 
   included do
     before_action :require_authentication
-    before_action :resume_session
     helper_method :authenticated?
   end
 
@@ -21,7 +20,7 @@ module Authentication
     def require_authentication
       return if authenticated?
       session[:redirect_url] = request.url
-      redirect_to main_app.new_session_path
+      redirect_to new_session_path
     end
 
     def resume_session

@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   before_action :redirect_if_authenticated, except: [ :destroy ]
 
   def create
-    email = params.require(:session).permit(:email_address)[:email_address]
+    email = params.expect(:email_address)
     user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
 
       redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
     ###
 
@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
 
       redirect_url = url_from(session[:redirect_url]) || root_path
       session.delete(:redirect_url)
-      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
 
     @flash = {
