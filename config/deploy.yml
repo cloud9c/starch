@@ -2,7 +2,7 @@
 service: starch
 
 # Name of the container image.
-image: cloud9c/starch
+image: starch-reader/starch
 
 # Deploy to these servers.
 servers:
@@ -25,7 +25,7 @@ proxy:
 registry:
   # Specify the registry server, if you're not using Docker Hub
   server: ghcr.io
-  username: cloud9c
+  username: starch-reader
 
   # Always use an access token rather than real password when possible.
   password:
@@ -109,7 +109,7 @@ accessories:
       secret:
         - RAILS_MASTER_KEY
   reading-parser:
-    image: ghcr.io/cloud9c/reading_parser
+    image: ghcr.io/starch-reader/reading_parser
     cmd: 'npm start'
     host: starch.app
     port: 127.0.0.1:3001:3001

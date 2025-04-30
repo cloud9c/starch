@@ -34,7 +34,7 @@ jobs:
         with:
           context: ./reading_parser
           push: true
-          tags: ghcr.io/cloud9c/reading_parser:latest
+          tags: ghcr.io/starch-reader/reading_parser:latest
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
