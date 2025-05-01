@@ -20,7 +20,7 @@ module Authentication
     def require_authentication
       return if authenticated?
       session[:redirect_url] = request.path
-      redirect_to new_session_path
+      redirect_to sign_in_path
     end
 
     def resume_session
