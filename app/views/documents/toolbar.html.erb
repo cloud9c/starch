@@ -2,7 +2,7 @@
   <%= form_with model: @document_state do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
 
-    <%= link_to "", "javascript:history.back()", class: "btn btn--icon icon--arrow-left btn--ghost mobile-only" %>
+    <%= link_to "", "javascript:history.back()", class: "btn btn--icon icon--arrow-left btn--ghost mobile-only web-only" %>
 
     <fieldset class="toggle-group">
       <% DocumentState.statuses.keys.each do |status| %>

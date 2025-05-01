@@ -25,7 +25,18 @@
       ],
       "properties": {
         "context": "modal",
-        "presentation": "replace"
+        "presentation": "replace",
+        "modal_style": "full",
+        "modal_dismiss_gesture_enabled": false
+      }
+    },
+    {
+      "patterns": [
+       "\\?authenticated=true($|&)",
+       "\\?[^&]*&authenticated=true($|&)"
+      ],
+      "properties": {
+        "presentation": "clear_all"
       }
     }
   ]

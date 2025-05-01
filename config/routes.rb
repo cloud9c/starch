@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   root "public#index"
+  get "/privacy" => "public#privacy", as: :privacy
 
   resource :session do
     get :code
@@ -49,6 +50,4 @@ Rails.application.routes.draw do
             ErrorsController::VALID_STATUS_CODES.join("|")
           )
         }
-
-  get "/privacy" => "public#privacy", as: :privacy
 end
