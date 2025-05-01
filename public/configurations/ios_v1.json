@@ -31,14 +31,6 @@
     },
     {
       "patterns": [
-       "/session/new"
-      ],
-      "properties": {
-        "presentation": "replace"
-      }
-    },
-    {
-      "patterns": [
        "\\?authenticated=true($|&)",
        "\\?[^&]*&authenticated=true($|&)"
       ],
