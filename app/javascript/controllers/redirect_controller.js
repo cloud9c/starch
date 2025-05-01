@@ -1,14 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
-import { FetchRequest } from "@rails/request.js"
 
 export default class extends Controller {
   static values = {
-    url: String
+    url: { type: String, default: "/session/new" },
+    redirected: { type: Boolean, default: false }
   }
   
   connect() {
-    if (this.urlValue !== "") {
-      Turbo.visit(this.urlValue);
+    if (this.urlValue !== undefined && this.redirectedValue === false) {
+      this.redirectedValue = true
+      Turbo.visit(this.urlValue)
     }
   }
 }
