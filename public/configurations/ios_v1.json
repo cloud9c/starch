@@ -21,13 +21,20 @@
     },
     {
       "patterns": [
-       "/session/new"
+       "/session/new", "/session/code"
       ],
       "properties": {
         "context": "modal",
-        "presentation": "replace",
         "modal_style": "full",
         "modal_dismiss_gesture_enabled": false
+      }
+    },
+    {
+      "patterns": [
+       "/session/new"
+      ],
+      "properties": {
+        "presentation": "replace"
       }
     },
     {
