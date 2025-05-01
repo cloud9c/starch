@@ -20,7 +20,12 @@ module Authentication
     def require_authentication
       return if authenticated?
       session[:redirect_url] = request.path
-      redirect_to sign_in_path
+
+      if hotwire_native_app?
+        redirect_to redirect_path(url: new_session_path) and return
+      end
+
+      redirect_to new_session_path
     end
 
     def resume_session
@@ -38,6 +43,31 @@ module Authentication
         cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
         session
       end
+    end
+
+    def generate_verification_for(user)
+      magic_link_token = user.generate_magic_link
+      verification = user.generate_verification
+
+      unless user.send_login_email(magic_link_token, verification.code)
+        @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
+        nil
+      end
+    end
+
+    def authenticate_session(token, verification_code)
+      user = if token.present?
+        User.find_by_token_for(:magic_link, token)
+      elsif verification_code.present?
+        Verification.find_user(Current.session.id, verification_code)
+      end
+
+      if user.present?
+        resume_session && Current.session.update!(user: user)
+        user.verify
+      end
+
+      user.present?
     end
 
     def destroy_session

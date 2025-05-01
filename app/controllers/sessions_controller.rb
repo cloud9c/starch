@@ -38,8 +38,7 @@ class SessionsController < ApplicationController
 
   def authenticated
     if hotwire_native_app?
-      render html: "OK"
-      return
+      redirect_to redirect_path(url: root_path) and return
     end
 
     redirect_url = url_from(session[:redirect_url]) || inbox_path

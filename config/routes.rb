@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root "public#index"
   get "/privacy" => "public#privacy", as: :privacy
   get "/sign_in" => "public#sign_in", as: :sign_in
-  get "/delayed_sign_in" => "public#delayed_sign_in", as: :delayed_sign_in
+  get "/redirect" => "public#redirect", as: :redirect
 
   resource :session do
     get :code
