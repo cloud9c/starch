@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resource :session do
     get :code
     post :verify
+    get :authenticated
   end
   resolve("Session") { [ :session ] }
 

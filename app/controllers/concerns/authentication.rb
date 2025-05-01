@@ -40,10 +40,6 @@ module Authentication
       end
     end
 
-    def authenticate_session_for(user)
-      resume_session && Current.session.update!(user: user)
-    end
-
     def destroy_session
       verifications = Verification.where(session_id: Current.session.id)
       verifications.destroy_all

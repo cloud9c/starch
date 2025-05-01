@@ -43,14 +43,6 @@ class User < ApplicationRecord
     update!(verified_at: Time.current) if verified_at.nil?
   end
 
-  def self.find_user_by_params(token, verification_code)
-    if token.present?
-      User.find_by_token_for(:magic_link, token)
-    elsif verification_code.present?
-      Verification.find_user(Current.session.id, verification_code)
-    end
-  end
-
   def self.sweep
     unverified.destroy_all
   end

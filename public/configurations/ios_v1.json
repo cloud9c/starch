@@ -25,14 +25,13 @@
       ],
       "properties": {
         "context": "modal",
-        "modal_style": "full",
+        "modal_style": "page_sheet",
         "modal_dismiss_gesture_enabled": false
       }
     },
     {
       "patterns": [
-       "\\?authenticated=true($|&)",
-       "\\?[^&]*&authenticated=true($|&)"
+       "/session/authenticated"
       ],
       "properties": {
         "presentation": "clear_all"
