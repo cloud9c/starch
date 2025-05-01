@@ -1,7 +1,6 @@
 .typography {
   font-size: var(--text-lg);
   line-height: var(--line-height-loose);
-  margin-bottom: 1em;
   word-break: break-word;
   
   a[href] {

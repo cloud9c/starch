@@ -10,11 +10,10 @@ body {
 	font-size: var(--font-size);
 	letter-spacing: var(--letter-spacing);
 	line-height: var(--line-height);
-
 	color: var(--color-text);
-
-  min-height: 100dvh;
   background: var(--bg-main);
+
+  min-height: 100vh;
 }
 
 .main {
@@ -37,7 +36,6 @@ body {
 .content--center {
   display: flex;
   flex-direction: column;
-  gap: 1em;
   align-items: center;
 }
 
@@ -126,6 +124,11 @@ ol, ul {
   li {
     margin: 0.5em 0 0 2em;
   }
+}
+
+s {
+  text-decoration: line-through;
+  color: var(--color-text-secondary);
 }
 
 #flash {

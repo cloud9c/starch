@@ -21,9 +21,9 @@ class SessionsController < ApplicationController
       user.verify
       authenticate_session_for(user)
 
-      redirect_url = url_from(session[:redirect_url]) || root_path
+      redirect_url = url_from(session[:redirect_url]) || inbox_path
       session.delete(:redirect_url)
-      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
     ###
 
@@ -46,9 +46,9 @@ class SessionsController < ApplicationController
       user.verify
       authenticate_session_for(user)
 
-      redirect_url = url_from(session[:redirect_url]) || root_path
+      redirect_url = url_from(session[:redirect_url]) || inbox_path
       session.delete(:redirect_url)
-      refresh_or_redirect_to "#{redirect_url}?format=html", status: :see_other and return
+      redirect_to "#{redirect_url}?format=html", status: :see_other and return
     end
 
     @flash = {

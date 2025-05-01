@@ -4,8 +4,8 @@
       <% 
         back_link_config = if controller_name == 'documents' && action_name == 'show'
           { url: :back, text: "Back" }
-        elsif !current_page?(controller: :documents, action: :index)
-          { url: root_path, text: "Inbox" }
+        elsif !current_page?(inbox_path)
+          { url: inbox_path, text: "Inbox" }
         end
       %>
 
@@ -33,7 +33,7 @@
 
       <% 
       navigation_items = [
-        { path: root_path, icon: "inbox", text: "Inbox" },
+        { path: inbox_path, icon: "inbox", text: "Inbox" },
         { path: feed_path, icon: "feed", text: "Feed" },
         { path: later_path, icon: "later", text: "Later" },
       ]

@@ -6,14 +6,13 @@
   }
 
   .login__logo {
-    width: 4em;
-    height: 4em;
+    width: 3em;
+    height: 3em;
     margin-left: auto;
     margin-right: auto;
   }
 
   &.sheet {
-    padding-top: 8em;
     border-radius: 0;
     border-top: none;
   }

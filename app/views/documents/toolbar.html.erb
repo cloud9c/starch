@@ -2,6 +2,8 @@
   <%= form_with model: @document_state do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
 
+    <%= link_to "", "javascript:history.back()", class: "btn btn--icon icon--arrow-left btn--ghost mobile-only" %>
+
     <fieldset class="toggle-group">
       <% DocumentState.statuses.keys.each do |status| %>
         <%= form.radio_button :status, status, 

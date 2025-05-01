@@ -19,7 +19,7 @@ module Authentication
 
     def require_authentication
       return if authenticated?
-      session[:redirect_url] = request.url
+      session[:redirect_url] = request.path
       redirect_to new_session_path
     end
 

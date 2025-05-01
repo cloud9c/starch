@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  root "documents#index"
+  root "public#index"
 
   resource :session do
     get :code
@@ -33,14 +33,11 @@ Rails.application.routes.draw do
 
   resources :document_states, only: [ :create, :update ]
 
+  get "inbox" => "documents#index", as: :inbox
   get "later" => "documents#later", as: :later
   get "archive" => "documents#archive", as: :archive
   get "search" => "documents#search", as: :search
   get "feed" => "documents#feed", as: :feed
-
-  namespace :my do
-    get :navigation
-  end
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 

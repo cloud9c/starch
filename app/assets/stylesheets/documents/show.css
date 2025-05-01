@@ -1,6 +1,9 @@
 .content.content--document {
-  display: block;
-  padding-bottom: 4em;
+  flex-grow: 1;
+
+  @media (min-width: 100ch) {
+    margin-left: 5em;
+  }
 }
 
 .document-header {

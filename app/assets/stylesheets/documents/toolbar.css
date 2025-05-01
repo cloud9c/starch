@@ -19,9 +19,9 @@
   }
 }
 
-@media(max-width: 115ch) {
+@media(max-width: 100ch) {
   #document_toolbar {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     gap: 0.5em;
     margin: 0;
