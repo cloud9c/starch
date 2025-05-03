@@ -10,11 +10,11 @@ export default class extends Controller {
   
   connect() {
     this.scrollHandler = () => this.handleScroll()
-    this.element.addEventListener("scroll", this.scrollHandler)
+    window.addEventListener("scroll", this.scrollHandler)
   }
   
   disconnect() {
-    this.element.removeEventListener("scroll", this.scrollHandler)
+    window.removeEventListener("scroll", this.scrollHandler)
   }
   
   handleScroll() {
@@ -32,7 +32,6 @@ export default class extends Controller {
   async loadMore() {
     this.loadingValue = true
     const nextPage = this.pageValue + 1
-    console.log(this.queryValue)
 
     try {
       const url = new URL(window.location.pathname, window.location.origin)

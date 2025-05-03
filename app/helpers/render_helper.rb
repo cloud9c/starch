@@ -2,10 +2,9 @@ module RenderHelper
   extend self
 
   def render_video(document)
-    youtube_regex = /^(?:https?:\/\/)?(?:(?:www\.)?youtube.com\/watch\?v=|youtu.be\/)(\w+)$/
+    youtube_regex = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/
 
     match = youtube_regex.match(document.url)
-
     return unless match
 
     youtube_id = match[1]
