@@ -34,6 +34,14 @@ class SessionsController < ApplicationController
         "There was an error verifying your code."
               end
     }
+
+    respond_to do |format|
+      format.html {
+        flash[:alert] = @flash[:alert]
+        redirect_to new_session_path
+      }
+      format.turbo_stream
+    end
   end
 
   def authenticated
