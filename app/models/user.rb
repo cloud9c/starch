@@ -39,10 +39,6 @@ class User < ApplicationRecord
     end
   end
 
-  def verify
-    update!(verified_at: Time.current) if verified_at.nil?
-  end
-
   def self.sweep
     unverified.destroy_all
   end

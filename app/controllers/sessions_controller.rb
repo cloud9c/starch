@@ -75,7 +75,6 @@ class SessionsController < ApplicationController
 
     unless user.send_login_email(magic_link_token, verification.code)
       @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
-      nil
     end
   end
 
@@ -88,7 +87,7 @@ class SessionsController < ApplicationController
 
     if user.present?
       resume_session && Current.session.update!(user: user)
-      user.verify
+      user.update!(verified_at: Time.current)
     end
 
     user.present?
