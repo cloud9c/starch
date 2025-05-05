@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[ new create code verify ]
-  rate_limit to: 10, within: 3.minutes, only: :create
-  invisible_captcha only: %i[ create verify ], on_spam: :send_to_new
+  rate_limit to: 10, within: 3.minutes, only: %i[ create verify]
+  invisible_captcha only: %i[ create ], on_spam: :send_to_new
   before_action :redirect_if_authenticated, only: %i[ new create code verify ]
 
   def create
