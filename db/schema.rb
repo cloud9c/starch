@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_05_225253) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_05_234342) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -61,14 +61,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_225253) do
     t.integer "channel_id", null: false
     t.string "stable_id", null: false
     t.string "fingerprint", null: false
-    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["channel_id"], name: "index_entries_on_channel_id"
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false

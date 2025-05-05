@@ -24,7 +24,7 @@ class Verification < ApplicationRecord
     user = verification.user
     verification.destroy
 
-    return user
+    user
   end
 
   def self.sweep

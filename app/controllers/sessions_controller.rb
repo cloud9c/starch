@@ -72,11 +72,11 @@ class SessionsController < ApplicationController
       User.find_by_token_for(:magic_link, token)
     elsif verification_code.present?
       verification = session[:verification]
-      
-      if verification && 
+
+      if verification &&
         verification["code"] == verification_code &&
         Time.parse(verification["expires_at"]) > Time.current
-        
+
         user = User.find(verification["user_id"])
         session.delete(:verification)
         user
@@ -90,7 +90,7 @@ class SessionsController < ApplicationController
       user.update!(verified_at: Time.current) if user.verified_at.nil?
     end
 
-    return user.present?
+    user.present?
   end
 
   def send_to_new
