@@ -1,9 +1,7 @@
 class Verification < ApplicationRecord
   belongs_to :user
-  belongs_to :session
 
   validates :user_id, presence: true
-  validates :session_id, presence: true
   validates :code, presence: true, length: { is: 6 }
   validates :expires_at, presence: true
 
@@ -16,18 +14,20 @@ class Verification < ApplicationRecord
     self.expires_at = 10.minutes.from_now
   end
 
-  scope :active, -> { where("expires_at > ? AND used = ?", Time.current, false) }
-  scope :inactive, -> {  where("expires_at <= ? OR used = ?", Time.current, true) }
+  scope :active, -> { where("expires_at > ?", Time.current, false) }
+  scope :expired, -> { where("expires_at <= ?", Time.current, true) }
 
   def self.find_user(session_id, submitted_code)
-    vc = active.find_by(session_id: session_id, code: submitted_code)
-    return nil unless vc
+    verification = active.find_by(session_id: session_id, code: submitted_code)
+    return nil unless verification
 
-    vc.update(used: true)
-    vc.user
+    user = verification.user
+    verification.destroy
+
+    return user
   end
 
   def self.sweep
-    inactive.destroy_all
+    expired.destroy_all
   end
 end

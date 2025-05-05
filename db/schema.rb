@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_12_200853) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_05_225253) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -115,18 +115,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_12_200853) do
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end
 
-  create_table "verifications", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "code"
-    t.datetime "expires_at"
-    t.boolean "used", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "session_id"
-    t.index ["session_id"], name: "index_verifications_on_session_id"
-    t.index ["user_id"], name: "index_verifications_on_user_id"
-  end
-
   add_foreign_key "document_states", "documents"
   add_foreign_key "document_states", "users"
   add_foreign_key "entries", "channels"
@@ -137,6 +125,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_12_200853) do
   add_foreign_key "subscriptions_tags", "subscriptions"
   add_foreign_key "subscriptions_tags", "tags"
   add_foreign_key "tags", "users"
-  add_foreign_key "verifications", "sessions"
-  add_foreign_key "verifications", "users"
 end

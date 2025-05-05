@@ -14,66 +14,48 @@ module Authentication
 
   private
     def authenticated?
-      resume_session && Current.session&.user_id?
+      resume_session
     end
 
     def require_authentication
-      return if authenticated?
-      session[:redirect_url] = request.path
-
-      if hotwire_native_app?
-        redirect_to redirect_path(url: new_session_path) and return
-      end
-
-      redirect_to new_session_path
+      resume_session || request_authentication
     end
 
     def resume_session
-      Current.session ||= find_session_by_cookie || start_new_session
+      Current.session ||= find_session_by_cookie
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id])
-    end
+      session = Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      return nil unless session
 
-    def start_new_session
-      reset_session
-      Session.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
-        Current.session = session
-        cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
+      if session.active?
+        session.touch
         session
-      end
-    end
-
-    def generate_verification_for(user)
-      magic_link_token = user.generate_magic_link
-      verification = user.generate_verification
-
-      unless user.send_login_email(magic_link_token, verification.code)
-        @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
+      else
+        terminate_session
         nil
       end
     end
 
-    def authenticate_session(token, verification_code)
-      user = if token.present?
-        User.find_by_token_for(:magic_link, token)
-      elsif verification_code.present?
-        Verification.find_user(Current.session.id, verification_code)
-      end
-
-      if user.present?
-        resume_session && Current.session.update!(user: user)
-        user.verify
-      end
-
-      user.present?
+    def request_authentication
+      session[:return_to_after_authenticating] = request.url
+      redirect_to new_session_path
     end
 
-    def destroy_session
-      verifications = Verification.where(session_id: Current.session.id)
-      verifications.destroy_all
+    def after_authentication_url
+      session.delete(:return_to_after_authenticating) || root_url
+    end
+
+    def start_new_session_for(user)
       reset_session
+      user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
+        Current.session = session
+        cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
+      end
+    end
+
+    def terminate_session
       Current.session.destroy
       cookies.delete(:session_id)
     end

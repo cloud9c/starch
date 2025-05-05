@@ -13,7 +13,19 @@ class SessionsController < ApplicationController
       return
     end
 
-    generate_verification_for(user)
+    magic_link_token = user.generate_magic_link
+    verification_code = user.generate_verification_code
+
+    session[:verification] = {
+      user_id: user.id,
+      code: verification_code,
+      expires_at: 10.minutes.from_now.iso8601
+    }
+
+    unless user.send_login_email(magic_link_token, verification_code)
+      @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
+      return
+    end
 
     redirect_to code_session_path(email_address: email), status: :see_other
   end
@@ -23,8 +35,12 @@ class SessionsController < ApplicationController
   end
 
   def verify
-    if verify_session(params[:token], params[:verification_code])
-      redirect_to authenticated_session_path and return
+    if login(params[:token], params[:verification_code])
+      if hotwire_native_app?
+        redirect_to redirect_path(url: root_path) and return
+      end
+
+      redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
     end
 
     @flash = {
@@ -44,52 +60,44 @@ class SessionsController < ApplicationController
     end
   end
 
-  def authenticated
-    if hotwire_native_app?
-      redirect_to redirect_path(url: root_path) and return
-    end
-
-    redirect_url = url_from(session[:redirect_url]) || inbox_path
-    session.delete(:redirect_url)
-    redirect_to "#{redirect_url}?format=html", status: :see_other and return
-  end
-
   def destroy
-    destroy_session
+    terminate_session
     redirect_to new_session_path
   end
 
   private
+
+  def login(token, verification_code)
+    user = if token.present?
+      User.find_by_token_for(:magic_link, token)
+    elsif verification_code.present?
+      verification = session[:verification]
+      
+      if verification && 
+        verification["code"] == verification_code &&
+        Time.parse(verification["expires_at"]) > Time.current
+        
+        user = User.find(verification["user_id"])
+        session.delete(:verification)
+        user
+      else
+        nil
+      end
+    end
+
+    if user
+      start_new_session_for(user)
+      user.update!(verified_at: Time.current) if user.verified_at.nil?
+    end
+
+    return user.present?
+  end
 
   def send_to_new
     redirect_to new_session_path
   end
 
   def redirect_if_authenticated
-    redirect_to authenticated_session_path if authenticated?
-  end
-
-  def generate_verification_for(user)
-    magic_link_token = user.generate_magic_link
-    verification = user.generate_verification
-
-    unless user.send_login_email(magic_link_token, verification.code)
-      @flash = { alert: "We couldn't send your login email at this time. Please try again later." }
-    end
-  end
-
-  def verify_session(token, verification_code)
-    user = if token.present?
-      User.find_by_token_for(:magic_link, token)
-    elsif verification_code.present?
-      Verification.find_user(Current.session.id, verification_code)
-    end
-
-    if user.present?
-      resume_session && Current.session.update!(user: user)
-      user.update!(verified_at: Time.current)
-    end
-
-    user.present?
+    redirect_to root_path if authenticated?
   end
 end
