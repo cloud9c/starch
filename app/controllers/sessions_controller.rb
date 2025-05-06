@@ -17,9 +17,8 @@ class SessionsController < ApplicationController
     verification_code = user.generate_verification_code
 
     session[:verification] = {
-      user_id: user.id,
       code: verification_code,
-      expires_at: 10.minutes.from_now.iso8601
+      token: magic_link_token
     }
 
     unless user.send_login_email(magic_link_token, verification_code)
@@ -73,24 +72,17 @@ class SessionsController < ApplicationController
     elsif verification_code.present?
       verification = session[:verification]
 
-      if verification &&
-        verification["code"] == verification_code &&
-        Time.parse(verification["expires_at"]) > Time.current
-
-        user = User.find(verification["user_id"])
+      if verification && verification["code"] == verification_code
         session.delete(:verification)
-        user
-      else
-        nil
+        User.find_by_token_for(:magic_link, verification["token"])
       end
     end
 
-    if user
-      start_new_session_for(user)
-      user.update!(verified_at: Time.current) if user.verified_at.nil?
-    end
+    return false unless user
 
-    user.present?
+    start_new_session_for(user)
+    user.update!(verified_at: Time.current)
+    true
   end
 
   def send_to_new

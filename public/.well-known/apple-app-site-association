@@ -1,0 +1,38 @@
+{
+  "webcredentials": {
+    "apps": [
+      "73M8Q9C366.cloud9c.starch-ios"
+    ]
+  },
+  "activitycontinuation": {
+    "apps": [
+      "73M8Q9C366.cloud9c.starch-ios"
+    ]
+  },
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "73M8Q9C366.cloud9c.starch-ios"
+        ],
+        "components": [
+          {
+            "?": {
+              "force_browser": "?*"
+            },
+            "exclude": true,
+            "comment": "Allow bypassing app with ?force_browser=true query string"
+          },
+          {
+            "/": "/session/verify*",
+            "comment": "Allow magic link authentication to open in app"
+          },
+          {
+            "/": "*",
+            "comment": "All other paths go to the app"
+          }
+        ]
+      }
+    ]
+  }
+}
