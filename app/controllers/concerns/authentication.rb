@@ -40,10 +40,6 @@ module Authentication
 
     def request_authentication
       session[:return_to_after_authenticating] = request.url
-      if hotwire_native_app?
-        redirect_to redirect_path(url: new_session_path) and return
-      end
-
       redirect_to new_session_path
     end
 
@@ -52,7 +48,6 @@ module Authentication
     end
 
     def start_new_session_for(user)
-      reset_session
       user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
         Current.session = session
         cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
