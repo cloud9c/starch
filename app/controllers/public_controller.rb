@@ -7,6 +7,8 @@ class PublicController < ApplicationController
   end
 
   def redirect
-    @url = params[:url] || new_session_path
+    unless hotwire_native_app?
+      @url = params[:url] || new_session_path
+    end
   end
 end
