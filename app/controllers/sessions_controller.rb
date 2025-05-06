@@ -35,8 +35,11 @@ class SessionsController < ApplicationController
 
   def verify
     if login(params[:token], params[:verification_code])
-      after_login_path = hotwire_native_app? ? redirect_path(url: after_authentication_url) : after_authentication_url
-      redirect_to "#{after_login_path}?format=html", status: :see_other and return
+      if hotwire_native_app?
+        redirect_to redirect_path and return
+      end
+
+      redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
     end
 
     @flash = {
