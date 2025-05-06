@@ -5,9 +5,8 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :redirect_www_to_non_www
-  private
 
-  def redirect_www_to_root
+  def redirect_www_to_non_www
     if request.host.start_with?("www.")
       redirect_to request.original_url.sub("www.", ""), status: :moved_permanently
     end
