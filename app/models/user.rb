@@ -23,11 +23,7 @@ class User < ApplicationRecord
   end
 
   def generate_verification_code
-    if email_address == "test@example.com"
-      "000000"
-    else
-      SecureRandom.random_number(0..999999).to_s.rjust(6, "0")
-    end
+    SecureRandom.random_number(0..999999).to_s.rjust(6, "0")
   end
 
   def send_login_email(magic_link_token, verification_code)

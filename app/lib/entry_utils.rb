@@ -82,13 +82,6 @@ module EntryUtils
 
     images.each do |img|
       src = img["src"]
-      next if src.nil? || src.empty?
-
-      if src.start_with?("//")
-        src = "https:#{src}"
-      elsif src.start_with?("/")
-        next
-      end
 
       begin
         dimensions = FastImage.size(src)
@@ -104,8 +97,6 @@ module EntryUtils
         next
       end
     end
-
-    nil
   end
 
   def get_raw_entry_data(entry_data)
