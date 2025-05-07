@@ -24,7 +24,6 @@ Rails.application.routes.draw do
         get :checkout
         post :create_checkout_session
         get :return
-        post :create_billing_portal
       end
     end
   end

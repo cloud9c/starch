@@ -6,11 +6,16 @@ module Authentication
     before_action :require_provision
     helper_method :authenticated?
     helper_method :on_trial?
+    helper_method :provisioned?
   end
 
   class_methods do
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
+      skip_before_action :require_provision, **options
+    end
+
+    def allow_unprovisioned_access(**options)
       skip_before_action :require_provision, **options
     end
   end

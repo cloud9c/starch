@@ -2,7 +2,25 @@
 
 <div class="sheet">
   <h1 class="sheet__header push_quarter--bottom">Subscribe to Starch</h1>
-  <p class="push--bottom text-lg">Your free trial will expire on <b>May 14th, 2025</b>.</p>
+
+  <% trial_end_date = Current.user.created_at + 30.days %>
+  <% if Time.current > trial_end_date %>
+    <p class="push--bottom text-lg">Your free trial has <b>expired</b>.</p>
+  <% else %>
+    <% days_remaining = ((trial_end_date - Time.current) / 1.day).to_i %>
+
+    <p class="push--bottom text-lg">
+      <% if Time.current > trial_end_date %>
+        Your free trial has <b>expired</b>.
+      <% elsif days_remaining == 0 %>
+        Your free trial will expire <b>today</b>.
+      <% elsif days_remaining <= 3 %>
+        Your free trial will expire <b>in <%= pluralize(days_remaining, 'day') %></b>.
+      <% else %>
+        Your free trial will expire on <b><%= local_relative_time(trial_end_date, type: 'time-or-date') %></b>.
+      <% end %>
+    </p>
+  <% end %>
 
   <div id="checkout" class="content--checkout">
     <div id="checkout-container" data-controller="checkout"

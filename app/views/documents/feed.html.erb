@@ -9,7 +9,7 @@
   <h1 class="sheet__header">Feed</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
-      <%= render partial: 'documents/preview', collection: @documents, cached: ->(document) { [document, document.view_extracted] }  %>
+      <%= render partial: 'documents/preview', collection: @documents %>
     <% else %>
       <div class="document-list__nothing-new">
         <span>No results.</span>

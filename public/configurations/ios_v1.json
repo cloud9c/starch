@@ -21,7 +21,7 @@
     },
     {
       "patterns": [
-       "/session/new", "/session/code", "/session/verify"
+       "/session/new", "/session/code", "/session/verify", "/user/billing"
       ],
       "properties": {
         "context": "modal",

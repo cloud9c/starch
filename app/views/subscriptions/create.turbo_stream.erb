@@ -1,6 +1,6 @@
 <% if @subscription %>
   <%= turbo_stream.append "subscription-list" do %>
-      <%= render "subscriptions/preview", preview: @subscription, cached: true %>
+      <%= render "subscriptions/preview", preview: @subscription %>
   <% end %>
 <% end %>
 <% if @flash %>

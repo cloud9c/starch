@@ -8,8 +8,4 @@
 
   #checkout-container {
   }
-
-  &:not([complete]) {
-    height: 1000px;
-  }
 }

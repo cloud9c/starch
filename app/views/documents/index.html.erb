@@ -16,7 +16,7 @@
           Mark all as seen
         <% end %>
       </div>
-      <%= render partial: 'documents/preview', collection: @unread_documents, cached: ->(document) { [document, document.view_extracted] } %>
+      <%= render partial: 'documents/preview', collection: @unread_documents %>
     <% elsif @unread_documents.empty? %>
       <div class="document-list__nothing-new">
         <span>
@@ -30,6 +30,6 @@
     <div class="document-list__title-row">
       <h3 class="document-list__title">Previously seen</h3>
     </div>
-    <%= render partial: 'documents/preview', collection: @read_documents, cached: ->(document) { [document, document.view_extracted] } %>
+    <%= render partial: 'documents/preview', collection: @read_documents %>
   </div>
 </div>
