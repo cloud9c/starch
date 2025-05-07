@@ -57,6 +57,12 @@
   --navbar-width: min(100%, 70em);
   --border-radius: 0.25em;
   --sheet-padding: 1em;
+  --navbar-padding: 4.5em;
+
+
+  @media (max-width: 100ch) {
+  --navbar-padding: 2em;
+  }
   
   /* LCH color definitions */
   --lch-white: 100% 0 0;

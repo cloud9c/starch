@@ -2,9 +2,8 @@
   width: 100%;
   z-index: 1;
   background: var(--bg-primary-opaque);
-  position: sticky;
+  position: fixed;
   top: 0;
-  min-height: 1em;
 }
 
 @media (min-width: 100ch) {

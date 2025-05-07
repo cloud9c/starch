@@ -3,6 +3,7 @@ html {
 }
 
 body {
+  padding-top: var(--navbar-padding);
 	font-family: var(--font-sans);
 	font-size: var(--font-size);
 	letter-spacing: var(--letter-spacing);
