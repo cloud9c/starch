@@ -43,7 +43,8 @@ class BillingsController < ApplicationController
       mode: "subscription",
       return_url: "#{request.base_url}/user/billing/return?session_id={CHECKOUT_SESSION_ID}",
       automatic_tax: { enabled: true },
-      allow_promotion_codes: true
+      allow_promotion_codes: true,
+      payment_method_collection: "if_required"
     }
 
     if Current.user.stripe_customer_id.present?
