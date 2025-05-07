@@ -25,6 +25,8 @@
     &:not(:has(.document-preview)) {
       display: none;
     }
+    
+    margin-bottom: calc(-1 * var(--sheet-padding));
   }
 
   .document-list__title-row {

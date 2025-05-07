@@ -4,7 +4,7 @@
 
 #document_toolbar {
   display: none;
-  position: absolute;
+  position: fixed;
   left: calc((var(--sheet-width) - var(--navbar-width))/2);
   padding-left: 1em;
 
@@ -17,9 +17,10 @@
     flex-direction: column;
     gap: 0.5em;
   }
+
 }
 
-@media(max-width: 100ch) {
+@media(max-width: 110ch) {
   #document_toolbar {
     position: sticky;
     bottom: 0;

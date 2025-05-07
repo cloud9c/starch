@@ -4,10 +4,13 @@
   background: var(--bg-primary-opaque);
   position: sticky;
   top: 0;
+}
 
-
-  @media (min-width: 100ch) {
-    border-bottom: 1px solid var(--color-border);
+@media (min-width: 100ch) {
+  .body--scrolled {
+    #navbar__container {
+      border-bottom: 1px solid var(--color-border-light);
+    }
   }
 }
 
@@ -133,4 +136,8 @@
   font-weight: 500;
   overflow: hidden;
   text-overflow: clip;
+
+  @media (max-width: 100ch) {
+    font-size: var(--text-xs)
+  }
 }

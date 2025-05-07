@@ -2,24 +2,23 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    this.lastScrollTop = 0
     this.boundScrollHandler = this.handleScroll.bind(this)
     window.addEventListener("scroll", this.boundScrollHandler)
+    // Check initial scroll position when connecting
+    this.handleScroll()
   }
   
   disconnect() {
     window.removeEventListener("scroll", this.boundScrollHandler)
   }
   
-  handleScroll(event) {
+  handleScroll() {
     const currentScrollTop = window.scrollY || document.documentElement.scrollTop
     
-    if (currentScrollTop > this.lastScrollTop) {
-      document.body.classList.add("body--scrolled-down")
+    if (currentScrollTop > 0) {
+      document.body.classList.add("body--scrolled")
     } else {
-      document.body.classList.remove("body--scrolled-down")
+      document.body.classList.remove("body--scrolled")
     }
-    
-    this.lastScrollTop = currentScrollTop
   }
 }

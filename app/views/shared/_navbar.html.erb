@@ -1,8 +1,10 @@
 <div id="navbar__container">
-
   <% if on_trial? && current_page?(inbox_path) %>
-    <%= link_to "You have #{(Current.user.created_at + 30.days - Time.current).to_i / 1.day} days left on your free trial. Let's pay for Starch »",
-        user_billing_path, id: "trial-banner" %>
+    <%= link_to user_billing_path, id: "trial-banner" do %>
+      <span class="desktop-only">You have</span>
+      <%= (Current.user.created_at + 30.days - Time.current).to_i / 1.day %> days left on your free trial.
+      <span>Let's pay for Starch »</span>
+    <% end %>
   <% end %>
 
   <nav id="navbar" class="web-only">
