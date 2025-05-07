@@ -53,7 +53,7 @@ class BillingsController < ApplicationController
       success_url: "#{request.base_url}/user/billing/return?session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "#{request.base_url}/user",
       automatic_tax: { enabled: true },
-      allow_promotion_codes: true,
+      allow_promotion_codes: true
     }
 
     if Current.user.stripe_customer_id.present?
