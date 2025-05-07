@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :channels, through: :subscriptions
   has_many :document_states, dependent: :destroy
 
+  before_destroy :cleanup_stripe_customer
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address,
             presence: true,
@@ -44,5 +46,9 @@ class User < ApplicationRecord
 
   def self.sweep
     unverified.destroy_all
+  end
+
+  def cleanup_stripe_customer
+    StripeUtils.handle_user_destroyed(self)
   end
 end

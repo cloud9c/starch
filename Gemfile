@@ -96,3 +96,6 @@ gem "requestjs-rails"
 
 # render local time
 gem "local_time"
+
+# Stripe integration
+gem "stripe"

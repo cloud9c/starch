@@ -3,18 +3,33 @@ module Authentication
 
   included do
     before_action :require_authentication
+    before_action :require_provision
     helper_method :authenticated?
+    helper_method :on_trial?
   end
 
   class_methods do
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
+      skip_before_action :require_provision, **options
     end
   end
 
   private
     def authenticated?
       resume_session
+    end
+
+    def on_trial?
+      Current.user && !Current.user.paid? && Current.user.created_at > 30.days.ago
+    end
+
+    def provisioned?
+      Current.user && (Current.user.paid? || on_trial?)
+    end
+
+    def require_provision
+      provisioned? || request_provision
     end
 
     def require_authentication
@@ -44,7 +59,15 @@ module Authentication
         redirect_to redirect_path(url: new_session_path) and return
       end
 
-      redirect_to new_session_path
+      redirect_to new_session_path and return
+    end
+
+    def request_provision
+      if hotwire_native_app?
+        redirect_to redirect_path(url: user_billing_path) and return
+      end
+
+      redirect_to user_billing_path
     end
 
     def after_authentication_url

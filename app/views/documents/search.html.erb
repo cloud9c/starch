@@ -8,16 +8,14 @@
      data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
     <h1 class="sheet__header">Search</h1>
 
-  <div class="content">
-    <search class="searchbar push--bottom">
-      <%= form_with(url: search_path, method: :get, data: { turbo_stream: true }) do |form| %>
-        <div class="searchfield-container">
-          <%= form.search_field :q, id: nil, autocomplete: "off", value: params[:q], placeholder: "Search", autofocus: true,
-                                data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
-        </div>
-      <% end %>
-    </search>
-  </div>
+  <search class="searchbar push--bottom">
+    <%= form_with(url: search_path, method: :get, data: { turbo_stream: true }) do |form| %>
+      <div class="searchfield-container">
+        <%= form.search_field :q, id: nil, autocomplete: "off", value: params[:q], placeholder: "Search", autofocus: true,
+                              data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
+      </div>
+    <% end %>
+  </search>
 
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>

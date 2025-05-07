@@ -19,6 +19,10 @@
   .mobile-only {
     display: none !important;
   }
+
+  .align--center\@desktop {
+    text-align: center
+  }
 }
 
 @media (max-width: 100ch) {
@@ -28,9 +32,57 @@
 }
 
 .push--bottom {
-  margin-bottom: 1em;
+  margin-bottom: 1em !important;
 }
 
 .push--top {
-  margin-top: 1em;
+  margin-top: 1em !important;
+}
+
+.push_quarter--bottom {
+  margin-bottom: 0.25em !important;
+}
+
+.push_quarter--top {
+  margin-top: 0.25em !important;
+}
+
+.align--center {
+  text-align: center !important;
+}
+
+.text-xs {
+  font-size: var(--text-xs) !important;
+}
+
+.text-sm {
+  font-size: var(--text-sm) !important;
+}
+
+.text-base {
+  font-size: var(--text-base) !important;
+}
+
+.text-lg {
+  font-size: var(--text-lg) !important;
+}
+
+.text-xl {
+  font-size: var(--text-xl) !important;
+}
+
+.text-2xl {
+  font-size: var(--text-2xl) !important;
+}
+
+.text-3xl {
+  font-size: var(--text-3xl) !important;
+}
+
+.text-4xl {
+  font-size: var(--text-4xl) !important;
+}
+
+.text-5xl {
+  font-size: var(--text-5xl) !important;
 }

@@ -1,24 +1,21 @@
 <% content_for(:title) { 'Sign in to Starch' } %>
 
-<div class="sheet login">
-  <div class="content" id="login__content">
-    <%= image_tag "/icon.svg", class: "login__logo" %>
-    <h1 class="sheet__header">Welcome to Starch</h1>
-    <%= form_with(url: verify_session_path, id: "login__form" ) do |form| %>
-      <%= form.label :verification_code do %>
-        <p>Enter the code sent to</p>
-        <p class="login__email-address"><%= params[:email_address] %></p>
-      <% end %>
-      <%= form.text_field :verification_code, 
-                          pattern: "[0-9]*", 
-                          required: true, 
-                          inputmode: "numeric",
-                          maxlength: 6,
-                          autocomplete: "off",
-                          autofocus: true %>
-            <%= form.submit "Verify email address", class: "btn" %>
-      <%= invisible_captcha %>
+<div class="sheet sheet--login align--center">
+  <h1 class="sheet__header">Welcome to Starch!</h1>
+  <%= form_with(url: verify_session_path, id: "login__form") do |form| %>
+    <%= form.label :verification_code do %>
+      <p>Enter the code sent to</p>
+      <p class="login__email-address"><%= params[:email_address] %></p>
     <% end %>
-  </div>
+    <%= form.text_field :verification_code, 
+                        pattern: "[0-9]*", 
+                        required: true, 
+                        inputmode: "numeric",
+                        maxlength: 6,
+                        autocomplete: "off",
+                        autofocus: true %>
+          <%= form.submit "Verify email address", class: "btn" %>
+    <%= invisible_captcha %>
+  <% end %>
   <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--top" %>
 </div>

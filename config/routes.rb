@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
-  get "errors/show"
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   root "public#index"
-  get "/privacy" => "public#privacy", as: :privacy
-  get "/sign_in" => "public#sign_in", as: :sign_in
-  get "/redirect" => "public#redirect", as: :redirect
+
+  controller :public do
+    get "privacy", action: :privacy, as: :privacy
+    get "redirect", action: :redirect, as: :redirect
+  end
 
   resource :session do
     get :code
@@ -17,8 +18,21 @@ Rails.application.routes.draw do
   end
   resolve("Session") { [ :session ] }
 
-  resource :user
+  resource :user do
+    resource :billing, only: [ :show ] do
+      collection do
+        get :checkout
+        post :create_checkout_session
+        get :return
+        post :create_billing_portal
+      end
+    end
+  end
   resolve("User") { [ :user ] }
+
+  controller :stripe do
+    post "/stripe/webhook", action: :webhook
+  end
 
   resources :subscriptions
 
@@ -35,16 +49,19 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :document_states, only: [ :create, :update ]
+  controller :documents do
+    get "inbox", action: :index, as: :inbox
+    get "later", action: :later, as: :later
+    get "archive", action: :archive, as: :archive
+    get "search", action: :search, as: :search
+    get "feed", action: :feed, as: :feed
+  end
 
-  get "inbox" => "documents#index", as: :inbox
-  get "later" => "documents#later", as: :later
-  get "archive" => "documents#archive", as: :archive
-  get "search" => "documents#search", as: :search
-  get "feed" => "documents#feed", as: :feed
+  resources :document_states, only: [ :create, :update ]
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  get "errors/show"
   match "/:code",
         to: "errors#show",
         via: :all,

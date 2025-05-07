@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_05_234342) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_07_021458) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -111,7 +111,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_05_234342) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "verified_at"
+    t.boolean "paid", default: false
+    t.string "stripe_customer_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"
     t.index ["verified_at"], name: "index_users_on_verified_at"
   end
 

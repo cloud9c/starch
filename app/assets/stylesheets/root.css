@@ -56,6 +56,7 @@
   --sheet-width: 100%;
   --navbar-width: min(100%, 70em);
   --border-radius: 0.25em;
+  --sheet-padding: 1em;
   
   /* LCH color definitions */
   --lch-white: 100% 0 0;
@@ -113,7 +114,8 @@
   --bg-input-hover: oklch(var(--lch-blue-dark));
   --bg-input-ghost-hover: oklch(var(--lch-gray-100));
   --bg-main: oklch(var(--lch-gray-100));
-  --bg-main-opaque: oklch(var(--lch-gray-100) / 0.95);
+  --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
+  --bg-tertiary: oklch(var(--lch-yellow) / 0.2);
   --bg-input-secondary: oklch(var(--lch-gray-200));
   --bg-input-secondary-selected: oklch(var(--lch-gray-500));
 
@@ -145,6 +147,7 @@
     --bg-primary: oklch(var(--lch-gray-900));
     --bg-secondary: oklch(var(--lch-gray-950));
     --bg-main: oklch(var(--lch-gray-950));
-    --bg-main-opaque: oklch(var(--lch-gray-950) / 0.95);
+    --bg-primary-opaque: oklch(var(--lch-gray-900) / 0.95);
+    --bg-tertiary: oklch(var(--lch-yellow) / 0.4);
   }
 }

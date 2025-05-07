@@ -1,0 +1,12 @@
+<% content_for(:title) { 'Subscribe to Starch' } %>
+
+<div class="sheet">
+  <h1 class="sheet__header push_quarter--bottom">Subscribe to Starch</h1>
+  <p class="push--bottom text-lg">Your free trial will expire on <b>May 14th, 2025</b>.</p>
+
+  <div id="checkout" class="content--checkout">
+    <div id="checkout-container" data-controller="checkout"
+        data-checkout-target="container"
+        data-checkout-stripe-key-value="<%= Rails.application.credentials.dig(Rails.env.to_sym, :stripe, :publishable_key) %>"></div>
+  </div>
+</div>

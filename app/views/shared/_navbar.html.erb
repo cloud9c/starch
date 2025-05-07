@@ -1,5 +1,11 @@
-<div id="navbar__container" class="web-only">
-  <nav id="navbar">
+<div id="navbar__container">
+
+  <% if on_trial? && current_page?(inbox_path) %>
+    <%= link_to "You have #{(Current.user.created_at + 30.days - Time.current).to_i / 1.day} days left on your free trial. Let's pay for Starch »",
+        user_billing_path, id: "trial-banner" %>
+  <% end %>
+
+  <nav id="navbar" class="web-only">
     <div id="navbar__left">
       <% 
         back_link_config = if controller_name == 'documents' && action_name == 'show'

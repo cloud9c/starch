@@ -1,11 +1,9 @@
 <% content_for(:title) { "Starch — One place to read them all" } %>
 
-<div class="sheet login">
-  <div class="content content--center">
-    <h1 class="sheet__header">Starch</h1>
-    <div class="typography">
-      <p>One <s>ring</s> place to <s>rule</s> read them all.</p>
-    </div>
-    <%= link_to "Sign in", new_session_path, class: "btn" %>
+<div class="sheet login align--center">
+  <h1 class="sheet__header">Starch</h1>
+  <div class="typography">
+    <p>One <s>ring</s> place to <s>rule</s> read them all.</p>
   </div>
+  <%= link_to "Sign in", new_session_path, class: "btn" %>
 </div>

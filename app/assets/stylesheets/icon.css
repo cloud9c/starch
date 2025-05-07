@@ -80,3 +80,7 @@
 .icon--user-circle::before {
   mask-image: url(/icons/user-circle.svg);
 }
+
+.icon--billing::before {
+  mask-image: url(/icons/billing.svg);
+}

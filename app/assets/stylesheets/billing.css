@@ -1,0 +1,15 @@
+#checkout {
+  width: var(--navbar-width);
+  border: 2px solid var(--color-border);
+  padding: 2em;
+  background: #e8e8e8;
+  border-radius: 0.5em;
+  margin-top: 2em;
+
+  #checkout-container {
+  }
+
+  &:not([complete]) {
+    height: 1000px;
+  }
+}

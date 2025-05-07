@@ -2,7 +2,7 @@
 <% content_for(:title) { "Subscriptions" } %>
 
 <div class="sheet">
-  <h1 class="sheet__header">
+  <h1 class="sheet__header align--center">
     <% case response.code.to_i %>
     <% when 400 %>
       Bad Request.
@@ -18,8 +18,6 @@
       An unexpected error occurred.
     <% end %>
   </h1>
-  <div class="content content--center">
-    <p>That's an error.</p>
-    <%= link_to "Go to inbox", inbox_path, class: "btn" %>
-  </div>
+  <p class="push--bottom">That's an error.</p>
+  <%= link_to "Go to inbox", inbox_path, class: "btn" %>
 </div>
