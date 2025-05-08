@@ -83,20 +83,14 @@ module EntryUtils
     images.each do |img|
       src = img["src"]
 
-      begin
-        dimensions = FastImage.size(src)
+      dimensions = FastImage.size(src)
+      next if dimensions.nil?
 
-        next if dimensions.nil?
-
-        width, height = dimensions
-
-        if width >= min_width && height >= min_height
-          return src
-        end
-      rescue => e
-        next
-      end
+      width, height = dimensions
+      return src if width >= min_width && height >= min_height
     end
+
+    nil
   end
 
   def get_raw_entry_data(entry_data)
