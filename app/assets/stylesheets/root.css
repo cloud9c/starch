@@ -59,9 +59,12 @@
   --sheet-padding: 1em;
   --navbar-padding: 4.5em;
 
-
   @media (max-width: 100ch) {
-  --navbar-padding: 2em;
+    --navbar-padding: 0;
+
+    :has(#trial-banner) {
+      --navbar-padding: 1em;
+    }
   }
   
   /* LCH color definitions */

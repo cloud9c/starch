@@ -48,12 +48,16 @@ body {
 
   .sheet__header {
     text-align: center;
-    width: var(--content-width);
+    width: 100%;
     font-weight: 600;
     background: var(--bg-primary);
     margin-bottom: 0.5em;
     font-size: var(--text-5xl);
     line-height: var(--line-height-tight);
+
+    @media (max-width: 100ch) {
+      text-align: left;
+    }
   }
 }
 
