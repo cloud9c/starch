@@ -1,7 +1,7 @@
 <% content_for(:title) { 'Sign in to Starch' } %>
 
 <div class="sheet sheet--login align--center">
-  <h1 class="sheet__header">Welcome to Starch!</h1>
+  <h1 class="sheet__header">Sign in or create account</h1>
   <%= form_with(url: verify_session_path, id: "login__form") do |form| %>
     <%= form.label :verification_code do %>
       <p>Enter the code sent to</p>
