@@ -8,7 +8,11 @@ class BillingsController < ApplicationController
       redirect_to_billing_portal and return
     end
 
-    render :subscribe
+    render :checkout
+  end
+
+  def required_checkout
+    render :checkout
   end
 
   def return
@@ -22,11 +26,7 @@ class BillingsController < ApplicationController
 
       flash[:notice] = "Subscription activated!"
 
-      if hotwire_native_app?
-        redirect_to redirect_path and return
-      end
-
-      redirect_to inbox_path and return
+      clear_all_or_redirect_to inbox_path and return
     end
 
     flash[:alert] = "Your payment was not completed. Please try again."

@@ -136,10 +136,6 @@
   font-weight: 500;
   overflow: hidden;
   text-overflow: clip;
-
-  @media (max-width: 100ch) {
-    font-size: var(--text-xs)
-  }
 }
 
 body:has(#trial-banner) {

@@ -69,10 +69,10 @@ module Authentication
 
     def request_provision
       if hotwire_native_app?
-        redirect_to redirect_path(url: user_billing_path) and return
+        redirect_to redirect_path(url: required_checkout_user_billing_path) and return
       end
 
-      redirect_to user_billing_path
+      redirect_to required_checkout_user_billing_path
     end
 
     def after_authentication_url

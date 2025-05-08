@@ -1,8 +1,14 @@
 <% content_for(:title) { 'Sign in to Starch' } %>
 
-<div class="sheet sheet--login align--center">
-  <h1 class="sheet__header">Sign in or create account</h1>
-  <%= form_with(url: session_path, id: "login__form") do |form| %>
+<div class="sheet sheet--login align--center push--top">
+  <div>
+    <img src="/icon.svg" class="login__logo push_quarter--bottom" />
+    <h1 class="sheet__header align--center">
+      Starch
+    </h1>
+  </div>
+
+  <%= form_with(url: session_path, id: "login__form", class: "align--left@mobile") do |form| %>
     <%= form.label :email_address, "Enter your email address" %>
     <%= form.email_field :email_address, required: true, autofocus: true %>
     <%= form.submit "Continue", class: "btn" %>

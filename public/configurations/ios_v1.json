@@ -21,17 +21,16 @@
     },
     {
       "patterns": [
-       "/session/new", "/session/code", "/session/verify", "/user/billing"
+       "/session/new", "/session/code", "/session/verify", "/user/billing/required_checkout"
       ],
       "properties": {
         "context": "modal",
-        "modal_style": "page_sheet",
         "modal_dismiss_gesture_enabled": false
       }
     },
     {
       "patterns": [
-       "/redirect"
+       "/clear_all"
       ],
       "properties": {
         "presentation": "clear_all"

@@ -1,9 +1,0 @@
-<% content_for(:title) { 'Billing' } %>
-
-<div class="sheet">
-  <h1 class="sheet__header">Billing</h1>
-
-  <%= form_with url: create_billing_portal_user_billing_path, method: :post, local: true do %>
-    <%= button_tag "Manage billing", type: "submit", class: "btn" %>
-  <% end %>
-</div>
