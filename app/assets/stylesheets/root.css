@@ -57,14 +57,10 @@
   --navbar-width: min(100%, 70em);
   --border-radius: 0.25em;
   --sheet-padding: 1em;
-  --navbar-padding: 4.5em;
+  --navbar-padding: 3.3em;
 
   @media (max-width: 100ch) {
-    --navbar-padding: 0;
-
-    :has(#trial-banner) {
-      --navbar-padding: 1em;
-    }
+    --navbar-padding: 0em;
   }
   
   /* LCH color definitions */
