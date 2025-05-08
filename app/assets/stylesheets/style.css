@@ -57,10 +57,6 @@ body {
   }
 }
 
-.native .sheet__header {
-  display: none;
-}
-
 a {
 	color: inherit;
 }
