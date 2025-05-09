@@ -1,6 +1,6 @@
 <% active = params["subscription"] == avatar.id.to_s %>
 
-<a class="subscription-avatar" href="<%= active ? "?" : "?subscription=#{avatar.id}" %>" data-active="<%= active ? "true" : "false" %>">
+<a class="subscription-avatar" href="<%= active ? "?" : "?subscription=#{avatar.id}" %>" data-active="<%= active ? "true" : "false" %>" data-turbo-stream="true" >
   <% channel = avatar.channel %>
   <picture>
     <source srcset="<%= channel.icon %>"/>

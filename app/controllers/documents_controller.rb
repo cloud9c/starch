@@ -12,14 +12,23 @@ class DocumentsController < ApplicationController
   end
 
   def feed
+    page = params[:page] ? params[:page].to_i : 1
     @documents = Document.query(Current.user.id, {
-      page: params[:page] ? params[:page].to_i : 1,
+      page: page,
       subscription: params[:subscription]
     })
 
     @subscriptions = Current.user.subscriptions.includes(:channel).all
 
-    respond_with_pagination(:feed, @documents)
+    respond_to do |format|
+      format.html do
+        render :feed, status: @documents.length == Document.per_page ? :ok : :partial_content
+      end
+
+      format.turbo_stream do
+        render page > 1 ? :append : :feed, status: @documents.length == Document.per_page ? :ok : :partial_content
+      end
+    end
   end
 
   def later

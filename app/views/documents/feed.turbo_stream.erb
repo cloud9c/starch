@@ -7,3 +7,7 @@
     </div>
   <% end %>
 <% end %>
+
+<%= turbo_stream.replace "subscription_avatar_list" do %>
+  <%= render "subscriptions/avatar_list", subscriptions: @subscriptions %>
+<% end %>
