@@ -44,20 +44,17 @@
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 2.5rem;
+  --text-xl: 1.5rem;
+  --text-xxl: 2.2rem;
   
   /* Layout */
   --transition: 0.1s ease;
   --content-width: min(100%, 37.5rem);
-  --sheet-width: 100%;
+  --page-width: 100%;
   --navbar-width: min(100%, 70rem);
   --border-radius: 0.25em;
-  --sheet-padding: 1rem;
-  --navbar-padding: 3.3rem;
+  --page-padding: 1rem;
+  --navbar-padding: 4rem;
 
   @media (max-width: 100ch) {
     --navbar-padding: 0rem;

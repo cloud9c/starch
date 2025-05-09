@@ -4,9 +4,9 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="sheet document-list" data-controller="documents--list" 
+<div class="page document-list" data-controller="documents--list" 
      data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
-    <h1 class="sheet__header">Search</h1>
+    <h1 class="page__header">Search</h1>
 
   <search class="searchbar push--bottom">
     <%= form_with(url: search_path, method: :get, data: { turbo_stream: true }) do |form| %>
@@ -25,4 +25,5 @@
         <span>No results.</span>
       </div>
     <% end %>
+  </div>
 </div>

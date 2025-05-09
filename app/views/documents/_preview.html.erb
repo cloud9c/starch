@@ -2,7 +2,7 @@
     id: dom_id(preview),
     class: "document-preview" do %>
   <header class="document-preview-header">
-    <%= render 'channels/preview', channel: preview.entry.channel %>
+    <%= render 'documents/channel_preview', channel: preview.entry.channel %>
 
     <% if preview.published_at %>
       <%= local_relative_time(preview.published_at, type: 'time-or-date') %>

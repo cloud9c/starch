@@ -4,9 +4,12 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="document-list sheet" data-controller="documents--list" 
+<div class="document-list page" data-controller="documents--list" 
      data-documents--list-query-value="<%= "" %>">
-  <h1 class="sheet__header">Feed</h1>
+  <h1 class="page__header">Feed</h1>
+
+  <%= render "subscriptions/avatar_list", subscriptions: @subscriptions %>
+
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents %>
@@ -15,4 +18,5 @@
         <span>No results.</span>
       </div>
     <% end %>
+  </div>
 </div>

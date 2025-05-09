@@ -55,8 +55,10 @@ class Document < ApplicationRecord
                    .order("document_states.read" => :asc)
 
       query = query.select("document_states.read")
-    elsif options[:ids] != nil
+    elsif options[:ids].present?
       query = query.where(id: options[:ids])
+    elsif options[:subscription].present?
+      query = query.where(subscriptions: { id: options[:subscription] })
     else
       query = query.where(subscriptions: { user_id: user_id })
     end

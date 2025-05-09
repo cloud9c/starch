@@ -6,7 +6,7 @@
   padding: 2em 0;
 
   @media (max-width: 100ch) {
-    width: calc(100% + 2 * var(--sheet-padding));
+    width: calc(100% + 2 * var(--page-padding));
   }
 
   #checkout-container {

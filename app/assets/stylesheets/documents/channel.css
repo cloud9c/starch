@@ -1,0 +1,22 @@
+.channel-container {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+	text-transform: uppercase;
+  min-width: 0;
+
+  picture {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  picture:has(source[srcset=""]) {
+    filter: var(--filter-text-secondary);
+  }
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

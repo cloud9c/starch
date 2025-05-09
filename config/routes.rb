@@ -35,7 +35,11 @@ Rails.application.routes.draw do
     post "/stripe/webhook", action: :webhook
   end
 
-  resources :subscriptions
+  resources :subscriptions do
+    collection do
+      get :avatar_list
+    end
+  end
 
   resources :documents do
     member do

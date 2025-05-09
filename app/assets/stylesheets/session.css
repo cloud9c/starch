@@ -1,4 +1,4 @@
-.sheet--login {
+.page--login {
   gap: 1em;
 
   .login__logo {
@@ -6,7 +6,7 @@
     height: 3em;
   }
 
-  &.sheet {
+  &.page {
     border-radius: 0;
     border-top: none;
   }

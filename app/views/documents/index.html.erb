@@ -4,9 +4,9 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="index" class="document-list sheet" data-controller="documents--list" 
+<div id="index" class="document-list page" data-controller="documents--list" 
                                             data-documents--list-query-value="<%= "status=inbox" %>">
-  <h1 class="sheet__header">Inbox</h1>
+  <h1 class="page__header">Inbox</h1>
   <div id="inbox__unread-section" class="document-preview-section">
     <% if @unread_documents.any? %>
       <div class="document-list__title-row">
@@ -20,7 +20,7 @@
     <% elsif @unread_documents.empty? %>
       <div class="document-list__nothing-new">
         <span>
-          <%= @read_documents.present? ? "Nothing new for you 😎" : "You're all clear 👏" %>
+          <%= @read_documents.present? ? "Nothing new for you 🏝️" : "You're all clear 👏" %>
         </span>
       </div>
     <% end %>

@@ -18,6 +18,10 @@ body {
   margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+turbo-frame {
+  display: contents;
+}
+
 .main {
 	width: 100%;
 	margin: 0 auto;
@@ -32,27 +36,27 @@ body {
   width: 100%;
 }
 
-.sheet {
-  padding: var(--sheet-padding);
+.page {
+  padding: var(--page-padding);
 	flex: 1;
 	background: var(--bg-primary);
 
 	display: flex;
 	flex-direction: column;
-	width: var(--sheet-width);
+	width: var(--page-width);
 	align-items: center;
 
   @media (max-width: 100ch) {
     border-radius: 0;
   }
 
-  .sheet__header {
+  .page__header {
     text-align: center;
     width: var(--content-width);
     font-weight: 600;
     background: var(--bg-primary);
     margin-bottom: 0.5em;
-    font-size: var(--text-5xl);
+    font-size: var(--text-xxl);
     line-height: var(--line-height-tight);
 
     @media (max-width: 100ch) {

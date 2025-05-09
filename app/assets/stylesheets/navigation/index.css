@@ -29,8 +29,8 @@
   }
 
   .searchbar {
-    width: 75%;
     max-width: 20em;
+    margin-right: 2em;
   }
 
   #navbar__left {

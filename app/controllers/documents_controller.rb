@@ -13,8 +13,11 @@ class DocumentsController < ApplicationController
 
   def feed
     @documents = Document.query(Current.user.id, {
-      page: params[:page] ? params[:page].to_i : 1
+      page: params[:page] ? params[:page].to_i : 1,
+      subscription: params[:subscription]
     })
+
+    @subscriptions = Current.user.subscriptions.includes(:channel).all
 
     respond_with_pagination(:feed, @documents)
   end
@@ -100,13 +103,6 @@ class DocumentsController < ApplicationController
   end
 
   private
-
-  def fetch_documents(status)
-    Document.query(Current.user.id, {
-      status: status,
-      page: params[:page] ? params[:page].to_i : 1
-    })
-  end
 
   def respond_with_pagination(view_name, documents)
     respond_to do |format|

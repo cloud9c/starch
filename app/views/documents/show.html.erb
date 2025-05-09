@@ -4,10 +4,10 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="sheet sheet--document" data-controller="documents--show"> 
+<div class="page page--document" data-controller="documents--show"> 
   <div id="<%= dom_id(@document) %>" class="content content--document">
     <header class="document-header">
-      <%= render 'channels/preview', channel: @document.channel %>
+      <%= render 'documents/channel_preview', channel: @document.channel %>
       
       <hgroup>
         <h1 class="document-title">
