@@ -9,4 +9,10 @@ class PublicController < ApplicationController
   def redirect
     @url = params[:url]
   end
+
+  def clear_all
+    unless hotwire_native_app?
+      redirect_to inbox_path
+    end
+  end
 end

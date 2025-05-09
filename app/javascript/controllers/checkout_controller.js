@@ -1,19 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 import { FetchRequest } from '@rails/request.js'
-import { loadStripe } from '@stripe/stripe-js' 
+import { loadStripe } from '@stripe/stripe-js'
 
 export default class extends Controller {
   static targets = ["container"]
   static values = {
-    stripeKey: String
+    stripeKey: String,
   }
 
   async connect() {
+    this.initializeStripe()
+  }
+
+  async initializeStripe() {
     this.stripe = await loadStripe(this.stripeKeyValue)
-    
+
     try {
       const checkout = await this.stripe.initEmbeddedCheckout({
         fetchClientSecret: this.fetchClientSecret,
+        onComplete: () => this.checkPaidStatus(checkout)
       })
 
       checkout.mount(this.containerTarget)
@@ -31,6 +36,20 @@ export default class extends Controller {
       return data.clientSecret
     } else {
       throw new Error(`Request failed with status: ${response.status}`)
+    }
+  }
+
+  async checkPaidStatus(checkout) {
+    const request = new FetchRequest('GET', `/user/billing/has_paid?session_id=${checkout.embeddedCheckout.checkoutSessionId}`)
+    const response = await request.perform()
+    
+    if (response.ok) {
+      const data = await response.json
+      if (data.paid) {
+        Turbo.visit("/clear_all")
+      }
+    } else {
+      console.error(`Failed to check payment status: ${response.status}`)
     }
   }
 }

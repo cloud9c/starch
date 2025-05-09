@@ -1,7 +1,7 @@
 <% content_for(:title) { 'Subscribe to Starch' } %>
 
 <div class="sheet">
-  <h1 class="sheet__header push_quarter--bottom align--center ">Subscribe</h1>
+  <h1 class="sheet__header push_quarter--bottom align--center ">Subscribe today</h1>
 
   <% trial_end_date = Current.user.created_at + 30.days %>
   <% if Time.current > trial_end_date %>
@@ -23,8 +23,8 @@
   <% end %>
 
   <div id="checkout" class="content--checkout">
-    <div id="checkout-container" data-controller="checkout"
+    <turbo-frame id="checkout-container" data-controller="checkout"
         data-checkout-target="container"
-        data-checkout-stripe-key-value="<%= Rails.application.credentials.dig(Rails.env.to_sym, :stripe, :publishable_key) %>"></div>
+        data-checkout-stripe-key-value="<%= Rails.application.credentials.dig(Rails.env.to_sym, :stripe, :publishable_key) %>"></turbo-frame>
   </div>
 </div>

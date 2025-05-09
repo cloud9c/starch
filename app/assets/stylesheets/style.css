@@ -48,7 +48,7 @@ body {
 
   .sheet__header {
     text-align: center;
-    width: 100%;
+    width: var(--content-width);
     font-weight: 600;
     background: var(--bg-primary);
     margin-bottom: 0.5em;

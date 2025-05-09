@@ -86,6 +86,6 @@ class SessionsController < ApplicationController
   end
 
   def redirect_if_authenticated
-    clear_all_or_redirect_to root_path, status: :see_other if authenticated?
+    clear_all_or_redirect_to inbox_path, status: :see_other if authenticated?
   end
 end

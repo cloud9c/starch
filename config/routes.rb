@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         get :required_checkout
         post :create_checkout_session
         get :return
+        get :has_paid
       end
     end
   end
