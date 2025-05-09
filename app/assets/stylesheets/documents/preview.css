@@ -28,6 +28,7 @@
     justify-content: space-between;
     text-transform: uppercase;
     gap: 1em;
+    font-size: var(--text-sm);
   }
   
   .document-preview-title {
@@ -48,17 +49,14 @@
     align-items: stretch;
    
     .document-preview-thumbnail {
-      display: flex;
-      aspect-ratio: 1/1;
-      min-height: 5.375em;
-    }
-
-    .document-preview-thumbnail img {
       border-radius: 0.5em;
-      aspect-ratio: 1 / 1;
-      height: 100%;
-      flex: 1;
+      aspect-ratio: 16 / 12;
       object-fit: cover;
+      width: 120px;
+
+      &[data-failed="true"] {
+        display: none;
+      }
     }
   }
 
