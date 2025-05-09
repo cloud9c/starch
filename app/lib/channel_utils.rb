@@ -5,10 +5,6 @@ module ChannelUtils
     Feedjira.parse(content) rescue nil
   end
 
-  def body_to_s(response)
-    response.body.to_s.force_encoding("UTF-8")
-  end
-
   def find_feed_url(url)
     normalized_url = UrlUtils.normalize(url)
     return nil if normalized_url.nil?
@@ -32,7 +28,7 @@ module ChannelUtils
     return nil if response.error
 
     mime_type = response.headers["content-type"]
-    body = body_to_s(response)
+    body = response.body.to_s.force_encoding("UTF-8")
 
     if should_extract && mime_type.include?("text/html")
       extracted_feed_url = extract_feed_url(body, url)
@@ -62,9 +58,11 @@ module ChannelUtils
   def get_icon(url)
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(url)
-    return nil unless response
+    return nil if response.error
 
-    doc = Nokogiri::HTML(body_to_s(response))
+    body = response.body.to_s.force_encoding("UTF-8")
+
+    doc = Nokogiri::HTML(body)
     candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
 
     absolute_candidates = candidates.map do |href|

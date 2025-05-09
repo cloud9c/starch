@@ -10,27 +10,29 @@ class Channel < ApplicationRecord
 
   def update_feed_content
     headers = {}
-    headers["If-Modified-Since"] = self.polled_at.httpdate if self.polled_at
-    headers["If-None-Match"] = self.etag if self.etag
+    headers["If-Modified-Since"] = polled_at.httpdate if polled_at.present?
+    headers["If-None-Match"] = etag if etag.present?
 
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(self.feed_url, headers: headers)
+    response = http.get(feed_url, headers: headers)
     response.raise_for_status
 
     update(polled_at: Time.current, etag: response.headers[:Etag])
 
     return false if response.status == 304
 
-    update(feed_content: ChannelUtils.body_to_s(response))
+    feed_content = response.body.to_s.force_encoding("UTF-8")
+
+    update(feed_content: feed_content)
 
     true
   end
 
   def update_metadata
-    feed = ChannelUtils.parse_feed(self.feed_content) rescue nil
+    feed = ChannelUtils.parse_feed(feed_content) rescue nil
     return unless feed
 
-    feed_url = UrlUtils.normalize(feed.try(:feed_url)) || self.feed_url
+    feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
 
     site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
@@ -46,26 +48,22 @@ class Channel < ApplicationRecord
   end
 
   def poll
-    result = EntryUtils.get_new_and_updated(self.feed_url, self.feed_content)
+    result = EntryUtils.get_new_and_updated(feed_url, feed_content)
 
     result[:new].each do |entry_data|
-      self.create_entry(entry_data)
+      create_entry(entry_data)
     end
 
     result[:updated].each do |entry_data|
-      self.update_entry(entry_data)
+      update_entry(entry_data)
     end
 
-    # initial polling logic
-    return if self.initial_poll_complete?
+    with_lock do
+      return if initial_poll_complete?
 
-    self.with_lock do
-      # double check after locking
-      return if self.initial_poll_complete?
+      update(initial_poll_complete: true)
 
-      self.update(initial_poll_complete: true)
-
-      self.subscriptions.to_inbox.each do |subscription|
+      subscriptions.to_inbox.each do |subscription|
         subscription.add_recent_entries
       end
     end
@@ -78,15 +76,15 @@ class Channel < ApplicationRecord
   end
 
   def create_entry(entry_data)
-    entry = self.entries.create(
-      stable_id: EntryUtils.get_stable_id(self.feed_url, entry_data),
+    entry = entries.create(
+      stable_id: EntryUtils.get_stable_id(feed_url, entry_data),
       fingerprint: EntryUtils.get_fingerprint(entry_data)
     )
 
     raw_entry_data = EntryUtils.get_raw_entry_data(entry_data)
     document = entry.create_document(raw_entry_data)
 
-    if document.published_at > self.created_at
+    if document.published_at > created_at
       users = entry.channel.subscriptions.to_inbox.map(&:user).uniq
 
       document_states = users.map do |user|
@@ -102,7 +100,7 @@ class Channel < ApplicationRecord
   end
 
   def update_entry(entry_data)
-    stable_id = EntryUtils.get_stable_id(self.feed_url, entry_data)
+    stable_id = EntryUtils.get_stable_id(feed_url, entry_data)
     existing_entry = Entry.find_by(stable_id: stable_id)
     existing_entry&.update_from_feed(entry_data)
   end
