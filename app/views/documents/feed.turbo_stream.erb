@@ -8,6 +8,6 @@
   <% end %>
 <% end %>
 
-<%= turbo_stream.replace "subscription_avatar_list" do %>
+<%= turbo_stream.replace "subscription_avatar_list", method: "morph" do %>
   <%= render "subscriptions/avatar_list", subscriptions: @subscriptions %>
 <% end %>
