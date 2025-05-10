@@ -21,14 +21,12 @@
 
 @media(max-width: 110ch) {
   #document_toolbar {
-    position: sticky;
     bottom: 0;
     gap: 0.5em;
     margin: 0;
     background: var(--bg-primary);
     padding: 0.5em 1em 0.5em;
-    width: calc(100% + var(--page-padding) * 2);
-    margin-bottom: calc(-1 * var(--page-padding));
+    width: 100%;
     justify-content: center;
     border-top: 1px solid var(--color-border);
 
