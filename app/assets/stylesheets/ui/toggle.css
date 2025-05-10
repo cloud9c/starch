@@ -3,10 +3,15 @@
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   overflow: clip;
+
+  .toggle {
+    border-radius: 0
+  }
 }
 
 .toggle {
   padding: 0.5em;
+  border-radius: var(--border-radius);
   cursor: pointer;
   display: flex;
   

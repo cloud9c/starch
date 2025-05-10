@@ -77,9 +77,6 @@ gem "typesense"
 # Feed parser
 gem "feedjira"
 
-# Sniff image url
-gem "fastimage"
-
 # Spam protection
 gem "invisible_captcha"
 
@@ -99,3 +96,6 @@ gem "local_time"
 
 # Stripe integration
 gem "stripe"
+
+# Sniff image size
+gem "image_size", "~> 3.4"

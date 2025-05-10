@@ -75,6 +75,7 @@ module EntryUtils
     text.strip.gsub(/\s+/, " ")[0...300]
   end
 
+  require 'image_size/uri'
   def extract_thumbnail(html, min_width: 100, min_height: 100)
     doc = Nokogiri::HTML(html)
 
@@ -83,10 +84,10 @@ module EntryUtils
     images.each do |img|
       src = img["src"]
 
-      dimensions = FastImage.size(src)
-      next if dimensions.nil?
+      size = ImageSize.url(src).size
+      next if size.nil?
 
-      width, height = dimensions
+      width, height = size
       return src if width >= min_width && height >= min_height
     end
 
@@ -101,12 +102,12 @@ module EntryUtils
     {
       source_type: :rss,
       title: self.format_text(entry_data.title),
-      description: self.format_text(description),
+      description: format_text(description),
       author: self.format_text(entry_data.author),
       published_at: entry_data.published || Time.current,
       url: url,
       content: content,
-      thumbnail_url: entry_data.try(:media_thumbnail_url) || self.extract_thumbnail(content)
+      thumbnail_url: entry_data.try(:media_thumbnail_url) || extract_thumbnail(content)
     }
   end
 
@@ -118,9 +119,9 @@ module EntryUtils
 
     result = {
       content: content,
-      thumbnail_url: self.extract_thumbnail(content),
-      title: self.format_text(parsed_data["title"]),
-      author: self.format_text(parsed_data["byline"]),
+      thumbnail_url: extract_thumbnail(content),
+      title: format_text(parsed_data["title"]),
+      author: format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
     }
 

@@ -55,30 +55,17 @@ module ChannelUtils
     URI.join(origin, path).to_s
   end
 
-  def get_icon(url)
+  def get_icon(base_url)
     http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(url)
+    response = http.get(base_url)
     return nil if response.error
 
     body = response.body.to_s.force_encoding("UTF-8")
 
     doc = Nokogiri::HTML(body)
-    candidates = doc.css('link[rel~="icon"], link[rel~="apple-touch-icon"]').map { |link| link[:href] }.compact
+    icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
+    icon_url ||= '/favicon.ico'
 
-    absolute_candidates = candidates.map do |href|
-      URI.join(url, href).to_s
-    end.compact
-
-    ranked_images = absolute_candidates.first(5).map do |abs_url|
-      size = FastImage.size(abs_url)
-      [ abs_url, size ] if size
-    end.compact
-
-    ranked_by_area = ranked_images.map do |abs_url, size|
-      [ abs_url, size[0] * size[1] ]
-    end
-
-    largest_image = ranked_by_area.sort_by { |_, area| -area }.first
-    largest_image ? largest_image[0] : nil
+    URI.join(base_url, icon_url).to_s rescue nil
   end
 end

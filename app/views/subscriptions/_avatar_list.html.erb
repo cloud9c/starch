@@ -1,3 +1,24 @@
-<div id="subscription_avatar_list" class="subscription-avatar-list push--bottom">
-  <%= render partial: 'subscriptions/avatar', collection: subscriptions %>
+<div id="subscription_avatar_list" class="subscription-avatar-list <%= "push--bottom" unless subscriptions.empty? %>" data-controller="avatar-list">
+  <% subscriptions.each do |subscription| %>
+    <% active = params["subscription"] == subscription.id.to_s %>
+    <% channel = subscription.channel %>
+    
+    <%= link_to(
+      url_for(active ? {} : { subscription: subscription.id }),
+      class: "subscription-avatar",
+      data: {
+        active: active,
+        turbo_stream: true,
+        avatar_list_target: "avatar",
+        subscription_id: subscription.id,
+        action: "click->avatar-list#toggle"
+      }
+    ) do %>
+      <picture>
+        <source srcset="<%= channel.icon %>"/>
+        <%= image_tag "icons/rss.svg", alt: "#{channel.title} icon"%>
+      </picture>
+      <span><%= channel.title || channel.feed_url %></span>
+    <% end %>
+  <% end %>
 </div>
