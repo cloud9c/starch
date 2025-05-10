@@ -13,12 +13,12 @@
   }
   
   &:focus, &:hover {
-    background: var(--bg-link-hover);
+    background: var(--bg-link);
   }
 
   @media (any-hover: hover) {
     &:where(:not(:active):hover) {
-      background: var(--bg-link-hover);
+      background: var(--bg-link);
     }
   }
   

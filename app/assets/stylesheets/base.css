@@ -39,6 +39,8 @@ turbo-frame {
 .page {
   padding: var(--page-padding);
 	flex: 1;
+  margin-left: auto;
+  margin-right: auto;
 	background: var(--bg-primary);
 
 	display: flex;

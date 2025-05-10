@@ -1,0 +1,32 @@
+.toggle-group {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  overflow: clip;
+}
+
+.toggle {
+  padding: 0.5em;
+  cursor: pointer;
+  display: flex;
+  
+  &::before {
+    background: var(--color-text-secondary);
+  }
+
+  &:checked {
+    background: var(--color-secondary);
+
+    &::after {
+      color: var(--color-text-reversed);
+    }
+
+    &::before {
+      background: var(--color-text-reversed);
+    }
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring);
+  }
+}

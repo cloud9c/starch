@@ -1,0 +1,41 @@
+.subscription-avatar-list {
+  display: flex;
+  gap: 0.5em;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  width: var(--content-width);
+
+  .subscription-avatar {
+    display: flex;
+    font-size: var(--text-base);
+    gap: 0.5em;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5em;
+    padding: 0.4em 0.8em;
+    align-items: center;
+    max-width: 10em;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+      text-align: center;
+    }
+
+    picture {
+      display: flex;
+      width: 24px;
+      flex-shrink: 0;
+
+      img {
+        aspect-ratio: 1 / 1;
+      }
+    }
+
+    &[data-active="true"] {
+      background: var(--color-secondary);
+      color: var(--color-text-reversed);
+    }
+  }
+}

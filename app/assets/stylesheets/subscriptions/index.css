@@ -1,0 +1,28 @@
+.subscription-content {
+  display: flex;
+  flex-flow: column;
+  gap: 2em;
+}
+
+#subscription-list:has(.subscription-preview) {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  overflow: auto;
+  width: 100%;
+}
+
+#add-subscription {
+  width: 100%;
+  display: flex;
+
+  justify-content: end;
+  flex-flow: row wrap;
+  gap: 0.5em;
+
+  input {
+    width: 100%
+  }
+}

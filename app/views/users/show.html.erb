@@ -12,11 +12,7 @@
 
     <span class="action-group-title">Account</span>
     <div class="action-group action-group--surface">
-      <% if Current.user.paid? %>
-        <%= link_to "Billing", user_billing_path, class: "action-group__item icon icon--billing", target: "_blank", rel: "noopener" %>
-      <% else %>
-        <%= link_to "Billing", user_billing_path, class: "action-group__item icon icon--billing" %>
-      <% end %>
+      <%= link_to "Billing", user_billing_path, class: "action-group__item icon icon--billing" %>
       <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "action-group__item icon icon--sign-out" %>
       <%= link_to "Close your account", user_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to close your account?" }, class: "action-group__item icon icon--x-circle-fill" %>
     </div>

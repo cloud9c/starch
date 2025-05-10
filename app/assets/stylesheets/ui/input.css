@@ -1,78 +1,3 @@
-.toggle-group {
-  display: flex;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-}
-
-.toggle {
-  padding: 0.5em;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  display: flex;
-  
-  &::before {
-    background: var(--color-text-secondary)
-  }
-
-  &:hover {
-    background: var(--bg-input-ghost-hover);
-  }
-
-  &:checked {
-    background: var(--bg-input-secondary);
-  }
-
-  &:focus-visible {
-    outline: var(--focus-ring);
-  }
-}
-
-.checkbox-container {
-	display: flex;
-	gap: 0.5em;
-	align-items: center;
-	font-weight: 600;
-}
-
-.checkbox {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  vertical-align: middle;
-  margin: 0;
-  background: var(--bg-primary);
-
-  &:checked {
-    background-color: var(--bg-input);
-  }
-
-  & + label {
-    cursor: pointer;
-    user-select: none;
-  }
-
-  &:checked::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 6px;
-    height: 10px;
-    border: solid var(--color-text-light);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-
-  &:focus-visible {
-    outline: var(--focus-ring);
-  }
-}
-
 label {
   color: var(--color-text);
 }
@@ -85,7 +10,7 @@ input[type="text"], input[type="email"] {
 
   &:focus-visible {
     outline: var(--focus-ring);
-    background-color: var(--bg-link-hover);
+    background-color: var(--bg-link);
     border-color: var(--color-border);
   }
 }
@@ -93,64 +18,3 @@ input[type="text"], input[type="email"] {
 input::placeholder {
   color: var(--color-text-secondary)
 }
-
-.searchbar {
-	display: flex;
-	border: 1px solid var(--color-border);
-	border-radius: 2em;
-	background: var(--bg-primary);
-
-  &.searchbar--transparent {
-    background: none;
-    border: none;
-  }
-
-  &:has(input:focus-visible) {
-    outline: var(--focus-ring);
-    background: linear-gradient(var(--bg-link-hover), var(--bg-link-hover)), var(--bg-primary);
-    border-color: var(--color-border);
-
-    &.searchbar--transparent {
-      background: none;
-    }
-
-    input[type="search"] {
-      outline: none;
-    }
-  }
-
-  form {
-    flex: 1;
-  }
-
-  .searchfield-container {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    position: relative;
-
-    &::after {
-      background-color: var(--color-text-secondary);
-      mask-image: url(/icons/search.svg);
-      mask-repeat: no-repeat;
-      mask-size: 100%;
-      content: "";
-      height: 1.25em;
-      width: 1.25em;
-      pointer-events: none;
-      position: absolute;
-      left: 0.5em;
-    }
-  }
-
-
-  input[type="search"] {
-    width: 100%;
-    padding: 0.5em 0.5em 0.5em 2.2em;
-  }
-
-  @media (max-width: 100ch) {
-    width: 100%;
-  }
-}
-
