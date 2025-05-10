@@ -64,7 +64,7 @@ module ChannelUtils
 
     doc = Nokogiri::HTML(body)
     icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
-    icon_url ||= '/favicon.ico'
+    icon_url ||= "/favicon.ico"
 
     URI.join(base_url, icon_url).to_s rescue nil
   end

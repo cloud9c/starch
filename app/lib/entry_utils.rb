@@ -75,7 +75,7 @@ module EntryUtils
     text.strip.gsub(/\s+/, " ")[0...300]
   end
 
-  require 'image_size/uri'
+  require "image_size/uri"
   def extract_thumbnail(html, min_width: 100, min_height: 100)
     doc = Nokogiri::HTML(html)
 
