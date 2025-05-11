@@ -55,11 +55,11 @@
   &.btn--outline {
     background: none;
 
-    border: 1px solid var(--color-link);
-    color: var(--color-link);
+    border: 1px solid var(--color-tertiary);
+    color: var(--color-tertiary);
 
     &.btn--icon::before {
-      background: var(--color-link);
+      background: var(--color-tertiary);
     }
   }
 
