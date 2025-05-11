@@ -52,6 +52,7 @@ class DocumentsController < ApplicationController
   def toolbar
     @document_state = DocumentState.find_or_initialize_by(document_id: params[:id], user: Current.user)
     @initialized = @document_state.new_record?
+    @referrer = params[:referrer] || inbox_path
   end
 
   def show

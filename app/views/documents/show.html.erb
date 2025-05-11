@@ -31,7 +31,7 @@
     </article>
   </div>
 
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document), target: "_top" %>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document, referrer: request.referrer), target: "_top"%>
 </div>
 
 <% content_for :bottom_content do %>
