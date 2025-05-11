@@ -1,12 +1,12 @@
 <turbo-frame id="document_toolbar" target="_top">
   <%= form_with model: @document_state, class: "toolbar", data: {controller: "toolbar"} do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
-    <%= link_to "Back", "javascript:history.back()", class: "icon icon--arrow-left mobile-only web-only toolbar_action" %>
+    <%= link_to "Back", "javascript:history.back()", class: "icon icon--arrow-left mobile-only web-only toolbar__action" %>
     <% DocumentState.statuses.keys.each do |status| %>
       <%= form.button type: :submit, 
       name: "document_state[status]",
       value: status,
-      class: "toggle icon--#{status} shortcut-hotkey shortcut-hotkey__corner toolbar_action",
+      class: "toggle icon--#{status} shortcut-hotkey shortcut-hotkey__corner toolbar__action",
       onchange: "this.form.requestSubmit()",
       "aria-label": "Send to #{status.titleize}",
       data: {
