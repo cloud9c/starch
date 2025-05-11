@@ -81,12 +81,16 @@ module EntryUtils
 
     images = doc.css("img")
 
-    images.each do |img|
-      src = img["src"]
+    images.each do |image|
+      src = image["src"]
 
-      size = ImageSize.url(src).size
+      begin
+        size = ImageSize.url(src).size
+      rescue
+        next
+      end
+
       next if size.nil?
-
       width, height = size
       return src if width >= min_width && height >= min_height
     end
