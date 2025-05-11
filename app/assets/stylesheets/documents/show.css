@@ -1,5 +1,5 @@
 .content.content--document {
-  flex-grow: 1;
+  flex: 1;
 }
 
 .document-header {
@@ -34,5 +34,5 @@
 
 .document-body {
   font-family: var(--font-serif);
-  padding-bottom: 4em;
+  padding-bottom: var(--page-padding);
 }

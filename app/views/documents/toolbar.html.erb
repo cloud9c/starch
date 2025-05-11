@@ -1,18 +1,23 @@
 <turbo-frame id="document_toolbar" target="_top">
-  <%= form_with model: @document_state do |form| %>
+  <%= form_with model: @document_state, class: "toolbar", data: {controller: "toolbar"} do |form| %>
     <%= form.hidden_field :document_id, value: params[:id] %>
-
-    <%= link_to "", "javascript:history.back()", class: "btn btn--icon icon--arrow-left btn--ghost mobile-only web-only" %>
-
-    <fieldset class="toggle-group">
-      <% DocumentState.statuses.keys.each do |status| %>
-        <%= form.radio_button :status, status, 
-                             checked: (@document_state&.status == status unless @initialized),
-                             class: "toggle icon--#{status} shortcut-hotkey",
-                             onchange: "this.form.requestSubmit()",
-                             "aria-label": "Send to #{status.titleize}",
-                             data: {controller: "shortcut", "shortcut-hotkey-value": status[0].downcase} %>
+    <%= link_to "Back", "javascript:history.back()", class: "icon icon--arrow-left mobile-only web-only toolbar_action" %>
+    <% DocumentState.statuses.keys.each do |status| %>
+      <%= form.button type: :submit, 
+      name: "document_state[status]",
+      value: status,
+      class: "toggle icon--#{status} shortcut-hotkey shortcut-hotkey__corner toolbar_action",
+      onchange: "this.form.requestSubmit()",
+      "aria-label": "Send to #{status.titleize}",
+      data: {
+        controller: "shortcut",
+        "toolbar-target": "documentState",
+        action: "click->toolbar#updateDocumentState",
+        "shortcut-hotkey-value": status[0].downcase,
+        checked: (@document_state&.status == status unless @initialized) 
+      } do %>
+        <span class="toggle-text"><%= status.titleize %></span>
       <% end %>
-    </fieldset>
+    <% end %>
   <% end %>
 </turbo-frame>

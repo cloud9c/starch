@@ -7,13 +7,23 @@
     margin-left: auto;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
+    font-weight: bold;
     color: var(--color-text-secondary);
     content: attr(data-shortcut-hotkey-value);
     padding-left: 1em;
     text-transform: uppercase;
 
+    opacity: 50%;
+
     @media (max-width: 100ch) {
       display: none;
     }
+  }
+
+
+  &.shortcut-hotkey__corner:after {
+    position: absolute;
+    top: 0;
+    right: 0.5em;
   }
 }

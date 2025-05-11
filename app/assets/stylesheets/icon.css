@@ -1,4 +1,4 @@
-.btn--icon, .toggle, .icon {
+.icon {
   &::before {
     display: block;
     mask-size: 100%;
@@ -10,12 +10,6 @@
     background: var(--color-text-secondary);
   }
   
-  &:not(:empty) {
-    position: relative;
-    gap: 0.4em;
-    align-items: center;
-  }
-
   &:empty {
     padding: 0.5em;
   }

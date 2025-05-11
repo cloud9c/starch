@@ -35,8 +35,15 @@ export default class extends Controller {
 
     try {
       const url = new URL(window.location.pathname, window.location.origin)
+
       const searchParams = new URLSearchParams(this.queryValue)
       searchParams.set("page", nextPage)
+
+      const currentUrlParams = new URLSearchParams(window.location.search);
+      currentUrlParams.forEach((value, key) => {
+        searchParams.set(key, value);
+      });
+
       url.search = searchParams.toString()
 
       const request = await new FetchRequest('GET', url, {
