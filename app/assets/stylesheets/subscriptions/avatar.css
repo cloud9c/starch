@@ -35,7 +35,6 @@
 
     &[data-active="true"] {
       background: var(--color-secondary);
-      color: var(--color-text-reversed);
     }
   }
 }
