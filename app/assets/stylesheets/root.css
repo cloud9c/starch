@@ -111,7 +111,7 @@
   --color-main: oklch(var(--lch-yellow-dark));
   
   --color-primary: oklch(var(--lch-blue));
-  --color-secondary: oklch(var(--lch-gray-700));
+  --color-secondary: oklch(var(--lch-gray-200));
 
   --bg-primary: oklch(var(--lch-white));
   --bg-primary-opaque: oklch(var(--lch-white) / 0.95);

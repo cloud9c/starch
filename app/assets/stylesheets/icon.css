@@ -55,10 +55,6 @@
   mask-image: url(/icons/feed.svg);
 }
 
-.icon--account::before {
-  mask-image: url(/icons/account.svg);
-}
-
 .icon--sign-out::before {
   mask-image: url(/icons/sign-out.svg);
 }
