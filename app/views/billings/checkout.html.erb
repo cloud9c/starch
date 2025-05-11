@@ -1,4 +1,7 @@
 <% content_for(:title) { 'Subscribe to Starch' } %>
+<% content_for :head do %>
+  <%= javascript_import_module_tag "@stripe/stripe-js" %>
+<% end %>
 
 <div class="page">
   <h1 class="page__header push_quarter--bottom align--center ">Subscribe today</h1>
