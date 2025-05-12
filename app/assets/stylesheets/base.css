@@ -145,15 +145,3 @@ s {
   animation: fadeInOut 4s linear forwards;
   pointer-events: auto;
 }
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
