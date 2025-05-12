@@ -9,7 +9,7 @@
   color: var(--color-text-light);
   height: fit-content;
 
-  &::before {
+  &.btn--icon::before {
     display: block;
     mask-size: 100%;
     content: "";
