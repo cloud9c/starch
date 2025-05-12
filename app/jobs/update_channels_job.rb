@@ -1,14 +1,16 @@
 class UpdateChannelsJob < ApplicationJob
-  def perform(immediate: false)
+  def perform(*args)
+    channel_jobs = []
+    perform_window = 12.hours
+    channel_count = Channel.count
+    index = 0
+    
     Channel.find_each do |channel|
-      if immediate
-        # Perform immediately with no delay
-        UpdateChannelJob.perform_later(channel.id)
-      else
-        # Use random delay as before
-        delay = rand(0..12).hours.to_i
-        UpdateChannelJob.set(wait: delay).perform_later(channel.id)
-      end
+      delay = index * perform_window / channel_count
+      channel_jobs << UpdateChannelJob.new(channel.id).set(wait: delay)
+      index += 1
     end
+    
+    ActiveJob.perform_all_later(channel_jobs)
   end
 end
