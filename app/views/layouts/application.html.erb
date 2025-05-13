@@ -23,7 +23,7 @@
     <%= yield :head %>
   </head>
 
-  <body data-controller="<%="shortcut scroll-toggle" if authenticated? %>" class="<%= "native" if hotwire_native_app?%>">
+  <body data-controller="<%="shortcut detect-scroll" if authenticated? %>" class="<%= "native" if hotwire_native_app?%>">
     <%= render "shared/flash" %>
     <% if authenticated? %>
       <%= content_for?(:top_content) ? yield(:top_content) : render('shared/navbar') %>

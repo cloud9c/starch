@@ -3,10 +3,14 @@
   position: sticky;
   bottom: calc(var(--page-padding) + env(safe-area-inset-bottom));
   margin: 0 var(--page-padding);
-  border-radius: 0.5rem;
+  border-radius: 0.5em;
   background: var(--bg-secondary-opaque);
   padding: 0.25em 0.25em;
   justify-content: center;
+
+  @media (max-width: 100ch) {
+    border-radius: 0.9rem;
+  }
 
   form {
     display: flex;
@@ -20,7 +24,8 @@
   .toolbar__action {
     display: flex;
     flex-direction: column;
-    border-radius: 0.5em;
+    font-weight: 500;
+    border-radius: 0.5rem;
     padding: 0.25em 1em;
     font-size: var(--text-sm);
     gap: 0.2em;

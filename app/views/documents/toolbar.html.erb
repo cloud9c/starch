@@ -16,7 +16,7 @@
         "shortcut-hotkey-value": status[0].downcase,
         checked: (@document_state&.status == status unless @initialized) 
       } do %>
-        <span class="toggle-text"><%= status.titleize %></span>
+        <span><%= status.titleize %></span>
       <% end %>
     <% end %>
   <% end %>

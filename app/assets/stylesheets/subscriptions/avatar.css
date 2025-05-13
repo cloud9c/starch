@@ -34,7 +34,8 @@
     }
 
     &[data-active="true"] {
-      background: var(--color-secondary);
+      background: var(--color-primary);
+      color: var(--color-text-light);
     }
   }
 }
