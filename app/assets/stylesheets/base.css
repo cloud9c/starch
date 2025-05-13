@@ -20,7 +20,7 @@ body {
   }
 
   &:has(#trial-banner) {
-    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding) + 1.7em);
+    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding) + 1.7rem);
   }
 }
 
