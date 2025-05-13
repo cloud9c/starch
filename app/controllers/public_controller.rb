@@ -8,7 +8,7 @@ class PublicController < ApplicationController
 
   def clear_all
     unless hotwire_native_app?
-      redirect_to inbox_path
+      redirect_to root_path
     end
   end
 end

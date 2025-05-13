@@ -27,7 +27,7 @@ class BillingsController < ApplicationController
 
       flash[:notice] = "Subscription activated!"
 
-      redirect_to inbox_path and return
+      redirect_to root_path and return
     end
 
     flash[:alert] = "Your payment was not completed. Please try again."

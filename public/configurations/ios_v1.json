@@ -25,12 +25,13 @@
       ],
       "properties": {
         "context": "modal",
-        "modal_dismiss_gesture_enabled": false
+        "modal_dismiss_gesture_enabled": false,
+        "modal_style": "full"
       }
     },
     {
       "patterns": [
-       "/clear_all"
+       "/clear_all", "^/$"
       ],
       "properties": {
         "presentation": "clear_all"
