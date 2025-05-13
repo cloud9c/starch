@@ -35,6 +35,7 @@
 
     &[data-active="true"] {
       background: var(--color-primary);
+      border-color: var(--color-primary);
       color: var(--color-text-light);
     }
   }
