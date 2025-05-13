@@ -86,9 +86,9 @@
   --lch-yellow: 82% 0.16 90;
   --lch-yellow-dark: 60% 0.16 90;
   --lch-green: 62% 0.16 150;
-  --lch-blue-light: 60% 0.16 265;
-  --lch-blue: 55% 0.16 265;
-  --lch-blue-dark: 50% 0.16 265;
+  --lch-blue-light: 60% 0.16 270;
+  --lch-blue: 55% 0.16 270;
+  --lch-blue-dark: 50% 0.16 270;
   --lch-purple: 60% 0.14 295;
   
   /* Semantic variables */
@@ -112,7 +112,7 @@
   --color-primary-opaque: oklch(var(--lch-blue) / 0.1);
   --color-secondary: oklch(var(--lch-purple));
   --color-secondary-opaque: oklch(var(--lch-purple) / 0.20);
-  --color-tertiary: oklch(var(--lch-yellow));
+  --color-tertiary: oklch(var(--lch-yellow-dark));
   --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.2);
   --color-link: oklch(var(--lch-blue-light));
 
@@ -127,10 +127,10 @@
 
   /* Dark theme overrides */
   @media (prefers-color-scheme: dark) {
-    --lch-blue-light: 55% 0.14 265;
-    --lch-blue: 40% 0.14 265;
-    --lch-blue-dark: 35% 0.14 265;
-    --lch-purple: 75% 0.14 295;
+    --lch-blue-light: 55% 0.14 270;
+    --lch-blue: 40% 0.14 270;
+    --lch-blue-dark: 35% 0.14 270;
+    --lch-purple: 65% 0.14 295;
     
     --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
     --color-border-dark: oklch(var(--lch-gray-500));
