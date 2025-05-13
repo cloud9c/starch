@@ -130,7 +130,7 @@
     --lch-blue: 40% 0.14 265;
     --lch-blue-dark: 35% 0.14 265;
     
-    --focus-ring: 2px solid oklch(var(--lch-blue));
+    --focus-ring: 2px solid oklch(var(--lch-blue-light));
     --color-border-dark: oklch(var(--lch-gray-500));
     --color-border: oklch(var(--lch-gray-700));
     --color-border-light: oklch(var(--lch-gray-800));
