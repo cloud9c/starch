@@ -34,8 +34,8 @@
     }
 
     &[data-active="true"] {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
+      background: var(--color-tertiary);
+      border-color: var(--color-tertiary);
       color: var(--color-text-light);
     }
   }
