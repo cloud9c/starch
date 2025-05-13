@@ -6,10 +6,6 @@ class PublicController < ApplicationController
     redirect_to inbox_path if authenticated?
   end
 
-  def redirect
-    @url = params[:url]
-  end
-
   def clear_all
     unless hotwire_native_app?
       redirect_to inbox_path

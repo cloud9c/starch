@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
   controller :public do
     get "privacy", action: :privacy, as: :privacy
-    get "redirect", action: :redirect, as: :redirect
     get "clear_all", action: :clear_all, as: :clear_all
   end
 

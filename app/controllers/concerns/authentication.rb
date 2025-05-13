@@ -61,7 +61,8 @@ module Authentication
     def request_authentication
       session[:return_to_after_authenticating] = request.url
       if hotwire_native_app?
-        redirect_to redirect_path(url: new_session_path) and return
+        @url = new_session_path
+        render "public/redirect" and return
       end
 
       redirect_to new_session_path and return
@@ -69,7 +70,8 @@ module Authentication
 
     def request_provision
       if hotwire_native_app?
-        redirect_to redirect_path(url: required_checkout_user_billing_path) and return
+        @url = required_checkout_user_billing_path
+        render "public/redirect" and return
       end
 
       redirect_to required_checkout_user_billing_path
