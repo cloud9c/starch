@@ -131,7 +131,7 @@
   text-align: center;
   padding: 0.25em;
   font-size: var(--text-sm);
-  background: var(--bg-tertiary);
+  background: var(--color-tertiary-opaque);
   white-space: nowrap;
   font-weight: 500;
   overflow: hidden;

@@ -27,11 +27,11 @@
   }
 
   &[data-checked="true"], &:checked {
-    background: var(--color-secondary);
-    color: var(--color-tertiary);
+    background: var(--color-secondary-opaque);
+    color: var(--color-secondary);
 
     &::before {
-      background: var(--color-tertiary);
+      background: var(--color-secondary);
     }
   }
 

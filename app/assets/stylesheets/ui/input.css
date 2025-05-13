@@ -10,7 +10,7 @@ input[type="text"], input[type="email"] {
 
   &:focus-visible {
     outline: var(--focus-ring);
-    background-color: var(--bg-link);
+    background-color: var(--color-primary-opaque);
     border-color: var(--color-border);
   }
 }

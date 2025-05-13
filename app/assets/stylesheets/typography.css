@@ -7,7 +7,7 @@
     text-decoration: underline;
     
     &:hover, &:focus {
-      color: var(--color-tertiary);
+      color: var(--color-link);
     }
   }
   

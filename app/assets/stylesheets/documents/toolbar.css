@@ -4,7 +4,7 @@
   bottom: calc(var(--page-padding) + env(safe-area-inset-bottom));
   margin: 0 var(--page-padding);
   border-radius: 0.5em;
-  background: var(--bg-secondary-opaque);
+  background: var(--bg-secondary);
   padding: 0.25em 0.25em;
   justify-content: center;
 

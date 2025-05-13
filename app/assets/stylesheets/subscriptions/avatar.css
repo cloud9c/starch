@@ -1,9 +1,12 @@
 .subscription-avatar-list {
   display: flex;
   gap: 0.5em;
-  overflow-x: scroll;
+  overflow-x: auto;
   scrollbar-width: none;
   width: var(--content-width);
+
+  /* avoid cutting off focus ring */
+  padding: 1px; 
 
   .subscription-avatar {
     display: flex;
@@ -34,9 +37,8 @@
     }
 
     &[data-active="true"] {
-      background: var(--color-tertiary);
-      border-color: var(--color-tertiary);
-      color: var(--color-text-light);
+      background: var(--color-secondary-opaque);
+      border-color: var(--color-secondary);
     }
   }
 }

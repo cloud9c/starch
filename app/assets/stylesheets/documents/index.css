@@ -48,7 +48,7 @@
     gap: 0.5em;
 
     #inbox__unread-section &::after {
-      background: var(--color-main);
+      background: var(--color-tertiary);
       content: '';
       height: 1px;
       flex: 1;

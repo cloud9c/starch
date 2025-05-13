@@ -10,9 +10,9 @@
     border: none;
   }
 
-  &:has(input:focus-visible) {
+  &:has(input:focus-visible) input[type="search"] {
     outline: var(--focus-ring);
-    background: linear-gradient(var(--bg-link), var(--bg-link)), var(--bg-primary);
+    background: var(--color-primary-opaque);
     border-color: var(--color-border);
 
     &.searchbar--transparent {
@@ -52,6 +52,7 @@
   input[type="search"] {
     width: 100%;
     padding: 0.5em 0.5em 0.5em 2.2em;
+    border-radius: 2em;
   }
 }
 
