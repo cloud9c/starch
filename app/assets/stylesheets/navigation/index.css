@@ -138,6 +138,3 @@
   text-overflow: clip;
 }
 
-body:has(#trial-banner) {
-  padding-top: calc(1.7em + var(--navbar-padding));
-}

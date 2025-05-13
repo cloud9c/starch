@@ -49,12 +49,12 @@
   
   /* Layout */
   --transition: 0.1s ease;
-  --content-width: min(100%, 37.5rem);
+  --content-width: min(100%, 37.5em);
   --page-width: 100%;
-  --navbar-width: min(100%, 70rem);
+  --navbar-width: min(100%, 70em);
   --border-radius: 0.25em;
-  --page-padding: 1rem;
-  --navbar-padding: 4rem;
+  --page-padding: 1em;
+  --navbar-padding: 4em;
 
   @media (max-width: 100ch) {
     --navbar-padding: 0rem;

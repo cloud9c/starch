@@ -13,7 +13,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  padding: calc(env(safe-area-inset-top) + var(--navbar-padding)) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+  &:has(#navbar) {
+    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding));
+  }
+
+  &:has(#trial-banner) {
+    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding) + 1.7em);
+  }
 }
 
 turbo-frame {
@@ -30,8 +38,7 @@ turbo-frame {
 }
 
 .content {
-	max-width: var(--content-width);
-  width: 100%;
+	width: var(--content-width);
 }
 
 .page {
