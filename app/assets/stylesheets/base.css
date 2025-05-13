@@ -3,7 +3,6 @@ html {
 }
 
 body {
-  padding-top: var(--navbar-padding);
 	font-family: var(--font-sans);
 	font-size: var(--font-size);
 	letter-spacing: var(--letter-spacing);
@@ -14,7 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: calc(env(safe-area-inset-top) + var(--navbar-padding)) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 turbo-frame {
