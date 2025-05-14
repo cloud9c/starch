@@ -48,10 +48,10 @@
     }
 
     a[data-current=true] {
-      color: var(--color-link);
+      color: var(--color-secondary);
 
       &::before {
-        background: var(--color-link);
+        background: var(--color-secondary);
       }
     }
   }
