@@ -12,14 +12,8 @@
     border-bottom: none;
   }
   
-  &:focus, &:hover {
-    background: var(--bg-link);
-  }
-
-  @media (any-hover: hover) {
-    &:where(:not(:active):hover) {
-      background: var(--bg-link);
-    }
+  &:focus-visible, &:hover {
+    background: var(--color-selected);
   }
   
   .document-preview-header {

@@ -30,7 +30,7 @@
     padding: 0.5em;
   }
 
-  &:focus {
+  &:focus-visible {
     outline: var(--focus-ring);
     outline-width: medium;
   }

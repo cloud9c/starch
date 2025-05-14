@@ -11,8 +11,8 @@
     counter-increment: item-counter;
     border-radius: var(--border-radius);
     
-    &:hover, &:focus {
-      background: var(--bg-link);
+    &:hover, &:focus-visible {
+      background: var(--color-selected);
     }
   }
 

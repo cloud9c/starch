@@ -6,7 +6,7 @@
   a[href] {
     text-decoration: underline;
     
-    &:hover, &:focus {
+    &:hover, &:focus-visible {
       color: var(--color-link);
     }
   }
