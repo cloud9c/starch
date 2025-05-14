@@ -3,7 +3,13 @@ class PublicController < ApplicationController
   allow_unauthenticated_access
 
   def index
-    redirect_to "#{inbox_path}?format=html" if authenticated?
+    return unless authenticated?
+
+    if params[:format] == "html"
+      redirect_to "#{inbox_path}?format=html"
+    else
+      redirect_to inbox_path
+    end
   end
 
   def clear_all
