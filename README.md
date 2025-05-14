@@ -2,20 +2,19 @@
 - motto: human intelligence; design your own algorithm; curation
 
 # p0
-- tooltip for aria-label or title
+- showing progress
 
 # p1
 
 - fallback image / proxy images that dont allow CORS
 - search autocomplete for subscriptions
+- passkeys
 
 # p2
 
 - notifications
 
-# plater
-
-- www -> root domain
+# p-later
 
 - search should include extracted version
 
@@ -25,9 +24,6 @@
 - tell the user if extracted content cannot be rendered
 
 - highlighting
-- progress tracker
-- changing document status
-- tagging subscriptions
 
 - support mobile/offline app
 - uploading custom docs
