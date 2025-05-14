@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_07_021458) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_13_220009) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -88,24 +88,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_07_021458) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "subscriptions_tags", force: :cascade do |t|
-    t.integer "subscription_id", null: false
-    t.integer "tag_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["subscription_id", "tag_id"], name: "index_subscriptions_tags_on_subscription_id_and_tag_id", unique: true
-    t.index ["subscription_id"], name: "index_subscriptions_tags_on_subscription_id"
-    t.index ["tag_id"], name: "index_subscriptions_tags_on_tag_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_tags_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.datetime "created_at", null: false
@@ -125,7 +107,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_07_021458) do
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "users"
-  add_foreign_key "subscriptions_tags", "subscriptions"
-  add_foreign_key "subscriptions_tags", "tags"
-  add_foreign_key "tags", "users"
 end

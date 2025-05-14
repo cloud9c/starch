@@ -4,7 +4,15 @@
     <title><%= content_for(:title) || "Starch — one place to read them all" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="oklch(17.5% 0 0)" media="(prefers-color-scheme: dark)">
+    <meta name="description" content="RSS Reader. One place to read them all.">
     <meta name="apple-itunes-app" content="app-id=6743105949">
+
+    <meta property="og:site_name" content="Starch">
+    <meta property="og:title" content="Starch — one place to read them all">
+    <meta property="og:description" content="RSS Reader. One place to read them all.">
+    <meta property="og:image" content="https://www.starch.app/icon.png">
+    <meta property="og:url" content="https://starch.app/">
+    <meta property="og:type" content="website">
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
