@@ -11,8 +11,14 @@
     counter-increment: item-counter;
     border-radius: var(--border-radius);
     
-    &:hover, &:focus-visible {
+    &:focus-visible {
       background: var(--color-selected);
+    }
+
+    @media (any-hover: hover) {
+      &:where(:not(:active):hover) {
+        background: var(--color-selected);
+      }
     }
   }
 

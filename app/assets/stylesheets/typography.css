@@ -6,8 +6,14 @@
   a[href] {
     text-decoration: underline;
     
-    &:hover, &:focus-visible {
+    &:focus-visible {
       color: var(--color-link);
+    }
+
+    @media (any-hover: hover) {
+      &:where(:not(:active):hover) {
+        color: var(--color-link);
+      }
     }
   }
   

@@ -115,13 +115,13 @@
   --color-tertiary: oklch(var(--lch-yellow-dark));
   --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.2);
   --color-link: oklch(var(--lch-blue-light));
+  --color-selected: oklch(var(--lch-blue-light) / 0.10);
 
   --bg-primary: oklch(var(--lch-white));
   --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
   --bg-secondary: oklch(var(--lch-gray-50));
   --bg-reversed: var(--color-text);
   --bg-gray: oklch(var(--lch-gray-300));
-  --color-selected: oklch(var(--lch-blue-light) / 0.10);
 
   --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 
@@ -151,10 +151,10 @@
     --color-tertiary: oklch(var(--lch-yellow) / 0.75);
     --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.4);
     --color-link: oklch(var(--lch-blue-light));
+    --color-selected: oklch(var(--lch-blue-light) / 0.10);
 
     --bg-primary: oklch(var(--lch-gray-900));
     --bg-primary-opaque: oklch(var(--lch-gray-900) / 0.95);
     --bg-secondary: oklch(var(--lch-gray-950));
-    --color-selected: oklch(var(--lch-blue-light) / 0.10);
   }
 }
