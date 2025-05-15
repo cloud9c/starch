@@ -4,7 +4,7 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="page page--document" data-controller="documents--show"> 
+<div class="page page--document" data-controller="documents--show" data-documents--show-document-id-value="<%= @document.id %>"> 
   <div id="<%= dom_id(@document) %>" class="content content--document">
     <header class="document-header">
       <%= render 'documents/channel_preview', channel: @document.channel %>
@@ -31,7 +31,7 @@
     </article>
   </div>
 
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document, referrer: request.referrer), target: "_top"%>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_states_path({document_id: @document.id}) %>
 </div>
 
 <% content_for :bottom_content do %>

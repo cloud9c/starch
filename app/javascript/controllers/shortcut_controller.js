@@ -20,34 +20,34 @@ export default class extends Controller {
       return
     }
 
-    const hotkeys = this.hotkeyValue.split(" ").flatMap(key => [key, key.toUpperCase()]);
+    const hotkeys = this.hotkeyValue.split(" ").flatMap(key => [key, key.toUpperCase()])
 
     if (hotkeys.includes(event.key)) {
-      event.preventDefault();
-      this.performDefaultAction();
+      event.preventDefault()
+      this.performDefaultAction()
     }
   }
 
   performDefaultAction() {
-    const tagName = this.element.tagName.toLowerCase();
-    const inputType = this.element.getAttribute('type');
+    const tagName = this.element.tagName.toLowerCase()
+    const inputType = this.element.getAttribute('type')
 
     switch(tagName) {
       case 'a':
-        this.element.click();
-        break; 
+        this.element.click()
+        break
       case 'details':
-        this.element.open = !this.element.open;
-        break;
+        this.element.open = !this.element.open
+        break
       case 'button':
-        this.element.click();
-        break;
+        this.element.click()
+        break
       case 'input':
         if (inputType === 'radio') {
-          this.element.checked = true;
-          this.element.dispatchEvent(new Event('change', { bubbles: true }));
+          this.element.checked = true
+          this.element.dispatchEvent(new Event('change', { bubbles: true }))
         } else {
-          this.element.focus();
+          this.element.focus()
         }
         break;
     }

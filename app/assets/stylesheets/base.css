@@ -63,11 +63,12 @@ turbo-frame {
     font-weight: 600;
     background: var(--bg-primary);
     margin-bottom: 0.5em;
-    font-size: var(--text-xxl);
+    font-size: var(--text-3xl);
     line-height: var(--line-height-tight);
 
     @media (max-width: 100ch) {
       text-align: left;
+      font-size: var(--text-2xl);
     }
   }
 }
@@ -149,4 +150,19 @@ s {
   opacity: 0;
   animation: fadeInOut 4s linear forwards;
   pointer-events: auto;
+}
+
+/* used for flash */
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }

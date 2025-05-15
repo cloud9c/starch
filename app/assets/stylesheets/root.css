@@ -45,7 +45,8 @@
   --text-base: 1rem;
   --text-lg: 1.125rem;
   --text-xl: 1.5rem;
-  --text-xxl: 2.2rem;
+  --text-2xl: 2.2rem;
+  --text-3xl: 2.8rem;
   
   /* Layout */
   --transition: 0.1s ease;

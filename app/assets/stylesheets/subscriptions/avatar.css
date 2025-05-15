@@ -5,8 +5,8 @@
   scrollbar-width: none;
   width: var(--content-width);
 
-  /* avoid cutting off focus ring */
-  padding: 1px; 
+  /* show focus ring */
+  padding: 1px;
 
   .subscription-avatar {
     display: flex;

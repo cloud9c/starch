@@ -6,8 +6,6 @@ class Document < ApplicationRecord
   has_many :document_states, dependent: :destroy
   has_many :users, through: :document_states
 
-  enum :source_type, [ :rss ]
-
   validates :content, length: { maximum: 100_000 }
 
   @@per_page = 10

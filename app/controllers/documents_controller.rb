@@ -1,8 +1,11 @@
 class DocumentsController < ApplicationController
   def index
+    permitted = params.permit(:page)
+    page = permitted[:page] ? permitted[:page].to_i : 1
+    
     documents = Document.query(Current.user.id, {
       status: :inbox,
-      page: params[:page] ? params[:page].to_i : 1
+      page: page
     })
 
     @unread_documents = documents.select { |doc| doc[:read] == 0 }
@@ -11,11 +14,37 @@ class DocumentsController < ApplicationController
     respond_with_pagination(:index, documents)
   end
 
+  def later
+    permitted = params.permit(:page)
+    page = permitted[:page] ? permitted[:page].to_i : 1
+    
+    @documents = Document.query(Current.user.id, {
+      status: :later,
+      page: page
+    })
+
+    respond_with_pagination(:later, @documents)
+  end
+
+  def archive
+    permitted = params.permit(:page)
+    page = permitted[:page] ? permitted[:page].to_i : 1
+    
+    @documents = Document.query(Current.user.id, {
+      status: :archive,
+      page: page
+    })
+
+    respond_with_pagination(:archive, @documents)
+  end
+
   def feed
-    page = params[:page] ? params[:page].to_i : 1
+    permitted = params.permit(:page, :subscription)
+    page = permitted[:page] ? permitted[:page].to_i : 1
+    
     @documents = Document.query(Current.user.id, {
       page: page,
-      subscription: params[:subscription]
+      subscription: permitted[:subscription]
     })
 
     @subscriptions = Current.user.subscriptions.includes(:channel).all
@@ -31,50 +60,10 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def later
-    @documents = Document.query(Current.user.id, {
-      status: :later,
-      page: params[:page] ? params[:page].to_i : 1
-    })
-
-    respond_with_pagination(:later, @documents)
-  end
-
-  def archive
-    @documents = Document.query(Current.user.id, {
-      status: :archive,
-      page: params[:page] ? params[:page].to_i : 1
-    })
-
-    respond_with_pagination(:archive, @documents)
-  end
-
-  def toolbar
-    @document_state = DocumentState.find_or_initialize_by(document_id: params[:id], user: Current.user)
-    @initialized = @document_state.new_record?
-    @back_path = url_for(params[:referrer]) || root_path
-  end
-
-  def show
-    document = Document.find(params[:id])
-
-    if document.channel&.subscriptions.exists?(user: Current.user)
-      @document = document.with_view_preferences
-    end
-  end
-
-  def read
-    document_state = DocumentState.find_by(document_id: params[:id], user: Current.user)
-
-    return head :no_content if document_state.nil?
-
-    document_state.update(read: true)
-    head :ok
-  end
-
   def search
-    query = params[:q]
-    page = params[:page] ? params[:page].to_i : 1
+    permitted = params.permit(:q, :page, :filter)
+    query = permitted[:q]
+    page = permitted[:page] ? permitted[:page].to_i : 1
 
     unless query.present?
       @documents = []
@@ -83,7 +72,7 @@ class DocumentsController < ApplicationController
 
     result = Document.search(query, {
       page: page,
-      filter_by: params[:filter]
+      filter_by: permitted[:filter]
     })
 
     document_ids = result["hits"]
@@ -107,9 +96,13 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def read_all
-    DocumentState.where(user: Current.user, status: :inbox, read: false).update_all(read: true)
-    @flash = { notice: "Marking all as seen" }
+  def show
+    permitted = params.permit(:id)
+    document = Document.find(permitted[:id])
+
+    if document.channel&.subscriptions.exists?(user: Current.user)
+      @document = document.with_view_preferences
+    end
   end
 
   private

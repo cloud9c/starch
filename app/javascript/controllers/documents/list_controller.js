@@ -39,7 +39,7 @@ export default class extends Controller {
       const currentUrlParams = new URLSearchParams(window.location.search);
       currentUrlParams.forEach((value, key) => {
         if (searchParams.has(key)) {
-          searchParams.set(key, value);
+          searchParams.set(key, value)
         }
       });
 

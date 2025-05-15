@@ -1,4 +1,4 @@
 <%= turbo_stream.replace "flash" do %>
   <%= render "shared/flash", flash: @flash %>
 <% end %>
-<turbo-stream action="refresh"></turbo-stream>
+<turbo-stream action="refresh" method="morph"></turbo-stream>

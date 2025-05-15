@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 import { FetchRequest } from '@rails/request.js'
-import { loadStripe } from '@stripe/stripe-js'
 
 export default class extends Controller {
   static targets = ["container"]
@@ -13,7 +12,7 @@ export default class extends Controller {
   }
 
   async initializeStripe() {
-    this.stripe = await loadStripe(this.stripeKeyValue)
+    this.stripe = Stripe(this.stripeKeyValue)
 
     try {
       const checkout = await this.stripe.initEmbeddedCheckout({

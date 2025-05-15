@@ -21,7 +21,7 @@
   width: var(--navbar-width);
   margin: 0 auto;
   gap: 1em;
-  align-items: center;
+  align-items: stretch;
 
   > :first-child, > :last-child {
     flex-grow: 1;
@@ -61,6 +61,8 @@
     user-select: none;
     align-items: center;
     width: fit-content;
+    height: 100%;
+    padding: 0 0.5em;
     
     &::marker {
       content: none;
@@ -86,6 +88,7 @@
 #navbar__account__container {
   display: flex;
   justify-content: end;
+  align-items: center;
 
   #navbar__account {
     background: oklch(80% 0.15 var(--user-hue));

@@ -104,7 +104,6 @@ module EntryUtils
     description = entry_data.summary if entry_data.summary && entry_data.content
 
     {
-      source_type: :rss,
       title: self.format_text(entry_data.title),
       description: format_text(description),
       author: self.format_text(entry_data.author),
