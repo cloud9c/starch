@@ -2,9 +2,6 @@ class Subscription < ApplicationRecord
   include UserOwnable
 
   belongs_to :channel
-  has_many :subscriptions_tags, dependent: :destroy
-  has_many :tags, through: :subscriptions_tags
-
   has_many :entries, through: :channel
   has_many :documents, through: :entries
 
