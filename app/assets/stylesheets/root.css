@@ -125,9 +125,11 @@
   --bg-gray: oklch(var(--lch-gray-300));
 
   --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
+}
 
   /* Dark theme overrides */
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
+  :root {
     --lch-blue-light: 55% 0.12 270;
     --lch-blue: 40% 0.12 270;
     --lch-blue-dark: 35% 0.12 270;
