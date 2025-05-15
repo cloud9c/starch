@@ -2,7 +2,7 @@ class DocumentsController < ApplicationController
   def index
     permitted = params.permit(:page)
     page = permitted[:page] ? permitted[:page].to_i : 1
-    
+
     documents = Document.query(Current.user.id, {
       status: :inbox,
       page: page
@@ -17,7 +17,7 @@ class DocumentsController < ApplicationController
   def later
     permitted = params.permit(:page)
     page = permitted[:page] ? permitted[:page].to_i : 1
-    
+
     @documents = Document.query(Current.user.id, {
       status: :later,
       page: page
@@ -29,7 +29,7 @@ class DocumentsController < ApplicationController
   def archive
     permitted = params.permit(:page)
     page = permitted[:page] ? permitted[:page].to_i : 1
-    
+
     @documents = Document.query(Current.user.id, {
       status: :archive,
       page: page
@@ -41,7 +41,7 @@ class DocumentsController < ApplicationController
   def feed
     permitted = params.permit(:page, :subscription)
     page = permitted[:page] ? permitted[:page].to_i : 1
-    
+
     @documents = Document.query(Current.user.id, {
       page: page,
       subscription: permitted[:subscription]
