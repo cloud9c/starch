@@ -100,7 +100,7 @@ class DocumentsController < ApplicationController
     permitted = params.permit(:id)
     @document = Document.find(permitted[:id])
 
-    if document.channel&.subscriptions.exists?(user: Current.user)
+    if @document.channel&.subscriptions.exists?(user: Current.user)
       @document = @document.with_view_preferences
     end
   end
