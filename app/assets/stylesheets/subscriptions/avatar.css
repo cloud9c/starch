@@ -34,6 +34,10 @@
       img {
         aspect-ratio: 1 / 1;
       }
+
+      &:has(source[srcset=""]) {
+        filter: var(--filter-text-secondary);
+      }
     }
 
     &[data-active="true"] {
