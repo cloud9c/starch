@@ -6,7 +6,7 @@
   @media (max-width: 100ch) {
     display: block;
     position: sticky;
-    bottom: 0;
+    bottom: env(safe-area-inset-bottom, 0);
   }
 
   #navigation {
