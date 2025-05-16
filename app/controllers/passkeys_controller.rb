@@ -1,11 +1,11 @@
 class PasskeysController < ApplicationController
-  before_action :ensure_webauthn_id, only: [:create]
+  before_action :ensure_webauthn_id, only: [ :create ]
 
   def create
     create_options = WebAuthn::Credential.options_for_create(
       user: {
         id: Current.user.webauthn_id,
-        name: Current.user.email_address,
+        name: Current.user.email_address
       },
       exclude: Current.user.webauthn_credentials.pluck(:external_id),
       authenticator_selection: { user_verification: "required" }
@@ -52,7 +52,7 @@ class PasskeysController < ApplicationController
 
   def ensure_webauthn_id
     return if Current.user.webauthn_id.present?
-    
+
     Current.user.update(webauthn_id: WebAuthn.generate_user_id)
   end
 end

@@ -9,9 +9,9 @@ class CreateWebauthnCredentials < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
+
     add_index :webauthn_credentials, :external_id, unique: true
-    
+
     add_column :users, :webauthn_id, :string
   end
 end

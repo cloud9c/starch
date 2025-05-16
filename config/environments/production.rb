@@ -81,7 +81,7 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    "starch.app",
+    "starch.app"
   ]
 
   # Skip DNS rebinding protection for the default health check endpoint.
@@ -90,5 +90,5 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :postmark
   config.action_mailer.postmark_settings = { api_token: Rails.application.credentials.dig(:production, :postmark, :server_api_token) }
 
-  config.webauthn_origin = 'https://starch.app'
+  config.webauthn_origin = "https://starch.app"
 end

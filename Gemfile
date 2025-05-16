@@ -101,4 +101,4 @@ gem "stripe"
 gem "image_size", "~> 3.4"
 
 # support passkeys
-gem 'webauthn'
+gem "webauthn"
