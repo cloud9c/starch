@@ -1,6 +1,6 @@
 :root {
-  --lch-gray-hue: 282.5;
-  --lch-gray-chroma: 0.015;
+  --lch-gray-hue: 90;
+  --lch-gray-chroma: 0.005;
 
   /* LCH color definitions */
   --lch-white: 100% 0 0;
@@ -73,6 +73,9 @@
   /* Dark theme overrides */
 @media (prefers-color-scheme: dark) {
   :root {
+    --lch-gray-hue: 280;
+    --lch-gray-chroma: 0.02;
+
     --lch-blue-light: 55% 0.12 270;
     --lch-blue: 40% 0.12 270;
     --lch-blue-dark: 35% 0.12 270;

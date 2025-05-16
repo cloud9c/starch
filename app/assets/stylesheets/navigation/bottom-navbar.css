@@ -1,6 +1,6 @@
 #bottom-navbar {
   display: none;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-top: 1px solid var(--color-border);
 
   @media (max-width: 100ch) {
