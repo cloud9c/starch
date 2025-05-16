@@ -74,3 +74,7 @@
 .icon--billing::before {
   mask-image: url(/icons/billing.svg);
 }
+
+.icon--security::before {
+  mask-image: url(/icons/security.svg);
+}

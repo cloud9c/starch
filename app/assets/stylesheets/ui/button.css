@@ -5,9 +5,12 @@
   border-radius: var(--border-radius);
   padding: 0.4em 0.8em;
   cursor: pointer;
-  background: var(--color-primary);
-  color: var(--color-text-light);
+  background: var(--bg-default);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--text-lg);
   height: fit-content;
+  text-align: center;
 
   &.btn--icon::before {
     display: block;
@@ -26,21 +29,48 @@
     align-items: center;
   }
 
-  &:empty {
-    padding: 0.5em;
-  }
-
   &:focus-visible {
     outline: var(--focus-ring);
     outline-width: medium;
   }
 
   &.btn--icon::before {
-    background: var(--color-text-light);
+    background: var(--color-text);
   }
 
   &.btn--icon:empty {
     padding: 0.5em;
+  }
+
+  &.btn--primary {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+
+    &.btn--icon::before {
+      background: var(--color-text-light);
+    }
+  
+    border: none;
+  }
+
+  &.btn--secondary {
+    background: var(--color-secondary);
+    color: var(--color-text);
+
+    &.btn--icon::before {
+      background: var(--color-text);
+    }
+
+    border: none;
+  }
+
+  &.btn--sm {
+    font-size: var(--text-sm);
+
+    &::before {
+      height: 1.125em;
+      width: 1.125em;
+    }
   }
 
   &.btn--ghost {
@@ -51,42 +81,38 @@
     }
   }
 
+  &.btn--link {
+    background: none;
+    text-decoration: underline
+  }
+
   &.btn--outline {
     background: none;
 
-    border: 1px solid var(--color-secondary);
-    color: var(--color-secondary);
+    border: 1px solid transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
 
     &.btn--icon::before {
-      background: var(--color-secondary);
+      background: var(--color-text-secondary);
     }
-  }
 
-  &.btn--secondary {
-    background: none;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
+    &.btn--secondary {
+      border-color: var(--color-secondary);
+      color: var(--color-secondary);
 
-    &.btn--icon::before {
-      background: var(--color-text);
+      &&:before {
+        background: var(--color-secondary);
+      }
     }
-  }
 
-  &.btn--main {
-    border-color: var(--color-tertiary);
-    color: var(--color-tertiary);
+    &.btn--tertiary {
+      border-color: var(--color-tertiary);
+      color: var(--color-tertiary);
 
-    &&:before {
-      background: var(--color-tertiary);
-    }
-  }
-
-  &.btn--sm {
-    font-size: var(--text-sm);
-
-    &::before {
-      height: 1.125em;
-      width: 1.125em;
+      &&:before {
+        background: var(--color-tertiary);
+      }
     }
   }
 }

@@ -39,6 +39,14 @@
   margin-top: 1em !important;
 }
 
+.push_double--bottom {
+  margin-bottom: 2em !important;
+}
+
+.push_double--top {
+  margin-top: 2em !important;
+}
+
 .push_quarter--bottom {
   margin-bottom: 0.25em !important;
 }

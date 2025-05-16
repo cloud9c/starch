@@ -27,6 +27,14 @@ Rails.application.routes.draw do
         get :has_paid
       end
     end
+
+    resource :security, only: [ :show ] do
+      resources :passkeys do
+        collection do
+          post :callback
+        end
+      end
+    end
   end
   resolve("User") { [ :user ] }
 

@@ -19,8 +19,8 @@
                         maxlength: 6,
                         autocomplete: "off",
                         autofocus: true %>
-          <%= form.submit "Verify email address", class: "btn" %>
+    <%= form.submit "Verify email address", class: "btn btn--primary push--top" %>
     <%= invisible_captcha %>
   <% end %>
-  <%= link_to "Go back", :back, class: "btn btn--outline btn--icon icon--arrow-left breadcrumb push--top" %>
+  <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push_double--top" %>
 </div>

@@ -99,3 +99,6 @@ gem "stripe"
 
 # Sniff image size
 gem "image_size", "~> 3.4"
+
+# support passkeys
+gem 'webauthn'

@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_many :channels, through: :subscriptions
   has_many :document_states, dependent: :destroy
+  has_many :webauthn_credentials, dependent: :destroy
 
   before_destroy :cleanup_stripe_customer
 

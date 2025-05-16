@@ -37,6 +37,8 @@ export default class extends Controller {
       const url = new URL(window.location.pathname, window.location.origin)
       const searchParams = new URLSearchParams(this.queryValue)
       const currentUrlParams = new URLSearchParams(window.location.search);
+
+      // only override queries defined in queryValue
       currentUrlParams.forEach((value, key) => {
         if (searchParams.has(key)) {
           searchParams.set(key, value)

@@ -4,8 +4,8 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="page document-list" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "q=#{params[:query]}" %>">
+<div class="page document-list" data-controller="pagination" 
+     data-pagination-query-value="<%= "q=#{params[:query]}" %>">
     <h1 class="page__header">Search</h1>
 
   <search class="searchbar push--bottom">

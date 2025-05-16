@@ -1,36 +1,43 @@
-.page--login {
-  gap: 1em;
+.page.page--login {
+  width: min(100%, 20em);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 
   .login__logo {
     width: 3em;
     height: 3em;
   }
 
-  &.page {
-    border-radius: 0;
-    border-top: none;
-  }
-
   #login__form {
-    max-width: 20em;
-    width: 100%;
     display: flex;
-    gap: 1em;
     flex-direction: column;
-    align-items: center;
-    
+    align-items: stretch;
+
     label {
-      width: 100%;
       font-size: var(--text-xl);
+      margin-bottom: 0.5em;
     }
-
-    input {
-      width: 100%
-    }
-
   }
 
   .login__email-address {
     font-weight: 600;
+  }
+  
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1em 0;
+    gap: 0.5em;
+    font-size: var(--text-sm);
+
+    &::before, &::after {
+      content: "";
+      display: inline-block;
+      width: 50%;
+      height: 1px;
+      vertical-align: middle;
+      background-color: var(--color-border);
+    }
   }
 }

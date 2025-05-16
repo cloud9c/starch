@@ -4,8 +4,8 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="document-list page" data-controller="documents--list" 
-     data-documents--list-query-value="<%= "status=later" %>">
+<div class="document-list page" data-controller="pagination" 
+     data-pagination-query-value="<%= "status=later" %>">
   <h1 class="page__header">Later</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>

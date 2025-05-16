@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_14_213927) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_15_195548) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -95,9 +95,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_213927) do
     t.datetime "verified_at"
     t.boolean "paid", default: false
     t.string "stripe_customer_id"
+    t.string "webauthn_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["stripe_customer_id"], name: "index_users_on_stripe_customer_id"
     t.index ["verified_at"], name: "index_users_on_verified_at"
+  end
+
+  create_table "webauthn_credentials", force: :cascade do |t|
+    t.string "external_id", null: false
+    t.string "public_key", null: false
+    t.string "nickname"
+    t.bigint "sign_count", default: 0, null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_webauthn_credentials_on_external_id", unique: true
+    t.index ["user_id"], name: "index_webauthn_credentials_on_user_id"
   end
 
   add_foreign_key "document_states", "documents"
@@ -107,4 +120,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_14_213927) do
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "channels"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "webauthn_credentials", "users"
 end

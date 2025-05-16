@@ -34,7 +34,7 @@
     justify-content: space-between;
     width: var(--content-width);
     align-items: center;
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
   }
 
   .document-list__title {

@@ -75,7 +75,12 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
+    line-height: 1.2em;
+
+    @media(max-width: 100ch) {
+      font-size: var(--text-sm);
+    }
   }
 
   time {
