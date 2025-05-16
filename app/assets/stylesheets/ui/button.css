@@ -44,10 +44,10 @@
 
   &.btn--primary {
     background: var(--color-primary);
-    color: var(--color-text-light);
+    color: #FFF;
 
     &.btn--icon::before {
-      background: var(--color-text-light);
+      background: #FFF;
     }
   
     border: none;
@@ -55,10 +55,10 @@
 
   &.btn--secondary {
     background: var(--color-secondary);
-    color: var(--color-text);
+    color: #FFF;
 
     &.btn--icon::before {
-      background: var(--color-text);
+      background: #FFF;
     }
 
     border: none;

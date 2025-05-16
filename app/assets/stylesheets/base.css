@@ -144,7 +144,7 @@ s {
 
 .flash-item {
   padding: 0.5em 1.5em;
-  background: var(--bg-reversed);
+  background: var(--color-text);
   color: var(--color-text-reversed);
   border-radius: 2em;
   box-shadow: 0 0 1em var(--color-shadow);

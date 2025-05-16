@@ -65,7 +65,7 @@
   --bg-primary: oklch(var(--lch-white));
   --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
   --bg-secondary: oklch(var(--lch-gray-50));
-  --bg-reversed: var(--color-text);
+  --bg-default: oklch(var(--lch-gray-100));
 
   --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 }
