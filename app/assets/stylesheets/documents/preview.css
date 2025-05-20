@@ -32,7 +32,7 @@
   
   .document-preview-title {
     color: var(--color-text);
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: clip;
@@ -75,11 +75,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: var(--text-base);
-
-    @media(max-width: 100ch) {
-      font-size: var(--text-sm);
-    }
+    font-size: var(--text-sm);
   }
 
   time {

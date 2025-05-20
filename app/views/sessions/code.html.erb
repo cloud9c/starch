@@ -7,20 +7,23 @@
       Starch
     </h1>
   </div>
-  <%= form_with(url: verify_session_path, id: "login__form") do |form| %>
-    <%= form.label :verification_code do %>
-      <p>Enter the code sent to</p>
-      <p class="login__email-address"><%= params[:email_address] %></p>
+
+  <div class="login__form">
+    <%= form_with(url: verify_session_path) do |form| %>
+      <%= form.label :verification_code do %>
+        <p>Enter the code sent to</p>
+        <p class="login__email-address"><%= params[:email_address] %></p>
+      <% end %>
+      <%= form.text_field :verification_code, 
+                          pattern: "[0-9]*", 
+                          required: true, 
+                          inputmode: "numeric",
+                          maxlength: 6,
+                          autocomplete: "off",
+                          autofocus: true %>
+      <%= form.submit "Verify email address", class: "btn btn--primary push--top" %>
+      <%= invisible_captcha %>
     <% end %>
-    <%= form.text_field :verification_code, 
-                        pattern: "[0-9]*", 
-                        required: true, 
-                        inputmode: "numeric",
-                        maxlength: 6,
-                        autocomplete: "off",
-                        autofocus: true %>
-    <%= form.submit "Verify email address", class: "btn btn--primary push--top" %>
-    <%= invisible_captcha %>
-  <% end %>
-  <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push_double--top" %>
+  </div>
+    <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push_double--top" %>
 </div>

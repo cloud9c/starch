@@ -1,19 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
-import * as Credential from "credential";
-import { supported as WebAuthnSupported } from "@github/webauthn-json";
+import { supported as webAuthnSupported, get as webAuthnCreate } from "@github/webauthn-json";
 
 export default class extends Controller {
   static targets = ["message"]
 
   connect() {
-    if (!WebAuthnSupported()) {
-      this.messageTarget.innerHTML = "This browser doesn't support WebAuthn API";
-      this.element.classList.remove("hidden");
+    if (!webAuthnSupported()) {
+      this.messageTarget.textContent= "This browser doesn't support WebAuthn API";
     } else {
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then((available) => {
         if (!available) {
-          this.messageTarget.innerHTML = "We couldn't detect a user-verifying platform authenticator";
-          this.element.classList.remove("hidden");
+          this.messageTarget.textContent = "We couldn't detect a user-verifying platform authenticator";
         }
       });
     }
@@ -25,7 +22,15 @@ export default class extends Controller {
     var credential_nickname = event.target.querySelector("input[name='credential[nickname]']").value;
     var callback_url = `/credentials/callback?credential_nickname=${credential_nickname}`
 
-    Credential.create(encodeURI(callback_url), credentialOptions);
+    function create(callbackUrl, credentialOptions) {
+      webAuthnCreate({ "publicKey": credentialOptions }).then(function(credential) {
+        callback(callbackUrl, credential);
+      }).catch(function(error) {
+        // showMessage(error);
+      });
+
+      console.log("Creating new public key credential...");
+    }
   }
 }
 

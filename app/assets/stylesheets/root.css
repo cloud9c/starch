@@ -35,18 +35,18 @@
   /* Base typography settings */
   --font-size: clamp(1rem, 2.225vw, 1.125rem);
   --letter-spacing: -0.0015em;
-  --line-height: 1.2em;
-  --line-height-loose: 1.6em;
-  --line-height-tight: 1.1em;
+  --line-height: 1.2;
+  --line-height-loose: 1.6;
+  --line-height-tight: 1;
   
   /* Text sizes */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.5rem;
-  --text-2xl: 2.2rem;
-  --text-3xl: 2.8rem;
+  --text-xs: 75%;
+  --text-sm: 87.5%;
+  --text-base: 100%;
+  --text-lg: 125%;
+  --text-xl: 150%;
+  --text-2xl: 220%;
+  --text-3xl: 275%;
   
   /* Layout */
   --transition: 0.1s ease;

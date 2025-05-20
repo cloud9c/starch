@@ -180,3 +180,7 @@ s {
     opacity: 0;
   }
 }
+
+:where([hidden]) {
+  display: none !important;
+}

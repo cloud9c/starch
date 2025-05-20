@@ -1,5 +1,6 @@
 .typography {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
+  font-family: var(--font-serif);
   line-height: var(--line-height-loose);
   word-break: break-word;
   
