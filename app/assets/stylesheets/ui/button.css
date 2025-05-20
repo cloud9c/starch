@@ -73,17 +73,17 @@
     }
   }
 
-  &.btn--ghost {
-    background: none;
-   
+  &.btn--danger {
+    color: var(--color-danger);
+
     &.btn--icon::before {
-      background: var(--color-text-secondary);
-    }
+      background: var(--color-danger);
+    } 
   }
 
-  &.btn--link {
+  &.btn--ghost {
     background: none;
-    text-decoration: underline
+    border: none;
   }
 
   &.btn--outline {

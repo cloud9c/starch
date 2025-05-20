@@ -1,17 +1,17 @@
 <% content_for(:title) { 'Account' } %>
 
 <div class="page">
-  <h1 class="page__header">Account</h1>
+  <h1 class="heading">Account</h1>
 
   <div class="content">
     <span class="action-group-title">Stuff</span>
-    <div class="action-group action-group--surface push--bottom">
+    <div class="action-group push--bottom">
       <%= link_to "Subscriptions", subscriptions_path, class: "action-group__item icon icon--plus-circle-fill" %>
       <%= link_to "Archive", archive_path, class: "action-group__item icon icon--archive" %>
     </div>
 
     <span class="action-group-title">Account</span>
-    <div class="action-group action-group--surface">
+    <div class="action-group">
       <%= link_to "Security", user_security_path, class: "action-group__item icon icon--security" %>
       <%= link_to "Billing", user_billing_path, class: "action-group__item icon icon--billing" %>
       <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "action-group__item icon icon--sign-out" %>

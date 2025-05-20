@@ -58,20 +58,32 @@ turbo-frame {
   @media (max-width: 100ch) {
     border-radius: 0;
   }
+}
 
-  .page__header {
-    text-align: center;
-    width: var(--content-width);
+.heading {
+  text-align: left;
+  width: var(--content-width);
+  font-weight: 400;
+  background: var(--bg-primary);
+  margin-bottom: 0.5em;
+  line-height: var(--line-height-tight);
+
+  &:is(h1) {
     font-weight: 600;
-    background: var(--bg-primary);
-    margin-bottom: 0.5em;
+    text-align: center;
     font-size: var(--text-3xl);
-    line-height: var(--line-height-tight);
-
     @media (max-width: 100ch) {
       text-align: left;
       font-size: var(--text-2xl);
     }
+  }
+
+  &:is(h2) {
+    font-size: var(--text-xl);
+  }
+
+  &:is(h3) {
+    font-size: var(--text-lg);
   }
 }
 

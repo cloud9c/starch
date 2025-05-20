@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "passkeys" do %>
-  <div class="action-group action-group--surface" data-controller="pagination">
+  <div class="action-group" data-controller="pagination">
     <%= render partial: 'documents/preview', collection: @passkeys %>
   </div>
 <% end %>

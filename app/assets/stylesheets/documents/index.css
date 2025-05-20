@@ -56,7 +56,7 @@
   }
 
   #inbox__unread-section:has(.document-preview) {
-    .page__header::before, .page__header::after {
+    .heading::before, .heading::after {
       display: none;
     }
   }

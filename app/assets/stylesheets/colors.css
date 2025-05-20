@@ -1,11 +1,11 @@
 :root {
-  --lch-gray-hue: 90;
-  --lch-gray-chroma: 0.005;
+  --lch-gray-hue: 70;
+  --lch-gray-chroma: 0.0025;
 
   /* LCH color definitions */
   --lch-white: 100% 0 0;
-  --lch-gray-50: 98.5% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-100: 95% var(--lch-gray-chroma) var(--lch-gray-hue);
+  --lch-gray-50: 99.5% var(--lch-gray-chroma) var(--lch-gray-hue);
+  --lch-gray-100: 97.5% var(--lch-gray-chroma) var(--lch-gray-hue);
   --lch-gray-200: 92% var(--lch-gray-chroma) var(--lch-gray-hue);
   --lch-gray-300: 85% var(--lch-gray-chroma) var(--lch-gray-hue);
   --lch-gray-400: 70% var(--lch-gray-chroma) var(--lch-gray-hue);
@@ -60,7 +60,7 @@
   --color-tertiary: oklch(var(--lch-yellow-dark));
   --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.2);
   --color-link: oklch(var(--lch-blue-light));
-  --color-selected: oklch(var(--lch-blue-light) / 0.10);
+  --color-selected: oklch(var(--lch-blue-light) / 0.075);
 
   --bg-primary: oklch(var(--lch-white));
   --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
@@ -80,6 +80,7 @@
     --lch-blue: 40% 0.12 270;
     --lch-blue-dark: 35% 0.12 270;
     --lch-purple: 65% 0.10 295;
+    --lch-red: 60% 0.16 28;
     
     --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
     --color-border-dark: oklch(var(--lch-gray-500));

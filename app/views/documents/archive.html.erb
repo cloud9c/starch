@@ -7,7 +7,7 @@
 <div class="document-list page" data-controller="pagination" 
                                  data-pagination-query-value="<%= "status=archive" %>">
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push--bottom" %>
-  <h1 class="page__header">Archive</h1>
+  <h1 class="heading">Archive</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents %>

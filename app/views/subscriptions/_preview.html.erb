@@ -28,7 +28,7 @@
     <%= button_to "", subscription_path(preview), 
           method: :delete,
           form: { data: { turbo_confirm: "Are you sure?" } },
-          class: "btn btn--icon icon--trash btn--ghost",
+          class: "btn btn--icon icon--trash btn--ghost btn--danger",
           "aria-label": "Delete subscription" %>
   </div>
 </div>

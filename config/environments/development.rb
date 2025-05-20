@@ -71,4 +71,7 @@ Rails.application.configure do
   config.generators.apply_rubocop_autocorrect_after_generate!
 
   config.webauthn_origin = "http://localhost:3000"
+
+  # Suppress "Cannot Render Console from..." on Rails in Docker Compose
+  config.web_console.permissions = "172.20.0.1"
 end
