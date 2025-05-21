@@ -88,7 +88,7 @@ class Channel < ApplicationRecord
       users = entry.channel.subscriptions.to_inbox.map(&:user).uniq
 
       document_states = users.map do |user|
-        { user_id: user.id, document_id: document.id }
+        { user_id: user.id, document_id: document.id, status: :inbox }
       end
 
       # warm up extracted document

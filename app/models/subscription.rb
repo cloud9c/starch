@@ -16,7 +16,8 @@ class Subscription < ApplicationRecord
       document = entry.document
       DocumentState.create(
         user_id: user_id,
-        document: document
+        document: document,
+        status: :inbox
       )
 
       # warm up extracted document

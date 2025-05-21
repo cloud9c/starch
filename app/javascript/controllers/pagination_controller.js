@@ -36,7 +36,7 @@ export default class extends Controller {
     try {
       const url = new URL(window.location.pathname, window.location.origin)
       const searchParams = new URLSearchParams(this.queryValue)
-      const currentUrlParams = new URLSearchParams(window.location.search);
+      const currentUrlParams = new URLSearchParams(window.location.search)
 
       // only override queries defined in queryValue
       currentUrlParams.forEach((value, key) => {
@@ -50,7 +50,7 @@ export default class extends Controller {
 
       const request = await new FetchRequest('GET', url, {
           headers: {
-            "Accept": "text/vnd.turbo-stream.html, text/html, application/xhtml+xml"
+            "Accept": "text/vnd.turbo-stream.html"
           }
         }).perform()
     

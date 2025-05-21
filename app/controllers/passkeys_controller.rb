@@ -25,20 +25,20 @@ class PasskeysController < ApplicationController
       webauthn_credential.verify(session[:current_registration]["challenge"], user_verification: true)
 
       credential = Current.user.webauthn_credentials.find_or_initialize_by(
-        external_id: Base64.strict_encode64(webauthn_credential.raw_id)
+        external_id: Base64.strict_encode64(webauthn_credential.raw_id),
       )
 
       if credential.update(
-        nickname: params[:credential_nickname],
+        nickname: params[:nickname],
         public_key: webauthn_credential.public_key,
         sign_count: webauthn_credential.sign_count
       )
-        render json: { status: "ok" }, status: :ok
+        render plain: "OK", status: :ok
       else
-        render json: "Couldn't add your Security Key", status: :unprocessable_entity
+        render plain: "Couldn't add your Security Key", status: :unprocessable_entity
       end
     rescue WebAuthn::Error => e
-      render json: "Verification failed: #{e.message}", status: :unprocessable_entity
+      render plain: "Verification failed: #{e.message}", status: :unprocessable_entity
     ensure
       session.delete(:current_registration)
     end

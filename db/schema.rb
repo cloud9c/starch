@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_15_195548) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_21_155244) do
   create_table "channels", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -31,8 +31,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_195548) do
     t.integer "document_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "status", default: 0, null: false
-    t.boolean "read", default: false, null: false
+    t.integer "status"
+    t.boolean "read", default: false
     t.float "progress", default: 0.0
     t.float "progress_raw", default: 0.0
     t.index ["document_id", "user_id"], name: "index_document_states_on_document_and_user", unique: true

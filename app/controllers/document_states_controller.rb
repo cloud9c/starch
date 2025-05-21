@@ -14,7 +14,7 @@ class DocumentStatesController < ApplicationController
 
   def toolbar
     permitted = params.permit(:document_id)
-    @document_state = DocumentState.find_or_initialize_by(document_id: permitted[:document_id], user: Current.user)
+    @document_state = DocumentState.find_or_create_by(document_id: permitted[:document_id], user: Current.user)
 
     @document_state.update(read: true)
   end

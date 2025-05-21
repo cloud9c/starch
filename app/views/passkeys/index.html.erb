@@ -1,4 +1,7 @@
 <%= turbo_frame_tag "passkeys" do %>
+  <%= form_with registration_path do |form| %>
+    <%= form.text_field :nickname, "Nickname" %>
+  <% end %>
   <div class="action-group" data-controller="pagination">
     <%= render partial: 'documents/preview', collection: @passkeys %>
   </div>

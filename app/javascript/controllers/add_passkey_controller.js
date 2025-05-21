@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { supported as webAuthnSupported, get as webAuthnCreate } from "@github/webauthn-json";
+import { FetchRequest } from '@rails/request.js'
 
 export default class extends Controller {
   static targets = ["message"]
@@ -17,20 +18,23 @@ export default class extends Controller {
   }
 
   create(event) {
-    var [data, status, xhr] = event.detail;
-    var credentialOptions = data;
-    var credential_nickname = event.target.querySelector("input[name='credential[nickname]']").value;
-    var callback_url = `/credentials/callback?credential_nickname=${credential_nickname}`
+    const [data, status, xhr] = event.detail;
+    const credentialOptions = data;
+    const nickname = event.target.querySelector("input[name='credential[nickname]']").value;
 
-    function create(callbackUrl, credentialOptions) {
-      webAuthnCreate({ "publicKey": credentialOptions }).then(function(credential) {
-        callback(callbackUrl, credential);
-      }).catch(function(error) {
-        // showMessage(error);
-      });
+    webAuthnCreate({ "publicKey": credentialOptions }).then((credential) => {
+      callbackUrl = new URL("/passkeys/callback", window.location.origin)
+      callbackUrl.searchParams.append('nickname', nickname);
 
-      console.log("Creating new public key credential...");
-    }
+      const request = await new FetchRequest('POST', callbackUrl, {
+        headers: {
+          "Accept": "text/vnd.turbo-stream.html"
+        },
+        body: credential
+      }).perform()
+    }).catch(function(error) {
+      console.log(error);
+    });
   }
 }
 

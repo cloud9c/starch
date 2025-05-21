@@ -1,7 +1,8 @@
 class DocumentState < ApplicationRecord
   include UserOwnable
 
-  validates :document_id, uniqueness: { scope: :user_id }
+  validates :document_id, presence: true, uniqueness: { scope: :user_id }
+  validates :status, presence: true
   enum :status, [ :inbox, :later, :archive ]
 
   belongs_to :document
