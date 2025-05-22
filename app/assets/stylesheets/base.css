@@ -41,6 +41,8 @@ turbo-frame {
 
 .content {
 	width: var(--content-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .page {

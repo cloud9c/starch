@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { supported as webAuthnSupported, get as webAuthnCreate } from "@github/webauthn-json";
+import { supported as webAuthnSupported, create as webAuthnCreate } from "@github/webauthn-json";
 import { FetchRequest } from '@rails/request.js'
 
 export default class extends Controller {
@@ -17,13 +17,12 @@ export default class extends Controller {
     }
   }
 
-  create(event) {
-    const [data, status, xhr] = event.detail;
-    const credentialOptions = data;
-    const nickname = event.target.querySelector("input[name='credential[nickname]']").value;
+  async submit(event) {
+    const nickname = event.detail.formSubmission.body.get("passkey[nickname]")
+    const credentialOptions = JSON.parse(await event.detail.fetchResponse.responseText)
 
-    webAuthnCreate({ "publicKey": credentialOptions }).then((credential) => {
-      callbackUrl = new URL("/passkeys/callback", window.location.origin)
+    webAuthnCreate({ "publicKey": credentialOptions }).then(async (credential) => {
+      const callbackUrl = new URL("/user/security/passkeys/callback", window.location.origin)
       callbackUrl.searchParams.append('nickname', nickname);
 
       const request = await new FetchRequest('POST', callbackUrl, {
@@ -32,7 +31,7 @@ export default class extends Controller {
         },
         body: credential
       }).perform()
-    }).catch(function(error) {
+    }).catch((error) => {
       console.log(error);
     });
   }

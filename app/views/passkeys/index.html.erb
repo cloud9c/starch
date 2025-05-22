@@ -1,8 +1,15 @@
 <%= turbo_frame_tag "passkeys" do %>
-  <%= form_with registration_path do |form| %>
-    <%= form.text_field :nickname, "Nickname" %>
-  <% end %>
-  <div class="action-group" data-controller="pagination">
-    <%= render partial: 'documents/preview', collection: @passkeys %>
+  <div class="content">
+    <%= form_with scope: :passkey, url: user_security_passkeys_path,
+      data: {
+        controller: "add-passkey",
+        action: "turbo:submit-end->add-passkey#submit",
+      } do |form| %>
+      <%= form.text_field :nickname, placeholder: "Nickname", required: true %>
+      <%= form.button "Add passkey", class: "btn btn--primary" %>
+    <% end %>
+    <div class="action-group" data-controller="pagination">
+      <%= render partial: 'documents/preview', collection: @passkeys %>
+    </div>
   </div>
 <% end %>

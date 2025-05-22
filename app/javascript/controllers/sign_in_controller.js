@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import * as WebAuthn from "credential";
 import { supported as webAuthnSupported, create as webAuthnCreate } from "@github/webauthn-json";
 
 export default class extends Controller {

@@ -11,15 +11,18 @@ class PasskeysController < ApplicationController
       authenticator_selection: { user_verification: "required" }
     )
 
-    session[:current_registration] = { challenge: create_options.challenge }
+    session[:current_registration] = {
+      challenge: create_options.challenge,
+      user_attributes: Current.user.attributes
+    }
 
-    respond_to do |format|
-      format.json { render json: create_options }
-    end
+    render json: create_options
   end
 
   def callback
     webauthn_credential = WebAuthn::Credential.from_create(params)
+
+    Rails.logger.debug params.inspect
 
     begin
       webauthn_credential.verify(session[:current_registration]["challenge"], user_verification: true)
