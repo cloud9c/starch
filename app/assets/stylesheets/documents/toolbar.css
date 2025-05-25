@@ -1,7 +1,7 @@
 .toolbar {
   display: flex;
   position: sticky;
-  bottom: var(--page-padding);
+  bottom: calc(env(safe-area-inset-bottom) + var(--page-padding));
   margin: 0 var(--page-padding);
   border-radius: 0.5em;
   background: var(--bg-secondary);
