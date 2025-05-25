@@ -60,6 +60,10 @@ turbo-frame {
   @media (max-width: 100ch) {
     border-radius: 0;
   }
+
+  .native & {
+    padding-top: 0;
+  }
 }
 
 .heading {
