@@ -3,7 +3,7 @@
   z-index: 1;
   background: var(--bg-primary-opaque);
   position: fixed;
-  top: env(safe-area-inset-bottom, 0);
+  top: 0;
 }
 
 @media (min-width: 100ch) {
