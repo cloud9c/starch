@@ -14,7 +14,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-height: 100svh;
+  margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   &:has(#navbar) {
     padding-top: var(--navbar-padding);
