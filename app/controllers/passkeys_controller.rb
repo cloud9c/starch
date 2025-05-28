@@ -40,7 +40,7 @@ class PasskeysController < ApplicationController
         @flash = { notice: "Passkey added successfully!" }
         @credential = credential
       else
-        @flash = { alert: "Couldn't add your Security Key" }
+        @flash = { alert: "Couldn't add your Passkey" }
       end
     rescue WebAuthn::Error
       @flash = { alert: "Verification failed" }

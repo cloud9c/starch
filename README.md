@@ -3,12 +3,13 @@
 
 # p0
 - showing progress
+- search is not working
+- user cannot unselect the category ("inbox" -> not "inbox")
 
 # p1
 
 - fallback image / proxy images that dont allow CORS
 - search autocomplete for subscriptions
-- passkeys
 
 # p2
 

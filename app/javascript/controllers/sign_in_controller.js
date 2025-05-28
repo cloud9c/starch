@@ -39,7 +39,7 @@ export default class extends Controller {
         Turbo.visit(new URL(redirect_url, document.baseURI))
       }
     }).catch((error) => {
-      this.errorTarget.textContent = error
+      this.errorTarget.textContent = "Couldn't use your passkey to login"
     });
   }
 }

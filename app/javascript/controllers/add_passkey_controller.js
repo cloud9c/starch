@@ -32,7 +32,7 @@ export default class extends Controller {
         body: credential
       }).perform()
     }).catch((error) => {
-      this.errorTarget.textContent = error
+      this.errorTarget.textContent = "Couldn't add your passkey"
     })
   }
 }
