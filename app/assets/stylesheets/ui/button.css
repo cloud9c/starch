@@ -45,10 +45,10 @@
 
   &.btn--primary {
     background: var(--color-primary);
-    color: #FFF;
+    color: var(--color-text-reversed);
 
     &.btn--icon::before {
-      background: #FFF;
+      background: var(--color-text-reversed);
     }
   
     border: none;

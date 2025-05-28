@@ -12,15 +12,21 @@
     <%= form_with(url: session_path, class: "align--center") do |form| %>
       <%= form.label :email_address, "Enter your email address"%>
       <%= form.email_field :email_address, required: true, autofocus: true %>
-      <%= form.submit "Continue", class: "btn btn--primary push--top" %>
+      <%= form.submit "Continue", class: "btn btn--primary push_half--top" %>
       <%= invisible_captcha %>
     <% end %>
 
-
-    <%= form_with(url: session_path, class: "align--center", data: { controller: "sign-in" }) do |form| %>
-      <span class="auth-divider" data-sign-in-target="passkeyFields">Or</span>
-      <%= form.button "Sign in with passkey", class: "btn btn--icon icon--security", data: { "sign-in-target": "passkeyFields"} %>
-    <% end %>
+    <turbo-frame>
+      <%= form_with(url: create_with_passkey_session_path, class: "align--center",
+                    data: {
+                      controller: "sign-in",
+                      action: "turbo:submit-end->sign-in#submit"
+                    }) do |form| %>
+        <span class="auth-divider" data-sign-in-target="passkeyFields">Or</span>
+        <%= form.button "Sign in with passkey", class: "btn btn--icon icon--security" %>
+        <span data-sign-in-target="error" class="text--danger push_quarter--top"></span>
+      <% end %>
+    </turbo-frame>
   </div>
 
 </div>

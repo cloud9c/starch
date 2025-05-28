@@ -12,7 +12,7 @@
 
     <span class="action-group-title">Account</span>
     <div class="action-group">
-      <%= link_to "Security", user_security_path, class: "action-group__item icon icon--security" %>
+      <%= link_to "Passkeys", user_security_path, class: "action-group__item icon icon--security" %>
       <%= link_to "Billing", user_billing_path, class: "action-group__item icon icon--billing" %>
       <%= link_to "Sign out", session_path, data: { turbo_method: :delete }, class: "action-group__item icon icon--sign-out" %>
       <%= link_to "Close your account", user_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to close your account?" }, class: "action-group__item icon icon--x-circle-fill" %>

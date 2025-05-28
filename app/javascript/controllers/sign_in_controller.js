@@ -1,46 +1,45 @@
 import { Controller } from "@hotwired/stimulus"
-import { supported as webAuthnSupported, create as webAuthnCreate } from "@github/webauthn-json";
+import { supported as webAuthnSupported, get as webAuthnGet } from "@github/webauthn-json";
+import { FetchRequest } from '@rails/request.js'
 
 export default class extends Controller {
-  static targets = ["passkeyFields"]
+  static targets = ["error"]
 
   connect() {
-    let supported = true;
+    let supported = true
 
     if (!webAuthnSupported()) {
-      supported = false;
+      supported = false
     } else {
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then((available) => {
         if (!available) {
-          supported = false;
+          supported = false
         }
-      });
+      })
     }
 
     if (!supported) {
-      this.passkeyFieldsTargets.forEach((target) => target.hidden = true);
+      this.element.hidden = true
     }
   }
 
-  create(event) {
-    // var [data, status, xhr] = event.detail;
-    // console.log(data);
-    // var credentialOptions = data;
-    // WebAuthn.get(credentialOptions);
+  async submit(event) {
+    const responseText = await event.detail.fetchResponse.responseText
+    const credentialOptions = JSON.parse(responseText)
 
-    function get(credentialOptions) {
-      webAuthnCreate({ "publicKey": credentialOptions }).then(function(credential) {
-        callback("/session/callback", credential);
-      }).catch(function(error) {
-        // showMessage(error);
-      });
-    }
-  }
+    webAuthnGet({ "publicKey": credentialOptions }).then(async (credential) => {
+      const callbackUrl = new URL("/session/passkey_callback", window.location.origin)
+      const request = await new FetchRequest('POST', callbackUrl, {
+        body: credential,
+        responseKind: "turbo-stream"
+      }).perform()
 
-  error(event) {
-    // let response = event.detail[0];
-    // let usernameField = new MDCTextField(this.usernameFieldTarget);
-    // usernameField.valid = false;
-    // usernameField.helperTextContent = response["errors"][0];
+      if (request.redirected) {
+        const redirect_url = request.response.url.toString()
+        Turbo.visit(new URL(redirect_url, document.baseURI))
+      }
+    }).catch((error) => {
+      this.errorTarget.textContent = error
+    });
   }
 }

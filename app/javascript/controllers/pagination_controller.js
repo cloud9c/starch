@@ -49,9 +49,7 @@ export default class extends Controller {
       url.search = searchParams.toString()
 
       const request = await new FetchRequest('GET', url, {
-          headers: {
-            "Accept": "text/vnd.turbo-stream.html"
-          }
+        responseKind: "turbo-stream"
         }).perform()
     
       if (request.response.status === 204 || request.response.status === 206) {

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     get :code
     post :verify
     get :verify
+    post :create_with_passkey
+    post :passkey_callback
   end
   resolve("Session") { [ :session ] }
 

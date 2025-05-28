@@ -1,16 +1,16 @@
-<div id="<%= dom_id(preview, "preview") %>" class="subscription-preview">
-  <div class="subscription-preview__content">
-    <picture class="subscription-preview__icon">
+<div id="<%= dom_id(preview, "preview") %>" class="box__row box__row--column@mobile">
+  <div class="box__content">
+    <picture class="box__icon">
       <source srcset="<%= preview.channel.icon %>"/>
       <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon"%>
     </picture>
-    <a class="subscription-preview__text" href="<%= preview.channel.url || preview.channel.feed_url %>" target="_blank">
-      <span class="subscription-preview__title"><%= preview.channel.title || preview.channel.feed_url %></span>
-      <span class="subscription-preview__description"><%= preview.channel.url %></span>
+    <a class="box__text" href="<%= preview.channel.url || preview.channel.feed_url %>" target="_blank">
+      <span class="box__title"><%= preview.channel.title || preview.channel.feed_url %></span>
+      <span class="box__description"><%= preview.channel.url %></span>
     </a>
   </div>
 
-  <div class="subscription-preview__actions">
+  <div class="box__actions">
     <%= form_with(model: preview,  namespace: dom_id(preview)) do |form| %>
       <%= form.check_box :to_inbox, 
           class: "toggle icon--inbox",

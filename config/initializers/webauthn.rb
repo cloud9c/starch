@@ -2,10 +2,10 @@ WebAuthn.configure do |config|
   # This value needs to match `window.location.origin` evaluated by
   # the User Agent during registration and authentication ceremonies.
   # Multiple origins can be used when needed. Using more than one will imply you MUST configure rp_id explicitely. If you need your credentials to be bound to a single origin but you have more than one tenant, please see [our Advanced Configuration section](https://github.com/cedarcode/webauthn-ruby/blob/master/docs/advanced_configuration.md) instead of adding multiple origins.
-  config.allowed_origins = Rails.configuration.webauthn_origin
+  config.allowed_origins = [ Rails.configuration.webauthn_origin ]
 
   # Relying Party name for display purposes
-  config.rp_name = "Starch"
+  config.rp_name = "starch.app"
 
   # Optionally configure a client timeout hint, in milliseconds.
   # This hint specifies how long the browser should wait for any

@@ -44,6 +44,12 @@ turbo-frame {
   margin-right: auto;
 }
 
+.sheet {
+  background: var(--bg-secondary);
+  padding: 1em;
+  border-radius: var(--border-radius);
+}
+
 .page {
   padding: var(--page-padding);
 	flex: 1;
@@ -84,11 +90,8 @@ turbo-frame {
   }
 
   &:is(h2) {
-    font-size: var(--text-xl);
-  }
-
-  &:is(h3) {
     font-size: var(--text-lg);
+    font-weight: bold;
   }
 }
 

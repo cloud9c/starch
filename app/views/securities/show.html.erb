@@ -1,9 +1,28 @@
-<% content_for(:title) { "Subscriptions" } %>
+<% content_for(:title) { "Passkeys" } %>
 
 <div class="page">
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push--bottom" %>
-  <h1 class="heading">Security</h1>
-  <div class="content subscription-content">
-    <%= turbo_frame_tag "passkeys", src:"/user/security/passkeys" %>
+  <h1 class="heading">Passkeys</h1>
+  <div class="content">
+    <turbo-frame>
+      <%= form_with scope: :passkey, url: user_security_passkeys_path,
+        class: "sheet flex--column",
+        data: {
+          controller: "add-passkey",
+          action: "turbo:submit-end->add-passkey#submit"
+        } do |form| %>
+        <fieldset data-add-passkey-target="fieldset" class="flex--column">
+          <%= form.label :nickname, "Nickname", class: "push_quarter--bottom" %>
+          <div class="flex flex--row flex--gap flex--align-center flex--wrap" style="--gap: 0.5rem">
+            <%= form.text_field :nickname, required: true, class: "flex-item--fill max-width" %>
+            <%= form.button "Add passkey", class: "btn btn--primary" %>
+          </div>
+        </fieldset>
+        <span data-add-passkey-target="error" class="text--danger push_quarter--top"></span>
+      <% end %>
+    </turbo-frame>
+    <div class="box push--top" data-controller="pagination">
+      <%= render partial: 'passkeys/preview', collection: @passkeys %>
+    </div>
   </div>
 </div>

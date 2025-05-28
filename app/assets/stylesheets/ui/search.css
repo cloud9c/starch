@@ -12,7 +12,6 @@
 
   &:has(input:focus-visible) input[type="search"] {
     outline: var(--focus-ring);
-    background: var(--color-primary-opaque);
     border-color: var(--color-border);
 
     &.searchbar--transparent {

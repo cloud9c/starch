@@ -14,9 +14,7 @@
       <p class="document-preview-description"><%= preview.description %></p>
     </div>
     <% if preview.thumbnail_url %>
-      <%# <div class="document-preview-thumbnail"> %>
         <img class="document-preview-thumbnail" src="<%= preview.thumbnail_url %>" onerror="this.dataset.failed=true"/>
-      <%# </div> %>
     <% end %>
   </div>
 <% end %>

@@ -8,11 +8,11 @@
 
   <% trial_end_date = Current.user.created_at + 30.days %>
   <% if Time.current > trial_end_date %>
-    <p class="push--bottom text-lg">Your free trial has <b>expired</b>.</p>
+    <p class="push--bottom text--lg">Your free trial has <b>expired</b>.</p>
   <% else %>
     <% days_remaining = ((trial_end_date - Time.current) / 1.day).to_i %>
 
-    <p class="push--bottom text-lg">
+    <p class="push--bottom text--lg">
       <% if Time.current > trial_end_date %>
         Your free trial has <b>expired</b>.
       <% elsif days_remaining == 0 %>

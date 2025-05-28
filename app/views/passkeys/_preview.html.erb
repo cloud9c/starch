@@ -1,3 +1,15 @@
-<div id="<%= dom_id(passkey) %>" class:"action-group__item">
-
+<div id="<%= dom_id(preview, "preview") %>" class="box__row">
+  <div class="flex flex--column">
+    <span><%= preview.nickname %></span>
+    <span class="text--secondary">
+      <%= local_time(preview.created_at) %>
+    </span>
+  </div>
+  <div class="box__actions">
+    <%= button_to "", user_security_passkey_path(preview), 
+          method: :delete,
+          form: { data: { turbo_confirm: "Are you sure?" } },
+          class: "btn btn--icon icon--trash btn--ghost btn--danger",
+          "aria-label": "Delete subscription" %>
+  </div>
 </div>

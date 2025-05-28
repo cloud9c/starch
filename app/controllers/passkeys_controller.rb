@@ -8,7 +8,10 @@ class PasskeysController < ApplicationController
         name: Current.user.email_address
       },
       exclude: Current.user.webauthn_credentials.pluck(:external_id),
-      authenticator_selection: { user_verification: "required" }
+      authenticator_selection: {
+        user_verification: "required",
+        resident_key: "required"
+      }
     )
 
     session[:current_registration] = {
@@ -22,8 +25,6 @@ class PasskeysController < ApplicationController
   def callback
     webauthn_credential = WebAuthn::Credential.from_create(params)
 
-    Rails.logger.debug params.inspect
-
     begin
       webauthn_credential.verify(session[:current_registration]["challenge"], user_verification: true)
 
@@ -36,12 +37,12 @@ class PasskeysController < ApplicationController
         public_key: webauthn_credential.public_key,
         sign_count: webauthn_credential.sign_count
       )
-        render plain: "OK", status: :ok
+        render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { notice: "Passkey added successfully!" } })
       else
-        render plain: "Couldn't add your Security Key", status: :unprocessable_entity
+        render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { alert: "Couldn't add your Security Key" } })
       end
     rescue WebAuthn::Error => e
-      render plain: "Verification failed: #{e.message}", status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { alert: "Verification failed" } })
     ensure
       session.delete(:current_registration)
     end

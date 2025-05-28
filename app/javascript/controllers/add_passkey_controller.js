@@ -3,15 +3,17 @@ import { supported as webAuthnSupported, create as webAuthnCreate } from "@githu
 import { FetchRequest } from '@rails/request.js'
 
 export default class extends Controller {
-  static targets = ["message"]
+  static targets = ["error", "fieldset"]
 
   connect() {
     if (!webAuthnSupported()) {
-      this.messageTarget.textContent= "This browser doesn't support WebAuthn API";
+      this.fieldsetTarget.disabled = true;
+      this.errorTarget.textContent = "This browser doesn't support WebAuthn API";
     } else {
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then((available) => {
         if (!available) {
-          this.messageTarget.textContent = "We couldn't detect a user-verifying platform authenticator";
+          this.fieldsetTarget.disabled = true;
+          this.errorTarget.textContent = "We couldn't detect a user-verifying platform authenticator"
         }
       });
     }
@@ -23,16 +25,14 @@ export default class extends Controller {
 
     webAuthnCreate({ "publicKey": credentialOptions }).then(async (credential) => {
       const callbackUrl = new URL("/user/security/passkeys/callback", window.location.origin)
-      callbackUrl.searchParams.append('nickname', nickname);
+      callbackUrl.searchParams.append('nickname', nickname)
 
       const request = await new FetchRequest('POST', callbackUrl, {
-        headers: {
-          "Accept": "text/vnd.turbo-stream.html"
-        },
+        responseKind: "turbo-stream"
         body: credential
       }).perform()
     }).catch((error) => {
-      console.log(error);
+      this.errorTarget.textContent = error
     });
   }
 }

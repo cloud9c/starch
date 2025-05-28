@@ -4,24 +4,24 @@
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push--bottom" %>
   <h1 class="heading">Subscriptions</h1>
   <div class="content subscription-content">
-    <%= form_with(model: Subscription, id: "add-subscription") do |f| %>
-      <%= f.text_field :feed_url, 
+    <%= form_with model: Subscription, id: "add-subscription", class: "sheet" do |form| %>
+      <%= form.text_field :feed_url, 
           placeholder: "Enter link",
           autocomplete: "off",
           inputmode: "url",
           "aria-label": "Enter RSS or Atom feed URL",
           required: true %>
-      <%= f.button "Add to inbox",
+      <%= form.button "Add to inbox",
         class: "btn btn--primary btn--icon icon--inbox",
         name: "subscription[to_inbox]",
         value: "true" %>
-      <%= f.button "Add",
+      <%= form.button "Add",
         class: "btn btn--icon icon--plus",
         name: "subscription[to_inbox]",
         value: "false" %>
     <% end %>
 
-    <div id="subscription-list">
+    <div class="box">
       <%= render partial: 'subscriptions/preview', collection: @subscriptions %>
     </div>
   </div>

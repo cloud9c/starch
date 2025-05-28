@@ -1,5 +1,6 @@
 label {
   color: var(--color-text);
+  font-weight: 500;
 }
 
 input[type="text"], input[type="email"] {
@@ -10,11 +11,14 @@ input[type="text"], input[type="email"] {
 
   &:focus-visible {
     outline: var(--focus-ring);
-    background-color: var(--color-primary-opaque);
     border-color: var(--color-border);
   }
 }
 
 input::placeholder {
   color: var(--color-text-secondary)
+}
+
+fieldset:disabled {
+  opacity: 25%;
 }
