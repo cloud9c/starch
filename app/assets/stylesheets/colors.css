@@ -61,6 +61,7 @@
   --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.2);
   --color-link: oklch(var(--lch-blue-light));
   --color-selected: oklch(var(--lch-blue-light) / 0.075);
+  --color-unselected: oklch(var(--lch-gray-400));
 
   --bg-primary: oklch(var(--lch-white));
   --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
@@ -100,6 +101,7 @@
     --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.4);
     --color-link: oklch(var(--lch-blue-light));
     --color-selected: oklch(var(--lch-blue-light) / 0.10);
+    --color-unselected: oklch(var(--lch-gray-500));
 
     --bg-primary: oklch(var(--lch-gray-950));
     --bg-primary-opaque: oklch(var(--lch-gray-950) / 0.95);

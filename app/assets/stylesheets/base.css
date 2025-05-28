@@ -74,15 +74,16 @@ turbo-frame {
 .heading {
   text-align: left;
   width: var(--content-width);
-  font-weight: 400;
   background: var(--bg-primary);
   margin-bottom: 0.5em;
   line-height: var(--line-height-tight);
+  font-family: var(--font-serif);
+  font-weight: normal;
 
   &:is(h1) {
-    font-weight: 600;
     text-align: center;
     font-size: var(--text-3xl);
+
     @media (max-width: 100ch) {
       text-align: left;
       font-size: var(--text-2xl);
@@ -90,8 +91,7 @@ turbo-frame {
   }
 
   &:is(h2) {
-    font-size: var(--text-lg);
-    font-weight: bold;
+    font-size: var(--text-xl);
   }
 }
 

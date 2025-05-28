@@ -38,6 +38,9 @@
 .text--primary { color: var(--color-text); }
 .text--secondary { color: var(--color-text-secondary); }
 .text--danger { color: var(--color-danger); }
+.text--unselected { color: var(--color-unselected); }
+.text--serif { font-family: var(--font-serif) }
+.text--sans { font-family: var(--font-sans) }
 .text--normal { font-weight: normal !important; font-style: normal !important; }
 .text--medium { font-weight: 500; }
 .text--bold { font-weight: bold; }
