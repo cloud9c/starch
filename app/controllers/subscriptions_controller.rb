@@ -40,9 +40,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy
-    subscription = Current.user.subscriptions.find(params[:id])
-    head :unprocessable_entity unless subscription.destroy!
-
-    render turbo_stream: turbo_stream.remove(helpers.dom_id(subscription, "preview"))
+    subscription = Current.user.subscriptions.destroy(params[:id])
+    render turbo_stream: turbo_stream.remove(subscription)
   end
 end

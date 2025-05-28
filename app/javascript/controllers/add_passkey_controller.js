@@ -28,12 +28,12 @@ export default class extends Controller {
       callbackUrl.searchParams.append('nickname', nickname)
 
       const request = await new FetchRequest('POST', callbackUrl, {
-        responseKind: "turbo-stream"
+        responseKind: "turbo-stream",
         body: credential
       }).perform()
     }).catch((error) => {
       this.errorTarget.textContent = error
-    });
+    })
   }
 }
 

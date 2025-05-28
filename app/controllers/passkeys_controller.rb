@@ -37,19 +37,21 @@ class PasskeysController < ApplicationController
         public_key: webauthn_credential.public_key,
         sign_count: webauthn_credential.sign_count
       )
-        render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { notice: "Passkey added successfully!" } })
+        @flash = { notice: "Passkey added successfully!" }
+        @credential = credential
       else
-        render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { alert: "Couldn't add your Security Key" } })
+        @flash = { alert: "Couldn't add your Security Key" }
       end
-    rescue WebAuthn::Error => e
-      render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: { alert: "Verification failed" } })
+    rescue WebAuthn::Error
+      @flash = { alert: "Verification failed" }
     ensure
       session.delete(:current_registration)
     end
   end
 
   def destroy
-    Current.user.webauthn_credentials.destroy(params[:id])
+    credential = Current.user.webauthn_credentials.destroy(params[:id])
+    render turbo_stream: turbo_stream.remove(credential)
   end
 
   private

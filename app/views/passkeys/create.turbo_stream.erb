@@ -1,0 +1,10 @@
+<% if @credential %>
+  <%= turbo_stream.append "passkey-list" do %>
+      <%= render "subscriptions/preview", preview: @credential %>
+  <% end %>
+<% end %>
+<% if @flash %>
+  <%= turbo_stream.replace "flash" do %>
+    <%= render "shared/flash", flash: @flash %>
+  <% end %>
+<% end %>

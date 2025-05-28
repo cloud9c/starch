@@ -21,7 +21,7 @@
         <span data-add-passkey-target="error" class="text--danger push_quarter--top"></span>
       <% end %>
     </turbo-frame>
-    <div class="box push--top" data-controller="pagination">
+    <div class="box push--top" data-controller="pagination" id="passkey-list">
       <%= render partial: 'passkeys/preview', collection: @passkeys %>
     </div>
   </div>
