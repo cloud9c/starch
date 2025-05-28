@@ -91,7 +91,7 @@ class SessionsController < ApplicationController
 
   private
 
-  def login(token, verification_code, webauthn_credential)
+  def login(token, verification_code, webauthn_credential=nil)
     user = if token.present?
       User.find_by_token_for(:magic_link, token)
     elsif verification_code.present?
