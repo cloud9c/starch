@@ -5,7 +5,8 @@ class PasskeysController < ApplicationController
     create_options = WebAuthn::Credential.options_for_create(
       user: {
         id: Current.user.webauthn_id,
-        name: Current.user.email_address
+        name: Current.user.email_address,
+        display_name: Current.user.email_address
       },
       exclude: Current.user.webauthn_credentials.pluck(:external_id),
       authenticator_selection: {
