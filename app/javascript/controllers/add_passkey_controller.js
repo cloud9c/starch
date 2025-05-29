@@ -8,12 +8,12 @@ export default class extends Controller {
   connect() {
     if (!webAuthnSupported()) {
       this.fieldsetTarget.disabled = true;
-      this.errorTarget.textContent = "This browser doesn't support WebAuthn API";
+      this.errorTarget.textContent = "This browser doesn't support WebAuthn API.";
     } else {
       PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then((available) => {
         if (!available) {
           this.fieldsetTarget.disabled = true;
-          this.errorTarget.textContent = "We couldn't detect a user-verifying platform authenticator"
+          this.errorTarget.textContent = "We couldn't detect a user-verifying platform authenticator."
         }
       });
     }
@@ -32,7 +32,7 @@ export default class extends Controller {
         body: credential
       }).perform()
     }).catch((error) => {
-      this.errorTarget.textContent = "Couldn't add your passkey"
+      this.errorTarget.textContent = "Couldn't add your passkey."
     })
   }
 }
