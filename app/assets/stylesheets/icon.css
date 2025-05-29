@@ -7,7 +7,7 @@
     width: 1.25em;
     flex-shrink: 0;
     cursor: pointer;
-    background: var(--color-text-secondary);
+    background: var(--color-text--subtle);
   }
   
   &:empty {

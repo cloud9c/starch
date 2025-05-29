@@ -21,7 +21,7 @@
     width: 1em;
     flex-shrink: 0;
     cursor: pointer;
-    background: var(--color-text-secondary);
+    background: var(--color-text--subtle);
   }
   
   &:not(:empty) {
@@ -45,10 +45,10 @@
 
   &.btn--primary {
     background: var(--color-primary);
-    color: var(--color-text-reversed);
+    color: var(--color-text--reversed);
 
     &.btn--icon::before {
-      background: var(--color-text-reversed);
+      background: var(--color-text--reversed);
     }
   
     border: none;
@@ -92,10 +92,10 @@
 
     border: 1px solid transparent;
     border-color: var(--color-border);
-    color: var(--color-text-secondary);
+    color: var(--color-text--subtle);
 
     &.btn--icon::before {
-      background: var(--color-text-secondary);
+      background: var(--color-text--subtle);
     }
 
     &.btn--secondary {

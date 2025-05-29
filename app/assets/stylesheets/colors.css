@@ -1,109 +1,89 @@
 :root {
+  /* Core Colors
+   * These variables are only for use in _this_ stylesheet
+   * If you add a new rgb like "--rgb-pink", you'll want to add a
+   * corresponding dark-mode version to the media query just below
+   * ------------------------------------------------------------------------ */
+
   --lch-gray-hue: 0;
   --lch-gray-chroma: 0;
 
-  /* LCH color definitions */
   --lch-white: 100% 0 0;
-  --lch-gray-50: 97.5% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-100: 95% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-200: 90% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-300: 85% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-400: 70% var(--lch-gray-chroma) var(--lch-gray-hue);
-  
-  --lch-gray-500: 60% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-600: 50% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-700: 30% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-800: 25% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-900: 21% var(--lch-gray-chroma) var(--lch-gray-hue);
-  --lch-gray-950: 17.5% var(--lch-gray-chroma) var(--lch-gray-hue);
   --lch-black: 0% 0 0;
-  
-  /* Colors */
+  --lch-ink: 25% 0.005 96;
+  --lch-background: 100% 0 0;
+  --lch-medium-gray: 90% var(--lch-gray-chroma) var(--lch-gray-hue);
+  --lch-light-gray: 97.5% var(--lch-gray-chroma) var(--lch-gray-hue);
+  --lch-gray: 70% var(--lch-gray-chroma) var(--lch-gray-hue);
+
   --lch-red: 60% 0.20 28;
   --lch-orange: 75% 0.16 60;
   --lch-yellow: 82% 0.16 90; /* logo yellow */
   --lch-yellow-dark: 60% 0.16 90;
   --lch-green: 62% 0.16 150;
-  --lch-blue-light: 60% 0.16 265;
+  --lch-light-blue: 60% 0.16 265;
   --lch-blue: 55% 0.16 265;
   --lch-purple: 60% 0.14 295;
  
-  /* Text */
-  --lch-text-dark: 25% 0.005 96;
-  --lch-text-secondary-dark: 50% 0 0;
-  --lch-text-light: 85% 0 0;
-  --lch-text-secondary-light: 60% 0 0;
+  @media (prefers-color-scheme: dark) {
+    & {
+      --lch-gray-hue: 280;
+      --lch-gray-chroma: 0.02;
 
-  --color-text-light: oklch(var(--lch-text-light));
-  --color-text-dark: oklch(var(--lch-text-dark));
-  --color-text-secondary-light: oklch(var(--lch-text-secondary-light));
-  --color-text-secondary-dark: oklch(var(--lch-text-secondary-dark));
+      --lch-ink: 85% 0 0;
+      --lch-background: 17.5% var(--lch-gray-chroma) var(--lch-gray-hue);
+      --lch-medium-gray: 30% var(--lch-gray-chroma) var(--lch-gray-hue);
+      --lch-light-gray: 21% var(--lch-gray-chroma) var(--lch-gray-hue);
+      --lch-gray: 60% var(--lch-gray-chroma) var(--lch-gray-hue);
 
-  --color-text: var(--color-text-dark);
-  --color-text-secondary: var(--color-text-secondary-dark);
-  --color-text-reversed: var(--bg-primary);
-  --color-text-secondary-reversed: var(--color-text-secondary-light); 
+      --lch-light-blue: 65% 0.16 265;
+      --lch-blue: 60% 0.16 265;
+      --lch-purple: 70% 0.16 295;
+      --lch-red: 60% 0.16 28;
+    }
+  }
+
+  /* These variables are for use in _other_ stylesheets
+   * ------------------------------------------------------------------------ */
+
+  --color-text: oklch(var(--lch-ink));
+  --color-text--subtle: oklch(var(--lch-ink) / 0.66);
+  --color-text--reversed: oklch(var(--lch-background));
+  --color-text--subtle-reversed: oklch(var(--lch-background) / 0.66);
 
   /* Semantic variables */
-  --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
-  --color-border: oklch(var(--lch-gray-300));
-  --color-border-light: oklch(var(--lch-gray-100));
+  --focus-ring: 1px solid oklch(var(--lch-light-blue) / 0.8);
+  --color-border: oklch(var(--lch-medium-gray));
+  --color-border--subtle: oklch(var(--lch-medium-gray) / 0.5);
 
   --color-danger: oklch(var(--lch-red));
-  --color-shadow: oklch(var(--lch-gray-300));
+  --color-shadow: oklch(var(--lch-medium-gray));
   
   --color-primary: oklch(var(--lch-blue));
-  --color-primary-opaque: oklch(var(--lch-blue) / 0.1);
+  --color-primary--opaque: oklch(var(--lch-blue) / 0.1);
   --color-secondary: oklch(var(--lch-purple));
-  --color-secondary-opaque: oklch(var(--lch-purple) / 0.15);
+  --color-secondary--opaque: oklch(var(--lch-purple) / 0.15);
   --color-tertiary: oklch(var(--lch-yellow-dark));
-  --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.2);
-  --color-link: oklch(var(--lch-blue-light));
-  --color-selected: oklch(var(--lch-blue-light) / 0.075);
-  --color-unselected: oklch(var(--lch-gray-400));
+  --color-tertiary--opaque: oklch(var(--lch-yellow) / 0.2);
+  --color-link: oklch(var(--lch-light-blue));
+  --color-selected: oklch(var(--lch-light-blue) / 0.075);
+  --color-unselected: oklch(var(--lch-gray));
 
-  --bg-primary: oklch(var(--lch-white));
-  --bg-primary-opaque: oklch(var(--lch-white) / 0.95);
-  --bg-secondary: oklch(var(--lch-gray-50));
+  --bg-primary: oklch(var(--lch-background));
+  --bg-primary--opaque: oklch(var(--lch-background) / 0.95);
+  --bg-secondary: oklch(var(--lch-light-gray));
   --bg-default: transparent;
 
   --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
-}
 
-  /* Dark theme overrides */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --lch-gray-hue: 280;
-    --lch-gray-chroma: 0.02;
-
-    --lch-blue-light: 65% 0.16 265;
-    --lch-blue: 60% 0.16 265;
-    --lch-purple: 70% 0.16 295;
-    --lch-red: 60% 0.16 28;
-    
-    --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
-    --color-border: oklch(var(--lch-gray-700));
-    --color-border-light: oklch(var(--lch-gray-800));
-
-    --color-text: var(--color-text-light);
-    --color-text-secondary: var(--color-text-secondary-light);
-    --color-text-reversed: var(--bg-primary);
-    --color-text-secondary-reversed: var(--color-text-secondary-dark);
-
-    --color-shadow: oklch(var(--lch-black));
-    --color-primary: oklch(var(--lch-blue));
-    --color-primary-opaque: oklch(var(--lch-blue) / 0.20);
-    --color-secondary: oklch(var(--lch-purple));
-    --color-secondary-opaque: oklch(var(--lch-purple)/ 0.20);
-    --color-tertiary: oklch(var(--lch-yellow) / 0.75);
-    --color-tertiary-opaque: oklch(var(--lch-yellow) / 0.4);
-    --color-link: oklch(var(--lch-blue-light));
-    --color-selected: oklch(var(--lch-blue-light) / 0.10);
-    --color-unselected: oklch(var(--lch-gray-500));
-
-    --bg-primary: oklch(var(--lch-gray-950));
-    --bg-primary-opaque: oklch(var(--lch-gray-950) / 0.95);
-    --bg-secondary: oklch(var(--lch-gray-900));
-    --bg-default: transparent;
+  @media (prefers-color-scheme: dark) {
+    & {
+      --color-shadow: oklch(var(--lch-black));
+      --color-primary--opaque: oklch(var(--lch-blue) / 0.20);
+      --color-secondary--opaque: oklch(var(--lch-purple) / 0.20);
+      --color-tertiary: oklch(var(--lch-yellow) / 0.75);
+      --color-tertiary--opaque: oklch(var(--lch-yellow) / 0.4);
+      --color-selected: oklch(var(--lch-light-blue) / 0.10);
+    }
   }
 }

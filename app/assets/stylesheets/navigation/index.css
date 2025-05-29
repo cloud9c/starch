@@ -1,7 +1,7 @@
 #navbar__container {
   width: 100%;
   z-index: 1;
-  background: var(--bg-primary-opaque);
+  background: var(--bg-primary--opaque);
   position: fixed;
   top: 0;
 }
@@ -9,7 +9,7 @@
 @media (min-width: 100ch) {
   .body--scrolled {
     #navbar__container {
-      border-bottom: 1px solid var(--color-border-light);
+      border-bottom: 1px solid var(--color-border--subtle);
     }
   }
 }
@@ -73,7 +73,7 @@
       content: "";
       mask-image: url("/icons/caret-down.svg");
       mask-size: 100%;
-      background: var(--color-text-secondary);
+      background: var(--color-text--subtle);
       width: 1em;
       height: 1em;
       flex-shrink: 0;
@@ -129,7 +129,7 @@
   text-align: center;
   padding: 0.25em;
   font-size: var(--text-sm);
-  background: var(--color-tertiary-opaque);
+  background: var(--color-tertiary--opaque);
   white-space: nowrap;
   font-weight: 500;
   overflow: hidden;

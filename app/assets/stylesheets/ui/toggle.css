@@ -7,7 +7,7 @@
     width: 1.25em;
     flex-shrink: 0;
     cursor: pointer;
-    background: var(--color-text-secondary);
+    background: var(--color-text--subtle);
   }
   
   &:not(:empty) {
@@ -23,11 +23,11 @@
   font-weight: 500;
   
   &::before {
-    background: var(--color-text-secondary);
+    background: var(--color-text--subtle);
   }
 
   &[data-checked="true"], &:checked {
-    background: var(--color-secondary-opaque);
+    background: var(--color-secondary--opaque);
     color: var(--color-secondary);
 
     &::before {

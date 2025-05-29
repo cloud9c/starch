@@ -36,7 +36,7 @@
 .text--2xl { font-size: var(--text-2xl) !important; }
 
 .text--primary { color: var(--color-text); }
-.text--secondary { color: var(--color-text-secondary); }
+.text--secondary { color: var(--color-text--subtle); }
 .text--danger { color: var(--color-danger); }
 .text--unselected { color: var(--color-unselected); }
 .text--serif { font-family: var(--font-serif) }

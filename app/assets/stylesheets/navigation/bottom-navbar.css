@@ -1,7 +1,7 @@
 #bottom-navbar {
   display: none;
   background: var(--bg-primary);
-  border-top: 1px solid var(--color-border-light);
+  border-top: 1px solid var(--color-border--subtle);
 
   @media (max-width: 100ch) {
     display: block;

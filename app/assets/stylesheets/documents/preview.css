@@ -5,7 +5,7 @@
   padding: 0.5em 1em 1em;
   border-bottom: 1px solid var(--color-border);
   text-decoration: none;
-  color: var(--color-text-secondary);
+  color: var(--color-text--subtle);
   width: calc(var(--content-width) + var(--page-padding) * 2);
   
   &:last-child {

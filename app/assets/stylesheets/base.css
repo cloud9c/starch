@@ -149,7 +149,7 @@ ol, ul {
 
 s {
   text-decoration: line-through;
-  color: var(--color-text-secondary);
+  color: var(--color-text--subtle);
 }
 
 #flash {
@@ -166,7 +166,7 @@ s {
 .flash-item {
   padding: 0.5em 1.5em;
   background: var(--color-text);
-  color: var(--color-text-reversed);
+  color: var(--color-text--reversed);
   border-radius: 2em;
   box-shadow: 0 0 1em var(--color-shadow);
   opacity: 0;

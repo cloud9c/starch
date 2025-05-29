@@ -22,7 +22,7 @@
   }
 
   &:has(.action-group__item) {
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-border--subtle);
     border-radius: var(--border-radius);
     background: var(--bg-secondary);
   }

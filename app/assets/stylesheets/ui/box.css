@@ -54,7 +54,7 @@
     }
 
     .box__description {
-      color: var(--color-text-secondary);
+      color: var(--color-text--subtle);
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;

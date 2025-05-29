@@ -16,7 +16,7 @@ input[type="text"], input[type="email"] {
 }
 
 input::placeholder {
-  color: var(--color-text-secondary)
+  color: var(--color-text--subtle)
 }
 
 fieldset:disabled {
