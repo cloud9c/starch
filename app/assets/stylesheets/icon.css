@@ -7,11 +7,19 @@
     width: 1.25em;
     flex-shrink: 0;
     cursor: pointer;
-    background: var(--color-unselected);
+    background: var(--color-text-secondary);
   }
   
   &:empty {
     padding: 0.5em;
+  }
+
+  &.icon--primary::before {
+    background: var(--color-text);
+  }
+
+  &.icon--unselected::before {
+    background: Var(--color-unselected);
   }
 }
 

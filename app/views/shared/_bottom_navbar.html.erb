@@ -13,7 +13,7 @@
     <% navigation_items.each_with_index do |item, index| %>
       <%= link_to item[:path],
           data: { current: current_page?(item[:path]) ? 'true' : 'false' },
-          class: "icon icon--#{item[:icon]} navigation-item text--unselected" do %>
+          class: "icon icon--#{item[:icon]} icon--unselected navigation-item text--unselected" do %>
         <span><%= item[:text] %></span>
       <% end %>
     <% end %>

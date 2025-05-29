@@ -46,7 +46,6 @@
 
   /* Semantic variables */
   --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
-  --color-border-dark: oklch(var(--lch-gray-400));
   --color-border: oklch(var(--lch-gray-300));
   --color-border-light: oklch(var(--lch-gray-100));
 
@@ -83,7 +82,6 @@
     --lch-red: 60% 0.16 28;
     
     --focus-ring: 1px solid oklch(var(--lch-blue-light) / 0.8);
-    --color-border-dark: oklch(var(--lch-gray-500));
     --color-border: oklch(var(--lch-gray-700));
     --color-border-light: oklch(var(--lch-gray-800));
 

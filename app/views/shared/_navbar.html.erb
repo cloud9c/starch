@@ -53,7 +53,7 @@
             <%= link_to item[:path],
                 data: { controller: "shortcut",
                         "shortcut-hotkey-value": (index + 1).to_s },
-                class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item" do %>
+                class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item text--primary" do %>
               <span><%= item[:text] %></span>
             <% end %>
           <% end %>
