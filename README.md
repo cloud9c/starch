@@ -3,6 +3,7 @@
 
 # p0
 - showing progress
+- support email
 - search is not working
 - user cannot unselect the category ("inbox" -> not "inbox")
 
