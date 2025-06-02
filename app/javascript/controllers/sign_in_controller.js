@@ -11,7 +11,7 @@ export default class extends Controller {
 
   async checkSupport() {
     let supported = true
-    let conditionalUISupported = false
+    this.conditionalUISupported = false
 
     if (!webAuthnSupported()) {
       supported = false
@@ -21,42 +21,34 @@ export default class extends Controller {
         supported = false
       }
 
-      // Check for conditional UI support
       if (supported && PublicKeyCredential.isConditionalMediationAvailable) {
-        conditionalUISupported = await PublicKeyCredential.isConditionalMediationAvailable()
+        this.conditionalUISupported = await PublicKeyCredential.isConditionalMediationAvailable()
       }
     }
 
     if (!supported) {
       this.passkeyFieldsTarget.hidden = true
-    } else if (conditionalUISupported) {
+    } else if (this.conditionalUISupported) {
       this.startConditionalRequest()
     }
   }
 
   async startConditionalRequest() {
     try {
-      // Use your existing create_with_passkey endpoint
       const request = await new FetchRequest('POST', '/session/create_with_passkey', {
         responseKind: "json"
       }).perform()
       
       const credentialOptions = await request.json
 
-      console.log(credentialOptions)
-
-      // Start conditional mediation request - this will NOT show a popup
-      // Instead, it waits silently and shows credentials in autofill dropdown
       const credential = await webAuthnGet({ 
         mediation: 'conditional',
         publicKey: credentialOptions
       })
 
-      // Handle successful authentication (only called if user selects from autofill)
       await this.handleCredential(credential)
 
     } catch (error) {
-      // Conditional UI should fail silently according to spec
       console.debug('Conditional UI request failed:', error)
     }
   }
@@ -70,6 +62,11 @@ export default class extends Controller {
       await this.handleCredential(credential)
     } catch (error) {
       this.errorTarget.textContent = "Couldn't use your passkey to login"
+
+      // Restart conditional UI after manual auth fails
+      if (this.conditionalUISupported) {
+        this.startConditionalRequest()
+      }
     }
   }
 
