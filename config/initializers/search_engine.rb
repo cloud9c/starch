@@ -69,7 +69,6 @@ module SearchEngine
           end
         end
 
-        puts
         Rails.logger.info "#{klass.name} sync complete"
       rescue => e
         Rails.logger.error "Error syncing #{klass.name}: #{e.message}"

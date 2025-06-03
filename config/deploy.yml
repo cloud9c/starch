@@ -111,7 +111,7 @@ accessories:
     host: starch.app
     port: 127.0.0.1:3001:3001
   mail-relay:
-    image: ghcr.io/bb/action-mailbox-docker-relay:latest
+    image: bock/action-mailbox-docker-relay
     host: starch.app
     port: 25:25
     env:

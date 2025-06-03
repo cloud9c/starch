@@ -4,7 +4,7 @@ class NewsletterMailbox < ApplicationMailbox
     subject = mail.subject
     content = extract_content
 
-    puts "Received email with content: #{content}"
+    Rails.logger.debug "Got email with content: #{content}"
   end
 
   private
