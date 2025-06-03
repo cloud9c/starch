@@ -113,11 +113,10 @@ accessories:
   mail-relay:
     image: bock/action-mailbox-docker-relay
     host: starch.app
-    port: 25:25
     env:
       clear:
         URL: https://starch.app/rails/action_mailbox/relay/inbound_emails
         PORTS: 25
       secret:
         - INGRESS_PASSWORD
-    port: 127.0.0.1:25:25
+    port: "25:25"
