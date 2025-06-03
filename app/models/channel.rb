@@ -29,7 +29,7 @@ class Channel < ApplicationRecord
   end
 
   def update_metadata
-    feed = ChannelUtils.parse_feed(feed_content) rescue nil
+    feed = FeedUtils.parse_feed(feed_content) rescue nil
     return unless feed
 
     feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
@@ -41,7 +41,7 @@ class Channel < ApplicationRecord
       description: EntryUtils.format_text(feed.try(:description)),
       feed_url: feed_url,
       url: site_url,
-      icon: ChannelUtils.get_icon(site_url)
+      icon: get_icon(site_url)
     }.compact
 
     update(attributes) unless attributes.empty?
@@ -103,5 +103,19 @@ class Channel < ApplicationRecord
     stable_id = EntryUtils.get_stable_id(feed_url, entry_data)
     existing_entry = Entry.find_by(stable_id: stable_id)
     existing_entry&.update_from_feed(entry_data)
+  end
+
+  def get_icon(base_url)
+    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
+    response = http.get(base_url)
+    return nil if response.error
+
+    body = response.body.to_s.force_encoding("UTF-8")
+
+    doc = Nokogiri::HTML(body)
+    icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
+    icon_url ||= "/favicon.ico"
+
+    URI.join(base_url, icon_url).to_s rescue nil
   end
 end

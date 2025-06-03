@@ -35,7 +35,7 @@ module EntryUtils
   end
 
   def get_new_and_updated(feed_url, feed_content)
-    feed = ChannelUtils.parse_feed(feed_content) rescue nil
+    feed = FeedUtils.parse_feed(feed_content) rescue nil
 
     Rails.logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
 

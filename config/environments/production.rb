@@ -1,6 +1,9 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Prepare the ingress controller used to receive mail
+  # config.action_mailbox.ingress = :relay
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -91,4 +94,6 @@ Rails.application.configure do
   config.action_mailer.postmark_settings = { api_token: Rails.application.credentials.dig(:production, :postmark, :server_api_token) }
 
   config.webauthn_origin = "https://starch.app"
+
+  config.action_mailbox.ingress_password = Rails.application.credentials.dig(:action_mailbox, :ingress_password)
 end

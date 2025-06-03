@@ -22,7 +22,6 @@ proxy:
   hosts:
   - starch.app
   - www.starch.app
-  - mail.starch.app
 
 # Credentials for your image host.
 registry:
@@ -106,13 +105,20 @@ accessories:
     port: 127.0.0.1:8108:8108
     volumes:
       - "typesense-data:/data"
-    env:
-      clear:
-        RAILS_ENV: production
-      secret:
-        - RAILS_MASTER_KEY
   reading-parser:
     image: ghcr.io/starch-reader/reading_parser
     cmd: 'npm start'
     host: starch.app
     port: 127.0.0.1:3001:3001
+  mail-relay:
+    image: ghcr.io/bb/action-mailbox-docker-relay:latest
+    host: starch.app
+    port: 25:25
+    env:
+      clear:
+        URL: https://starch.app/rails/action_mailbox/relay/inbound_emails
+        PORTS: 25
+      secret:
+        - INGRESS_PASSWORD
+    ports:
+      - "0.0.0.0:25:25"
