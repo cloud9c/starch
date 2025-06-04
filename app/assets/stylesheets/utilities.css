@@ -86,7 +86,7 @@
 
 /* Spacing */
 :root {
-  --base-space: 1em;
+  --base-space: 1.25em;
   --half-space: calc(var(--base-space) / 2);
   --one-and-a-half-space: calc(var(--base-space) * 1.5);
   --quarter-space: calc(var(--base-space) / 4);

@@ -1,10 +1,10 @@
 <% content_for(:title) { "Subscriptions" } %>
 
 <div class="page">
-  <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--icon icon--arrow-left web-only push--bottom" %>
+  <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
   <h1 class="heading">Subscriptions</h1>
-  <div class="content subscription-content">
-    <%= form_with model: Subscription, id: "add-subscription", class: "sheet" do |form| %>
+  <div class="content">
+    <%= form_with model: Subscription, id: "add-subscription", class: "sheet push--bottom" do |form| %>
       <%= form.text_field :feed_url, 
           placeholder: "Enter link",
           autocomplete: "off",

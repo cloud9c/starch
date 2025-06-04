@@ -91,11 +91,20 @@
     background: none;
 
     border: 1px solid transparent;
-    border-color: var(--color-border);
+    border-color: var(--color-text-subtle);
     color: var(--color-text--subtle);
 
     &.btn--icon::before {
       background: var(--color-text--subtle);
+    }
+
+    &.btn--primary {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+
+      &&:before {
+        background: var(--color-primary);
+      }
     }
 
     &.btn--secondary {
