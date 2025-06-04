@@ -30,7 +30,9 @@ module Authentication
     end
 
     def provisioned?
-      Current.user && (Current.user.paid? || on_trial?)
+      true
+
+      # Current.user && (Current.user.paid? || on_trial?)
     end
 
     def require_provision
