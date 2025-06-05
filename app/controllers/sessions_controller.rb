@@ -42,20 +42,13 @@ class SessionsController < ApplicationController
   end
 
   def passkey_callback
-    begin
-      webauthn_credential = WebAuthn::Credential.from_get(params)
-      user = User.login(nil, nil, webauthn_credential, session)
+    webauthn_credential = WebAuthn::Credential.from_get(params)
+    user = User.authenticate_by(webauthn_credential:, session:)
 
-      if user
-        start_new_session_for(user)
-        clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
-      end
-    rescue WebAuthn::Error => e
-      flash = { alert: "Verification failed" }
-      render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash }) and return
-    ensure
-      session.delete(:current_authentication)
-    end
+    return authenticated_redirect(user) if user
+
+    flash = { alert: "Passkey verification failed" }
+    render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash })
   end
 
   def code
@@ -63,30 +56,16 @@ class SessionsController < ApplicationController
   end
 
   def verify
-    user = User.login(params[:token], params[:verification_code], nil, session)
+    user = User.authenticate_by(token: params[:token], verification_code: params[:verification_code], session:)
+    return authenticated_redirect(user) if user
 
-    if user
-      start_new_session_for(user)
-      clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
-    end
+    flash[:alert] = if params[:token]
+                      "We were unable to verify you with this link."
+                    elsif params[:verification_code]
+                      "There was an error verifying your code."
+                    end
 
-    flash = {
-      alert:  if params[:token]
-        "We were unable to verify you with this link."
-              elsif params[:verification_code]
-        "There was an error verifying your code."
-              end
-    }
-
-    respond_to do |format|
-      format.html {
-        flash[:alert] = flash[:alert]
-        redirect_to new_session_path
-      }
-      format.turbo_stream {
-        render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash })
-      }
-    end
+    redirect_to code_session_path(email_address: params[:email_address]), status: :see_other
   end
 
   def destroy
@@ -102,5 +81,10 @@ class SessionsController < ApplicationController
 
   def redirect_if_authenticated
     clear_all_or_redirect_to inbox_path, status: :see_other if authenticated?
+  end
+
+  def authenticated_redirect(user)
+    start_new_session_for(user)
+    clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
   end
 end

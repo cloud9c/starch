@@ -8,38 +8,57 @@ module User::Authenticatable
   end
 
   class_methods do
-    def login(token, verification_code, webauthn_credential = nil, session)
+    def authenticate_by(token: nil, verification_code: nil, webauthn_credential: nil, session: nil)
       user = if token.present?
         User.find_by_token_for(:magic_link, token)
       elsif verification_code.present?
-        verification = session[:verification]
-
-        if verification && verification["code"] == verification_code
-          session.delete(:verification)
-          User.find_by_token_for(:magic_link, verification["token"])
-        end
+        authenticate_by_verification_code(verification_code:, session:)
       elsif webauthn_credential.present?
-        user_handle = webauthn_credential.user_handle
-        user = User.find_by(webauthn_id: user_handle)
-        credential = user.webauthn_credentials.find_by(external_id: Base64.strict_encode64(webauthn_credential.raw_id))
-
-        webauthn_credential.verify(
-          session[:current_authentication]["challenge"],
-          public_key: credential.public_key,
-          sign_count: credential.sign_count,
-          user_verification: true,
-        )
-
-        credential.update!(sign_count: webauthn_credential.sign_count)
-
-        user
+        authenticate_by_webauthn(webauthn_credential:, session:)
       end
 
-      return nil unless user
-
-      user.update!(verified_at: Time.current)
+      if user.present?
+        user.update!(verified_at: Time.current)
+      end
 
       user
+    end
+
+    def authenticate_by_verification_code(verification_code:, session:)
+      credential = session[:verification]
+      return nil unless credential
+
+      if ActiveSupport::SecurityUtils.secure_compare(credential["code"], verification_code)
+        session.delete(:verification)
+        User.find_by_token_for(:magic_link, credential["token"])
+      end
+    end
+
+    def authenticate_by_webauthn(webauthn_credential:, session:)
+      user_handle = webauthn_credential.user_handle
+      user = User.find_by(webauthn_id: user_handle)
+      return nil unless user
+
+      credential = user.webauthn_credentials.find_by(external_id: Base64.strict_encode64(webauthn_credential.raw_id))
+      return nil unless credential
+
+      challenge = session[:current_authentication]&.dig("challenge")
+      return nil unless challenge
+
+      webauthn_credential.verify(
+        challenge,
+        public_key: credential.public_key,
+        sign_count: credential.sign_count,
+        user_verification: true,
+      )
+
+      credential.update!(sign_count: webauthn_credential.sign_count)
+
+      user
+    rescue WebAuthn::Error
+      nil
+    ensure
+      session.delete(:current_authentication)
     end
   end
 

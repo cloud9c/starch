@@ -1,6 +1,6 @@
-<% if @credential %>
+<% if @passkey %>
   <%= turbo_stream.append "passkey-list" do %>
-      <%= render "subscriptions/preview", preview: @credential %>
+      <%= render "passkeys/preview", preview: @passkey %>
   <% end %>
 <% end %>
 <% if @flash %>

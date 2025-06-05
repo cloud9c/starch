@@ -39,9 +39,9 @@ class PasskeysController < ApplicationController
         sign_count: webauthn_credential.sign_count
       )
         @flash = { notice: "Passkey added successfully!" }
-        @credential = credential
+        @passkey = credential
       else
-        @flash = { alert: "Couldn't add your Passkey" }
+        @flash = { alert: "Couldn't add your passkey" }
       end
     rescue WebAuthn::Error
       @flash = { alert: "Verification failed" }

@@ -10,6 +10,7 @@
 
   <div class="login__form">
     <%= form_with(url: verify_session_path) do |form| %>
+      <%= form.hidden_field :email_address, value: params[:email_address] %>
       <%= form.label :verification_code do %>
         <p>Enter the code sent to</p>
         <p class="login__email-address"><%= params[:email_address] %></p>
