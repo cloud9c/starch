@@ -43,6 +43,7 @@
     &[data-active="true"] {
       background: var(--color-secondary--opaque);
       border-color: var(--color-secondary);
+      color: var(--color-secondary);
     }
   }
 }
