@@ -2,7 +2,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-radius: var(--border-radius);
+  border-radius: 0.375em;
   padding: 0.4em 0.8em;
   cursor: pointer;
   background: var(--bg-default);
@@ -14,7 +14,6 @@
   text-align: center;
 
   &.btn--icon::before {
-    display: block;
     mask-size: 100%;
     content: "";
     height: 1em;
@@ -41,6 +40,11 @@
 
   &.btn--icon:empty {
     padding: 0.5em;
+
+    &::before {
+      height: 1.25em;
+      width: 1.25em;
+    }
   }
 
   &.btn--primary {

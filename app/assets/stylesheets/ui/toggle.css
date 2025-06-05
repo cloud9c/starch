@@ -1,6 +1,5 @@
 .toggle {
   &::before {
-    display: block;
     mask-size: 100%;
     content: "";
     height: 1.25em;
@@ -16,7 +15,7 @@
   }
 
   padding: 0.5em;
-  border-radius: var(--border-radius);
+  border-radius: 0.375em;
   cursor: pointer;
   display: flex;
   flex-direction: column;

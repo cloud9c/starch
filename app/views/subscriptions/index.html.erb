@@ -4,22 +4,28 @@
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
   <h1 class="heading">Subscriptions</h1>
   <div class="content">
-    <%= form_with model: Subscription, id: "add-subscription", class: "sheet push--bottom" do |form| %>
-      <%= form.text_field :feed_url, 
-          placeholder: "Enter link",
-          autocomplete: "off",
-          inputmode: "url",
-          "aria-label": "Enter RSS or Atom feed URL",
-          required: true %>
-      <%= form.button "Add to inbox",
-        class: "btn btn--primary btn--icon icon--inbox",
-        name: "subscription[to_inbox]",
-        value: "true" %>
-      <%= form.button "Add",
-        class: "btn btn--icon icon--plus",
-        name: "subscription[to_inbox]",
-        value: "false" %>
-    <% end %>
+    <div class="flex flex--align-center">
+      <span class="icon icon--copy auto newsletter-email-address text--secondary">poopipatti@starchmail.com<span>
+    </div>
+    <div class="sheet push--bottom pad_double--top">
+      <%= form_with model: Subscription, class: "flex full-width flex--wrap flex--gap flex--align-end" do |form| %>
+        <%= form.text_field :feed_url, 
+            placeholder: "Enter link",
+            autocomplete: "off",
+            inputmode: "url",
+            "aria-label": "Enter RSS or Atom feed URL",
+            class: "full-width",
+            required: true %>
+        <%= form.button "Add to inbox",
+          class: "btn btn--primary btn--icon icon--inbox",
+          name: "subscription[to_inbox]",
+          value: "true" %>
+        <%= form.button "Add",
+          class: "btn btn--icon icon--plus",
+          name: "subscription[to_inbox]",
+          value: "false" %>
+      <% end %>
+    </div>
 
     <div class="box" id="subscription-list">
       <%= render partial: 'subscriptions/preview', collection: @subscriptions %>

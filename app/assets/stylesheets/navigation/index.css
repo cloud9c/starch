@@ -120,7 +120,7 @@
     width: fit-content;
 
     background: var(--bg-primary);
-    border-radius: var(--border-radius);
+    border-radius: 0.375em;
   }
 }
 

@@ -42,7 +42,7 @@
 
     &[data-active="true"] {
       background: var(--color-secondary--opaque);
-      border-color: var(--color-secondary--opaque);
+      border-color: var(--color-secondary);
     }
   }
 }

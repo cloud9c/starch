@@ -47,7 +47,7 @@ turbo-frame {
 .sheet {
   background: var(--bg-secondary);
   padding: 1em;
-  border-radius: var(--border-radius);
+  border-radius: 0.375em;
 }
 
 .page {

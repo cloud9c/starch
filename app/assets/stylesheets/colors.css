@@ -83,7 +83,7 @@
       --color-secondary--opaque: oklch(var(--lch-purple) / 0.20);
       --color-tertiary: oklch(var(--lch-yellow) / 0.75);
       --color-tertiary--opaque: oklch(var(--lch-yellow) / 0.4);
-      --color-selected: oklch(var(--lch-light-blue) / 0.10);
+      --color-selected: oklch(var(--lch-light-blue) / 0.05);
     }
   }
 }

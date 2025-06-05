@@ -1,18 +1,8 @@
-.subscription-content {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-#add-subscription {
-  width: 100%;
-  display: flex;
-
-  justify-content: end;
-  flex-flow: row wrap;
-  gap: 0.5em;
-
-  input {
-    width: 100%
-  }
+.newsletter-email-address {
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  padding: 0.5em 1em;
+  border-radius: calc(infinity * 1px);
+  transform: translateY(50%);
+  background: var(--bg-secondary);
 }

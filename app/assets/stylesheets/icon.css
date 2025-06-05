@@ -1,17 +1,28 @@
 .icon {
+  display: flex;
+  place-items: center;
+
   &::before {
-    display: block;
+    display: inline-block;
     mask-size: 100%;
     content: "";
-    height: 1.25em;
-    width: 1.25em;
+    height: 1em;
+    width: 1em;
     flex-shrink: 0;
-    cursor: pointer;
     background: var(--color-text--subtle);
+  }
+
+  &:not(:empty)::before {
+    margin-right: 0.25em;
   }
   
   &:empty {
     padding: 0.5em;
+
+    &::before {
+      height: 1.25em;
+      width: 1.25em;
+    }
   }
 
   &.icon--primary::before {
@@ -85,4 +96,8 @@
 
 .icon--security::before {
   mask-image: url(/icons/security.svg);
+}
+
+.icon--copy::before {
+  mask-image: url(/icons/copy.svg);
 }

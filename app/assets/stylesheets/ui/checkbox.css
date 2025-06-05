@@ -10,7 +10,7 @@
   width: 18px;
   height: 18px;
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  border-radius: 0.375em;
   outline: none;
   cursor: pointer;
   position: relative;

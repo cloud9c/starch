@@ -1,6 +1,5 @@
 class Subscription < ApplicationRecord
-  include UserOwnable
-
+  belongs_to :user
   belongs_to :channel
   has_many :entries, through: :channel
   has_many :documents, through: :entries

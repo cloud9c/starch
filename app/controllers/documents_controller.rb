@@ -51,11 +51,11 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render :feed, status: @documents.length == Document.per_page ? :ok : :partial_content
+        render :feed, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
       end
 
       format.turbo_stream do
-        render page > 1 ? :append : :feed, status: @documents.length == Document.per_page ? :ok : :partial_content
+        render page > 1 ? :append : :feed, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
       end
     end
   end
@@ -87,11 +87,11 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        render :search, status: @documents.length == Document.per_page ? :ok : :partial_content
+        render :search, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
       end
 
       format.turbo_stream do
-        render page > 1 ? :append : :search, status: @documents.length == Document.per_page ? :ok : :partial_content
+        render page > 1 ? :append : :search, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
       end
     end
   end
@@ -110,14 +110,14 @@ class DocumentsController < ApplicationController
   def respond_with_pagination(view_name, documents)
     respond_to do |format|
       format.html do
-        render view_name, status: documents.length == Document.per_page ? :ok : :partial_content
+        render view_name, status: documents.length == Document::PER_PAGE ? :ok : :partial_content
       end
 
       format.turbo_stream do
         if documents.empty?
           head :no_content
         else
-          render :append, status: documents.length == Document.per_page ? :ok : :partial_content
+          render :append, status: documents.length == Document::PER_PAGE ? :ok : :partial_content
         end
       end
     end

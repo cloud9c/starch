@@ -5,7 +5,7 @@ label {
 
 input[type="text"], input[type="email"] {
 	border: 1px solid var(--color-border);
-	border-radius: var(--border-radius);
+	border-radius: 0.375em;
 	padding: 0.5em 1em;
 	background: var(--bg-primary);
 
