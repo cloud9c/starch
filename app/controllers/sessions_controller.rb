@@ -9,21 +9,11 @@ class SessionsController < ApplicationController
     user = User.find_or_initialize_by(email_address: email)
 
     unless user.save
-      flash = { alert: user.errors.full_messages.to_sentence }
-      render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash }) and return
+      return render_reject user.errors.full_messages.to_sentence, :unprocessable_content
     end
 
-    magic_link_token = user.generate_magic_link
-    verification_code = user.generate_verification_code
-
-    session[:verification] = {
-      code: verification_code,
-      token: magic_link_token
-    }
-
-    unless user.send_login_email(magic_link_token, verification_code)
-      flash = { alert: "We couldn't send your login email at this time. Please try again later." }
-      render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash }) and return
+    unless user.generate_authentication(session)
+      return render_reject "We couldn't send your login email at this time. Please try again later.", :unprocessable_content
     end
 
     redirect_to code_session_path(email_address: email), status: :see_other
@@ -86,5 +76,10 @@ class SessionsController < ApplicationController
   def authenticated_redirect(user)
     start_new_session_for(user)
     clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
+  end
+
+  def render_reject(alert, status)
+    flash.now[:alert] = alert
+    render :new, status: status
   end
 end

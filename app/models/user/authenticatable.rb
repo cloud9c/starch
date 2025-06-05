@@ -62,6 +62,20 @@ module User::Authenticatable
     end
   end
 
+  def generate_authentication(session)
+    magic_link_token = generate_magic_link
+    verification_code = generate_verification_code
+
+    session[:verification] = {
+      code: verification_code,
+      token: magic_link_token
+    }
+
+    send_login_email(magic_link_token, verification_code)
+  end
+
+  private
+
   def generate_magic_link
     generate_token_for(:magic_link)
   end
