@@ -11,10 +11,6 @@ class Session < ApplicationRecord
   }
   scope :expired, -> { where.not(id: active) }
 
-  def self.sweep
-    expired.destroy_all
-  end
-
   def active?
     user_id? &&
     updated_at >= ACTIVITY_THRESHOLD.ago &&

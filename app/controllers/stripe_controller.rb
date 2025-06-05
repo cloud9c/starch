@@ -23,19 +23,19 @@ class StripeController < ApplicationController
     case event.type
     when "customer.created"
       customer = event.data.object
-      StripeUtils.handle_customer_created(customer)
+      User.handle_customer_created(customer)
     when "customer.deleted"
       customer = event.data.object
-      StripeUtils.handle_customer_deleted(customer)
+      User.handle_customer_deleted(customer)
     when "customer.subscription.created"
       subscription = event.data.object
-      StripeUtils.handle_subscription_created(subscription)
+      User.handle_subscription_created(subscription)
     when "customer.subscription.updated"
       subscription = event.data.object
-      StripeUtils.handle_subscription_updated(subscription)
+      User.handle_subscription_updated(subscription)
     when "customer.subscription.deleted"
       subscription = event.data.object
-      StripeUtils.handle_subscription_deleted(subscription)
+      User.handle_subscription_deleted(subscription)
     else
       Rails.logger.info "Unhandled event type: #{event.type}"
     end

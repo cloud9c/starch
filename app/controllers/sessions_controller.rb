@@ -44,8 +44,10 @@ class SessionsController < ApplicationController
   def passkey_callback
     begin
       webauthn_credential = WebAuthn::Credential.from_get(params)
+      user = User.login(nil, nil, webauthn_credential, session)
 
-      if login(nil, nil, webauthn_credential)
+      if user
+        start_new_session_for(user)
         clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
       end
     rescue WebAuthn::Error => e
@@ -61,7 +63,10 @@ class SessionsController < ApplicationController
   end
 
   def verify
-    if login(params[:token], params[:verification_code])
+    user = User.login(params[:token], params[:verification_code], nil, session)
+
+    if user
+      start_new_session_for(user)
       clear_all_or_redirect_to "#{after_authentication_url}?format=html", status: :see_other and return
     end
 
@@ -90,40 +95,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def login(token, verification_code, webauthn_credential = nil)
-    user = if token.present?
-      User.find_by_token_for(:magic_link, token)
-    elsif verification_code.present?
-      verification = session[:verification]
-
-      if verification && verification["code"] == verification_code
-        session.delete(:verification)
-        User.find_by_token_for(:magic_link, verification["token"])
-      end
-    elsif webauthn_credential.present?
-      user_handle = webauthn_credential.user_handle
-      user = User.find_by(webauthn_id: user_handle)
-      credential = user.webauthn_credentials.find_by(external_id: Base64.strict_encode64(webauthn_credential.raw_id))
-
-      webauthn_credential.verify(
-        session[:current_authentication]["challenge"],
-        public_key: credential.public_key,
-        sign_count: credential.sign_count,
-        user_verification: true,
-      )
-
-      credential.update!(sign_count: webauthn_credential.sign_count)
-
-      user
-    end
-
-    return false unless user
-
-    start_new_session_for(user)
-    user.update!(verified_at: Time.current)
-    true
-  end
 
   def send_to_new
     redirect_to new_session_path

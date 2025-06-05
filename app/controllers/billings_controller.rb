@@ -84,8 +84,8 @@ class BillingsController < ApplicationController
     if checkout_session&.status == "complete"
       customer = Stripe::Customer.retrieve(checkout_session.customer)
       subscription = Stripe::Subscription.retrieve(checkout_session.subscription)
-      StripeUtils.handle_customer_created(customer)
-      StripeUtils.handle_subscription_created(subscription)
+      User.handle_customer_created(customer)
+      User.handle_subscription_created(subscription)
     end
   end
 end
