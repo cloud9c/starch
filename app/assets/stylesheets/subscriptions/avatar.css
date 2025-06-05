@@ -41,9 +41,12 @@
     }
 
     &[data-active="true"] {
-      background: var(--color-secondary--opaque);
-      border-color: var(--color-secondary);
-      color: var(--color-secondary);
+      background: var(--color-primary--opaque);
+      border-color: var(--color-primary--opaque);
     }
+  }
+
+  &:has([data-active="true"]) .subscription-avatar:not([data-active="true"]) {
+    opacity: 50%;
   }
 }
