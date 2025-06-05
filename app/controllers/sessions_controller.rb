@@ -60,9 +60,9 @@ class SessionsController < ApplicationController
     return authenticated_redirect(user) if user
 
     flash[:alert] = if params[:token]
-                      "We were unable to verify you with this link."
+      "We were unable to verify you with this link."
     elsif params[:verification_code]
-                      "There was an error verifying your code."
+      "There was an error verifying your code."
     end
 
     redirect_to code_session_path(email_address: params[:email_address]), status: :see_other
