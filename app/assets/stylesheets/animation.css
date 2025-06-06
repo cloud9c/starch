@@ -11,3 +11,8 @@
     opacity: 0;
   }
 }
+
+@keyframes success {
+  0%  { scale: 0.8; }
+  20% { scale: 1; }
+}

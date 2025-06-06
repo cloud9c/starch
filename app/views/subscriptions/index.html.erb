@@ -4,9 +4,13 @@
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
   <h1 class="heading">Subscriptions</h1>
   <div class="content">
-    <div class="flex flex--align-center">
-      <%= tag.button "...@starchmail.com", class: "icon icon--copy auto newsletter-email-address text--secondary" %>
-
+    <div class="flex flex--centered">
+      <%= tag.button "...@starchmail.com",
+        class: "btn btn--icon btn--subtle btn--rounded btn--surface icon--copy newsletter-email-address", 
+        data: {
+          controller: "copy-to-clipboard", action: "copy-to-clipboard#copy",
+          copy_to_clipboard_success_class: "btn--success", copy_to_clipboard_content_value: "...@starchmail.com"
+        }%>
     </div>
     <div class="sheet push--bottom pad_double--top">
       <%= form_with model: Subscription, class: "flex full-width flex--wrap flex--gap flex--align-end" do |form| %>

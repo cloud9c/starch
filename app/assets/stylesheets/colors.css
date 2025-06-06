@@ -74,7 +74,7 @@
   --bg-secondary: oklch(var(--lch-light-gray));
   --bg-default: transparent;
 
-  --filter-text-secondary: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
+  --filter-text-subtle: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 
   @media (prefers-color-scheme: dark) {
     & {

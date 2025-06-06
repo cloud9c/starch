@@ -36,7 +36,7 @@
       }
 
       &:has(source[srcset=""]) {
-        filter: var(--filter-text-secondary);
+        filter: var(--filter-text-subtle);
       }
     }
 

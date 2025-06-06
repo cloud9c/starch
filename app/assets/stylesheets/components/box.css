@@ -68,7 +68,7 @@
       align-items: center;
       flex-shrink: 0;
       &:has(source[srcset=""]) {
-        filter: var(--filter-text-secondary);
+        filter: var(--filter-text-subtle);
       }
     }
   }

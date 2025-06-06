@@ -47,6 +47,22 @@
     }
   }
 
+  &.btn--subtle {
+    color: var(--color-text--subtle);
+
+    &.btn--icon::before {
+      background: var(--color-text--subtle);
+    }
+  }
+
+  &.btn--rounded {
+    border-radius: calc(infinity * 1px);
+  }
+
+  &.btn--surface {
+    background: var(--bg-secondary);
+  }
+
   &.btn--primary {
     background: var(--color-primary);
     color: var(--color-text--reversed);
@@ -86,11 +102,6 @@
     } 
   }
 
-  &.btn--ghost {
-    background: none;
-    border: none;
-  }
-
   &.btn--outline {
     background: none;
 
@@ -106,7 +117,7 @@
       border-color: var(--color-primary);
       color: var(--color-primary);
 
-      &&:before {
+      &:before {
         background: var(--color-primary);
       }
     }
@@ -115,7 +126,7 @@
       border-color: var(--color-secondary);
       color: var(--color-secondary);
 
-      &&:before {
+      &:before {
         background: var(--color-secondary);
       }
     }
@@ -124,9 +135,13 @@
       border-color: var(--color-tertiary);
       color: var(--color-tertiary);
 
-      &&:before {
+      &:before {
         background: var(--color-tertiary);
       }
     }
+  }
+
+  &.btn--success {
+    animation: success 1s ease-out;
   }
 }
