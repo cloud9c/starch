@@ -1,0 +1,100 @@
+:root {
+  --transition: 0.1s ease;
+  --content-width: min(100%, 37.5rem);
+  --page-width: 100%;
+  --navbar-width: min(100%, 70rem);
+  --page-padding: 1rem;
+  --navbar-padding: 4rem;
+
+  @media (max-width: 100ch) {
+    --navbar-padding: 0rem;
+  }
+}
+
+.main {
+	width: 100%;
+	margin: 0 auto;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+	width: var(--content-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sheet {
+  background: var(--bg-secondary);
+  padding: 1em;
+  border-radius: 0.375em;
+}
+
+.page {
+  padding: var(--page-padding);
+	flex: 1;
+  margin-left: auto;
+  margin-right: auto;
+	background: var(--bg-primary);
+
+	display: flex;
+	flex-direction: column;
+	width: var(--page-width);
+	align-items: center;
+
+  @media (max-width: 100ch) {
+    border-radius: 0;
+  }
+
+  .native &.page--tab {
+    padding-top: 0;
+  }
+}
+
+.heading {
+  text-align: left;
+  width: var(--content-width);
+  background: var(--bg-primary);
+  margin-bottom: 0.5em;
+  line-height: var(--line-height-tight);
+  font-family: var(--font-serif);
+  font-weight: normal;
+
+  &:is(h1) {
+    text-align: center;
+    font-size: var(--text-3xl);
+
+    @media (max-width: 100ch) {
+      text-align: left;
+      font-size: var(--text-2xl);
+    }
+  }
+
+  &:is(h2) {
+    font-size: var(--text-xl);
+  }
+}
+
+#flash {
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  top: 2em;
+  gap: 1em;
+  pointer-events: none;
+}
+
+.flash-item {
+  padding: 0.5em 1.5em;
+  background: var(--color-text);
+  color: var(--color-text--reversed);
+  border-radius: 2em;
+  box-shadow: 0 0 1em var(--color-shadow);
+  opacity: 0;
+  animation: fadeInOut 4s linear forwards;
+  pointer-events: auto;
+}

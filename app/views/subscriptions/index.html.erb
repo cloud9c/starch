@@ -5,7 +5,8 @@
   <h1 class="heading">Subscriptions</h1>
   <div class="content">
     <div class="flex flex--align-center">
-      <span class="icon icon--copy auto newsletter-email-address text--secondary">...@starchmail.com<span>
+      <%= tag.button "...@starchmail.com", class: "icon icon--copy auto newsletter-email-address text--secondary" %>
+
     </div>
     <div class="sheet push--bottom pad_double--top">
       <%= form_with model: Subscription, class: "flex full-width flex--wrap flex--gap flex--align-end" do |form| %>
