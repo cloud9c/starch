@@ -1,7 +1,6 @@
 class User < ApplicationRecord
-  include Authenticatable, Billable
+  include Authenticatable, Billable, Emailable
 
-  has_many :sessions, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :channels, through: :subscriptions
   has_many :document_states, dependent: :destroy

@@ -2,6 +2,7 @@ module User::Authenticatable
   extend ActiveSupport::Concern
 
   included do
+    has_many :sessions, dependent: :destroy
     generates_token_for :magic_link, expires_in: 10.minutes do
       verified_at
     end

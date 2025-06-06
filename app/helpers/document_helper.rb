@@ -1,4 +1,4 @@
-module RenderHelper
+module DocumentHelper
   extend self
 
   def render_video(document)

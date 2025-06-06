@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_210109) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -94,6 +94,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_210109) do
     t.index ["entry_id"], name: "index_documents_on_entry_id"
   end
 
+  create_table "email_addresses", force: :cascade do |t|
+    t.string "username"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_email_addresses_on_user_id"
+    t.index ["username"], name: "index_email_addresses_on_username", unique: true
+  end
+
   create_table "entries", force: :cascade do |t|
     t.integer "channel_id", null: false
     t.string "stable_id", null: false
@@ -154,6 +163,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_210109) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "document_states", "documents"
   add_foreign_key "document_states", "users"
+  add_foreign_key "email_addresses", "users"
   add_foreign_key "entries", "channels"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "channels"
