@@ -55,8 +55,12 @@ class EmailAddress < ApplicationRecord
         end
       end
 
-      base = 3.times.map { syllables.sample }.join
-      digits = rand(1000..9999)
-      "#{base}#{digits}"
+      loop do 
+        base = 3.times.map { syllables.sample }.join
+        digits = rand(1000..9999)
+        candidate = "#{base}#{digits}"
+        
+        return candidate unless EmailAddress.exists?(username: candidate)
+      end
     end
 end
