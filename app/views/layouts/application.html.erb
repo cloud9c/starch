@@ -24,15 +24,15 @@
   </head>
 
   <body data-controller="<%="shortcut detect-scroll" if authenticated? %>" class="<%= "native" if hotwire_native_app?%>">
-    <%= render "shared/flash" %>
+    <%= render "layouts/flash" %>
     <% if authenticated? %>
-      <%= content_for?(:top_content) ? yield(:top_content) : render('shared/navbar') %>
+      <%= content_for?(:top_content) ? yield(:top_content) : render('layouts/navbar') %>
     <% end %>
     <main class="main">
       <%= yield %>
     </main>
     <% if authenticated? %>
-      <%= content_for?(:bottom_content) ? yield(:bottom_content) : render('shared/bottom_navbar') %>
+      <%= content_for?(:bottom_content) ? yield(:bottom_content) : render('layouts/bottom_navbar') %>
     <% end %>
   </body>
 </html>

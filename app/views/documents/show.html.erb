@@ -20,7 +20,7 @@
       <div class="document-metadata-row">
         <p class="document-author"><%= @document.author %></p>
         <% if @document.published_at %>
-          <p><%= @document.published_at.strftime("%b %d, %Y") %></p>
+          <p><%= local_time(@document.published_at, "%b %d, %Y") %></p>
         <% end %>
       </div>
     </header>

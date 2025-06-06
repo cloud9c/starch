@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
     return authenticated_redirect(user) if user
 
     flash = { alert: "Passkey verification failed" }
-    render turbo_stream: turbo_stream.replace(:flash, partial: "shared/flash", locals: { flash: flash })
+    render turbo_stream: turbo_stream.replace(:flash, partial: "layouts/flash", locals: { flash: flash })
   end
 
   def code
