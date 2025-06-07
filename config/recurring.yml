@@ -2,8 +2,8 @@ default: &default
   sweep_authentication:
     class: SweepAuthenticationJob
     schedule: at 5am every day
-  update_channels:
-    class: UpdateChannelsJob
+  update_feeds:
+    class: UpdateFeedsJob
     schedule: every day at midnight
 development:
   <<: *default
