@@ -5,7 +5,7 @@ class UpdateFeedJob < ApplicationJob
     Rails.logger.info "Updating feed #{feed_id} at #{Time.now}"
     feed = Feed.find(feed_id)
 
-    if feed.update_feed_content
+    if feed.update_content
       UpdateFeedMetadataJob.perform_later(feed.id)
       PollFeedJob.perform_later(feed.id)
     end

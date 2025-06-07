@@ -8,7 +8,7 @@ class Feed < ApplicationRecord
 
   after_create :schedule_initial_update
 
-  def update_feed_content
+  def update_content
     headers = {}
     headers["If-Modified-Since"] = polled_at.httpdate if polled_at.present?
     headers["If-None-Match"] = etag if etag.present?
@@ -21,15 +21,15 @@ class Feed < ApplicationRecord
 
     return false if response.status == 304
 
-    feed_content = response.body.to_s.force_encoding("UTF-8")
+    response_body = response.body.to_s.force_encoding("UTF-8")
 
-    update(feed_content: feed_content)
+    update(content: response_body)
 
     true
   end
 
   def update_metadata
-    feed = FeedUtils.parse_feed(feed_content) rescue nil
+    feed = FeedUtils.parse_feed(content) rescue nil
     return unless feed
 
     feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
@@ -48,7 +48,7 @@ class Feed < ApplicationRecord
   end
 
   def poll
-    result = EntryUtils.get_new_and_updated(feed_url, feed_content)
+    result = EntryUtils.get_new_and_updated(feed_url, content)
 
     result[:new].each do |entry_data|
       create_entry(entry_data)

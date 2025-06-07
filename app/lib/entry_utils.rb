@@ -34,8 +34,8 @@ module EntryUtils
     ].compact.join)
   end
 
-  def get_new_and_updated(feed_url, feed_content)
-    feed = FeedUtils.parse_feed(feed_content) rescue nil
+  def get_new_and_updated(feed_url, content)
+    feed = FeedUtils.parse_feed(content) rescue nil
 
     Rails.logger.error "Failed to parse feed content for URL: #{feed_url}" unless feed
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_07_162800) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_07_163659) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -105,7 +105,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_162800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "feed_url", null: false
-    t.text "feed_content"
+    t.text "content"
     t.string "url"
     t.datetime "polled_at"
     t.string "etag"
