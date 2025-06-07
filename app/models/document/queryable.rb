@@ -3,7 +3,13 @@ module Document::Queryable
 
   class_methods do
     def query(user_id, options = {})
-      query = Document.left_joins(entry: { feed: :subscriptions })
+      query = Document.joins(
+        "LEFT JOIN entries ON documents.source_type = 'Entry' AND documents.source_id = entries.id"
+      ).joins(
+        "LEFT JOIN feeds ON entries.feed_id = feeds.id"  
+      ).joins(
+        "LEFT JOIN subscriptions ON feeds.id = subscriptions.feed_id"
+      )
 
       if options[:page].present?
         query = query.limit(Document::PER_PAGE)
@@ -44,6 +50,8 @@ module Document::Queryable
   end
 
   def with_view_preferences(skip_wait: false)
+    return self unless entry? #TODO: REFACTOR TO NOT RELY ON ENTRY
+
     should_extract =
       if self[:view_extracted].present?
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])

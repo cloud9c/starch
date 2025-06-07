@@ -1,6 +1,6 @@
 class Entry < ApplicationRecord
-  has_one :document, dependent: :destroy
   belongs_to :feed
+  has_one :document, as: :source, dependent: :destroy
 
   validates :stable_id, presence: true, uniqueness: true
   validates :fingerprint, presence: true
@@ -15,14 +15,8 @@ class Entry < ApplicationRecord
 
   def update_from_feed(entry_data)
     update!(fingerprint: EntryUtils.get_fingerprint(entry_data))
-    update_document(entry_data)
-    self
-  end
-
-  private
-
-  def update_document(entry_data)
     raw_data = EntryUtils.get_raw_entry_data(entry_data)
     document.update!(raw_data)
+    self
   end
 end

@@ -1,14 +1,13 @@
 class Document < ApplicationRecord
-  include Searchable, Queryable
+  include Searchable, Queryable, FromEntry
 
-  PER_PAGE = 10
-
-  belongs_to :entry, optional: true
-  has_one :feed, through: :entry
+  belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
   has_many :users, through: :document_states
 
   validates :content, length: { maximum: 100_000 }
+
+  PER_PAGE = 10
 
   def extracted_data
     return {} unless url

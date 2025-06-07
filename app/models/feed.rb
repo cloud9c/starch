@@ -82,7 +82,7 @@ class Feed < ApplicationRecord
     )
 
     raw_entry_data = EntryUtils.get_raw_entry_data(entry_data)
-    document = entry.create_document(raw_entry_data)
+    document = Document.create!(raw_entry_data.merge(source: entry))
 
     if document.published_at > created_at
       users = entry.feed.subscriptions.to_inbox.map(&:user).uniq
