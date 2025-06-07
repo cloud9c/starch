@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_07_162800) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -46,21 +46,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "channels", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "feed_url", null: false
-    t.text "feed_content"
-    t.string "url"
-    t.datetime "polled_at"
-    t.string "etag"
-    t.boolean "initial_poll_complete", default: false
-    t.index ["feed_url"], name: "index_channels_on_feed_url", unique: true
   end
 
   create_table "document_states", force: :cascade do |t|
@@ -104,13 +89,28 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
   end
 
   create_table "entries", force: :cascade do |t|
-    t.integer "channel_id", null: false
+    t.integer "feed_id", null: false
     t.string "stable_id", null: false
     t.string "fingerprint", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["channel_id"], name: "index_entries_on_channel_id"
+    t.index ["feed_id"], name: "index_entries_on_feed_id"
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
+  end
+
+  create_table "feeds", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "feed_url", null: false
+    t.text "feed_content"
+    t.string "url"
+    t.datetime "polled_at"
+    t.string "etag"
+    t.boolean "initial_poll_complete", default: false
+    t.index ["feed_url"], name: "index_feeds_on_feed_url", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -124,13 +124,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "channel_id", null: false
+    t.integer "feed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "view_extracted", default: false
     t.boolean "to_inbox", default: false, null: false
-    t.index ["channel_id"], name: "index_subscriptions_on_channel_id"
-    t.index ["user_id", "channel_id"], name: "index_subscriptions_on_user_id_and_channel_id", unique: true
+    t.index ["feed_id"], name: "index_subscriptions_on_feed_id"
+    t.index ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -164,10 +164,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_221217) do
   add_foreign_key "document_states", "documents"
   add_foreign_key "document_states", "users"
   add_foreign_key "email_addresses", "users"
-  add_foreign_key "entries", "channels"
+  add_foreign_key "entries", "feeds"
   add_foreign_key "sessions", "users"
-  add_foreign_key "subscriptions", "channels"
-  add_foreign_key "subscriptions", "channels"
+  add_foreign_key "subscriptions", "feeds"
+  add_foreign_key "subscriptions", "feeds"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "webauthn_credentials", "users"
 end

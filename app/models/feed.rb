@@ -1,4 +1,4 @@
-class Channel < ApplicationRecord
+class Feed < ApplicationRecord
   has_many :entries, dependent: :destroy
   has_many :documents, through: :entries, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
@@ -72,7 +72,7 @@ class Channel < ApplicationRecord
   private
 
   def schedule_initial_update
-    UpdateChannelJob.perform_now(id)
+    UpdateFeedJob.perform_now(id)
   end
 
   def create_entry(entry_data)
@@ -85,7 +85,7 @@ class Channel < ApplicationRecord
     document = entry.create_document(raw_entry_data)
 
     if document.published_at > created_at
-      users = entry.channel.subscriptions.to_inbox.map(&:user).uniq
+      users = entry.feed.subscriptions.to_inbox.map(&:user).uniq
 
       document_states = users.map do |user|
         { user_id: user.id, document_id: document.id, status: :inbox }

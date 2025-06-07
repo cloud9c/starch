@@ -1,10 +1,10 @@
 class Entry < ApplicationRecord
   has_one :document, dependent: :destroy
-  belongs_to :channel
+  belongs_to :feed
 
   validates :stable_id, presence: true, uniqueness: true
   validates :fingerprint, presence: true
-  validates :channel, presence: true
+  validates :feed, presence: true
 
   scope :recent, -> {
     includes(:document)

@@ -13,11 +13,11 @@ class SubscriptionsController < ApplicationController
       return render status: :bad_request
     end
 
-    channel = Channel.find_or_create_by!(feed_url: feed_url)
+    feed = Feed.find_or_create_by!(feed_url: feed_url)
 
     to_inbox = ActiveModel::Type::Boolean.new.cast(permitted[:to_inbox])
 
-    subscription = Current.user.subscriptions.find_or_initialize_by(channel: channel, to_inbox: to_inbox)
+    subscription = Current.user.subscriptions.find_or_initialize_by(feed: feed, to_inbox: to_inbox)
 
     unless subscription.new_record?
       @flash = { alert: "Subscription already exists" }
@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
     end
 
     subscription.save
-    subscription.add_recent_entries if channel.initial_poll_complete?
+    subscription.add_recent_entries if feed.initial_poll_complete?
 
     @subscription = subscription
   end

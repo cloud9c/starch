@@ -1,7 +1,7 @@
 <div id="subscription_avatar_list" class="subscription-avatar-list <%= "push--bottom" unless subscriptions.empty? %>" data-controller="avatar-list">
   <% subscriptions.each do |subscription| %>
     <% active = params["subscription"] == subscription.id.to_s %>
-    <% channel = subscription.channel %>
+    <% feed = subscription.feed %>
     
     <%= link_to(
       url_for(active ? {} : { subscription: subscription.id }),
@@ -15,10 +15,10 @@
       }
     ) do %>
       <picture>
-        <source srcset="<%= channel.icon %>"/>
-        <%= image_tag "icons/rss.svg", alt: "#{channel.title} icon"%>
+        <source srcset="<%= feed.icon %>"/>
+        <%= image_tag "icons/rss.svg", alt: "#{feed.title} icon"%>
       </picture>
-      <span><%= channel.title || channel.feed_url %></span>
+      <span><%= feed.title || feed.feed_url %></span>
     <% end %>
   <% end %>
 </div>

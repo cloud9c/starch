@@ -1,12 +1,12 @@
 <div id="<%= dom_id(preview) %>" class="box__row box__row--column@mobile">
   <div class="box__content">
     <picture class="box__icon">
-      <source srcset="<%= preview.channel.icon %>"/>
-      <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.channel.title} icon"%>
+      <source srcset="<%= preview.feed.icon %>"/>
+      <%= image_tag "icons/rss.svg", width: 32, alt: "#{preview.feed.title} icon"%>
     </picture>
-    <a class="box__text" href="<%= preview.channel.url || preview.channel.feed_url %>" target="_blank">
-      <span class="box__title"><%= preview.channel.title || preview.channel.feed_url %></span>
-      <span class="box__description"><%= preview.channel.url %></span>
+    <a class="box__text" href="<%= preview.feed.url || preview.feed.feed_url %>" target="_blank">
+      <span class="box__title"><%= preview.feed.title || preview.feed.feed_url %></span>
+      <span class="box__description"><%= preview.feed.url %></span>
     </a>
   </div>
 

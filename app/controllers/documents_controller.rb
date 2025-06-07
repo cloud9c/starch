@@ -47,7 +47,7 @@ class DocumentsController < ApplicationController
       subscription: permitted[:subscription]
     })
 
-    @subscriptions = Current.user.subscriptions.includes(:channel).all
+    @subscriptions = Current.user.subscriptions.includes(:feed).all
 
     respond_to do |format|
       format.html do
@@ -100,7 +100,7 @@ class DocumentsController < ApplicationController
     permitted = params.permit(:id)
     @document = Document.find(permitted[:id])
 
-    if @document.channel&.subscriptions.exists?(user: Current.user)
+    if @document.feed&.subscriptions.exists?(user: Current.user)
       @document = @document.with_view_preferences
     end
   end

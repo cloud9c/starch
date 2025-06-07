@@ -4,7 +4,7 @@ class Document < ApplicationRecord
   PER_PAGE = 10
 
   belongs_to :entry, optional: true
-  has_one :channel, through: :entry
+  has_one :feed, through: :entry
   has_many :document_states, dependent: :destroy
   has_many :users, through: :document_states
 

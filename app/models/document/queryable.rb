@@ -3,7 +3,7 @@ module Document::Queryable
 
   class_methods do
     def query(user_id, options = {})
-      query = Document.left_joins(entry: { channel: :subscriptions })
+      query = Document.left_joins(entry: { feed: :subscriptions })
 
       if options[:page].present?
         query = query.limit(Document::PER_PAGE)
@@ -48,7 +48,7 @@ module Document::Queryable
       if self[:view_extracted].present?
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
       else
-        subscription = channel&.subscriptions&.find { |s| s.user_id == Current.user.id }
+        subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
         subscription&.view_extracted
       end
 
