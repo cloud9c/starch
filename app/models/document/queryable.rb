@@ -35,49 +35,19 @@ module Document::Queryable
       query = query.select("documents.*, subscriptions.view_extracted").distinct
 
       query.map do |doc|
-        doc.with_view_preferences(skip_wait: true)
+        doc.with_view_preferences
           .with_description
       end
     end
   end
 
   def with_description
-    unless self[:description].present?
-      self[:description] = EntryUtils.format_description(content)
-    end
+    return self if description.present?
 
-    self
-  end
+    text = TextUtils.format_html(content)
 
-  def with_view_preferences(skip_wait: false)
-    return self unless entry? # TODO: REFACTOR TO NOT RELY ON ENTRY
-
-    should_extract =
-      if self[:view_extracted].present?
-        ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
-      else
-        subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
-        subscription&.view_extracted
-      end
-
-    if !should_extract
-      self.description = EntryUtils.format_description(content)
-      return self
-    elsif skip_wait && !Rails.cache.exist?("#{cache_key_with_version}/extracted_data")
-      ExtractDocumentJob.perform_later(self.id)
-      return self
-    end
-
-    preferences = {
-      thumbnail_url: extracted_data[:thumbnail_url],
-      content: extracted_data[:content],
-      published_at: self.published_at || extracted_data[:published_at],
-      title: self.title || extracted_data[:title],
-      author: self.author || extracted_data[:author]
-    }.compact
-
-    preferences.each do |attr, value|
-      self[attr] = value unless value.nil?
+    if text.present?
+      self.description = text.strip.gsub(/\s+/, " ")[0...300]
     end
 
     self

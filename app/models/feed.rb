@@ -1,4 +1,6 @@
 class Feed < ApplicationRecord
+  include WithFeedUrl
+
   has_many :entries, dependent: :destroy
   has_many :documents, through: :entries, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
@@ -7,6 +9,10 @@ class Feed < ApplicationRecord
   validates :feed_url, presence: true, uniqueness: true
 
   after_create :schedule_initial_update
+
+  def self.parse_feed(content)
+    Feedjira.parse(content) rescue nil
+  end
 
   def update_content
     headers = {}
@@ -29,7 +35,7 @@ class Feed < ApplicationRecord
   end
 
   def update_metadata
-    feed = FeedUtils.parse_feed(content) rescue nil
+    feed = self.class.parse_feed(content) rescue nil
     return unless feed
 
     feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
@@ -37,8 +43,8 @@ class Feed < ApplicationRecord
     site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
     attributes = {
-      title: EntryUtils.format_text(feed.try(:title)),
-      description: EntryUtils.format_text(feed.try(:description)),
+      title: TextUtils.format_html(feed.try(:title)),
+      description: TextUtils.format_html(feed.try(:description)),
       feed_url: feed_url,
       url: site_url,
       icon: get_icon(site_url)
@@ -48,14 +54,17 @@ class Feed < ApplicationRecord
   end
 
   def poll
-    result = EntryUtils.get_new_and_updated(feed_url, content)
+    feed_content = self.class.parse_feed(content) rescue nil
+    return unless feed_content
+
+    result = Entry.get_new_and_updated(feed_url, feed_content)
 
     result[:new].each do |entry_data|
-      create_entry(entry_data)
+      Entry.create_from_feed(entry_data, self)
     end
 
     result[:updated].each do |entry_data|
-      update_entry(entry_data)
+      Entry.update_from_feed(entry_data, feed_url)
     end
 
     with_lock do
@@ -70,52 +79,21 @@ class Feed < ApplicationRecord
   end
 
   private
-
-  def schedule_initial_update
-    UpdateFeedJob.perform_now(id)
-  end
-
-  def create_entry(entry_data)
-    entry = entries.create(
-      stable_id: EntryUtils.get_stable_id(feed_url, entry_data),
-      fingerprint: EntryUtils.get_fingerprint(entry_data)
-    )
-
-    raw_entry_data = EntryUtils.get_raw_entry_data(entry_data)
-    document = Document.create!(raw_entry_data.merge(source: entry))
-
-    if document.published_at > created_at
-      users = entry.feed.subscriptions.to_inbox.map(&:user).uniq
-
-      document_states = users.map do |user|
-        { user_id: user.id, document_id: document.id, status: :inbox }
-      end
-
-      # warm up extracted document
-      ExtractDocumentJob.perform_later(document.id)
-
-      DocumentState.insert_all!(document_states)
-      document.update_search_index
+    def schedule_initial_update
+      UpdateFeedJob.perform_now(id)
     end
-  end
 
-  def update_entry(entry_data)
-    stable_id = EntryUtils.get_stable_id(feed_url, entry_data)
-    existing_entry = Entry.find_by(stable_id: stable_id)
-    existing_entry&.update_from_feed(entry_data)
-  end
+    def get_icon(base_url)
+      http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
+      response = http.get(base_url)
+      return nil if response.error
 
-  def get_icon(base_url)
-    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(base_url)
-    return nil if response.error
+      body = response.body.to_s.force_encoding("UTF-8")
 
-    body = response.body.to_s.force_encoding("UTF-8")
+      doc = Nokogiri::HTML(body)
+      icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
+      icon_url ||= "/favicon.ico"
 
-    doc = Nokogiri::HTML(body)
-    icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
-    icon_url ||= "/favicon.ico"
-
-    URI.join(base_url, icon_url).to_s rescue nil
-  end
+      URI.join(base_url, icon_url).to_s rescue nil
+    end
 end
