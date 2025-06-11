@@ -7,7 +7,7 @@
 <div class="page page--document"> 
   <div id="<%= dom_id(@document) %>" class="content content--document">
     <header class="document-header">
-      <%= render 'documents/feed_preview', feed: @document.feed %>
+      <%= source_container(@document) %>
       
       <hgroup>
         <h1 class="document-title">

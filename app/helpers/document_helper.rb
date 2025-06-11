@@ -20,4 +20,28 @@ module DocumentHelper
                   title: document.title
     end
   end
+
+  def source_container(document)
+    source = document.source
+
+    if source.is_a?(Entry)
+      feed = source.feed
+      title = feed.title || feed.feed_url
+      icon = feed.icon
+      fallback_icon = "icons/rss.svg"
+    elsif source.is_a?(EmailAddress)
+      title = document.author
+      fallback_icon = "icons/email.svg"
+    end
+    
+    content_tag :div, class: "source-container" do
+      concat(
+        content_tag :picture do
+          concat content_tag(:source, "", srcset: icon) if icon.present?
+          concat image_tag(fallback_icon, width: 24, alt: "#{title} icon")
+        end
+      )
+      concat content_tag(:span, title)
+    end
+  end
 end

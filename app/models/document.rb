@@ -1,5 +1,5 @@
 class Document < ApplicationRecord
-  include Searchable, Queryable, FromEntry, Extractable
+  include Searchable, Queryable, Extractable
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
@@ -7,5 +7,26 @@ class Document < ApplicationRecord
 
   validates :content, length: { maximum: 100_000 }
 
+  before_validation :normalize_attributes
+
   PER_PAGE = 10
+
+  def normalize_attributes
+    normalized_url = UrlUtils.normalize(url)
+    sanitized_content = SanitizeUtils.clean_html(content, normalized_url)
+
+    self.title = TextUtils.format_html(title)
+    self.description = TextUtils.format_html(description)
+    self.author = TextUtils.format_html(author)
+    self.url = normalized_url
+    self.content = sanitized_content
+
+    unless thumbnail_url
+      self.thumbnail_url = TextUtils.extract_thumbnail(sanitized_content)
+    end
+
+    unless published_at
+      self.published_at = Time.current
+    end
+  end
 end

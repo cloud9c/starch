@@ -16,7 +16,7 @@ module Document::Extractable
     should_extract =
       if self[:view_extracted].present?
         ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
-      else
+      elsif is_a?(Entry)
         subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
         subscription&.view_extracted
       end

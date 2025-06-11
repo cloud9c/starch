@@ -1,5 +1,6 @@
 class EmailAddress < ApplicationRecord
   belongs_to :user
+  has_many :documents, as: :source, dependent: :destroy
 
   USERNAME_FORMAT = /\A[a-z0-9._%-]+\z/
 

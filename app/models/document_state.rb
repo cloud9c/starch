@@ -15,7 +15,7 @@ class DocumentState < ApplicationRecord
   end
 
   def on_destroy
-    if !document.entry? && document.document_states.empty?
+    if !document.source.is_a?(Entry) && document.document_states.empty?
       document.destroy
     end
 
