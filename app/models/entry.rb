@@ -8,8 +8,6 @@ class Entry < ApplicationRecord
   validates :fingerprint, presence: true
   validates :feed, presence: true
 
-  after_create :add_to_inbox
-
   scope :recent, -> {
     includes(:document)
       .where.not(document: nil)
@@ -26,6 +24,7 @@ class Entry < ApplicationRecord
 
       raw_entry_data = parse_raw_entry_data(entry_data)
       document = entry.create_document!(raw_entry_data)
+      entry.add_to_inbox
     end
 
     def update_from_feed(entry_data, feed_url)
@@ -49,7 +48,7 @@ class Entry < ApplicationRecord
           description: (entry_data.summary && entry_data.content) ? entry_data.summary : nil,
           author: entry_data.author,
           published_at: entry_data.published,
-          url: entry_data.url,
+          identifier: entry_data.url,
           thumbnail_url: entry_data.try(:media_thumbnail_url)
         }.compact
       end
@@ -76,20 +75,20 @@ class Entry < ApplicationRecord
         old_fingerprint = entry.fingerprint
         old_fingerprint != new_fingerprint
       end
+  end
 
-      def add_to_inbox
-        return if feed.created_at >= document.published_at
+  def add_to_inbox
+    return if document.published_at && feed.created_at >= document.published_at
 
-        users = feed.subscriptions.to_inbox.map(&:user).uniq
-        return if users.empty?
+    users = feed.subscriptions.to_inbox.map(&:user).uniq
+    return if users.empty?
 
-        document_states = users.map do |user|
-          { user: user, document: document, status: :inbox }
-        end
+    document_states = users.map do |user|
+      { user: user, document: document, status: :inbox }
+    end
 
-        ExtractDocumentJob.perform_later(document.id)
-        DocumentState.insert_all!(document_states)
-        update_search_index
-      end
+    ExtractDocumentJob.perform_later(document.id)
+    DocumentState.insert_all!(document_states)
+    update_search_index
   end
 end

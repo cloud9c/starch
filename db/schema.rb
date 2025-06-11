@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_07_174518) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_11_175403) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -71,7 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_174518) do
     t.string "title"
     t.text "description"
     t.text "content"
-    t.string "url"
+    t.string "identifier"
     t.string "author"
     t.datetime "published_at"
     t.string "thumbnail_url"

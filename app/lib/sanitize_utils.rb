@@ -29,22 +29,11 @@ module SanitizeUtils
     sanitized_html.html_safe unless sanitized_html.nil?
   end
 
-  def clean_html(html, url)
+  def clean_html(html, base_url = nil)
     doc = Nokogiri::HTML.fragment(sanitize_html(html))
 
     # convert all urls to absolute + open in new tab
-    base = UrlUtils.normalize(url) rescue nil
-    url_related_attributes = %w[href src longdesc cite poster action usemap]
-    url_related_attributes.each do |attr|
-      doc.css("[#{attr}]").each do |element|
-        begin
-          element[attr] = URI.join(base, element[attr]).to_s if element[attr].present? && base.present?
-          element["target"] = "_blank"
-        rescue URI::InvalidURIError
-          element.remove_attribute(attr)
-        end
-      end
-    end
+    sanitize_links(doc, base_url)
 
     # sandbox iframes
     doc.css("iframe").each do |iframe|
@@ -59,4 +48,19 @@ module SanitizeUtils
 
     doc.to_html
   end
+
+  private
+    def sanitize_links(doc, base_url)
+      url_related_attributes = %w[href src longdesc cite poster action usemap]
+      url_related_attributes.each do |attr|
+        doc.css("[#{attr}]").each do |element|
+          begin
+            element[attr] = URI.join(base_url, element[attr]).to_s if base_url.present?
+            element["target"] = "_blank"
+          rescue URI::InvalidURIError
+            element.remove_attribute(attr)
+          end
+        end
+      end
+    end
 end

@@ -4,9 +4,7 @@ class NewsletterMailbox < ApplicationMailbox
     recipient = mail.to.first
     subject = mail.subject
     content = extract_content
-
-    Rails.logger.debug "Processing email from #{sender} to #{recipient}"
-
+    author = mail[:from].display_names.first
     email_address = find_email_address(recipient)
 
     unless email_address
@@ -17,14 +15,15 @@ class NewsletterMailbox < ApplicationMailbox
     document = email_address.documents.create!(
       title: subject,
       content: content,
-      author: extract_sender_name,
+      author: author,
       published_at: mail.date,
+      identifier: mail.from.first
     )
 
     document.document_states.create!(
       user: email_address.user,
       status: :inbox
-      )
+    )
   end
 
   private
@@ -39,9 +38,5 @@ class NewsletterMailbox < ApplicationMailbox
 
       username = recipient_email.split("@").first
       EmailAddress.find_by(username: username)
-    end
-
-    def extract_sender_name
-      mail[:from].display_names.first || mail.from.first
     end
 end

@@ -22,15 +22,13 @@ module DocumentHelper
   end
 
   def source_container(document)
-    source = document.source
-
-    if source.is_a?(Entry)
-      feed = source.feed
+    if document.feed?
+      feed = document.feed
       title = feed.title || feed.feed_url
       icon = feed.icon
       fallback_icon = "icons/rss.svg"
-    elsif source.is_a?(EmailAddress)
-      title = document.author
+    elsif document.email_address?
+      title = document.author || document.from
       fallback_icon = "icons/email.svg"
     end
 
