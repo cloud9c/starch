@@ -1,7 +1,7 @@
 class Session < ApplicationRecord
   belongs_to :user, optional: true
 
-  ACTIVITY_THRESHOLD = 7.days
+  ACTIVITY_THRESHOLD = 30.days
   EXPIRATION_THRESHOLD = 90.days
 
   scope :active, -> {

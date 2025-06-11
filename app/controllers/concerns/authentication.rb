@@ -52,7 +52,7 @@ module Authentication
       return nil unless session
 
       if session.active?
-        session.touch
+        session.touch if session.updated_at < 24.hours.ago
         session
       else
         terminate_session
