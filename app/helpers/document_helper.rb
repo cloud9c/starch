@@ -33,7 +33,7 @@ module DocumentHelper
       title = document.author
       fallback_icon = "icons/email.svg"
     end
-    
+
 content_tag :div, class: "source-container" do
   picture = capture do
     content_tag :picture do
@@ -42,7 +42,7 @@ content_tag :div, class: "source-container" do
       (source_tag + image_tag_html).html_safe
     end
   end
-  
+
   concat picture
   concat content_tag(:span, title)
 end
