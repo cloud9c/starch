@@ -78,7 +78,7 @@ class Entry < ApplicationRecord
   end
 
   def add_to_inbox
-    return if document.published_at && feed.created_at >= document.published_at
+    return if feed.created_at >= (document.published_at || document.created_at)
 
     users = feed.subscriptions.to_inbox.map(&:user).uniq
     return if users.empty?
