@@ -94,6 +94,11 @@
     }
   }
 
+  &.btn--ghost {
+    border: none;
+    background: none;
+  }
+
   &.btn--danger {
     color: var(--color-danger);
 
