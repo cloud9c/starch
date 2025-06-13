@@ -3,8 +3,7 @@
 
 # p0
 - showing progress
-- support email
-- search is not working
+- search is not working (fashion for vishwa)
 - user cannot unselect the category ("inbox" -> not "inbox")
 
 # p1

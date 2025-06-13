@@ -84,7 +84,7 @@ class Entry < ApplicationRecord
     return if users.empty?
 
     document_states = users.map do |user|
-      { user: user, document: document, status: :inbox }
+      { user_id: user.id, document_id: document.id, status: :inbox }
     end
 
     ExtractDocumentJob.perform_later(document.id)
