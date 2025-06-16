@@ -89,6 +89,6 @@ class Entry < ApplicationRecord
 
     ExtractDocumentJob.perform_later(document.id)
     DocumentState.insert_all!(document_states)
-    update_search_index
+    document.update_search_index
   end
 end

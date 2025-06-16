@@ -52,13 +52,13 @@ module User::Billable
 
   private
     def destroy_stripe_customer
-      return unless user.stripe_customer_id.present?
+      return unless stripe_customer_id.present?
 
       begin
-        Stripe::Customer.delete(user.stripe_customer_id)
-        Rails.logger.info "Deleted Stripe customer: #{user.stripe_customer_id} for user #{user.id}"
-      rescue Stripe::StripeError => e
-        Rails.logger.error "Error deleting Stripe customer: #{e.message} for user #{user.id}, customer #{user.stripe_customer_id}"
+        Stripe::Customer.delete(stripe_customer_id)
+        Rails.logger.info "Deleted Stripe customer: #{stripe_customer_id} for user #{id}"
+      rescue Stripe::StripeError => error
+        Rails.logger.error "Error deleting Stripe customer: #{error.message} for user #{id}, customer #{stripe_customer_id}"
       end
     end
 end
