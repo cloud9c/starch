@@ -29,8 +29,9 @@ class NewsletterMailbox < ApplicationMailbox
   private
     def extract_content
       html_part = mail.parts.find { |part| part.content_type.include?("text/html") }
-      text_part = mail.parts.find { |part| part.content_type.include?("text/plain") }
-      html_part&.body&.decoded || text_part&.body&.decoded || mail.body.decoded
+      content = html_part&.body&.decoded || mail.body.decoded
+
+      TextUtils.format_html(content)
     end
 
     def find_email_address(recipient_email)
