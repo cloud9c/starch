@@ -1,4 +1,4 @@
-module SubscriptionHelper
+module SubscriptionsHelper
   extend self
 
   def button_to_copy_email_address(email_address)

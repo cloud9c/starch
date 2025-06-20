@@ -43,16 +43,14 @@
   transition: opacity 0.2s ease;
 }
 
-@media (max-width: 100ch) {
-  .body--scrolled-down {
-    .toolbar {
-      opacity: 0;
-    }
+.body--scrolled-down {
+  .toolbar {
+    opacity: 0;
   }
+}
 
-  .body--scrolled-bottom {
-    .toolbar {
-      opacity: 1;
-    }
+.body--scrolled-bottom {
+  .toolbar {
+    opacity: 1;
   }
 }

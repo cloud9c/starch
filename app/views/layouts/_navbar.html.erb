@@ -1,81 +1,9 @@
 <div id="navbar__container">
-  <% if on_trial? && current_page?(inbox_path) %>
-    <%= link_to user_billing_path, id: "trial-banner" do %>
-      <span class="desktop-only">You have</span>
-      <%= (Current.user.created_at + 30.days - Time.current).to_i / 1.day %> days left on your free trial.
-      <span>Let's pay for Starch »</span>
-    <% end %>
-  <% end %>
+  <%= trial_banner %>
 
   <nav id="navbar" class="web-only">
-    <div id="navbar__left">
-      <% 
-        back_link_config = if controller_name == 'documents' && action_name == 'show'
-          { url: "javascript:history.back()", text: "Back" }
-        elsif !current_page?(inbox_path)
-          { url: inbox_path, text: "Inbox" }
-        end
-      %>
-
-      <% if back_link_config %>
-        <%= link_to back_link_config[:text], back_link_config[:url], 
-              class: "btn btn--primary btn--icon icon--arrow-left", 
-              data: { controller: "shortcut", shortcut_hotkey_value: "b" } %>
-      <% end %>
-
-      <search class="searchbar searchbar--transparent <%= "hide" if current_page?(controller: :documents, action: :search) %>">
-        <%= form_with(url: search_path, method: :get) do |form| %>
-          <div class="searchfield-container">
-            <%= form.search_field :q, id: nil, autocomplete: "off", value: params[:q], placeholder: "Search", autofocus: false,
-                                  data: {"controller": "searchbar shortcut", "shortcut-hotkey-value": "/"} %>
-          </div>
-        <% end %>
-      </search>
-    </div>
-
-    <details id="navbar__logo-container" data-controller="popup-menu shortcut" data-shortcut-hotkey-value="h" >
-      <summary id="navbar__logo">
-        <img src="/icon.svg" alt="Starch logo" width="25px" height="25px">
-        <h5>Starch</h5>
-      </summary>
-
-      <% 
-      navigation_items = [
-        { path: inbox_path, icon: "inbox", text: "Inbox" },
-        { path: feed_path, icon: "feed", text: "Feed" },
-        { path: later_path, icon: "later", text: "Later" },
-      ]
-        %>
-
-      <div id="navigation">
-        <div class="action-group">
-          <% navigation_items.each_with_index do |item, index| %>
-            <%= link_to item[:path],
-                data: { controller: "shortcut",
-                        "shortcut-hotkey-value": (index + 1).to_s },
-                class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item text--primary" do %>
-              <span><%= item[:text] %></span>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    </details>
-
-    <div id="navbar__account__container">
-      <% 
-        first_char = Current.user.email_address[0]
-        ascii_value = first_char.ord
-        hue_value = (ascii_value % 360).to_f
-      %>
-
-      <%= link_to user_path, data: { controller: "shortcut",
-                                      "shortcut-hotkey-value": "4" },
-                                      id:"navbar__account",
-                                      style:"--user-hue: #{hue_value}",
-                                      "aria-label":"Me" do %>
-          <%= first_char %>
-      <% end %>
-      </div>
-    </div>
+    <%= navbar_left_section %>
+    <%= navbar_menu %>
+    <%= navbar_account %>
   </nav>
 </div>

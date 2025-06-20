@@ -4,6 +4,11 @@
   background: var(--bg-primary--opaque);
   position: fixed;
   top: 0;
+
+
+  @media (max-width: 100ch) {
+    position: relative;
+  }
 }
 
 @media (min-width: 100ch) {
@@ -23,13 +28,15 @@
   gap: 1em;
   align-items: stretch;
 
-  > :first-child, > :last-child {
-    flex-grow: 1;
-    flex-basis: 0;
+
+  @media (min-width: 100ch) {
+    #navbar__left, #navbar__account__container {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
   }
 
   .searchbar {
-    max-width: 20em;
     margin-right: 2em;
   }
 
@@ -37,10 +44,7 @@
     display: flex;
     gap: 1em;
     align-items: center;
-  }
-
-  @media (max-width: 100ch) {
-    display: none;
+    flex-grow: 1;
   }
 }
 
