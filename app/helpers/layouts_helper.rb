@@ -93,21 +93,27 @@ module LayoutsHelper
     end
   end
 
-  def navbar_account
-    first_char = Current.user.email_address[0]
-    ascii_value = first_char.ord
-    hue_value = (ascii_value % 360).to_f
+  def navbar_user_hue
+    ascii_value = navbar_user_title.ord
 
-    content_tag(:div, id: "navbar__account__container") do
+    (ascii_value % 360).to_f
+  end
+
+  def navbar_user_title
+    Current.user.email_address[0]
+  end
+
+  def navbar_user
+    content_tag(:div, id: "navbar__user__container") do
       link_to user_path,
               data: {
                 controller: "shortcut",
                 "shortcut-hotkey-value": "4"
               },
-              id: "navbar__account",
-              style: "--user-hue: #{hue_value}",
+              id: "navbar__user",
+              style: "--user-hue: #{navbar_user_hue}",
               "aria-label": "Me" do
-        first_char
+        navbar_user_title
       end
     end
   end

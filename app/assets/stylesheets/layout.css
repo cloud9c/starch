@@ -6,8 +6,8 @@
   --page-padding: 1rem;
   --navbar-padding: 4rem;
 
-  @media (max-width: 100ch) {
-    --navbar-padding: 0rem;
+  .native {
+    --navbar-padding: 1rem;
   }
 }
 

@@ -4,8 +4,9 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div class="document-list page page--tab" data-controller="pagination">
-  <h1 class="heading">Later</h1>
+<div class="document-list page page--tab" data-controller="pagination navbar-user"
+                                          data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">
+  <h1 class="heading web-only">Later</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents %>

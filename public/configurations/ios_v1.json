@@ -31,10 +31,10 @@
     },
     {
       "patterns": [
-       "/user$", "/search$"
+       "/user", "/subscriptions", "/archive"
       ],
       "properties": {
-        "context": "modal",
+        "context": "modal"
       }
     },
     {

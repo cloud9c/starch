@@ -2,7 +2,7 @@
 
 <div class="page">
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
-  <h1 class="heading">Subscriptions</h1>
+  <h1 class="heading web-only">Subscriptions</h1>
   <div class="content">
     <div class="flex flex--centered">
       <%= button_to_copy_email_address Current.user.email_addresses.first.email_address %>

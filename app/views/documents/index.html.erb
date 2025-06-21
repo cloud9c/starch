@@ -4,8 +4,10 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<div id="index" class="document-list page page--tab" data-controller="pagination">
-  <h1 class="heading">Inbox</h1>
+<div class="document-list page page--tab"
+                data-controller="pagination navbar-search navbar-user" data-bridge-placeholder="Search..."
+                data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">
+  <h1 class="heading web-only">Inbox</h1>
   <div id="inbox__unread-section" class="document-preview-section">
     <% if @unread_documents.any? %>
       <div class="document-list__title-row">

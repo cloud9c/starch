@@ -4,11 +4,6 @@
   background: var(--bg-primary--opaque);
   position: fixed;
   top: 0;
-
-
-  @media (max-width: 100ch) {
-    position: relative;
-  }
 }
 
 @media (min-width: 100ch) {
@@ -30,7 +25,7 @@
 
 
   @media (min-width: 100ch) {
-    #navbar__left, #navbar__account__container {
+    #navbar__left, #navbar__user__container {
       flex-grow: 1;
       flex-basis: 0;
     }
@@ -89,12 +84,12 @@
   }
 }
 
-#navbar__account__container {
+#navbar__user__container {
   display: flex;
   justify-content: end;
   align-items: center;
 
-  #navbar__account {
+  #navbar__user {
     background: oklch(80% 0.15 var(--user-hue));
     border-radius: 50%;
     width: 2em;
