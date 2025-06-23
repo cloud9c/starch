@@ -17,7 +17,7 @@
 
   .document-title {
     font-weight: 600;
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     line-height: var(--line-height-tight);
     
     a[href] {
