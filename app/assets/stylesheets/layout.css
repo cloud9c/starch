@@ -64,12 +64,7 @@
 
   &:is(h1) {
     text-align: center;
-    font-size: var(--text-3xl);
-
-    @media (max-width: 100ch) {
-      text-align: left;
-      font-size: var(--text-2xl);
-    }
+    font-size: var(--text-2xl);
   }
 
   &:is(h2) {

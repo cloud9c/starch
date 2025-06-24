@@ -3,25 +3,26 @@ module Document::Queryable
 
   class_methods do
     def query(user_id, options = {})
-      query = Document.joins(
-        "LEFT JOIN entries ON documents.source_type = 'Entry' AND documents.source_id = entries.id"
-      ).joins(
-        "LEFT JOIN feeds ON entries.feed_id = feeds.id"
-      ).joins(
-        "LEFT JOIN subscriptions ON feeds.id = subscriptions.feed_id"
-      )
+      query = Document
+        .includes(:document_state)
+        .joins(
+        "LEFT JOIN entries ON documents.source_type = 'Entry' AND documents.source_id = entries.id")
+        .joins(
+        "LEFT JOIN feeds ON entries.feed_id = feeds.id")
+        .joins(
+        "LEFT JOIN subscriptions ON feeds.id = subscriptions.feed_id")
 
       if options[:page].present?
         query = query.limit(Document::PER_PAGE)
-                    .offset((options[:page] - 1) * Document::PER_PAGE)
+                     .offset((options[:page] - 1) * Document::PER_PAGE)
       end
 
       if options[:status].present?
-        query = query.joins(:document_states)
-                    .where(document_states: { user_id: user_id, status: options[:status] })
-                    .order("document_states.read" => :asc)
+        query = query.where(document_state: { status: options[:status] })
 
-        query = query.select("document_states.read")
+        if options[:status] == :inbox
+          query = query.order("document_state.read" => :asc)
+        end
       elsif options[:ids].present?
         query = query.where(id: options[:ids])
       elsif options[:subscription].present?
@@ -31,8 +32,7 @@ module Document::Queryable
       end
 
       query = query.order("documents.published_at" => :desc)
-
-      query = query.select("documents.*, subscriptions.view_extracted").distinct
+                   .select("documents.*, subscriptions.view_extracted").distinct
 
       query.map do |doc|
         doc.with_view_preferences

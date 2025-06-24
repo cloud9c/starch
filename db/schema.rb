@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_11_175403) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_231638) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -56,7 +56,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_11_175403) do
     t.integer "status"
     t.boolean "read", default: false
     t.float "progress", default: 0.0
-    t.float "progress_raw", default: 0.0
     t.index ["document_id", "user_id"], name: "index_document_states_on_document_and_user", unique: true
     t.index ["document_id"], name: "index_document_states_on_document_id"
     t.index ["read"], name: "index_document_states_on_read"

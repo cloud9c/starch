@@ -46,13 +46,12 @@
   --text-lg: 125%;
   --text-xl: 175%;
   --text-2xl: 225%;
-  --text-3xl: 250%;
 }
 
 /* .typography is used for document HTML formatting */
 .typography {
   font-size: var(--text-base);
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
 
   &.typography--sans {
     font-family: var(--font-sans);

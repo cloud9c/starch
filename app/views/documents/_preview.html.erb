@@ -1,6 +1,9 @@
 <%= link_to document_path(preview),
     id: dom_id(preview),
-    class: "document-preview" do %>
+    class: "document-preview",
+    data: {
+      progress: preview.document_state ? preview.document_state.progress : 0
+    } do %>
   <header class="document-preview-header">
     <%= source_container(preview) %>
 

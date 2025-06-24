@@ -13,32 +13,33 @@ module Document::Extractable
   end
 
   def with_view_preferences
-    should_extract =
-      if self[:view_extracted].present?
-        ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
-      elsif is_a?(Entry)
-        subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
-        subscription&.view_extracted
-      end
+    return self unless should_extract
 
-    if should_extract
-      preferences = {
-        thumbnail_url: extracted_data[:thumbnail_url],
-        content: extracted_data[:content],
-        published_at: published_at || extracted_data[:published_at],
-        title: title || extracted_data[:title],
-        author: author || extracted_data[:author]
-      }.compact
+    preferences = {
+      thumbnail_url: extracted_data[:thumbnail_url],
+      content: extracted_data[:content],
+      published_at: published_at || extracted_data[:published_at],
+      title: title || extracted_data[:title],
+      author: author || extracted_data[:author]
+    }.compact
 
-      preferences.each do |attr, value|
-        self[attr] = value unless value.nil?
-      end
+    preferences.each do |attr, value|
+      self[attr] = value unless value.nil?
     end
 
     self
   end
 
   private
+
+  def should_extract
+    if self[:view_extracted].present?
+      ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
+    elsif is_a?(Entry)
+      subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
+      subscription&.view_extracted
+    end
+  end
 
   def extract_data_from_url(url)
     parsed_data = ReadingParser.extract(url)

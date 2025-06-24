@@ -3,11 +3,11 @@ class Document < ApplicationRecord
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
+  has_one :document_state, -> { where(user_id: Current.user.id) }, class_name: "DocumentState"
   has_many :users, through: :document_states
 
-  validates :content, length: { maximum: 100_000 }
-
   before_validation :normalize_attributes
+  validates :content, length: { maximum: 100_000 }
 
   PER_PAGE = 10
 

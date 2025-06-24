@@ -8,8 +8,8 @@ class DocumentsController < ApplicationController
       page: page
     })
 
-    @unread_documents = documents.select { |doc| doc[:read] == 0 }
-    @read_documents = documents.select { |doc| doc[:read] == 1 }
+    @unread_documents = documents.select { |doc| doc.document_state.read == false }
+    @read_documents = documents.select { |doc| doc.document_state.read == true }
 
     respond_with_pagination(:index, documents)
   end
