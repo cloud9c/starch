@@ -37,7 +37,7 @@ class NewsletterMailbox < ApplicationMailbox
     def find_email_address(recipient_email)
       return nil unless recipient_email.include?("@#{EmailAddress::DOMAIN}")
 
-      username = recipient_email.split("@").first
+      username = recipient_email.split("@").first.downcase
       EmailAddress.find_by(username: username)
     end
 end
