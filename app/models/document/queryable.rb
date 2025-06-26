@@ -44,7 +44,7 @@ module Document::Queryable
   def with_description
     return self if description.present?
 
-    text = TextUtils.format_html(content)
+    text = TextUtils.html_to_text(content)
 
     if text.present?
       self.description = text.strip.gsub(/\s+/, " ")[0...300]

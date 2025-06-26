@@ -41,8 +41,8 @@ class Feed < ApplicationRecord
     site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
     attributes = {
-      title: TextUtils.format_html(feed.try(:title)),
-      description: TextUtils.format_html(feed.try(:description)),
+      title: TextUtils.html_to_text(feed.try(:title)),
+      description: TextUtils.html_to_text(feed.try(:description)),
       feed_url: feed_url,
       url: site_url,
       icon: get_icon(site_url)

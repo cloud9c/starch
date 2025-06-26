@@ -18,9 +18,9 @@ class Document < ApplicationRecord
     self.url = normalized_url
     self.content = sanitized_content
 
-    self.title = TextUtils.format_html(title)
-    self.description = TextUtils.format_html(description)
-    self.author = TextUtils.format_html(author)
+    self.title = TextUtils.html_to_text(title)
+    self.description = TextUtils.html_to_text(description)
+    self.author = TextUtils.html_to_text(author)
 
     unless thumbnail_url
       self.thumbnail_url = TextUtils.extract_thumbnail(sanitized_content)

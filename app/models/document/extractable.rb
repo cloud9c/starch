@@ -50,8 +50,8 @@ module Document::Extractable
     result = {
       content: content,
       thumbnail_url: TextUtils.extract_thumbnail(content),
-      title: TextUtils.format_html(parsed_data["title"]),
-      author: TextUtils.format_html(parsed_data["byline"]),
+      title: TextUtils.html_to_text(parsed_data["title"]),
+      author: TextUtils.html_to_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
     }
 

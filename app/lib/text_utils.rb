@@ -1,7 +1,7 @@
 module TextUtils
   extend self
 
-  def format_html(html)
+  def html_to_text(html)
     return nil if html.nil? || html.empty?
 
     text = Nokogiri::HTML(html).xpath("//text()").map(&:text).join(" ")
