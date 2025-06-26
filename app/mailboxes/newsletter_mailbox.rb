@@ -31,7 +31,7 @@ class NewsletterMailbox < ApplicationMailbox
       html_part = mail.parts.find { |part| part.content_type.include?("text/html") }
       content = html_part&.body&.decoded || mail.body.decoded
 
-      FormatUtils.format_text(content)
+      FormatUtils.format_html(content)
     end
 
     def find_email_address(recipient_email)
