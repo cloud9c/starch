@@ -62,16 +62,7 @@
   
   a[href] {
     text-decoration: underline;
-    
-    &:focus-visible {
-      color: var(--color-link);
-    }
-
-    @media (any-hover: hover) {
-      &:where(:not(:active):hover) {
-        color: var(--color-link);
-      }
-    }
+    color: var(--color-link);
   }
   
   p {

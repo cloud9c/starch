@@ -102,3 +102,6 @@ gem "image_size", "~> 3.4"
 
 # support passkeys
 gem "webauthn"
+
+# Find feeds
+gem "feedbag"

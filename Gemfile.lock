@@ -122,6 +122,8 @@ GEM
       logger
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
+    feedbag (1.0.0)
+      nokogiri (~> 1.8, >= 1.8.2)
     feedjira (3.2.5)
       loofah (>= 2.3.1, < 3)
       sax-machine (>= 1.0, < 2)
@@ -462,6 +464,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  feedbag
   feedjira
   hotwire-spark
   httpx

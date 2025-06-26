@@ -4,9 +4,9 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    permitted = params.expect(subscription: [ :feed_url, :to_inbox ])
+    permitted = params.expect(subscription: [ :url, :to_inbox ])
 
-    feed_url = Feed.find_feed_url(permitted[:feed_url])
+    feed_url = Feedbag.find(permitted[:url]).first
 
     unless feed_url
       @flash = { alert: "Couldn't find an RSS/Atom feed" }

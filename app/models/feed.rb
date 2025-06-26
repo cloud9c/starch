@@ -1,6 +1,4 @@
 class Feed < ApplicationRecord
-  include WithFeedUrl
-
   has_many :entries, dependent: :destroy
   has_many :documents, through: :entries, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
