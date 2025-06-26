@@ -45,13 +45,13 @@ module Document::Extractable
     parsed_data = ReadingParser.extract(url)
     return {} unless parsed_data
 
-    content = SanitizeUtils.clean_html(parsed_data["content"], url)
+    content = FormatUtils.format_html(parsed_data["content"], url)
 
     result = {
       content: content,
-      thumbnail_url: TextUtils.extract_thumbnail(content),
-      title: TextUtils.html_to_text(parsed_data["title"]),
-      author: TextUtils.html_to_text(parsed_data["byline"]),
+      thumbnail_url: Document.find_thumbnail(content),
+      title: FormatUtils.format_text(parsed_data["title"]),
+      author: FormatUtils.format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)
     }
 

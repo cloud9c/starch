@@ -7,23 +7,46 @@ class Document < ApplicationRecord
   has_many :users, through: :document_states
 
   before_validation :normalize_attributes
-  validates :content, length: { maximum: 100_000 }
+  validates :content, length: { maximum: 500_000 }
 
   PER_PAGE = 10
 
+  require "image_size/uri"
+  def self.find_thumbnail(html, min_width: 100, min_height: 100)
+    doc = Nokogiri::HTML(html)
+
+    images = doc.css("img")
+
+    images.each do |image|
+      src = image["src"]
+
+      begin
+        size = ImageSize.url(src).size
+      rescue
+        next
+      end
+
+      next if size.nil?
+      width, height = size
+      return src if width >= min_width && height >= min_height
+    end
+
+    nil
+  end
+
   def normalize_attributes
     normalized_url = UrlUtils.normalize(url) if url.present?
-    sanitized_content = SanitizeUtils.clean_html(content, normalized_url)
+    sanitized_content = FormatUtils.format_html(content, normalized_url)
 
     self.url = normalized_url
     self.content = sanitized_content
 
-    self.title = TextUtils.html_to_text(title)
-    self.description = TextUtils.html_to_text(description)
-    self.author = TextUtils.html_to_text(author)
+    self.title = FormatUtils.format_text(title)
+    self.description = FormatUtils.format_text(description)
+    self.author = FormatUtils.format_text(author)
 
     unless thumbnail_url
-      self.thumbnail_url = TextUtils.extract_thumbnail(sanitized_content)
+      self.thumbnail_url = Document.find_thumbnail(sanitized_content)
     end
   end
 end

@@ -23,7 +23,7 @@ class Entry < ApplicationRecord
       )
 
       raw_entry_data = parse_raw_entry_data(entry_data)
-      document = entry.create_document!(raw_entry_data)
+      document = entry.create_document(raw_entry_data)
       entry.add_to_inbox
     end
 

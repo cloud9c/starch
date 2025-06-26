@@ -5,9 +5,6 @@ module Navigation
     helper_method :clear_all_or_redirect_to
   end
 
-  class_methods do
-  end
-
   private
 
   def clear_all_or_redirect_to(url, options = {})

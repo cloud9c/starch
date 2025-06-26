@@ -129,6 +129,36 @@
     width: 100%;
   }
   
+  strong, b {
+    font-weight: bold
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
+  code {
+    font-family: var(--font-mono);
+  }
+
+  ol, ul {
+    list-style: initial;
+
+    li {
+      margin: 0.5em 0 0 2em;
+    }
+  }
+
+  ol > li {
+    list-style-type: decimal;
+    list-style-position: inside;
+  }
+
+  ul > li {
+    list-style-type: disc;
+    list-style-position: inside;
+  }
+
   details {
     summary {
       cursor: pointer;
@@ -162,5 +192,27 @@
 
   ruby rt {
     font-size: var(--text-sm);
+  }
+
+  sub, sup {
+    font-size: var(--text-sm);
+    margin-left: 0.25em;
+  }
+
+  sup {
+    vertical-align: super;
+  }
+
+  sub {
+    vertical-align: sub;
+  }
+
+  s {
+    text-decoration: line-through;
+    color: var(--color-text--subtle);
+  }
+
+  :where([hidden]) {
+    display: none !important;
   }
 }
