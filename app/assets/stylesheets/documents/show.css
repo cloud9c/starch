@@ -40,6 +40,7 @@
 
 .document-body {
   padding-bottom: var(--page-padding);
+  word-break: break-word;
 
   * {
     max-width: var(--page-width);
@@ -50,4 +51,5 @@
 .document-body--email {
   background: white;
   color: #222;
+  padding: var(--page-padding);
 }
