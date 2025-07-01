@@ -18,14 +18,16 @@
       </hgroup>
 
       <div class="document-metadata-row">
-        <p class="document-author"><%= @document.author %></p>
+        <p class="document-author">
+          <%= @document.author %>
+        </p>
         <% if @document.published_at %>
           <p><%= local_time(@document.published_at, "%b %d, %Y") %></p>
         <% end %>
       </div>
     </header>
 
-    <article class="document-body <%= "typography" if @document.entry? %>">
+    <article class="document-body <%= "typography" if @document.entry? %> <%= "document-body--email" if @document.email_address? %> ">
       <%= render_video @document %>
       <%= sanitize_document @document %>
     </article>
