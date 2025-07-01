@@ -35,10 +35,9 @@ class Document < ApplicationRecord
   end
 
   def normalize_attributes
-    normalized_url = UrlUtils.normalize(url) if url.present?
     sanitized_content = FormatUtils.format_html(content, normalized_url)
 
-    self.url = normalized_url
+    self.url = UrlUtils.normalize(url) if url.present?
     self.content = sanitized_content
 
     self.title = FormatUtils.format_text(title)

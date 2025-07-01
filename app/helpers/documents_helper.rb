@@ -21,14 +21,21 @@ module DocumentsHelper
         tabindex target title type usemap valign value
         vspace itemprop id]
 
-  def sanitize_html(html)
-    sanitize html, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
+  def sanitize_document(document)
+    case document.source
+    when Entry
+      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
+    when EmailAddress
+      sanitize document.content, tags: BASE_TAGS + %w[style], attributes: BASE_ATTRIBUTES + %w[style]
+    else
+      document.content
+    end
   end
 
   def render_video(document)
     youtube_regex = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/
 
-    match = youtube_regex.match(document.url)
+    match = youtube_regex.match(document.identifier)
     return unless match
 
     youtube_id = match[1]
@@ -46,13 +53,14 @@ module DocumentsHelper
   end
 
   def source_container(document)
-    if document.feed?
-      feed = document.feed
+    case document.source
+    when Entry
+      feed = document.source.feed
       title = feed.title || feed.feed_url
       icon = feed.icon
       fallback_icon = "icons/rss.svg"
-    elsif document.email_address?
-      title = document.author || document.from
+    when EmailAddress
+      title = document.author || document.identifier
       fallback_icon = "icons/email.svg"
     end
 

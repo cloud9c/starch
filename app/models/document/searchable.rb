@@ -31,7 +31,6 @@ module Document::Searchable
         { name: "user_ids", type: "int32[]" },
         { name: "title", type: "string", optional: true },
         { name: "description", type: "string", optional: true },
-        { name: "url", type: "string", optional: true },
         { name: "published_at", type: "int64", optional: true },
         { name: "content", type: "string", optional: true }
       ]
@@ -76,7 +75,6 @@ module Document::Searchable
         user_ids: DocumentState.where(document_id: self.id).pluck(:user_id),
         title: title,
         description: description,
-        url: url,
         published_at: published_at&.to_i,
         content: Nokogiri::HTML(content).text
       }
