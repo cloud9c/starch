@@ -28,10 +28,27 @@ class NewsletterMailbox < ApplicationMailbox
 
   private
     def extract_content
+      content = mail.body.decoded
       html_part = mail.parts.find { |part| part.content_type.include?("text/html") }
-      content = html_part&.body&.decoded || mail.body.decoded
 
-      FormatUtils.format_html(content)
+      if html_part.present?
+        html = html_part.body&.decoded
+        content = format_html(html)
+      end
+
+      content
+    end
+
+    def format_html(html)
+      doc = Nokogiri::HTML(html)
+      body = doc.at_css("body")
+
+      if body
+        body.name = "div"
+        body.to_html
+      else
+        doc.to_html
+      end
     end
 
     def find_email_address(recipient_email)

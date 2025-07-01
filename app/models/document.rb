@@ -6,7 +6,7 @@ class Document < ApplicationRecord
   has_one :document_state, -> { where(user_id: Current.user.id) }, class_name: "DocumentState"
   has_many :users, through: :document_states
 
-  before_validation :normalize_attributes
+  before_validation :format_attributes
   validates :content, length: { maximum: 500_000 }
 
   PER_PAGE = 10
@@ -34,7 +34,7 @@ class Document < ApplicationRecord
     nil
   end
 
-  def normalize_attributes
+  def format_attributes
     self.url = UrlUtils.normalize(url) if url.present?
 
     if content.present?
