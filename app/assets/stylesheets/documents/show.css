@@ -39,10 +39,15 @@
 }
 
 .document-body {
-  font-family: var(--font-serif);
   padding-bottom: var(--page-padding);
+
+  * {
+    max-width: var(--page-width);
+    height: auto;
+  }
 }
 
 .document-body--email {
   background: white;
+  color: #222;
 }

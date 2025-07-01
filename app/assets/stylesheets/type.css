@@ -76,12 +76,7 @@
       margin-left: 1.25em;
     }
   }
-  
-  * {
-    max-width: var(--page-width);
-    height: auto;
-  }
- 
+
   table,
   th,
   td {
