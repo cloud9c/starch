@@ -35,17 +35,16 @@ class Document < ApplicationRecord
   end
 
   def normalize_attributes
-    sanitized_content = FormatUtils.format_html(content, normalized_url)
-
     self.url = UrlUtils.normalize(url) if url.present?
-    self.content = sanitized_content
-
-    self.title = FormatUtils.format_text(title)
-    self.description = FormatUtils.format_text(description)
-    self.author = FormatUtils.format_text(author)
-
-    unless thumbnail_url
-      self.thumbnail_url = Document.find_thumbnail(sanitized_content)
+    
+    if content.present?
+      sanitized_content = FormatUtils.format_html(content, url)
+      self.content = sanitized_content
+      self.thumbnail_url ||= Document.find_thumbnail(sanitized_content)
     end
+    
+    self.title = FormatUtils.format_text(title) if title.present?
+    self.description = FormatUtils.format_text(description) if description.present?
+    self.author = FormatUtils.format_text(author) if author.present?
   end
 end
