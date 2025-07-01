@@ -25,7 +25,7 @@
       </div>
     </header>
 
-    <article class="typography document-body">
+    <article class="document-body <%= "typography" if @document.entry? %>">
       <%= render_video @document %>
       <%= sanitize_document @document %>
     </article>
