@@ -49,7 +49,7 @@ module Document::Extractable
 
     result = {
       content: content,
-      thumbnail_url: Document.find_thumbnail(content),
+      thumbnail_url: FormatUtils.find_thumbnail(content),
       title: FormatUtils.format_text(parsed_data["title"]),
       author: FormatUtils.format_text(parsed_data["byline"]),
       published_at: (DateTime.parse(parsed_data["publishedTime"]) rescue nil)

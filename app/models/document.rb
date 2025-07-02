@@ -11,36 +11,13 @@ class Document < ApplicationRecord
 
   PER_PAGE = 10
 
-  require "image_size/uri"
-  def self.find_thumbnail(html, min_width: 100, min_height: 100)
-    doc = Nokogiri::HTML(html)
-
-    images = doc.css("img")
-
-    images.each do |image|
-      src = image["src"]
-
-      begin
-        size = ImageSize.url(src).size
-      rescue
-        next
-      end
-
-      next if size.nil?
-      width, height = size
-      return src if width >= min_width && height >= min_height
-    end
-
-    nil
-  end
-
   def format_attributes
     self.url = UrlUtils.normalize(url) if url.present?
 
     if content.present?
       sanitized_content = FormatUtils.format_html(content, url)
       self.content = sanitized_content
-      self.thumbnail_url ||= Document.find_thumbnail(sanitized_content)
+      self.thumbnail_url ||= FormatUtils.find_thumbnail(sanitized_content)
     end
 
     self.title = FormatUtils.format_text(title) if title.present?

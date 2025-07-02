@@ -18,6 +18,29 @@ module FormatUtils
     text.gsub(/\s+/, " ").strip
   end
 
+  require "image_size/uri"
+  def find_thumbnail(html, min_width: 100, min_height: 100)
+    doc = Nokogiri::HTML(html)
+
+    images = doc.css("img")
+
+    images.each do |image|
+      src = image["src"]
+
+      begin
+        size = ImageSize.url(src).size
+      rescue
+        next
+      end
+
+      next if size.nil?
+      width, height = size
+      return src if width >= min_width && height >= min_height
+    end
+
+    nil
+  end
+
   private
     def format_links(doc, base_url)
       url_related_attributes = %w[href src]
