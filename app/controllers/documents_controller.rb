@@ -73,8 +73,12 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Document.find(params[:id])
+    document = Document.find(params[:id])
 
-    @document = @document.with_view_preferences
+    unless @document.authorized?
+      return redirect_to root_path, alert: "Document not found"
+    end
+
+    @document = document.with_view_preferences
   end
 end

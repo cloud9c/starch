@@ -3,11 +3,16 @@ class Document < ApplicationRecord
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
-  has_one :document_state, -> { where(user_id: Current.user.id) }, class_name: "DocumentState"
   has_many :users, through: :document_states
 
   before_validation :format_attributes
   validates :content, length: { maximum: 500_000 }
+
+  def authorized?
+    return true if DocumentState.exists?(document: self, user: Current.user)
+    return true if feed? && Subscription.exists?(feed: feed, user: Current.user)
+    false
+  end
 
   def format_attributes
     self.url = UrlUtils.normalize(url) if url.present?
