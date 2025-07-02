@@ -47,9 +47,3 @@
     height: auto;
   }
 }
-
-.document-body--email {
-  background: white;
-  color: #222;
-  padding: var(--page-padding);
-}

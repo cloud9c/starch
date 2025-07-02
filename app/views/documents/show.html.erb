@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <article class="document-body <%= "typography" if @document.entry? %> <%= "document-body--email" if @document.email_address? %> ">
+    <article class="document-body <%= "typography" if @document.entry? %>">
       <%= render_video @document %>
       <%= sanitize_document @document %>
     </article>
