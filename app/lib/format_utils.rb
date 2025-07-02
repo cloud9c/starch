@@ -19,7 +19,7 @@ module FormatUtils
   end
 
   require "image_size/uri"
-  def find_thumbnail(html, min_width: 100, min_height: 100)
+  def find_thumbnail(html, min_width: 250, min_height: 250)
     doc = Nokogiri::HTML(html)
 
     images = doc.css("img")
@@ -38,7 +38,7 @@ module FormatUtils
       return src if width >= min_width && height >= min_height
     end
 
-    nil
+    find_thumbnail(html, 100, 100) unless min_width == 100 && min_height == 100
   end
 
   def extract_description(content)

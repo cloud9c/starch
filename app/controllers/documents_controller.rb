@@ -2,7 +2,7 @@ class DocumentsController < ApplicationController
   include Pagination
 
   def index
-    document_states = DocumentState
+    document_states = Current.user.document_states
       .where(status: :inbox)
       .order(read: :asc)
       .order(updated_at: :desc)
@@ -20,7 +20,7 @@ class DocumentsController < ApplicationController
   end
 
   def later
-    document_states = DocumentState
+    document_states = Current.user.document_states
       .where(status: :later)
       .order(updated_at: :desc)
       .preload(:document)
@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
   end
 
   def archive
-    document_states = DocumentState
+    document_states = Current.user.document_states
       .where(status: :archive)
       .order(updated_at: :desc)
       .preload(:document)
