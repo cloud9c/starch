@@ -4,6 +4,7 @@ module FormatUtils
   def format_html(html, base_url = nil)
     doc = Nokogiri::HTML.fragment(html)
 
+    doc.css("style, script").remove
     format_styling(doc)
     format_links(doc, base_url)
 
