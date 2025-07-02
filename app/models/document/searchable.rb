@@ -13,17 +13,22 @@ module Document::Searchable
     end
 
     def search(query, options = {})
+      return [] if query.empty?
+
       search_params = {
         q: query,
         query_by: "title,description,content",
-        per_page: Document::PER_PAGE,
+        per_page: options[:per_page],
         page: options[:page],
         filter_by: "user_ids:=[#{Current.user_or_raise!.id}]",
         include_fields: "id"
       }
 
       result = self.search_collection.documents.search(search_params)
-      result
+      result["hits"]
+            .map { |hit| hit.dig("document", "id") }
+            .compact
+            .uniq
     end
 
     def search_schema

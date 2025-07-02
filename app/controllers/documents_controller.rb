@@ -1,123 +1,80 @@
 class DocumentsController < ApplicationController
+  include Pagination
+
   def index
-    permitted = params.permit(:page)
-    page = permitted[:page] ? permitted[:page].to_i : 1
+    document_states = DocumentState
+      .where(status: :inbox)
+      .order(read: :asc)
+      .order(updated_at: :desc)
+      .preload(:document)
+      .then(&paginate)
 
-    documents = Document.query(Current.user.id, {
-      status: :inbox,
-      page: page
-    })
+    unread_states = document_states.select { |ds| ds.read == false }
+    read_states = document_states.select { |ds| ds.read == true }
 
-    @unread_documents = documents.select { |doc| doc.document_state.read == false }
-    @read_documents = documents.select { |doc| doc.document_state.read == true }
+    @unread_documents = unread_states.map(&:document)
+    @read_documents = read_states.map(&:document)
 
+    documents = document_states.map(&:document)
     respond_with_pagination(:index, documents)
   end
 
   def later
-    permitted = params.permit(:page)
-    page = permitted[:page] ? permitted[:page].to_i : 1
+    document_states = DocumentState
+      .where(status: :later)
+      .order(updated_at: :desc)
+      .preload(:document)
+      .then(&paginate)
 
-    @documents = Document.query(Current.user.id, {
-      status: :later,
-      page: page
-    })
-
+    @documents = document_states.map(&:document)
     respond_with_pagination(:later, @documents)
   end
 
   def archive
-    permitted = params.permit(:page)
-    page = permitted[:page] ? permitted[:page].to_i : 1
+    document_states = DocumentState
+      .where(status: :archive)
+      .order(updated_at: :desc)
+      .preload(:document)
+      .then(&paginate)
 
-    @documents = Document.query(Current.user.id, {
-      status: :archive,
-      page: page
-    })
-
-    respond_with_pagination(:archive, @documents)
+    @documents = document_states.map(&:document)
+    respond_with_pagination(:later, @documents)
   end
 
   def feed
-    permitted = params.permit(:page, :subscription)
-    page = permitted[:page] ? permitted[:page].to_i : 1
+    subscription_id = params[:subscription]
 
-    @documents = Document.query(Current.user.id, {
-      page: page,
-      subscription: permitted[:subscription]
-    })
+    subscription_condition = subscription_id.present? ?
+      { id: subscription_id, user: Current.user } :
+      { user: Current.user }
+
+    entry_ids = Entry.joins(feed: :subscriptions)
+                    .where(subscriptions: subscription_condition)
+                    .pluck(:id)
+
+    @documents = Document
+      .where(source_type: "Entry", source_id: entry_ids)
+      .order(published_at: :desc)
+      .then(&paginate)
 
     @subscriptions = Current.user.subscriptions.includes(:feed).all
-
-    respond_to do |format|
-      format.html do
-        render :feed, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
-      end
-
-      format.turbo_stream do
-        render page > 1 ? :append : :feed, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
-      end
-    end
+    respond_with_pagination(:feed, @documents)
   end
 
   def search
-    permitted = params.permit(:q, :page, :filter)
-    query = permitted[:q]
-    page = permitted[:page] ? permitted[:page].to_i : 1
-
-    unless query.present?
-      @documents = []
-      return respond_with_pagination(:search, @documents)
-    end
-
-    result = Document.search(query, {
+    document_ids = Document.search(params[:q], {
       page: page,
-      filter_by: permitted[:filter]
+      filter_by: params[:filter],
+      per_page: per_page
     })
 
-    document_ids = result["hits"]
-      .map { |hit| hit.dig("document", "id") }
-      .compact
-      .uniq
-
-    @documents = Document.query(Current.user.id, {
-      page: page,
-      ids: document_ids
-    })
-
-    respond_to do |format|
-      format.html do
-        render :search, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
-      end
-
-      format.turbo_stream do
-        render page > 1 ? :append : :search, status: @documents.length == Document::PER_PAGE ? :ok : :partial_content
-      end
-    end
+    @documents = Document.where(id: document_ids)
+    respond_with_pagination(:search, @documents)
   end
 
   def show
-    permitted = params.permit(:id)
-    @document = Document.find(permitted[:id])
+    @document = Document.find(params[:id])
 
     @document = @document.with_view_preferences
-  end
-
-  private
-
-  def respond_with_pagination(view_name, documents)
-    respond_to do |format|
-      format.html do
-        render view_name, status: documents.length == Document::PER_PAGE ? :ok : :partial_content
-      end
-
-      format.turbo_stream do
-        if documents.empty?
-          head :no_content
-        else
-          render :append, status: documents.length == Document::PER_PAGE ? :ok : :partial_content
-        end
-      end
-    end
   end
 end

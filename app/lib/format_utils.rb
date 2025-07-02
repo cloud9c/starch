@@ -5,7 +5,7 @@ module FormatUtils
     doc = Nokogiri::HTML.fragment(html)
 
     doc.css("style, script").remove
-    format_styling(doc)
+    rename_ids(doc)
     format_links(doc, base_url)
 
     doc.to_html
@@ -41,6 +41,14 @@ module FormatUtils
     nil
   end
 
+  def extract_description(content)
+    text = FormatUtils.format_text(content)
+
+    if text.present?
+      self.description = text.strip.gsub(/\s+/, " ")[0...300]
+    end
+  end
+
   private
     def format_links(doc, base_url)
       url_related_attributes = %w[href src]
@@ -59,7 +67,7 @@ module FormatUtils
       end
     end
 
-    def format_styling(doc)
+    def rename_ids(doc)
       id_mappings = {}
       prefix = "_html_#{SecureRandom.hex(4)}_"
 

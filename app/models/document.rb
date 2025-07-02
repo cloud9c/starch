@@ -1,5 +1,5 @@
 class Document < ApplicationRecord
-  include Searchable, Queryable, Extractable, FromEntry, FromEmailAddress
+  include Searchable, Extractable, FromEntry, FromEmailAddress
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
@@ -8,8 +8,6 @@ class Document < ApplicationRecord
 
   before_validation :format_attributes
   validates :content, length: { maximum: 500_000 }
-
-  PER_PAGE = 10
 
   def format_attributes
     self.url = UrlUtils.normalize(url) if url.present?
@@ -21,7 +19,12 @@ class Document < ApplicationRecord
     end
 
     self.title = FormatUtils.format_text(title) if title.present?
-    self.description = FormatUtils.format_text(description) if description.present?
     self.author = FormatUtils.format_text(author) if author.present?
+
+    if description.present?
+      self.description = FormatUtils.format_text(description)
+    else
+      self.description = FormatUtils.extract_description(content)
+    end
   end
 end
