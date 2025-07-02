@@ -24,7 +24,7 @@ module DocumentsHelper
   def sanitize_document(document)
     case document.source
     when Entry
-      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES,
+      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
     when EmailAddress
       sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
     else
