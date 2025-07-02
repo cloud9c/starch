@@ -105,3 +105,6 @@ gem "webauthn"
 
 # Find feeds
 gem "feedbag"
+
+# inline CSS for emails
+gem "premailer"

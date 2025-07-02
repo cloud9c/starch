@@ -40,7 +40,11 @@ class NewsletterMailbox < ApplicationMailbox
     end
 
     def format_html(html)
-      doc = Nokogiri::HTML(html)
+      premailer = Premailer.new(html, with_html_string: true)
+
+      inline_html = premailer.to_inline_css
+
+      doc = Nokogiri::HTML(inline_html)
       body = doc.at_css("body")
 
       if body
