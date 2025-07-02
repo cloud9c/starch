@@ -6,7 +6,7 @@
   --page-padding: 1rem;
   --navbar-padding: 4rem;
 
-  .native {
+  &:has(.native) {
     --navbar-padding: 1rem;
   }
 }
