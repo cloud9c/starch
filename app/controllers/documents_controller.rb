@@ -75,7 +75,7 @@ class DocumentsController < ApplicationController
   def show
     document = Document.find(params[:id])
 
-    unless @document.authorized?
+    unless document.authorized?
       return redirect_to root_path, alert: "Document not found"
     end
 
