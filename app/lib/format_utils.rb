@@ -50,17 +50,27 @@ module FormatUtils
   end
 
   def find_icon(base_url)
-    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
+    base_url = UrlUtils.normalize(base_url)
+
+    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter).with(timeout: 5)
     response = http.get(base_url)
     return nil if response.error
 
-    body = response.body.to_s.force_encoding("UTF-8")
-
+    body = response.body.to_s
+    body = body.force_encoding("UTF-8") unless body.valid_encoding?
+ 
     doc = Nokogiri::HTML(body)
-    icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
+
+    selectors = [
+      'link[rel~="apple-touch-icon"]',
+      'link[rel~="icon"][sizes="32x32"]', 
+      'link[rel~="icon"]'
+    ]
+
+    icon_url = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
     icon_url ||= "/favicon.ico"
 
-    URI.join(base_url, icon_url).to_s rescue nil
+    URI.join(base_url, icon_url).to_s
   end
 
   private
