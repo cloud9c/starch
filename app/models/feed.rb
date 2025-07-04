@@ -34,11 +34,10 @@ class Feed < ApplicationRecord
   end
 
   def update_metadata
-    feed = self.class.parse_feed(content) rescue nil
+    feed = Feed.parse_feed(content) rescue nil
     return unless feed
 
     feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
-
     site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
     attributes = {

@@ -51,7 +51,7 @@ module FormatUtils
   def find_icon(base_url)
     base_url = UrlUtils.normalize(base_url)
 
-    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter).with(timeout: 5)
+    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
     response = http.get(base_url)
     return nil if response.error
 
