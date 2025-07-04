@@ -25,7 +25,7 @@ module DocumentsHelper
     case document.source
     when Entry
       sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
-    when EmailAddress
+    when EmailSender
       sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
     else
       document.content
