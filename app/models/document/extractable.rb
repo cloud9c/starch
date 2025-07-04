@@ -33,12 +33,8 @@ module Document::Extractable
 
   private
     def should_extract
-      if self[:view_extracted].present?
-        ActiveModel::Type::Boolean.new.cast(self[:view_extracted])
-      elsif is_a?(Entry)
-        subscription = feed&.subscriptions&.find { |s| s.user_id == Current.user.id }
-        subscription&.view_extracted
-      end
+      return false unless source.is_a?(Entry)
+      Current.user.subscriptions.find_by(feed: feed)&.view_extracted
     end
 
     def extract_data_from_url(url)

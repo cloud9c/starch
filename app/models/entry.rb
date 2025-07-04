@@ -87,7 +87,6 @@ class Entry < ApplicationRecord
       { user_id: user.id, document_id: document.id, status: :inbox }
     end
 
-    ExtractDocumentJob.perform_later(document.id)
     DocumentState.insert_all!(document_states)
     document.update_search_index
   end

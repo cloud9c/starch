@@ -38,15 +38,14 @@ module FormatUtils
       return src if width >= min_width && height >= min_height
     end
 
-    find_thumbnail(html, 100, 100) unless min_width == 100 && min_height == 100
+    find_thumbnail(html, min_width: 100, min_height: 100) unless min_width == 100 && min_height == 100
   end
 
   def extract_description(content)
     text = FormatUtils.format_text(content)
+    return nil if text.empty?
 
-    if text.present?
-      self.description = text.strip.gsub(/\s+/, " ")[0...300]
-    end
+    text.strip.gsub(/\s+/, " ")[0...300]
   end
 
   def find_icon(base_url)

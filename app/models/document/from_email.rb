@@ -6,6 +6,6 @@ module Document::FromEmail
   end
 
   def sender
-    source if email_address?
+    source if email?
   end
 end

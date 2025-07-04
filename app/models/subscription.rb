@@ -18,9 +18,6 @@ class Subscription < ApplicationRecord
         document: document,
         status: :inbox
       )
-
-      # warm up extracted document
-      ExtractDocumentJob.perform_later(document.id)
     end
   end
 end

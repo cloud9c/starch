@@ -15,7 +15,7 @@ class DocumentsController < ApplicationController
     @unread_documents = unread_states.map(&:document)
     @read_documents = read_states.map(&:document)
 
-    documents = document_states.map(&:document)
+    documents = document_states.map(&:document).map(&:with_view_preferences)
     respond_with_pagination(:index, documents)
   end
 
@@ -26,7 +26,7 @@ class DocumentsController < ApplicationController
       .preload(:document)
       .then(&paginate)
 
-    @documents = document_states.map(&:document)
+    @documents = document_states.map(&:document).map(&:with_view_preferences)
     respond_with_pagination(:later, @documents)
   end
 
@@ -37,7 +37,7 @@ class DocumentsController < ApplicationController
       .preload(:document)
       .then(&paginate)
 
-    @documents = document_states.map(&:document)
+    @documents = document_states.map(&:document).map(&:with_view_preferences)
     respond_with_pagination(:later, @documents)
   end
 
@@ -56,6 +56,7 @@ class DocumentsController < ApplicationController
       .where(source_type: "Entry", source_id: entry_ids)
       .order(published_at: :desc)
       .then(&paginate)
+      .map(&:with_view_preferences)
 
     @subscriptions = Current.user.subscriptions.includes(:feed).all
     respond_with_pagination(:feed, @documents)
@@ -68,7 +69,7 @@ class DocumentsController < ApplicationController
       per_page: per_page
     })
 
-    @documents = Document.where(id: document_ids)
+    @documents = Document.where(id: document_ids).map(&:with_view_preferences)
     respond_with_pagination(:search, @documents)
   end
 
