@@ -1,5 +1,5 @@
 class Document < ApplicationRecord
-  include Searchable, Extractable, FromEntry, FromEmailAddress
+  include Searchable, Extractable, FromEntry, FromEmail
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy

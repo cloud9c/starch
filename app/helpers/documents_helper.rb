@@ -35,7 +35,7 @@ module DocumentsHelper
   def render_video(document)
     youtube_regex = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/
 
-    match = youtube_regex.match(document.identifier)
+    match = youtube_regex.match(document.url)
     return unless match
 
     youtube_id = match[1]
@@ -55,12 +55,14 @@ module DocumentsHelper
   def source_container(document)
     case document.source
     when Entry
-      feed = document.source.feed
+      feed = document.feed
       title = feed.title || feed.feed_url
       icon = feed.icon
       fallback_icon = "icons/rss.svg"
-    when EmailAddress
-      title = document.author || document.identifier
+    when EmailSender
+      sender = document.source
+      title = sender.display_name || sender.email_address
+      icon = sender.icon
       fallback_icon = "icons/email.svg"
     end
 

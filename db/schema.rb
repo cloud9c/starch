@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_23_231638) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_04_193746) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -70,7 +70,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_231638) do
     t.string "title"
     t.text "description"
     t.text "content"
-    t.string "identifier"
+    t.string "url"
     t.string "author"
     t.datetime "published_at"
     t.string "thumbnail_url"
@@ -86,6 +86,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_231638) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_email_addresses_on_user_id"
     t.index ["username"], name: "index_email_addresses_on_username", unique: true
+  end
+
+  create_table "email_senders", force: :cascade do |t|
+    t.string "display_name"
+    t.string "email_address"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_email_senders_on_email_address", unique: true
   end
 
   create_table "entries", force: :cascade do |t|

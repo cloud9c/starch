@@ -4,7 +4,7 @@ class NewsletterMailbox < ApplicationMailbox
     recipient = mail.to.first
     subject = mail.subject
     content = extract_content
-    author = mail[:from].display_names.first
+    display_name = mail[:from].display_names.first
     email_address = find_email_address(recipient)
 
     unless email_address
@@ -12,12 +12,19 @@ class NewsletterMailbox < ApplicationMailbox
       return
     end
 
-    document = email_address.documents.create!(
+    email_sender = EmailSender.find_or_initialize_by(email_address: sender)
+
+    if email_sender.new_record?
+      email_sender.display_name = display_name
+      email_sender.icon = FormatUtils.find_icon(sender.split("@").last)
+      email_sender.save!
+    end
+
+    document = email_sender.documents.create!(
       title: subject,
       content: content,
-      author: author,
       published_at: mail.date,
-      identifier: mail.from.first
+      url: mail.from.first
     )
 
     document.document_states.create!(

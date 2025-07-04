@@ -16,12 +16,4 @@ module Document::FromEntry
   def feed
     entry&.feed
   end
-
-  def url
-    identifier if entry?
-  end
-
-  def url=(value)
-    self.identifier = value if entry?
-  end
 end

@@ -45,7 +45,7 @@ class Feed < ApplicationRecord
       description: FormatUtils.format_text(feed.try(:description)),
       feed_url: feed_url,
       url: site_url,
-      icon: get_icon(site_url)
+      icon: FormatUtils.find_icon(site_url)
     }.compact
 
     update(attributes) unless attributes.empty?
@@ -79,19 +79,5 @@ class Feed < ApplicationRecord
   private
     def schedule_initial_update
       UpdateFeedJob.perform_now(id)
-    end
-
-    def get_icon(base_url)
-      http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-      response = http.get(base_url)
-      return nil if response.error
-
-      body = response.body.to_s.force_encoding("UTF-8")
-
-      doc = Nokogiri::HTML(body)
-      icon_url = doc.css('link[rel~="apple-touch-icon"], link[rel~="icon"]').map { |link| link[:href] }.first
-      icon_url ||= "/favicon.ico"
-
-      URI.join(base_url, icon_url).to_s rescue nil
     end
 end

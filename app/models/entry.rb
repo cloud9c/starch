@@ -48,7 +48,7 @@ class Entry < ApplicationRecord
           description: (entry_data.summary && entry_data.content) ? entry_data.summary : nil,
           author: entry_data.author,
           published_at: entry_data.published,
-          identifier: entry_data.url,
+          url: entry_data.url,
           thumbnail_url: entry_data.try(:media_thumbnail_url)
         }.compact
       end
