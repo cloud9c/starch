@@ -57,12 +57,12 @@ module FormatUtils
 
     body = response.body.to_s
     body = body.force_encoding("UTF-8") unless body.valid_encoding?
- 
+
     doc = Nokogiri::HTML(body)
 
     selectors = [
       'link[rel~="apple-touch-icon"]',
-      'link[rel~="icon"][sizes="32x32"]', 
+      'link[rel~="icon"][sizes="32x32"]',
       'link[rel~="icon"]'
     ]
 
