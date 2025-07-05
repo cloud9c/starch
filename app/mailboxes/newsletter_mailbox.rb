@@ -43,8 +43,6 @@ class NewsletterMailbox < ApplicationMailbox
     end
 
     def format_html(html)
-      html = html.force_encoding("UTF-8") unless html.valid_encoding?
-
       premailer = Premailer.new(html, with_html_string: true)
       inline_html = premailer.to_inline_css rescue html
 

@@ -77,7 +77,6 @@ module FormatUtils
       final_url = response.uri.to_s
 
       body = response.body.to_s
-      body = body.force_encoding("UTF-8") unless body.valid_encoding?
       doc = Nokogiri::HTML(body)
 
       icon_href = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
