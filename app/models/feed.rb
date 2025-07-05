@@ -25,7 +25,7 @@ class Feed < ApplicationRecord
 
     return false if response.status == 304
 
-    response_body = response.body.to_s
+    response_body = response.body.to_s.force_encoding("utf-8")
     update(content: response_body)
     update_metadata
     update_entries
