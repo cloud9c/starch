@@ -70,7 +70,7 @@ module DocumentsHelper
       picture = capture do
         content_tag :picture do
           source_tag = icon.present? ? content_tag(:source, "", srcset: icon) : ""
-          image_tag_html = image_tag(fallback_icon, width: 24, alt: "#{title} icon")
+          image_tag_html = image_tag(fallback_icon, width: 24)
           (source_tag + image_tag_html).html_safe
         end
       end
