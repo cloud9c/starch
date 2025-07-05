@@ -75,18 +75,18 @@ module FormatUtils
 
       # Use the final URL after redirects
       final_url = response.uri.to_s
- 
+
       body = response.body.to_s
       body = body.force_encoding("UTF-8") unless body.valid_encoding?
       doc = Nokogiri::HTML(body)
- 
+
       icon_href = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
 
       if icon_href
         URI.join(final_url, icon_href).to_s
       else
         # Fallback to favicon.ico using the final URL
-        favicon_url = URI.join(final_url, '/favicon.ico').to_s
+        favicon_url = URI.join(final_url, "/favicon.ico").to_s
         favicon_response = http.head(favicon_url)
         favicon_response.error ? nil : favicon_url
       end
