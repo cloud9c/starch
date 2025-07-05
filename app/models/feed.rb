@@ -75,8 +75,6 @@ class Feed < ApplicationRecord
 
         update(initial_poll_complete: true)
 
-        puts "subscriptions: #{subscriptions.to_inbox.inspect}"
-
         subscriptions.to_inbox.each do |subscription|
           subscription.add_recent_entries
         end

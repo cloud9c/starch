@@ -18,8 +18,6 @@ class SubscriptionsController < ApplicationController
     to_inbox = ActiveModel::Type::Boolean.new.cast(permitted[:to_inbox])
     subscription = Current.user.subscriptions.find_or_create_by(feed: feed, to_inbox: to_inbox)
 
-    puts "is new record #{subscription.previously_new_record?.inspect}"
-
     if subscription.previously_new_record?
       subscription.add_recent_entries if to_inbox && feed.initial_poll_complete?
       @subscription = subscription
