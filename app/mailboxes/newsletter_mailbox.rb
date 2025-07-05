@@ -1,26 +1,22 @@
 class NewsletterMailbox < ApplicationMailbox
   def process
-    sender = mail.from.first
-    recipient = mail.to.first
-    subject = mail.subject
-    content = extract_content
-    display_name = mail[:from].display_names.first
-    email_address = find_email_address(recipient)
+    email_address = find_email_address(mail.to.first)
+    return unless email_address
 
-    unless email_address
-      Rails.logger.warn "No EmailAddress found for #{recipient}, skipping email processing"
-      return
+    display_name = mail.from.display_names.first
+
+    email_sender = EmailSender.find_or_create_by(email_address: mail.from.first) do |sender|
+      sender.display_name = display_name
+    end
+    
+    if email_sender.display_name != display_name
+      email_sender.update(display_name: display_name)
     end
 
-    email_sender = EmailSender.find_or_initialize_by(email_address: sender)
-    email_sender.display_name = display_name
-    email_sender.save!
-
     document = email_sender.documents.create!(
-      title: subject,
-      content: content,
+      title: mail.subject,
+      content: extract_content,
       published_at: mail.date,
-      url: mail.from.first
     )
 
     document.document_states.create!(

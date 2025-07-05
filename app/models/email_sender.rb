@@ -1,5 +1,8 @@
 class EmailSender < ApplicationRecord
   has_many :documents, as: :source, dependent: :destroy
+
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
   after_create :schedule_initial_update
 
   def update_metadata
@@ -9,6 +12,6 @@ class EmailSender < ApplicationRecord
 
   private
     def schedule_initial_update
-      UpdateEmailSenderJob.perform_now(id)
+      UpdateEmailSenderJob.perform_later(id)
     end
 end

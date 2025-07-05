@@ -16,18 +16,17 @@ class SubscriptionsController < ApplicationController
     feed = Feed.find_or_create_by!(feed_url: feed_url)
 
     to_inbox = ActiveModel::Type::Boolean.new.cast(permitted[:to_inbox])
+    subscription = Current.user.subscriptions.find_or_create_by(feed: feed, to_inbox: to_inbox)
 
-    subscription = Current.user.subscriptions.find_or_initialize_by(feed: feed, to_inbox: to_inbox)
+    puts "is new record #{subscription.previously_new_record?.inspect}"
 
-    unless subscription.new_record?
+    if subscription.previously_new_record?
+      subscription.add_recent_entries if to_inbox && feed.initial_poll_complete?
+      @subscription = subscription
+    else
       @flash = { alert: "Subscription already exists" }
       return render status: :conflict
     end
-
-    subscription.save
-    subscription.add_recent_entries if feed.initial_poll_complete?
-
-    @subscription = subscription
   end
 
   def update
