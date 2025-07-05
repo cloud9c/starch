@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
       @subscription = subscription
     else
       @flash = { alert: "Subscription already exists" }
-      return render status: :conflict
+      render status: :conflict
     end
   end
 

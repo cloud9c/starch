@@ -8,7 +8,7 @@ class NewsletterMailbox < ApplicationMailbox
     email_sender = EmailSender.find_or_create_by(email_address: mail.from.first) do |sender|
       sender.display_name = display_name
     end
-    
+
     if email_sender.display_name != display_name
       email_sender.update(display_name: display_name)
     end
