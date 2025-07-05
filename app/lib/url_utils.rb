@@ -23,4 +23,14 @@ module UrlUtils
     uri = URI(normalized_url)
     "#{uri.scheme}://#{uri.host}#{uri.port == uri.default_port ? '' : ':' + uri.port.to_s}"
   end
+
+  def get_root(url)
+    normalized_url = normalize(url)
+    return nil if normalized_url.nil?
+
+    uri = URI(normalized_url)
+    root_host = uri.host.split(".")[-2..-1].join(".")
+
+    "#{uri.scheme}://#{root_host}#{uri.port == uri.default_port ? '' : ':' + uri.port.to_s}"
+  end
 end

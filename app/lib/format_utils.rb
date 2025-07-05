@@ -18,6 +18,13 @@ module FormatUtils
     text.gsub(/\s+/, " ").strip
   end
 
+  def extract_description(content)
+    text = FormatUtils.format_text(content)
+    return nil if text.empty?
+
+    text.strip.gsub(/\s+/, " ")[0...300]
+  end
+
   require "image_size/uri"
   def find_thumbnail(html, min_width: 250, min_height: 250)
     doc = Nokogiri::HTML(html)
@@ -41,38 +48,42 @@ module FormatUtils
     find_thumbnail(html, min_width: 100, min_height: 100) unless min_width == 100 && min_height == 100
   end
 
-  def extract_description(content)
-    text = FormatUtils.format_text(content)
-    return nil if text.empty?
+  def find_icon(url)
+    origin_url = UrlUtils.get_origin(url)
+    root_url = UrlUtils.get_root(url)
 
-    text.strip.gsub(/\s+/, " ")[0...300]
-  end
+    icon_url = try_find_icon(origin_url)
 
-  def find_icon(base_url)
-    base_url = UrlUtils.normalize(base_url)
+    if icon_url.empty? && root_url != origin_url
+      icon_url = try_find_icon(root_url)
+    end
 
-    http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-    response = http.get(base_url)
-    return nil if response.error
-
-    body = response.body.to_s
-    body = body.force_encoding("UTF-8") unless body.valid_encoding?
-
-    doc = Nokogiri::HTML(body)
-
-    selectors = [
-      'link[rel~="apple-touch-icon"]',
-      'link[rel~="icon"][sizes="32x32"]',
-      'link[rel~="icon"]'
-    ]
-
-    icon_url = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
-    icon_url ||= "/favicon.ico"
-
-    URI.join(base_url, icon_url).to_s
+    icon_url
   end
 
   private
+    def try_find_icon(url)
+      selectors = [
+        'link[rel~="apple-touch-icon"]',
+        'link[rel="shortcut icon"]',
+        'link[rel~="icon"]'
+      ]
+
+      http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
+
+      response = http.get(url)
+      return nil if response.error
+
+      body = response.body.to_s
+      body = body.force_encoding("UTF-8") unless body.valid_encoding?
+      doc = Nokogiri::HTML(body)
+
+      icon_href = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
+      return nil unless icon_href
+
+      URI.join(url, icon_href).to_s
+    end
+
     def format_links(doc, base_url)
       url_related_attributes = %w[href src]
       url_related_attributes.each do |attr|

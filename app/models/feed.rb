@@ -52,7 +52,7 @@ class Feed < ApplicationRecord
   end
 
   def poll
-    feed_content = self.class.parse_feed(content) rescue nil
+    feed_content = Feed.parse_feed(content) rescue nil
     return unless feed_content
 
     result = Entry.get_new_and_updated(feed_url, feed_content)

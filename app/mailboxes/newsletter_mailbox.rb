@@ -13,12 +13,8 @@ class NewsletterMailbox < ApplicationMailbox
     end
 
     email_sender = EmailSender.find_or_initialize_by(email_address: sender)
-
-    if email_sender.new_record?
-      email_sender.display_name = display_name
-      email_sender.icon = FormatUtils.find_icon(sender.split("@").last)
-      email_sender.save!
-    end
+    email_sender.display_name = display_name
+    email_sender.save!
 
     document = email_sender.documents.create!(
       title: subject,

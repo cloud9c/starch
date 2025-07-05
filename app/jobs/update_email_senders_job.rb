@@ -1,13 +1,13 @@
-class UpdateFeedsJob < ApplicationJob
+class UpdateEmailSendersJob < ApplicationJob
   def perform(*args)
     jobs = []
     window = 12.hours
-    count = Feed.count
+    count = EmailSender.count
     index = 0
 
-    Feed.find_each do |feed|
+    EmailSender.find_each do |feed|
       delay = index * window / count
-      jobs << UpdateFeedJob.new(feed.id).set(wait: delay)
+      jobs << UpdateEmaiLSenderJob.new(feed.id).set(wait: delay)
       index += 1
     end
 
