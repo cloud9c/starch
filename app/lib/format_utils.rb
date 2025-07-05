@@ -54,7 +54,7 @@ module FormatUtils
 
     icon_url = try_find_icon(origin_url)
 
-    if icon_url.empty? && root_url != origin_url
+    if icon_url.nil? && root_url != origin_url
       icon_url = try_find_icon(root_url)
     end
 
@@ -69,19 +69,27 @@ module FormatUtils
         'link[rel~="icon"]'
       ]
 
-      http = HTTPX.plugin(:follow_redirects).plugin(:ssrf_filter)
-
+      http = HTTPX.plugin(:follow_redirects, max_redirects: 10).plugin(:ssrf_filter)
       response = http.get(url)
       return nil if response.error
 
+      # Use the final URL after redirects
+      final_url = response.uri.to_s
+ 
       body = response.body.to_s
       body = body.force_encoding("UTF-8") unless body.valid_encoding?
       doc = Nokogiri::HTML(body)
-
+ 
       icon_href = selectors.map { |sel| doc.css(sel).first&.[](:href) }.compact.first
-      return nil unless icon_href
 
-      URI.join(url, icon_href).to_s
+      if icon_href
+        URI.join(final_url, icon_href).to_s
+      else
+        # Fallback to favicon.ico using the final URL
+        favicon_url = URI.join(final_url, '/favicon.ico').to_s
+        favicon_response = http.head(favicon_url)
+        favicon_response.error ? nil : favicon_url
+      end
     end
 
     def format_links(doc, base_url)
