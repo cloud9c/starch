@@ -58,7 +58,7 @@ class DocumentsController < ApplicationController
       .map(&:with_view_preferences)
 
     @subscriptions = Current.user.subscriptions.all
-    respond_with_pagination(:feed, @documents, :append if page > 1)
+    respond_with_pagination(:feed, @documents, page > 1 ? :append : nil)
   end
 
   def search
@@ -69,7 +69,7 @@ class DocumentsController < ApplicationController
     })
 
     @documents = Document.where(id: document_ids).map(&:with_view_preferences)
-    respond_with_pagination(:search, @documents, :append if page > 1)
+    respond_with_pagination(:search, @documents,  page > 1 ? :append : nil)
   end
 
   def show
