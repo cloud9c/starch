@@ -7,7 +7,7 @@ class UpdateEmailSendersJob < ApplicationJob
 
     EmailSender.find_each do |feed|
       delay = index * window / count
-      jobs << UpdateEmaiLSenderJob.new(feed.id).set(wait: delay)
+      jobs << UpdateEmailSenderJob.new(feed.id).set(wait: delay)
       index += 1
     end
 

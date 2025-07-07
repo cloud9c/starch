@@ -3,15 +3,11 @@ class NewsletterMailbox < ApplicationMailbox
     email_address = find_email_address(mail.to.first)
     return unless email_address
 
-    display_name = mail.from.display_names.first
+    display_name = mail[:from].display_names.first
 
-    email_sender = EmailSender.find_or_create_by(email_address: mail.from.first) do |sender|
-      sender.display_name = display_name
-    end
-
-    if email_sender.display_name != display_name
-      email_sender.update(display_name: display_name)
-    end
+    email_sender = EmailSender.find_or_create_by(email_address: mail.from.first)
+    email_sender.display_name = display_name
+    email_sender.save if email_sender.changed?
 
     document = email_sender.documents.create!(
       title: mail.subject,
