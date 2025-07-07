@@ -16,7 +16,7 @@ class DocumentsController < ApplicationController
     @read_documents = read_states.map(&:document)
 
     documents = document_states.map(&:document).map(&:with_view_preferences)
-    respond_with_pagination(:index, documents)
+    respond_with_pagination(:index, documents, :append)
   end
 
   def later
@@ -27,7 +27,7 @@ class DocumentsController < ApplicationController
       .then(&paginate)
 
     @documents = document_states.map(&:document).map(&:with_view_preferences)
-    respond_with_pagination(:later, @documents)
+    respond_with_pagination(:later, @documents, :append)
   end
 
   def archive
@@ -38,7 +38,7 @@ class DocumentsController < ApplicationController
       .then(&paginate)
 
     @documents = document_states.map(&:document).map(&:with_view_preferences)
-    respond_with_pagination(:later, @documents)
+    respond_with_pagination(:archive, @documents, :append)
   end
 
   def feed
@@ -58,7 +58,7 @@ class DocumentsController < ApplicationController
       .then(&paginate)
       .map(&:with_view_preferences)
 
-    @subscriptions = Current.user.subscriptions.includes(:feed).all
+    @subscriptions = Current.user.subscriptions.all
     respond_with_pagination(:feed, @documents)
   end
 

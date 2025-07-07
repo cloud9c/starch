@@ -16,7 +16,7 @@
     ) do %>
       <picture>
         <source srcset="<%= feed.icon %>"/>
-        <%= image_tag "icons/rss.svg", alt: "#{feed.title} icon"%>
+        <%= image_tag "icons/rss.svg" %>
       </picture>
       <span><%= feed.title || feed.feed_url %></span>
     <% end %>
