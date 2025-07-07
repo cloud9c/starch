@@ -14,15 +14,16 @@ module LayoutsHelper
   end
 
   def navbar_left_section
-    back_link_text = if controller_name == "documents" && action_name == "show"
-      "Back"
+    back_link_config = if controller_name == "documents" && action_name == "show"
+      { url: :back, text: "Back" }
     elsif !current_page?(inbox_path)
-      "Inbox"
+      { url: inbox_path, text: "Inbox" }
     end
 
     content_tag(:div, id: "navbar__left") do
-      back_link_content = if back_link_text
-        link_to back_link_text, :back,
+      back_link_content = if back_link_config
+        link_to back_link_config[:text],
+          back_link_config[:url],
           class: "btn btn--primary btn--icon icon--arrow-left web-only",
           data: {
             controller: "shortcut",
@@ -33,7 +34,7 @@ module LayoutsHelper
       end
 
       search_content = content_tag(:search,
-        class: "searchbar searchbar--transparent #{'hide' if current_page?(controller: :documents, action: :search)}") do
+                                  class: "searchbar searchbar--transparent #{'hide' if current_page?(controller: :documents, action: :search)}") do
         form_with(url: search_path, method: :get) do |form|
           content_tag(:div, class: "searchfield-container") do
             form.search_field :q,
