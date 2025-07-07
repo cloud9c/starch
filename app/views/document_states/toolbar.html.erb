@@ -1,7 +1,6 @@
 <turbo-frame id="document_toolbar">
   <%= form_with model: @document_state, class: "toolbar", data: {controller: "toolbar"} do |form| %>
     <%= form.hidden_field :document_id, value: params[:document_id] %>
-    <%= link_to "Back", "javascript:history.back()", class: "icon icon--arrow-left mobile-only web-only toolbar__action" %>
     <% DocumentState.statuses.keys.each do |status| %>
       <%= form.button type: :submit, 
       name: "document_state[status]",

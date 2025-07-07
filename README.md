@@ -5,7 +5,6 @@
 - showing progress
 - search is not working (fashion for vishwa)
 - user cannot unselect the category ("inbox" -> not "inbox")
-- update search to be individual per tenant
 
 # p1
 
