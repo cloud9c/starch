@@ -43,17 +43,16 @@ class DocumentsController < ApplicationController
 
   def feed
     subscription_id = params[:subscription]
-
     subscription_condition = subscription_id.present? ?
       { id: subscription_id, user: Current.user } :
       { user: Current.user }
 
-    entry_ids = Entry.joins(feed: :subscriptions)
-                    .where(subscriptions: subscription_condition)
-                    .pluck(:id)
+    entry_subquery = Entry.joins(feed: :subscriptions)
+                        .where(subscriptions: subscription_condition)
+                        .select(:id)
 
     @documents = Document
-      .where(source_type: "Entry", source_id: entry_ids)
+      .where(source_type: "Entry", source_id: entry_subquery)
       .order(published_at: :desc)
       .then(&paginate)
       .map(&:with_view_preferences)
