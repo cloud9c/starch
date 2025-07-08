@@ -2,6 +2,7 @@
 - motto: human intelligence; design your own algorithm; curation
 
 # p0
+- email encoding
 - showing progress
 - search is not working (fashion for vishwa)
 - user cannot unselect the category ("inbox" -> not "inbox")

@@ -1,5 +1,5 @@
 class Document < ApplicationRecord
-  include Searchable, Extractable, FromEntry, FromEmail
+  include Searchable, Extractable, FromEntry, FromEmail, FromUpload
 
   belongs_to :source, polymorphic: true
   has_many :document_states, dependent: :destroy
@@ -7,6 +7,7 @@ class Document < ApplicationRecord
 
   before_validation :format_attributes
   validates :content, length: { maximum: 500_000 }
+  after_commit :cleanup_source, on: :destroy
 
   def authorized?
     return true if DocumentState.exists?(document: self, user: Current.user)
@@ -32,4 +33,10 @@ class Document < ApplicationRecord
       self.description = FormatUtils.extract_description(content)
     end
   end
+
+  private
+    def cleanup_source
+      upload.destroy if upload? && !upload.documents.exists?
+      sender.destroy if email? && !sender.documents.exists?
+    end
 end
