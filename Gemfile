@@ -108,3 +108,6 @@ gem "feedbag"
 
 # inline CSS for emails
 gem "premailer"
+
+# AWS S3 for Active Storage
+gem "aws-sdk-s3", require: false
