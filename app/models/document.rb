@@ -2,18 +2,13 @@ class Document < ApplicationRecord
   include Searchable, Extractable, FromEntry, FromEmail, FromUpload
 
   belongs_to :source, polymorphic: true
-  has_many :document_states, dependent: :destroy
-  has_many :users, through: :document_states
+  belongs_to :user
 
   before_validation :format_attributes
   validates :content, length: { maximum: 500_000 }
+  validates :status, presence: true
+  enum :status, [ :inbox, :later, :archive ]
   after_commit :cleanup_source, on: :destroy
-
-  def authorized?
-    return true if DocumentState.exists?(document: self, user: Current.user)
-    return true if feed? && Subscription.exists?(feed: feed, user: Current.user)
-    false
-  end
 
   def format_attributes
     self.url = UrlUtils.normalize(url) if url.present?

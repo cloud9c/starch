@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["documentState"]
+  static targets = ["document"]
   
-  updateDocumentState(event) {
+  updateDocument(event) {
     const selectedButton = event.currentTarget
-    
-    this.documentStateTargets.forEach(button => {
+
+    this.documentTargets.forEach(button => {
       button.setAttribute("data-checked", button === selectedButton ? "true" : "false")
     })
   }

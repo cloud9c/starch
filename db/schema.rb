@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_08_224801) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_09_184319) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -48,22 +48,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_224801) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "document_states", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "document_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "status"
-    t.boolean "read", default: false
-    t.float "progress", default: 0.0
-    t.index ["document_id", "user_id"], name: "index_document_states_on_document_and_user", unique: true
-    t.index ["document_id"], name: "index_document_states_on_document_id"
-    t.index ["read"], name: "index_document_states_on_read"
-    t.index ["status"], name: "index_document_states_on_status"
-    t.index ["user_id", "status", "read"], name: "index_document_states_on_user_id_and_status_and_read"
-    t.index ["user_id"], name: "index_document_states_on_user_id"
-  end
-
   create_table "documents", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -76,7 +60,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_224801) do
     t.string "thumbnail_url"
     t.string "source_type"
     t.integer "source_id"
+    t.integer "user_id", null: false
+    t.integer "status", null: false
+    t.boolean "read", default: false, null: false
+    t.float "progress", default: 0.0, null: false
     t.index ["source_type", "source_id"], name: "index_documents_on_source"
+    t.index ["user_id", "status", "read"], name: "index_documents_on_user_id_and_status_and_read"
+    t.index ["user_id"], name: "index_documents_on_user_id"
   end
 
   create_table "email_addresses", force: :cascade do |t|
@@ -100,10 +90,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_224801) do
   create_table "entries", force: :cascade do |t|
     t.integer "feed_id", null: false
     t.string "stable_id", null: false
-    t.string "fingerprint", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "published_at", null: false
     t.index ["feed_id"], name: "index_entries_on_feed_id"
+    t.index ["published_at"], name: "index_entries_on_published_at"
     t.index ["stable_id"], name: "index_entries_on_stable_id", unique: true
   end
 
@@ -175,8 +166,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_08_224801) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "document_states", "documents"
-  add_foreign_key "document_states", "users"
+  add_foreign_key "documents", "users"
   add_foreign_key "email_addresses", "users"
   add_foreign_key "entries", "feeds"
   add_foreign_key "sessions", "users"

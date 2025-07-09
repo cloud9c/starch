@@ -26,7 +26,9 @@ module Authentication
     end
 
     def on_trial?
-      Current.user && !Current.user.paid? && Current.user.created_at > 30.days.ago
+      false
+
+      # Current.user && !Current.user.paid? && Current.user.created_at > 30.days.ago
     end
 
     def provisioned?

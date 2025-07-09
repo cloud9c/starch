@@ -13,9 +13,6 @@ class NewsletterMailbox < ApplicationMailbox
       title: mail.subject,
       content: extract_content,
       published_at: mail.date,
-    )
-
-    document.document_states.create!(
       user: email_address.user,
       status: :inbox
     )

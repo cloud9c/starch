@@ -1,9 +1,9 @@
 class User < ApplicationRecord
-  include Authenticatable, Billable, Emailable
+  include Authentication, Billable, Emailable
 
   has_many :subscriptions, dependent: :destroy
   has_many :feeds, through: :subscriptions
-  has_many :document_states, dependent: :destroy
+  has_many :documents, dependent: :destroy
   has_many :webauthn_credentials, dependent: :destroy
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }

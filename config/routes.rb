@@ -58,6 +58,11 @@ Rails.application.routes.draw do
   resources :documents do
     member do
       get :preview
+      get :toolbar
+    end
+
+    collection do
+      post :read_all
     end
   end
 
@@ -67,13 +72,6 @@ Rails.application.routes.draw do
     get "archive", action: :archive, as: :archive
     get "search", action: :search, as: :search
     get "feed", action: :feed, as: :feed
-  end
-
-  resources :document_states, only: [ :create, :update ] do
-    collection do
-      post :read_all
-      get :toolbar
-    end
   end
 
   mount MissionControl::Jobs::Engine, at: "/jobs"

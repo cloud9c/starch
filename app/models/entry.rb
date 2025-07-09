@@ -2,92 +2,48 @@ class Entry < ApplicationRecord
   include Identifiable
 
   belongs_to :feed
-  has_one :document, as: :source, dependent: :destroy
+  has_many :documents, as: :source, dependent: :destroy
+  has_many :subscriptions, through: :feed
+  attr_accessor :parsed_entry
 
+  before_validation :add_attributes_from_parsed_entry
   validates :stable_id, presence: true, uniqueness: true
-  validates :fingerprint, presence: true
   validates :feed, presence: true
+  after_create :add_to_inbox
 
-  scope :recent, -> {
-    includes(:document)
-      .where.not(document: nil)
-      .order("documents.published_at DESC, documents.created_at DESC")
-      .limit(5)
-  }
+  scope :recent, -> { order(published_at: :desc).limit(5).reverse }
 
-  class << self
-    def create_from_feed(entry_data, feed)
-      entry = feed.entries.create(
-        stable_id: get_stable_id(feed.feed_url, entry_data),
-        fingerprint: get_fingerprint(entry_data)
-      )
+  private
+    def add_attributes_from_parsed_entry
+      return unless parsed_entry.present?
 
-      raw_entry_data = parse_raw_entry_data(entry_data)
-      document = entry.create_document(raw_entry_data)
-      entry.add_to_inbox
+      self.stable_id = Entry.get_stable_id(feed.feed_url, parsed_entry)
+      self.published_at = parsed_entry.published || Time.current
     end
 
-    def update_from_feed(entry_data, feed_url)
-      stable_id = get_stable_id(feed_url, entry_data)
-      existing_entry = Entry.find_by(stable_id: stable_id)
+    def add_to_inbox
+      return unless parsed_entry.present?
 
-      return unless existing_entry
+      document_attributes = Entry.extract_document_attributes(parsed_entry)
+      return if document_attributes[:published_at] < feed.created_at
 
-      fingerprint = get_fingerprint(entry_data)
-      existing_entry.update!(fingerprint: fingerprint)
-
-      raw_data = parse_raw_entry_data(entry_data)
-      existing_entry.document.update!(raw_data)
+      users = subscriptions.to_inbox.includes(:user).map(&:user).uniq
+      users.each do |user|
+        documents.create!(**document_attributes,
+          status: :inbox,
+          user_id: user.id)
+      end
     end
 
-    private
-      def parse_raw_entry_data(entry_data)
-        {
-          title: entry_data.title,
-          content: entry_data.content || entry_data.summary,
-          description: (entry_data.summary && entry_data.content) ? entry_data.summary : nil,
-          author: entry_data.author,
-          published_at: entry_data.published,
-          url: entry_data.url,
-          thumbnail_url: entry_data.try(:media_thumbnail_url)
-        }.compact
-      end
-
-      def is_new?(stable_id)
-        return false if Rails.cache.exist?("entry/stable_id/#{stable_id}")
-        return false if Entry.exists?(stable_id: stable_id)
-        true
-      end
-
-      def is_updated?(stable_id, new_fingerprint)
-        return false if is_new?(stable_id)
-
-        # Check cache first
-        if Rails.cache.exist?("entry/stable_id/#{stable_id}")
-          old_fingerprint = Rails.cache.read("entry/stable_id/#{stable_id}/fingerprint")
-          return old_fingerprint != new_fingerprint
-        end
-
-        # Fallback to database
-        entry = Entry.find_by(stable_id: stable_id)
-        return false unless entry
-
-        old_fingerprint = entry.fingerprint
-        old_fingerprint != new_fingerprint
-      end
-  end
-
-  def add_to_inbox
-    return if feed.created_at >= (document.published_at || document.created_at)
-
-    users = feed.subscriptions.to_inbox.map(&:user).uniq
-    return if users.empty?
-
-    document_states = users.map do |user|
-      { user_id: user.id, document_id: document.id, status: :inbox }
+    def self.extract_document_attributes(parsed_entry)
+      {
+        title: parsed_entry.title,
+        content: parsed_entry.content || parsed_entry.summary,
+        description: (parsed_entry.summary && parsed_entry.content) ? parsed_entry.summary : nil,
+        author: parsed_entry.author,
+        published_at: parsed_entry.published,
+        url: parsed_entry.url,
+        thumbnail_url: parsed_entry.try(:media_thumbnail_url)
+      }.compact
     end
-
-    DocumentState.insert_all!(document_states)
-    document.update_search_index
-  end
 end

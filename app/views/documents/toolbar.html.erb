@@ -1,0 +1,21 @@
+<turbo-frame id="document_toolbar">
+  <%= form_with model: @document, class: "toolbar", data: {controller: "toolbar"} do |form| %>
+    <%= form.hidden_field :id, value: params[:id] %>
+    <% Document.statuses.keys.each do |status| %>
+      <%= form.button type: :submit, 
+      name: "document[status]",
+      value: status,
+      class: "toggle icon--#{status} shortcut-hotkey shortcut-hotkey__corner toolbar__action",
+      "aria-label": "Send to #{status.titleize}",
+      data: {
+        controller: "shortcut",
+        "toolbar-target": "document",
+        action: "click->toolbar#updateDocument",
+        "shortcut-hotkey-value": status[0].downcase,
+        checked: (@document&.status == status unless @document.new_record?) 
+      } do %>
+        <span><%= status.titleize %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+</turbo-frame>

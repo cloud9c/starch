@@ -33,7 +33,7 @@
     </article>
   </div>
 
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_states_path({document_id: @document.id}) %>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) %>
 </div>
 
 <% content_for :bottom_content do %>

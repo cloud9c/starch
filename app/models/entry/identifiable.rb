@@ -5,66 +5,65 @@ module Entry::Identifiable
   ENTRY_LIMIT = 300
 
   class_methods do
-    def get_new_and_updated(feed_url, feed_content)
-      return { new: [], updated: [] } unless feed_content
+    def find_parsed_entry_by_stable_id(stable_id, parsed_feed, feed_url)
+      parsed_feed.entries.find do |parsed_entry|
+        get_stable_id(feed_url, parsed_entry) == stable_id
+      end
+    end
 
+    def get_new_entries(feed_url, parsed_feed)
       new_entries = []
-      updated_entries = []
 
-      # Process entries in reverse order so oldest come first
-      feed_content.entries.first(ENTRY_LIMIT).reverse_each do |entry_data|
-        stable_id = get_stable_id(feed_url, entry_data)
-        fingerprint = get_fingerprint(entry_data)
+      sorted_entries = get_recent_entries(parsed_feed, ENTRY_LIMIT)
+
+      sorted_entries.each do |parsed_entry|
+        stable_id = get_stable_id(feed_url, parsed_entry)
 
         if is_new?(stable_id)
-          new_entries << entry_data
-          cache_entry(stable_id, fingerprint)
-        elsif is_updated?(stable_id, fingerprint)
-          updated_entries << entry_data
-          update_entry_cache(stable_id, fingerprint)
+          new_entries << parsed_entry
+          cache_entry(stable_id)
         end
       end
 
-      { new: new_entries, updated: updated_entries }
+      new_entries
     end
 
-    def get_stable_id(feed_url, entry_data)
+    def get_stable_id(feed_url, parsed_entry)
       parts = []
       parts << feed_url
 
-      if entry_data.id.present?
-        parts << entry_data.id
+      if parsed_entry.id.present?
+        parts << parsed_entry.id
       else
-        if entry_data.url
-          uri = URI(entry_data.url)
+        if parsed_entry.url
+          uri = URI(parsed_entry.url)
           result = [ uri.userinfo, uri.path, uri.query, uri.fragment ].compact.join
           without_protocol_and_host = (result.empty? || result == "/") ? uri.to_s : result
           parts << without_protocol_and_host
         end
 
-        parts << entry_data.published.iso8601 if entry_data.published
-        parts << entry_data.title if entry_data.title
+        parts << parsed_entry.published.iso8601 if parsed_entry.published
+        parts << parsed_entry.title if parsed_entry.title
       end
 
       Digest::SHA1.hexdigest(parts.compact.join)
     end
 
-    def get_fingerprint(entry_data)
-      Digest::MD5.hexdigest([
-        entry_data.title,
-        entry_data.content,
-        entry_data.author
-      ].compact.join)
-    end
-
     private
-      def cache_entry(stable_id, fingerprint)
-        Rails.cache.write("entry/stable_id/#{stable_id}", true, expires_in: CACHE_DURATION)
-        update_entry_cache(stable_id, fingerprint)
+      def get_recent_entries(parsed_feed, limit = 5)
+        parsed_feed.entries.reverse.sort_by do |parsed_entry|
+          parsed_entry.published || Time.at(0)
+        end.last(limit)
       end
 
-      def update_entry_cache(stable_id, fingerprint)
-        Rails.cache.write("entry/stable_id/#{stable_id}/fingerprint", fingerprint, expires_in: CACHE_DURATION)
+      def cache_entry(stable_id)
+        Rails.cache.write("entry/stable_id/#{stable_id}", true, expires_in: CACHE_DURATION)
+      end
+
+      def is_new?(stable_id)
+        return false if Rails.cache.exist?("entry/stable_id/#{stable_id}")
+        return false if Entry.exists?(stable_id: stable_id)
+        true
       end
   end
 end

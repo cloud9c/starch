@@ -2,42 +2,36 @@ class DocumentsController < ApplicationController
   include Pagination
 
   def index
-    document_states = Current.user.document_states
-      .where(status: :inbox)
+    documents = Current.user.documents
+      .inbox
       .order(read: :asc)
-      .order(updated_at: :desc)
-      .preload(:document)
+      .order(published_at: :desc)
       .then(&paginate)
 
-    unread_states = document_states.select { |ds| ds.read == false }
-    read_states = document_states.select { |ds| ds.read == true }
+    @unread_documents = documents.select { |doc| doc.read == false }
+    @read_documents = documents.select { |doc| doc.read == true }
 
-    @unread_documents = unread_states.map(&:document)
-    @read_documents = read_states.map(&:document)
-
-    documents = document_states.map(&:document).map(&:with_view_preferences)
-    respond_with_pagination(:index, documents, :append)
+    documents_with_preferences = documents.map(&:with_view_preferences)
+    respond_with_pagination(:index, documents_with_preferences, :append)
   end
 
   def later
-    document_states = Current.user.document_states
-      .where(status: :later)
+    @documents = Current.user.documents
+      .later
       .order(updated_at: :desc)
-      .preload(:document)
       .then(&paginate)
+      .map(&:with_view_preferences)
 
-    @documents = document_states.map(&:document).map(&:with_view_preferences)
     respond_with_pagination(:later, @documents, :append)
   end
 
   def archive
-    document_states = Current.user.document_states
-      .where(status: :archive)
+    @documents = Current.user.documents
+      .archive
       .order(updated_at: :desc)
-      .preload(:document)
       .then(&paginate)
+      .map(&:with_view_preferences)
 
-    @documents = document_states.map(&:document).map(&:with_view_preferences)
     respond_with_pagination(:archive, @documents, :append)
   end
 
@@ -73,12 +67,25 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    document = Document.find(params[:id])
+    @document = Current.user.documents.find(params[:id]).with_view_preferences
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: "Document not found"
+  end
 
-    unless document.authorized?
-      return redirect_to root_path, alert: "Document not found"
-    end
+  def toolbar
+    @document = Current.user.documents.find(params[:id]).with_view_preferences
+    @document.update(read: true)
+  end
 
-    @document = document.with_view_preferences
+  def read_all
+    Current.user.documents.where(status: :inbox, read: false).update_all(read: true)
+    flash[:notice] = "Marking all as seen"
+  end
+
+  def update
+    permitted = params.expect(document: [ :status, :id ])
+
+    document = Document.find_by!(id: permitted[:id], user: Current.user)
+    document.update(permitted)
   end
 end

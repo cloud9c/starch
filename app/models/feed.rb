@@ -5,11 +5,10 @@ class Feed < ApplicationRecord
   has_many :users, through: :subscriptions
 
   validates :feed_url, presence: true, uniqueness: true
-
   after_create :schedule_initial_update
 
-  def self.parse_feed(content)
-    Feedjira.parse(content) rescue nil
+  def parsed_feed
+    @parsed_feed ||= (Feedjira.parse(content) rescue nil)
   end
 
   def poll
@@ -27,10 +26,27 @@ class Feed < ApplicationRecord
 
     response_body = response.body.to_s.force_encoding("utf-8")
     update(content: response_body)
+
     update_metadata
-    update_entries
+    create_new_entries
+    add_recent_entries_for_initial_poll unless initial_poll_complete?
 
     true
+  end
+
+  def add_recent_entries(user)
+    puts "parsed_feed #{parsed_feed}"
+    return unless parsed_feed
+
+    entries.recent.each do |entry|
+      parsed_entry = Entry.find_parsed_entry_by_stable_id(entry.stable_id, parsed_feed, feed_url)
+      return unless parsed_entry
+
+      document_attributes = Entry.extract_document_attributes(parsed_entry)
+      entry.documents.create!(**document_attributes,
+        status: :inbox,
+        user_id: user.id)
+    end
   end
 
   private
@@ -39,45 +55,36 @@ class Feed < ApplicationRecord
     end
 
     def update_metadata
-      feed = Feed.parse_feed(content) rescue nil
-      return unless feed
+      return unless parsed_feed
 
-      feed_url = UrlUtils.normalize(feed.try(:feed_url)) || feed_url
-      site_url = UrlUtils.normalize(feed.try(:url)) || UrlUtils.get_origin(feed_url)
+      feed_url = UrlUtils.normalize(parsed_feed.try(:feed_url)) || feed_url
+      site_url = UrlUtils.normalize(parsed_feed.try(:url)) || UrlUtils.get_origin(feed_url)
 
       attributes = {
-        title: FormatUtils.format_text(feed.try(:title)),
-        description: FormatUtils.format_text(feed.try(:description)),
+        title: FormatUtils.format_text(parsed_feed.try(:title)),
+        description: FormatUtils.format_text(parsed_feed.try(:description)),
         feed_url: feed_url,
         url: site_url,
         icon: FormatUtils.find_icon(site_url)
       }.compact
 
-      update(attributes) unless attributes.empty?
+      update(attributes)
     end
 
-    def update_entries
-      feed_content = Feed.parse_feed(content) rescue nil
-      return unless feed_content
+    def create_new_entries
+      return unless parsed_feed
 
-      result = Entry.get_new_and_updated(feed_url, feed_content)
-
-      result[:new].each do |entry_data|
-        Entry.create_from_feed(entry_data, self)
+      new_entries = Entry.get_new_entries(feed_url, parsed_feed)
+      new_entries.each do |parsed_entry|
+        entries.create(parsed_entry: parsed_entry)
       end
+    end
 
-      result[:updated].each do |entry_data|
-        Entry.update_from_feed(entry_data, feed_url)
-      end
+    def add_recent_entries_for_initial_poll
+      update(initial_poll_complete: true)
 
-      with_lock do
-        return if initial_poll_complete?
-
-        update(initial_poll_complete: true)
-
-        subscriptions.to_inbox.each do |subscription|
-          subscription.add_recent_entries
-        end
+      subscriptions.to_inbox.each do |subscription|
+        add_recent_entries(subscription.user)
       end
     end
 end

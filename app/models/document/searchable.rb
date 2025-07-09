@@ -20,7 +20,7 @@ module Document::Searchable
         query_by: "title,description,content",
         per_page: options[:per_page],
         page: options[:page],
-        filter_by: "user_ids:=[#{Current.user_or_raise!.id}]",
+        filter_by: "user_id=[#{Current.user_or_raise!.id}]",
         include_fields: "id"
       }
 
@@ -33,7 +33,7 @@ module Document::Searchable
 
     def search_schema
       [
-        { name: "user_ids", type: "int32[]" },
+        { name: "user_id", type: "int32" },
         { name: "title", type: "string", optional: true },
         { name: "description", type: "string", optional: true },
         { name: "published_at", type: "int64", optional: true },
@@ -77,11 +77,11 @@ module Document::Searchable
     def search_attributes
       {
         id: id.to_s,
-        user_ids: DocumentState.where(document_id: self.id).pluck(:user_id),
+        user_id: user.id,
         title: title,
         description: description,
         published_at: published_at&.to_i,
-        content: Nokogiri::HTML(content).text
+        content: Nokogiri::HTML(content).text.truncate(5000)
       }
     end
 end
