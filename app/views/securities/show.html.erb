@@ -6,7 +6,7 @@
   <div class="content">
     <turbo-frame>
       <%= form_with scope: :passkey, url: user_security_passkeys_path,
-        class: "sheet flex--column",
+        class: "card flex--column",
         data: {
           controller: "add-passkey",
           action: "turbo:submit-end->add-passkey#submit"

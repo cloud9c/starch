@@ -7,7 +7,7 @@
     <div class="flex flex--centered">
       <%= button_to_copy_email_address Current.user.email_addresses.first.email_address %>
     </div>
-    <div class="sheet push--bottom pad_double--top">
+    <div class="card push--bottom pad_double--top">
       <%= form_with model: Subscription, class: "flex full-width flex--wrap flex--gap flex--align-end" do |form| %>
         <%= form.text_field :url, 
             placeholder: "Enter link",

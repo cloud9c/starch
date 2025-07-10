@@ -5,9 +5,19 @@
 <% end %>
 
 <div class="document-list page page--tab"
-                data-controller="pagination navbar-search navbar-user" data-bridge-placeholder="Search..."
-                data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">
-  <h1 class="heading web-only">Inbox</h1>
+  data-controller="pagination navbar-search navbar-user" data-bridge-placeholder="Search..."
+  data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">
+  <header class="flex flex--column flex--gap content">
+    <div class="flex full-width">
+      <%= form_with url: upload_documents_path, class: "auto--left" do |form| %>
+        <%= label_tag "upload_file", "Upload", class: "btn btn--icon icon--plus" %>
+        <%= form.file_field :files, multiple: true, include_hidden: false,
+          accept: Upload::SUPPORTED_CONTENT_TYPE.join(','),
+          class: "hide", id: "upload_file", onchange: "this.form.submit()" %>
+      <% end %>
+    </div>
+    <h1 class="heading web-only full-width">Inbox</h1>
+  </header>
   <div id="inbox__unread-section" class="document-preview-section">
     <% if @unread_documents.any? %>
       <div class="document-list__title-row">

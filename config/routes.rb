@@ -63,6 +63,7 @@ Rails.application.routes.draw do
 
     collection do
       post :read_all
+      post :upload
     end
   end
 

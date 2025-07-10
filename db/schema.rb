@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_09_184319) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_202637) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -137,6 +137,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_09_184319) do
   create_table "uploads", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "file_type", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_uploads_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -173,5 +176,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_09_184319) do
   add_foreign_key "subscriptions", "feeds"
   add_foreign_key "subscriptions", "feeds"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "uploads", "users"
   add_foreign_key "webauthn_credentials", "users"
 end

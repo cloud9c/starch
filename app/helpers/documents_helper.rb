@@ -60,10 +60,12 @@ module DocumentsHelper
       icon = feed.icon
       fallback_icon = "icons/rss.svg"
     when EmailSender
-      sender = document.source
+      sender = document.sender
       title = sender.display_name || sender.email_address
       icon = sender.icon
       fallback_icon = "icons/email.svg"
+    when Upload
+      fallback_icon = "icons/file.svg"
     end
 
     content_tag :div, class: "source-container" do

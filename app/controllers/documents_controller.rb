@@ -88,4 +88,19 @@ class DocumentsController < ApplicationController
     document = Document.find_by!(id: permitted[:id], user: Current.user)
     document.update(permitted)
   end
+
+  def upload
+    files = params[:files]
+
+    files.each do |file|
+      puts file.headers.inspect
+      Current.user.uploads.create!(
+        file: file
+      )
+    end
+
+    redirect_to inbox_path, notice: "Files uploaded successfully"
+  rescue => e
+    redirect_to inbox_path, alert: "Upload failed: #{e.message}"
+  end
 end

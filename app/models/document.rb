@@ -1,12 +1,13 @@
 class Document < ApplicationRecord
   include Searchable, Extractable, FromEntry, FromEmail, FromUpload
 
+  CONTENT_LIMIT = 500_000
+
   belongs_to :source, polymorphic: true
   belongs_to :user
 
   before_validation :format_attributes
-  validates :content, length: { maximum: 500_000 }
-  validates :status, presence: true
+  validates :content, length: { maximum: CONTENT_LIMIT }
   enum :status, [ :inbox, :later, :archive ]
   after_commit :cleanup_source, on: :destroy
 
@@ -15,7 +16,7 @@ class Document < ApplicationRecord
 
     if content.present?
       sanitized_content = FormatUtils.format_html(content, url)
-      self.content = sanitized_content
+      self.content = sanitized_content.truncate(CONTENT_LIMIT, separator: " ")
       self.thumbnail_url ||= FormatUtils.find_thumbnail(sanitized_content)
     end
 
@@ -24,7 +25,7 @@ class Document < ApplicationRecord
 
     if description.present?
       self.description = FormatUtils.format_text(description)
-    else
+    elsif content.present?
       self.description = FormatUtils.extract_description(content)
     end
   end
