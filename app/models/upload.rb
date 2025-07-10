@@ -8,7 +8,7 @@ class Upload < ApplicationRecord
   validates :file, presence: true
   validate :validate_file_properties
   before_create :set_file_type
-  after_create :create_document
+  after_create :create_document_for_user
   before_destroy :dont_purge_file_if_shared
 
   CONTENT_TO_FILE_TYPE_MAP = {
@@ -40,8 +40,8 @@ class Upload < ApplicationRecord
       self.file_type = CONTENT_TO_FILE_TYPE_MAP[file.blob.content_type]
     end
 
-    def create_document
-      document.create!(
+    def create_document_for_user
+      create_document!(
         title: file.blob.filename.to_s,
         status: :inbox,
         published_at: Time.current,

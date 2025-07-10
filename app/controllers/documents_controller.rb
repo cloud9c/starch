@@ -93,7 +93,6 @@ class DocumentsController < ApplicationController
     files = params[:files]
 
     files.each do |file|
-      puts file.headers.inspect
       Current.user.uploads.create!(
         file: file
       )

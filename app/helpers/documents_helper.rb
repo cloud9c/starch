@@ -65,6 +65,9 @@ module DocumentsHelper
       icon = sender.icon
       fallback_icon = "icons/email.svg"
     when Upload
+      upload = document.upload
+      title = upload.file_type.to_s.upcase
+      # icon = "icons/#{title.downcase}.svg"
       fallback_icon = "icons/file.svg"
     end
 
