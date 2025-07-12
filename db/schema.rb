@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_10_202637) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_11_213410) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -64,6 +64,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_202637) do
     t.integer "status", null: false
     t.boolean "read", default: false, null: false
     t.float "progress", default: 0.0, null: false
+    t.text "progress_identifier"
     t.index ["source_type", "source_id"], name: "index_documents_on_source"
     t.index ["user_id", "status", "read"], name: "index_documents_on_user_id_and_status_and_read"
     t.index ["user_id"], name: "index_documents_on_user_id"
@@ -137,7 +138,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_10_202637) do
   create_table "uploads", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "file_type", null: false
+    t.integer "mime_type", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_uploads_on_user_id"
   end

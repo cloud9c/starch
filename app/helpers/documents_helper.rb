@@ -22,33 +22,30 @@ module DocumentsHelper
         vspace itemprop id]
 
   def sanitize_document(document)
-    case document.source
-    when Entry
-      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
-    when EmailSender
-      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
+    case document.mime_type
+    when :html
+      if document.entry?
+        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
+      else
+        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
+      end
     else
       document.content
     end
   end
 
   def render_video(document)
-    youtube_regex = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))([\w-]{11})(?![\w-])/
-
-    match = youtube_regex.match(document.url)
-    return unless match
-
-    youtube_id = match[1]
+    return unless document.youtube?
 
     content_tag :div, class: "video-container" do
       content_tag :iframe, nil,
-                  src: "https://www.youtube.com/embed/#{youtube_id}",
-                  width: "100%",
-                  height: "100%",
-                  frameborder: 0,
-                  allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-                  allowfullscreen: true,
-                  title: document.title
+        src: "https://www.youtube.com/embed/#{document.youtube_id}",
+        width: "100%",
+        height: "100%",
+        frameborder: 0,
+        allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+        allowfullscreen: true,
+        title: document.title
     end
   end
 
@@ -66,7 +63,7 @@ module DocumentsHelper
       fallback_icon = "icons/email.svg"
     when Upload
       upload = document.upload
-      title = upload.file_type.to_s.upcase
+      title = upload.mime_type.to_s.upcase
       # icon = "icons/#{title.downcase}.svg"
       fallback_icon = "icons/file.svg"
     end

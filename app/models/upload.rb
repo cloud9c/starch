@@ -3,15 +3,15 @@ class Upload < ApplicationRecord
 
   has_one :document, as: :source, dependent: :destroy
   has_one_attached :file
-  enum :file_type, [ :text, :html, :pdf, :epub, :doc, :docx ]
+  enum :mime_type, [ :text, :html, :pdf, :epub, :doc, :docx ]
 
   validates :file, presence: true
   validate :validate_file_properties
-  before_create :set_file_type
+  before_create :set_mime_type
   after_create :create_document_for_user
   before_destroy :dont_purge_file_if_shared
 
-  CONTENT_TO_FILE_TYPE_MAP = {
+  MIME_TYPE_LOOKUP = {
     "text/plain" => :text,
     "text/html" => :html,
     "application/pdf" => :pdf,
@@ -19,14 +19,14 @@ class Upload < ApplicationRecord
     "application/msword" => :doc,
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => :docx
   }.freeze
-  SUPPORTED_CONTENT_TYPE = CONTENT_TO_FILE_TYPE_MAP.keys.freeze
+  SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
   FILE_SIZE_LIMIT = 10.megabytes
 
   private
     def validate_file_properties
       return unless file.attached?
 
-      unless SUPPORTED_CONTENT_TYPE.include?(file.blob.content_type)
+      unless SUPPORTED_MIME_TYPES.include?(file.blob.content_type)
         errors.add(:file, "must be a supported file type")
       end
 
@@ -35,9 +35,9 @@ class Upload < ApplicationRecord
       end
     end
 
-    def set_file_type
+    def set_mime_type
       return unless file.attached?
-      self.file_type = CONTENT_TO_FILE_TYPE_MAP[file.blob.content_type]
+      self.mime_type = MIME_TYPE_LOOKUP[file.blob.content_type]
     end
 
     def create_document_for_user

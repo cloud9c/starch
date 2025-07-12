@@ -12,7 +12,7 @@
       <%= form_with url: upload_documents_path, class: "auto--left" do |form| %>
         <%= label_tag "upload_file", "Upload", class: "btn btn--icon icon--plus" %>
         <%= form.file_field :files, multiple: true, include_hidden: false,
-          accept: Upload::SUPPORTED_CONTENT_TYPE.join(','),
+          accept: Upload::SUPPORTED_MIME_TYPES.join(','),
           class: "hide", id: "upload_file", onchange: "this.form.submit()" %>
       <% end %>
     </div>
