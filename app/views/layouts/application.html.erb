@@ -26,13 +26,17 @@
   <body data-controller="<%="shortcut detect-scroll" if authenticated? %>" class="<%= "native" if hotwire_native_app?%>">
     <%= render "layouts/flash" %>
     <% if authenticated? %>
-      <%= content_for?(:top_content) ? yield(:top_content) : render('layouts/navbar') %>
+      <% unless @hide_navbar %>
+        <%= render('layouts/navbar') %>
+      <% end %>
     <% end %>
     <main class="main">
       <%= yield %>
     </main>
     <% if authenticated? %>
-      <%= content_for?(:bottom_content) ? yield(:bottom_content) : render('layouts/bottom_navbar') %>
+      <% unless @hide_tabbar %>
+        <%= render('layouts/tabbar') %>
+      <% end %>
     <% end %>
   </body>
 </html>

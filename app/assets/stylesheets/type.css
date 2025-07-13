@@ -114,15 +114,6 @@
     font-size: var(--text-lg);
   }
 
-  /* assuming here that all iframes are video containers */
-  iframe, .video-container iframe {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2em;
-    aspect-ratio: 16/9;
-    width: 100%;
-  }
-  
   strong, b {
     font-weight: bold
   }

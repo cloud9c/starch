@@ -9,7 +9,9 @@
   </div>
 
   <div class="login__form">
-    <%= form_with(url: session_path, class: "align--center") do |form| %>
+    <%= form_with(url: session_path, class: "align--center", data: {
+      controller: "sign-in",
+    }) do |form| %>
       <%= form.label :email_address, "Enter your email address"%>
       <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username webauthn" %>
       <%= form.submit "Continue", class: "btn btn--primary push_half--top" %>

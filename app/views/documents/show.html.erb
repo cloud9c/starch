@@ -6,36 +6,29 @@
 
 <div class="page page--document"> 
   <div id="<%= dom_id(@document) %>" class="content content--document">
-    <header class="document-header">
+    <header class="document__header">
       <%= source_container(@document) %>
-      
+
       <hgroup>
-        <h1 class="document-title">
+        <h1 class="document__title">
           <a href="<%= @document.url %>" target="_blank">
             <%= @document.title %>
           </a>
         </h1>
       </hgroup>
 
-      <div class="document-metadata-row">
-        <p class="document-author">
-          <%= @document.author %>
-        </p>
+      <div class="document__metadata-row">
+        <span><%= @document.author %></span>
         <% if @document.published_at %>
-          <p><%= local_time(@document.published_at, "%b %d, %Y") %></p>
+          <span><%= local_time(@document.published_at, "%b %d, %Y") %></span>
         <% end %>
       </div>
     </header>
 
-    <article class="document-body <%= "typography" if @document.entry? %> <%= "document-body--email" if @document.email? %>">
-      <%= render_video @document %>
-      <%= sanitize_document @document %>
-    </article>
+    <%= render_document(@document) %>
   </div>
 
   <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) %>
 </div>
 
-<% content_for :bottom_content do %>
-  <div></div>
-<% end %>
+<% @hide_tabbar = true %>

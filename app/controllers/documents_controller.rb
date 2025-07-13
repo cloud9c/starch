@@ -5,7 +5,7 @@ class DocumentsController < ApplicationController
     documents = Current.user.documents
       .inbox
       .order(read: :asc)
-      .order(published_at: :desc)
+      .order(updated_at: :desc)
       .then(&paginate)
 
     @unread_documents = documents.select { |doc| doc.read == false }
@@ -83,9 +83,9 @@ class DocumentsController < ApplicationController
   end
 
   def update
-    permitted = params.expect(document: [ :status, :id ])
+    permitted = params.expect(document: [ :status, :progress, :progressIdentifier ])
 
-    document = Document.find_by!(id: permitted[:id], user: Current.user)
+    document = Document.find_by!(id: params[:id], user: Current.user)
     document.update(permitted)
   end
 

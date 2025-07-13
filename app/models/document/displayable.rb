@@ -1,24 +1,19 @@
 module Document::Displayable
   extend ActiveSupport::Concern
 
+  YOUTUBE_REGEX = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?
+    (?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))
+    ([\w-]{11})(?![\w-])/x
+
   def mime_type
-    return upload.mime_type if upload?
+    return upload.mime_type.to_sym if upload?
     :html
   end
 
   def display_type
     return :youtube if youtube?
 
-    case mime_type
-    when :html
-      if document.entry?
-        :article
-      else
-        :email
-      end
-    else
-      mime_type
-    end
+    mime_type
   end
 
   def youtube?
@@ -26,11 +21,7 @@ module Document::Displayable
   end
 
   def youtube_id
-    youtube_regex = /^(?:https?:\/\/|\/\/)?(?:www\.|m\.|.+\.)?
-      (?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|feeds\/api\/videos\/|watch\?v=|watch\?.+&v=))
-      ([\w-]{11})(?![\w-])/x
-
-    match = youtube_regex.match(url)
+    match = YOUTUBE_REGEX.match(url)
     return nil unless match
 
     match[1]

@@ -21,34 +21,6 @@ module DocumentsHelper
         tabindex target title type usemap valign value
         vspace itemprop id]
 
-  def sanitize_document(document)
-    case document.mime_type
-    when :html
-      if document.entry?
-        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
-      else
-        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
-      end
-    else
-      document.content
-    end
-  end
-
-  def render_video(document)
-    return unless document.youtube?
-
-    content_tag :div, class: "video-container" do
-      content_tag :iframe, nil,
-        src: "https://www.youtube.com/embed/#{document.youtube_id}",
-        width: "100%",
-        height: "100%",
-        frameborder: 0,
-        allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-        allowfullscreen: true,
-        title: document.title
-    end
-  end
-
   def source_container(document)
     case document.source
     when Entry
@@ -81,4 +53,52 @@ module DocumentsHelper
       concat content_tag(:span, title)
     end
   end
+
+  def render_document(document)
+    content_tag :article, class: document_classes(document),
+      data: {
+        controller: "sync-progress",
+        sync_progress_display_type_value: document.display_type,
+        sync_progress_progress_value: document.progress
+      } do
+      concat render_youtube(document) if document.youtube?
+      concat render_html(document) if document.display_type == :html
+    end
+  end
+
+  private
+    def document_classes(document)
+      classes = [ "document__container" ]
+
+      case document.display_type
+      when :html
+        classes << "typography"
+        if document.email?
+          classes << "document__container--email"
+        end
+      end
+
+      classes.join(" ")
+    end
+
+    def render_html(document)
+      if document.email?
+        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
+      else
+        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
+      end
+    end
+
+    def render_youtube(document)
+      content_tag :div, class: "video-container" do
+        content_tag :iframe, nil,
+          src: "https://www.youtube.com/embed/#{document.youtube_id}",
+          width: "100%",
+          height: "100%",
+          frameborder: 0,
+          allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+          allowfullscreen: true,
+          title: document.title
+      end
+    end
 end

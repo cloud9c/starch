@@ -3,7 +3,7 @@
   padding-bottom: 2em;
 }
 
-.document-header {
+.document__header {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -16,7 +16,7 @@
   color: var(--color-text--subtle);
 }
 
-.document-title {
+.document__title {
   font-weight: 600;
   font-size: var(--text-xl);
   line-height: var(--line-height-tight);
@@ -26,11 +26,7 @@
   }
 }
 
-.document-author {
-  font-weight: normal;
-}
-
-.document-metadata-row {
+.document__metadata-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,7 +34,7 @@
   color: var(--color-text--subtle);
 }
 
-.document-body {
+.document__container {
   padding-bottom: var(--page-padding);
   word-break: break-word;
 
@@ -46,9 +42,18 @@
     max-width: var(--page-width);
     height: auto;
   }
+
+  /* assuming here that all iframes are video containers */
+  iframe, .video-container iframe {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2em;
+    aspect-ratio: 16/9;
+    width: 100%;
+  }
 }
 
-.document-body--email {
+.document__container--email {
   background: white;
   color: #222;
   padding: var(--page-padding);
