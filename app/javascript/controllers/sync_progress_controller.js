@@ -9,16 +9,13 @@ export default class extends Controller {
     displayType: String,
     progress: Number,
     progressIdentifier: String,
-    lastSynced: Number
+    lastSynced: Number,
+    updateUrl: String
   }
 
   connect() {
+    this.updateUrlValue = window.location.href
     if (this.displayTypeValue === "html") this.connectHTML()
-  }
-
-  disconnect() {
-    if (this.observer) this.observer.disconnect()
-    if (this.rateLimitTimeout) clearTimeout(this.rateLimitTimeout)
   }
 
   async updateProgress() {
@@ -29,7 +26,9 @@ export default class extends Controller {
       }
     }
 
-    await patch(window.location.href, { body: JSON.stringify(body)})
+    await patch(this.updateUrlValue, {
+      body: JSON.stringify(body)
+    })
   }
 
   debounce(func, delay) {
@@ -48,7 +47,8 @@ export default class extends Controller {
         })
       })
     }
-    this.connectHTMLScroll()
+
+    this.connectHTMLListeners()
   }
 
   syncHTMLProgress() {
@@ -86,23 +86,27 @@ export default class extends Controller {
     }
   }
 
-  connectHTMLScroll() {
+  connectHTMLListeners() {
     document.addEventListener("scroll", this.debounce(() => {
       const now = Date.now()
       const elapsed = now - this.lastSyncedValue
 
+      this.syncHTMLProgress()
+
       if (elapsed >= SYNC_RATE_LIMIT) {
         this.lastSyncedValue = now
-        this.syncHTMLProgress()
         this.updateProgress()
       } else {
         if (this.rateLimitTimeout) clearTimeout(this.rateLimitTimeout)
         this.rateLimitTimeout = setTimeout(() => {
           this.lastSyncedValue = Date.now()
-          this.syncHTMLProgress()
           this.updateProgress()
         }, SYNC_RATE_LIMIT - elapsed)
       }
     }, SCROLL_DEBOUNCE))
+
+    document.addEventListener("beforeunload", async (event) => {
+      await this.updateProgress()
+    })
   }
 }

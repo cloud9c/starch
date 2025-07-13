@@ -5,7 +5,7 @@ class DocumentsController < ApplicationController
     documents = Current.user.documents
       .inbox
       .order(read: :asc)
-      .order(updated_at: :desc)
+      .order(created_at: :desc)
       .then(&paginate)
 
     @unread_documents = documents.select { |doc| doc.read == false }
