@@ -72,9 +72,10 @@ module DocumentsHelper
 
       case document.display_type
       when :html
-        classes << "typography"
         if document.email?
           classes << "document__container--email"
+        else
+          classes << "typography"
         end
       end
 
