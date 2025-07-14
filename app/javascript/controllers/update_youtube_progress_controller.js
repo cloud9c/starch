@@ -28,8 +28,9 @@ export default class extends Controller {
     this.debouncedUpdateProgress = debounce(() => {
       const now = Date.now()
       const elapsed = now - this.lastUpdatedValue
+      const ended = this.player.getPlayerState() === YT.PlayerState.ENDED
 
-      if (elapsed >= UPDATE_RATE_LIMIT) {
+      if (ended || elapsed >= UPDATE_RATE_LIMIT) {
         this.lastUpdatedValue = now
         this.updateProgress()
         clearTimeout(this.rateLimitTimeout)
@@ -73,8 +74,9 @@ export default class extends Controller {
 
   async updateProgress() {
     if (this.player) {
-      this.progressValue = this.player.getCurrentTime() / this.player.getDuration()
-      this.progressIdentifierValue = Math.floor(this.player.getCurrentTime())
+      const ended = this.player.getPlayerState() === YT.PlayerState.ENDED
+      this.progressValue = ended ? 1 : this.player.getCurrentTime() / this.player.getDuration()
+      this.progressIdentifierValue = ended ? 0 : Math.floor(this.player.getCurrentTime())
     }
 
     await patch(window.location.href, {
