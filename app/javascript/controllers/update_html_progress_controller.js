@@ -70,7 +70,7 @@ export default class extends Controller {
       window.scrollTo({ top: elementTop })
     } else {
       const maxScroll = elementHeight - viewportHeight
-      const targetScroll = (this.progressValue / 100) * maxScroll
+      const targetScroll = (this.progressValue) * maxScroll
       window.scrollTo({ top: elementTop + targetScroll })
     }
   }
