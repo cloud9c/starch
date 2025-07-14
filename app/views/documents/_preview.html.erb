@@ -1,6 +1,6 @@
 <%= link_to document_path(preview),
   id: dom_id(preview),
-  style: "--progress: #{preview.progress}%",
+  style: "--progress: #{(preview.progress * 100).clamp(0, 100)}%",
   class: "document-preview" do %>
   <header class="document-preview-header">
     <%= source_container(preview) %>

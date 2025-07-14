@@ -58,7 +58,8 @@ module DocumentsHelper
     content_tag :article, class: document_classes(document),
       data: {
         controller: "update-#{document.display_type}-progress",
-        "update_#{document.display_type}_progress_progress_value": document.progress
+        "update_#{document.display_type}_progress_progress_value": document.progress,
+         "update_#{document.display_type}_progress_progress_identifier_value": document.progress_identifier
       } do
       concat render_youtube(document) if document.youtube?
       concat render_html(document) if document.display_type == :html
@@ -90,15 +91,8 @@ module DocumentsHelper
     end
 
     def render_youtube(document)
-      content_tag :div, class: "video-container" do
-        content_tag :iframe, nil,
-          src: "https://www.youtube.com/embed/#{document.youtube_id}",
-          width: "100%",
-          height: "100%",
-          frameborder: 0,
-          allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-          allowfullscreen: true,
-          title: document.title
-      end
+      content_tag :div, nil, id: "video-container", data: {
+        youtube_id: document.youtube_id
+      }
     end
 end

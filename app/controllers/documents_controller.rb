@@ -83,7 +83,7 @@ class DocumentsController < ApplicationController
   end
 
   def update
-    permitted = params.expect(document: [ :status, :progress, :progressIdentifier ])
+    permitted = params.expect(document: [ :status, :progress, :progress_identifier ])
 
     document = Document.find_by!(id: params[:id], user: Current.user)
     document.update(permitted)
