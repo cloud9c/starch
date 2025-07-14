@@ -8,11 +8,4 @@ class Subscription < ApplicationRecord
   after_commit :destroy_feed_with_no_subscriptions, on: :destroy
 
   scope :to_inbox, -> { where(to_inbox: true) }
-
-  private
-    def destroy_feed_with_no_subscriptions
-      unless feed.subscriptions.exists?
-        feed.destroy
-      end
-    end
 end

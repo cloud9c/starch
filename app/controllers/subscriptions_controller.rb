@@ -19,7 +19,6 @@ class SubscriptionsController < ApplicationController
     subscription = Current.user.subscriptions.find_or_create_by(feed: feed, to_inbox: to_inbox)
 
     if subscription.previously_new_record?
-      feed.add_recent_entries(Current.user) if to_inbox && feed.initial_poll_complete?
       @subscription = subscription
     else
       @flash = { alert: "Subscription already exists" }

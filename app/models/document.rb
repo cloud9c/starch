@@ -33,5 +33,6 @@ class Document < ApplicationRecord
     def cleanup_source
       upload.destroy if upload? && !upload.document.exists?
       sender.destroy if email? && !sender.documents.exists?
+      feed.destory if feed? && !feed.documents.exists?
     end
 end
