@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 import { patch } from '@rails/request.js'
 
-const SYNC_RATE_LIMIT = 5000
-const SCROLL_DEBOUNCE = 150
+const SYNC_RATE_LIMIT = 3000
+const SCROLL_DEBOUNCE = 500
 
 export default class extends Controller {
   static values = {
@@ -10,33 +10,29 @@ export default class extends Controller {
     progress: Number,
     progressIdentifier: String,
     lastSynced: Number,
-    updateUrl: String
   }
 
   connect() {
-    this.updateUrlValue = window.location.href
+    this.abortController = new AbortController();
     if (this.displayTypeValue === "html") this.connectHTML()
   }
 
+  disconnect() {
+    clearTimeout(this.rateLimitTimeout)
+    this.abortController.abort();
+  }
+
   async updateProgress() {
-    const body = { 
+    const body = {
       document: {
         progress: this.progressValue,
         progress_identifier: this.progressIdentifierValue
       }
     }
 
-    await patch(this.updateUrlValue, {
+    await patch(window.location.href, {
       body: JSON.stringify(body)
     })
-  }
-
-  debounce(func, delay) {
-    let timeout
-    return () => {
-      clearTimeout(timeout)
-      timeout = setTimeout(func, delay)
-    }
   }
 
   connectHTML() {
@@ -87,7 +83,7 @@ export default class extends Controller {
   }
 
   connectHTMLListeners() {
-    document.addEventListener("scroll", this.debounce(() => {
+    document.addEventListener("scroll", debounce(() => {
       const now = Date.now()
       const elapsed = now - this.lastSyncedValue
 
@@ -96,17 +92,22 @@ export default class extends Controller {
       if (elapsed >= SYNC_RATE_LIMIT) {
         this.lastSyncedValue = now
         this.updateProgress()
+        clearTimeout(this.rateLimitTimeout)
       } else {
-        if (this.rateLimitTimeout) clearTimeout(this.rateLimitTimeout)
+        clearTimeout(this.rateLimitTimeout)
         this.rateLimitTimeout = setTimeout(() => {
           this.lastSyncedValue = Date.now()
           this.updateProgress()
         }, SYNC_RATE_LIMIT - elapsed)
       }
-    }, SCROLL_DEBOUNCE))
+    }, SCROLL_DEBOUNCE), { signal: this.abortController.signal })
+  }
+}
 
-    document.addEventListener("beforeunload", async (event) => {
-      await this.updateProgress()
-    })
+function  debounce(func, delay) {
+  let timeout
+  return () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(func, delay)
   }
 }
