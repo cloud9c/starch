@@ -1,7 +1,7 @@
 <%= turbo_stream.update "documents-section" do %>
   <% if @documents.any? %>
     <%= render partial: 'documents/preview', collection: @documents %>
-  <% elsif params[:q].present? %>
+  <% else %>
     <div class="document-list__nothing-new">
       <span>No results.</span>
     </div>
