@@ -6,15 +6,21 @@ const SCROLL_DEBOUNCE = 500
 
 export default class extends Controller {
   static values = {
-    displayType: String,
     progress: Number,
-    progressIdentifier: String,
     lastSynced: Number,
   }
 
   connect() {
     this.abortController = new AbortController();
-    if (this.displayTypeValue === "html") this.connectHTML()
+    if (this.progressValue > 0) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.scrollToProgress()
+        })
+      })
+    }
+
+    this.connectListeners()
   }
 
   disconnect() {
@@ -26,7 +32,6 @@ export default class extends Controller {
     const body = {
       document: {
         progress: this.progressValue,
-        progress_identifier: this.progressIdentifierValue
       }
     }
 
@@ -35,19 +40,7 @@ export default class extends Controller {
     })
   }
 
-  connectHTML() {
-    if (this.progressValue > 0) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          this.scrollToProgress()
-        })
-      })
-    }
-
-    this.connectHTMLListeners()
-  }
-
-  syncHTMLProgress() {
+  syncProgress() {
     const rect = this.element.getBoundingClientRect()
     const viewportHeight = window.innerHeight
 
@@ -82,12 +75,12 @@ export default class extends Controller {
     }
   }
 
-  connectHTMLListeners() {
+  connectListeners() {
     document.addEventListener("scroll", debounce(() => {
       const now = Date.now()
       const elapsed = now - this.lastSyncedValue
 
-      this.syncHTMLProgress()
+      this.syncProgress()
 
       if (elapsed >= SYNC_RATE_LIMIT) {
         this.lastSyncedValue = now

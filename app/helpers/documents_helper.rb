@@ -57,9 +57,8 @@ module DocumentsHelper
   def render_document(document)
     content_tag :article, class: document_classes(document),
       data: {
-        controller: "update-progress",
-        update_progress_display_type_value: document.display_type,
-        update_progress_progress_value: document.progress
+        controller: "update-#{document.display_type}-progress",
+        "update_#{document.display_type}_progress_progress_value": document.progress
       } do
       concat render_youtube(document) if document.youtube?
       concat render_html(document) if document.display_type == :html
