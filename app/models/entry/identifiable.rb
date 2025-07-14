@@ -4,6 +4,10 @@ module Entry::Identifiable
   CACHE_DURATION = 7.days
   ENTRY_LIMIT = 300
 
+  included do
+    before_destroy :clear_cache
+  end
+
   class_methods do
     def find_parsed_entry_by_stable_id(stable_id, parsed_feed, feed_url)
       parsed_feed.entries.find do |parsed_entry|
@@ -66,4 +70,9 @@ module Entry::Identifiable
         true
       end
   end
+
+  private
+    def clear_cache
+      Rails.cache.delete("entry/stable_id/#{stable_id}")
+    end
 end

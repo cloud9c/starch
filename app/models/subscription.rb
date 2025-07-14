@@ -5,6 +5,10 @@ class Subscription < ApplicationRecord
   has_many :documents, through: :entries
 
   validates :feed_id, presence: true, uniqueness: { scope: :user_id }
+  before_destroy :destroy_feed_documents
 
-  scope :to_inbox, -> { where(to_inbox: true) }
+  private
+    def destroy_feed_documents
+      documents.where(user: user, status: :feed).destroy_all
+    end
 end

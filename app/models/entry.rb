@@ -27,7 +27,7 @@ class Entry < ApplicationRecord
       document_attributes = Entry.extract_document_attributes(parsed_entry)
       return if document_attributes[:published_at] < feed.created_at
 
-      users = subscriptions.to_inbox.includes(:user).map(&:user).uniq
+      users = subscriptions.where(to_inbox: true).includes(:user).map(&:user).uniq
       users.each do |user|
         documents.create!(**document_attributes,
           status: :inbox,
