@@ -29,9 +29,23 @@ class Feed < ApplicationRecord
 
     update_metadata
     create_new_entries
-    update(initial_poll_complete: true)
+    add_recent_entries_for_initial_poll unless initial_poll_complete?
 
     true
+  end
+
+  def create_documents_for_feed(subscription)
+    return unless parsed_feed
+
+    entries.recent(20).each do |entry|
+      parsed_entry = Entry.find_parsed_entry_by_stable_id(entry.stable_id, parsed_feed, feed_url)
+      return unless parsed_entry
+
+      document_attributes = Entry.extract_document_attributes(parsed_entry)
+      entry.documents.create!(**document_attributes,
+        status: :feed,
+        user_id: subscription.user.id)
+    end
   end
 
   private
@@ -62,6 +76,14 @@ class Feed < ApplicationRecord
       new_entries = Entry.get_new_entries(feed_url, parsed_feed)
       new_entries.each do |parsed_entry|
         entries.create(parsed_entry: parsed_entry)
+      end
+    end
+
+    def add_recent_entries_for_initial_poll
+      update(initial_poll_complete: true)
+
+      subscriptions.each do |subscription|
+        create_documents_for_feed(subscription)
       end
     end
 end

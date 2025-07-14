@@ -11,7 +11,7 @@ class Entry < ApplicationRecord
   validates :feed, presence: true
   after_create :add_to_inbox
 
-  scope :recent, -> { order(published_at: :desc).limit(5).reverse }
+  scope :recent, ->(limit = 5) { order(published_at: :desc).limit(limit).reverse }
 
   private
     def add_attributes_from_parsed_entry

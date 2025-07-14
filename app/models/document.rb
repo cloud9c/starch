@@ -7,7 +7,7 @@ class Document < ApplicationRecord
 
   before_validation :format_attributes
   validates :content, length: { maximum: CONTENT_LIMIT }
-  enum :status, [ :inbox, :later, :archive ]
+  enum :status, [ :inbox, :later, :archive, :feed ]
   after_commit :cleanup_source, on: :destroy
 
   def format_attributes
@@ -33,6 +33,6 @@ class Document < ApplicationRecord
     def cleanup_source
       upload.destroy if upload? && !upload.document.exists?
       sender.destroy if email? && !sender.documents.exists?
-      feed.destory if feed? && !feed.documents.exists?
+      feed.destroy if feed? && !feed.documents.exists?
     end
 end
