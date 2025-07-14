@@ -29,6 +29,7 @@ export default class extends Controller {
   }
 
   syncProgress() {
+    const oldProgress = this.progressValue
     const rect = this.element.getBoundingClientRect()
     const viewportHeight = window.innerHeight
 
@@ -37,11 +38,11 @@ export default class extends Controller {
     } else {
       this.progressValue = this.calculateLargeElementProgress(rect, viewportHeight)
     }
+
+    return oldProgress !== this.progressValue
   }
 
   async updateProgress() {
-    this.syncProgress();
-
     await patch(window.location.href, {
       body: JSON.stringify({
         document: {
@@ -79,8 +80,9 @@ export default class extends Controller {
     document.addEventListener("scroll", debounce(() => {
       const now = Date.now()
       const elapsed = now - this.lastUpdatedValue
+      const finished = this.syncProgress() && this.progressValue === 1
 
-      if (elapsed >= UPDATE_RATE_LIMIT) {
+      if (finished || elapsed >= UPDATE_RATE_LIMIT) {
         this.lastUpdatedValue = now
         this.updateProgress()
         clearTimeout(this.rateLimitTimeout)
