@@ -23,7 +23,6 @@
   gap: 1em;
   align-items: stretch;
 
-
   @media (min-width: 100ch) {
     #navbar__left, #navbar__user__container {
       flex-grow: 1;
@@ -43,44 +42,35 @@
   }
 }
 
-#navbar__logo-container {
+#navbar__menu {
   display: flex;
-  min-width: fit-content;
+  gap: 1em;
 
-  &[open] #navbar__logo::after {
-    transform: rotate(180deg);
-  }
-  #navbar__logo {
+  li {
     display: flex;
-    gap: 0.5em;
-    text-decoration: none;
-    font-weight: bold;
-    font-family: var(--font-sans);
-    cursor: pointer;
-    user-select: none;
-    align-items: center;
-    width: fit-content;
-    height: 100%;
-    padding: 0 0.5em;
-    
-    &::marker {
-      content: none;
-    }
-    
-    &::after {
-      display: block;
-      content: "";
-      mask-image: url("/icons/caret-down.svg");
-      mask-size: 100%;
-      background: var(--color-text--subtle);
-      width: 1em;
-      height: 1em;
-      flex-shrink: 0;
-    }
-  }
+    align-items: stretch;
 
-  :focus-visible {
-    outline: var(--focus-ring);
+    a {
+      padding: 0 0.25em;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      position: relative;
+      color: var(--color-text--subtle);
+    }
+
+    a::before {
+      height: 1.2em;
+      width: 1.2em;
+    }
+
+    a[aria-current="page"] {
+      color: var(--color-primary);
+
+      &::before {
+        background: var(--color-primary)
+      }
+    }
   }
 }
 

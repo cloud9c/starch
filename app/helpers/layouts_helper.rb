@@ -56,40 +56,28 @@ module LayoutsHelper
   end
 
   def navbar_menu
-    navigation_items = [
-      { path: inbox_path, icon: "inbox", text: "Inbox" },
-      { path: feed_path, icon: "feed", text: "Feed" },
-      { path: later_path, icon: "later", text: "Later" }
+    links = [
+      { path: inbox_path, icon: "inbox", text: "Inbox", hotkey: "1" },
+      { path: feed_path, icon: "feed", text: "Feed", hotkey: "2" },
+      { path: later_path, icon: "later", text: "Later", hotkey: "3" }
     ]
-
-    content_tag(:details,
-                id: "navbar__logo-container",
-                data: {
-                  controller: "popup-menu shortcut",
-                  "shortcut-hotkey-value": "h"
-                },
-                class: "desktop-only") do
-      summary_content = content_tag(:summary, id: "navbar__logo") do
-        image_tag("/icon.svg", alt: "Starch logo", width: "25px", height: "25px") +
-        content_tag(:h5, "Starch")
-      end
-
-      navigation_content = content_tag(:div, id: "navigation") do
-        content_tag(:div, class: "action-group") do
-          navigation_items.map.with_index do |item, index|
-            link_to item[:path],
-                    data: {
-                      controller: "shortcut",
-                      "shortcut-hotkey-value": (index + 1).to_s
-                    },
-                    class: "shortcut-hotkey icon icon--#{item[:icon]} action-group__item text--primary" do
-              content_tag(:span, item[:text])
-            end
-          end.join.html_safe
+    content_tag(:ol,
+              id: "navbar__menu",
+              class: "desktop-only") do
+      links.map do |link|
+        is_current = current_page?(link[:path])
+        content_tag(:li) do
+          link_to link[:path],
+                  data: {
+                    controller: "shortcut",
+                    "shortcut-hotkey-value": link[:hotkey]
+                  },
+                  class: "icon icon--#{link[:icon]} text--primary",
+                  "aria-current": (is_current ? "page" : nil) do
+            content_tag(:span, link[:text])
+          end
         end
-      end
-
-      summary_content + navigation_content
+      end.join.html_safe
     end
   end
 
