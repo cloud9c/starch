@@ -20,15 +20,13 @@ class NewsletterMailbox < ApplicationMailbox
 
   private
     def extract_content
-      content = mail.body.decoded
       html_part = mail.parts.find { |part| part.content_type.include?("text/html") }
 
       if html_part.present?
-        html = html_part.body&.decoded
-        content = format_html(html)
+        format_html(html_part.body&.decoded)
+      else
+        mail.body.decoded
       end
-
-      content
     end
 
     def format_html(html)
@@ -36,14 +34,8 @@ class NewsletterMailbox < ApplicationMailbox
       inline_html = premailer.to_inline_css rescue html
 
       doc = Nokogiri::HTML(inline_html)
-      body = doc.at_css("body")
-
-      if body
-        body.name = "div"
-        body.to_html
-      else
-        doc.to_html
-      end
+      doc.css("script").remove
+      doc.to_html
     end
 
     def find_email_address(recipient_email)

@@ -55,18 +55,30 @@ module DocumentsHelper
   end
 
   def render_document(document)
-    content_tag :article, class: document_classes(document),
-      data: {
-        controller: "update-#{document.display_type}-progress",
-        "update_#{document.display_type}_progress_progress_value": document.progress,
-         "update_#{document.display_type}_progress_progress_identifier_value": document.progress_identifier
-      } do
-      concat render_youtube(document) if document.youtube?
-      concat render_html(document) if document.display_type == :html
+    wrap_content(document) do
+      case
+      when document.youtube?
+        render_youtube(document)
+      when document.email?
+        render_email(document)
+      when document.display_type == :html
+        render_html(document)
+      end
     end
   end
 
   private
+    def wrap_content(document)
+      content_tag :article, class: document_classes(document),
+        data: {
+          controller: "update-#{document.display_type}-progress",
+          "update_#{document.display_type}_progress_progress_value": document.progress,
+          "update_#{document.display_type}_progress_progress_identifier_value": document.progress_identifier
+        } do
+        yield if block_given?
+      end
+    end
+
     def document_classes(document)
       classes = [ "document__container" ]
 
@@ -82,12 +94,19 @@ module DocumentsHelper
       classes.join(" ")
     end
 
+    def render_email(document)
+      email_content = sanitize document.content,
+        tags: BASE_TAGS + %w[style head meta html body], attributes: BASE_ATTRIBUTES + %w[style]
+
+        custom_styles = "<style>body{margin:16px;padding:0;}</style>"
+        email_content = custom_styles + email_content
+
+      content_tag :iframe, nil, srcdoc: email_content,
+        onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
+    end
+
     def render_html(document)
-      if document.email?
-        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES + %w[style]
-      else
-        sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
-      end
+      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
     end
 
     def render_youtube(document)

@@ -1,11 +1,10 @@
 module FormatUtils
   extend self
 
-  def format_html(html, base_url = nil, keep_styling = false)
+  def format_html(html, base_url = nil)
     doc = Nokogiri::HTML.fragment(html)
 
     doc.css("script").remove
-    doc.css("style").remove if keep_styling
 
     rename_ids(doc)
     format_links(doc, base_url)

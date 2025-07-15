@@ -1,8 +1,3 @@
-.content.content--document {
-  flex: 1;
-  padding-bottom: 2em;
-}
-
 .document__header {
   display: flex;
   flex-direction: column;
@@ -35,16 +30,15 @@
 }
 
 .document__container {
-  padding-bottom: var(--page-padding);
   word-break: break-word;
+  padding-bottom: 2em;
 
   * {
     max-width: var(--page-width);
     height: auto;
   }
 
-  /* assuming here that all iframes are video containers */
-  iframe, #video-container iframe {
+  #video-container iframe {
     display: flex;
     justify-content: center;
     margin-bottom: 2em;
@@ -54,9 +48,13 @@
 }
 
 .document__container--email {
-  background: white;
-  color: #222;
-  padding: var(--page-padding);
-  overflow-x: auto;
-  overflow-y: hidden;
+  padding: var(--page-padding) var(--page-padding) 2em;
+
+  iframe {
+    background: white;
+    display: block;
+    border: none;
+    width: 100%;
+    height: 1000px;
+  }
 }

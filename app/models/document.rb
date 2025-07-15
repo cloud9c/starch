@@ -16,9 +16,9 @@ class Document < ApplicationRecord
       self.url = UrlUtils.normalize(url) if url.present?
 
       if content.present?
-        sanitized_content = FormatUtils.format_html(content, url, email?)
-        self.content = sanitized_content.truncate(CONTENT_LIMIT, separator: " ")
-        self.thumbnail_url ||= FormatUtils.find_thumbnail(sanitized_content)
+        self.content = FormatUtils.format_html(content, url) unless email?
+        self.content = content.truncate(CONTENT_LIMIT, separator: " ")
+        self.thumbnail_url ||= FormatUtils.find_thumbnail(content)
       end
 
       self.title = FormatUtils.format_text(title) if title.present?

@@ -13,10 +13,8 @@ export default class extends Controller {
   connect() {
     this.abortController = new AbortController();
     if (this.progressValue > 0) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          this.scrollToProgress()
-        })
+      this.waitForIframes().then(() => {
+        this.scrollToProgress()
       })
     }
 
@@ -26,6 +24,38 @@ export default class extends Controller {
   disconnect() {
     clearTimeout(this.rateLimitTimeout)
     this.abortController.abort();
+  }
+
+  waitForIframes() {
+    return new Promise((resolve) => {
+      const iframes = document.querySelectorAll('iframe[srcdoc]')
+
+      if (iframes.length === 0) {
+        resolve()
+        return
+      }
+  
+      let loadedCount = 0
+      const totalIframes = iframes.length
+
+      iframes.forEach(iframe => {
+        if (iframe.complete || iframe.readyState === 'complete') {
+          loadedCount++
+        } else {
+          iframe.addEventListener('load', () => {
+            loadedCount++
+            if (loadedCount === totalIframes) {
+              // Add small delay for height adjustment
+              setTimeout(resolve, 50)
+            }
+          }, { once: true })
+        }
+      })
+  
+      if (loadedCount === totalIframes) {
+        setTimeout(resolve, 50)
+      }
+    })
   }
 
   syncProgress() {
@@ -66,13 +96,13 @@ export default class extends Controller {
     const viewportHeight = window.innerHeight
     const elementHeight = this.element.offsetHeight
     const elementTop = this.element.offsetTop
-    
+
     if (this.isSmallElement(elementHeight, viewportHeight)) {
       window.scrollTo({ top: elementTop })
     } else {
-      const maxScroll = elementHeight - viewportHeight
-      const targetScroll = (this.progressValue) * maxScroll
-      window.scrollTo({ top: elementTop + targetScroll })
+      const scrollRange = elementHeight - viewportHeight
+      let targetScroll = elementTop + (this.progressValue * scrollRange)
+      window.scrollTo({ top: targetScroll })
     }
   }
 
