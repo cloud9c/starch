@@ -98,7 +98,15 @@ module DocumentsHelper
       email_content = sanitize document.content,
         tags: BASE_TAGS + %w[style head meta html body], attributes: BASE_ATTRIBUTES + %w[style]
 
-        custom_styles = "<style>body{margin:16px;padding:0;}</style>"
+        custom_styles = <<~CSS
+          <style>
+            body{margin:16px;padding:0;}
+            * {
+              max-width: var(--page-width);
+              height: auto;
+            }
+          </style>
+        CSS
         email_content = custom_styles + email_content
 
       content_tag :iframe, nil, srcdoc: email_content,
