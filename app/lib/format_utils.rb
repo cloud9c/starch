@@ -17,7 +17,7 @@ module FormatUtils
 
     doc = Nokogiri::HTML(html)
 
-    body = doc.at('body') || doc
+    body = doc.at("body") || doc
     text = body.xpath(".//text()").map(&:text).join(" ")
     text.gsub(/\s+/, " ").strip
   end

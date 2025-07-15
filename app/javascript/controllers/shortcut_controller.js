@@ -20,8 +20,18 @@ export default class extends Controller {
       return
     }
 
-    const hotkeys = this.hotkeyValue.split(" ").flatMap(key => [key, key.toUpperCase()])
+    // Don't interfere with common browser shortcuts
+    if (event.ctrlKey || event.metaKey) {
+      // Allow Ctrl+C, Ctrl+V, Ctrl+F, Ctrl+R, etc.
+      return
+    }
 
+    if (event.altKey) {
+      // Allow Alt+Tab, Alt+Arrow keys, etc.
+      return
+    }
+
+    const hotkeys = this.hotkeyValue.split(" ").flatMap(key => [key, key.toUpperCase()])
     if (hotkeys.includes(event.key)) {
       event.preventDefault()
       this.performDefaultAction()
