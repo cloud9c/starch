@@ -98,23 +98,23 @@ module DocumentsHelper
       email_content = sanitize document.content,
         tags: BASE_TAGS + %w[style head meta html body], attributes: BASE_ATTRIBUTES + %w[style]
 
-        custom_styles = <<~CSS
-          <style>
-            body {
-              margin: 16px;
-              padding: 0;
-            }
-            * {
-              max-width: 100% !important;
-              height: auto !important;
-            }
-            *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
-                all: unset;
-                display: revert;
-            }
-          </style>
-        CSS
-        email_content = custom_styles + email_content
+      custom_styles = <<~CSS
+        <style>
+          body {
+            margin: 16px;
+            padding: 0;
+          }
+          * {
+            max-width: 100% !important;
+            height: auto !important;
+          }
+          *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+              all: unset;
+              display: revert;
+          }
+        </style>
+      CSS
+      email_content = custom_styles + email_content
 
       content_tag :iframe, nil, srcdoc: email_content,
         onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
