@@ -15,7 +15,10 @@ module FormatUtils
   def format_text(html)
     return nil if html.nil? || html.empty?
 
-    text = Nokogiri::HTML(html).xpath("//text()").map(&:text).join(" ")
+    doc = Nokogiri::HTML(html)
+
+    body = doc.at('body') || doc
+    text = body.xpath(".//text()").map(&:text).join(" ")
     text.gsub(/\s+/, " ").strip
   end
 
