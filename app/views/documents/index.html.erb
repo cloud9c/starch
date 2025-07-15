@@ -10,7 +10,7 @@
   <header class="flex flex--column content">
     <div class="flex full-width push_half--bottom">
       <%= form_with url: upload_documents_path, class: "auto--left" do |form| %>
-        <%= label_tag "upload_file", "Upload", class: "btn btn--icon icon--plus" %>
+        <%= label_tag "upload_file", "Upload", class: "btn btn--sm btn--icon icon--plus" %>
         <%= form.file_field :files, multiple: true, include_hidden: false,
           accept: Upload::SUPPORTED_MIME_TYPES.join(','),
           class: "hide", id: "upload_file", onchange: "this.form.submit()" %>
