@@ -100,10 +100,17 @@ module DocumentsHelper
 
         custom_styles = <<~CSS
           <style>
-            body{margin:16px;padding:0;}
+            body {
+              margin: 16px;
+              padding: 0;
+            }
             * {
-              max-width: var(--page-width);
-              height: auto;
+              max-width: 100% !important;
+              height: auto !important;
+            }
+            *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
+                all: unset;
+                display: revert;
             }
           </style>
         CSS
