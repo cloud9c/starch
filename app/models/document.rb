@@ -10,7 +10,6 @@ class Document < ApplicationRecord
   enum :status, [ :inbox, :later, :archive, :feed ]
   after_commit :cleanup_source, on: :destroy
 
-
   private
     def format_attributes
       self.url = UrlUtils.normalize(url) if url.present?
@@ -32,7 +31,7 @@ class Document < ApplicationRecord
     end
 
     def cleanup_source
-      upload.destroy if upload? && !upload.document.exists?
+      resource.destroy if resource? && !resource.document
       sender.destroy if email? && !sender.documents.exists?
       feed.destroy if feed? && !feed.documents.exists?
     end

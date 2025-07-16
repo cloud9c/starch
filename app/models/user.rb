@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :feeds, through: :subscriptions
   has_many :documents, dependent: :destroy
   has_many :webauthn_credentials, dependent: :destroy
-  has_many :uploads, dependent: :destroy
+  has_many :resources, dependent: :destroy
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
   validates :email_address,

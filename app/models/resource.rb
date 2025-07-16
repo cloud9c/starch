@@ -1,4 +1,6 @@
-class Upload < ApplicationRecord
+class Resource < ApplicationRecord
+  include Epub
+
   belongs_to :user
 
   has_one :document, as: :source, dependent: :destroy
@@ -8,7 +10,9 @@ class Upload < ApplicationRecord
   validates :file, presence: true
   validate :validate_file_properties
   before_create :set_mime_type
-  after_create :create_document_for_user
+
+  after_update_commit :setup_new_file, if: -> { file.attached? && !document }
+
   before_destroy :dont_purge_file_if_shared
 
   MIME_TYPE_LOOKUP = {
@@ -21,6 +25,21 @@ class Upload < ApplicationRecord
   }.freeze
   SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
   FILE_SIZE_LIMIT = 10.megabytes
+
+
+  require "zip"
+  def serve_file(file_path)
+    file.open do |tempfile|
+      Zip::File.open(tempfile.path) do |zip_file|
+        zip_file.each { |entry| puts "  #{entry.name}" }
+
+        entry = zip_file.find_entry(file_path)
+        return nil unless entry
+
+        entry.get_input_stream.read
+      end
+    end
+  end
 
   private
     def validate_file_properties
@@ -40,6 +59,11 @@ class Upload < ApplicationRecord
       self.mime_type = MIME_TYPE_LOOKUP[file.blob.content_type]
     end
 
+    def setup_new_file
+      create_document_for_user
+      initialize_resource
+    end
+
     def create_document_for_user
       create_document!(
         title: file.blob.filename.to_s,
@@ -47,6 +71,13 @@ class Upload < ApplicationRecord
         published_at: Time.current,
         user: user
       )
+    end
+
+    def initialize_resource
+      case mime_type
+      when "epub"
+        initialize_epub
+      end
     end
 
     def dont_purge_file_if_shared

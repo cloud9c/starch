@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_213410) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_16_215116) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -114,6 +114,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_213410) do
     t.index ["feed_url"], name: "index_feeds_on_feed_url", unique: true
   end
 
+  create_table "resources", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "mime_type", null: false
+    t.integer "user_id", null: false
+    t.json "metadata"
+    t.index ["user_id"], name: "index_resources_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -133,14 +142,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_213410) do
     t.index ["feed_id"], name: "index_subscriptions_on_feed_id"
     t.index ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
-  end
-
-  create_table "uploads", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "mime_type", null: false
-    t.integer "user_id", null: false
-    t.index ["user_id"], name: "index_uploads_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -173,10 +174,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_213410) do
   add_foreign_key "documents", "users"
   add_foreign_key "email_addresses", "users"
   add_foreign_key "entries", "feeds"
+  add_foreign_key "resources", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriptions", "feeds"
   add_foreign_key "subscriptions", "feeds"
   add_foreign_key "subscriptions", "users"
-  add_foreign_key "uploads", "users"
   add_foreign_key "webauthn_credentials", "users"
 end

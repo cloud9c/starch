@@ -6,7 +6,7 @@ module Document::Displayable
     ([\w-]{11})(?![\w-])/x
 
   def mime_type
-    return upload.mime_type.to_sym if upload?
+    return resource.mime_type.to_sym if resource?
     :html
   end
 

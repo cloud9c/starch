@@ -512,6 +512,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   requestjs-rails
   rubocop-rails-omakase
+  rubyzip
   selenium-webdriver
   solid_cable
   solid_cache

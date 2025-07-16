@@ -33,9 +33,9 @@ module DocumentsHelper
       title = sender.display_name || sender.email_address
       icon = sender.icon
       fallback_icon = "icons/email.svg"
-    when Upload
-      upload = document.upload
-      title = upload.mime_type.to_s.upcase
+    when Resource
+      resource = document.resource
+      title = resource.mime_type.to_s.upcase
       # icon = "icons/#{title.downcase}.svg"
       fallback_icon = "icons/file.svg"
     end
@@ -63,6 +63,8 @@ module DocumentsHelper
         render_email(document)
       when document.display_type == :html
         render_html(document)
+      when document.display_type == :epub
+        render_epub(document)
       end
     end
   end
@@ -94,16 +96,31 @@ module DocumentsHelper
       classes.join(" ")
     end
 
-    def render_email(document)
-      email_content = sanitize document.content,
-        tags: BASE_TAGS + %w[style head meta html body], attributes: BASE_ATTRIBUTES + %w[style]
+    def render_html(document)
+      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
+    end
 
-      custom_styles = <<~CSS
+    def render_youtube(document)
+      content_tag :div, nil, id: "video-container", data: {
+        youtube_id: document.youtube_id
+      }
+    end
+
+    def render_email(document)
+      render_iframe_by_srcdoc(with_iframe_styling document.content)
+    end
+
+    def render_epub(document)
+      first_chapter = document.resource.metadata.dig("epub", "chapters")&.first
+      return "No EPUB content found" unless first_chapter
+
+      iframe_url = "/resources/#{document.resource.id}/files/#{first_chapter['file']}"
+      render_iframe_by_src(iframe_url)
+    end
+
+    def with_iframe_styling(html)
+      style = <<~CSS
         <style>
-          body {
-            margin: 16px;
-            padding: 0;
-          }
           * {
             max-width: 100% !important;
             height: auto !important;
@@ -114,19 +131,16 @@ module DocumentsHelper
           }
         </style>
       CSS
-      email_content = custom_styles + email_content
+      style + html
+    end
 
-      content_tag :iframe, nil, srcdoc: email_content,
+    def render_iframe_by_srcdoc(html)
+      content_tag :iframe, nil, srcdoc: html, class: "document__container--iframe",
         onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
     end
 
-    def render_html(document)
-      sanitize document.content, tags: BASE_TAGS, attributes: BASE_ATTRIBUTES
-    end
-
-    def render_youtube(document)
-      content_tag :div, nil, id: "video-container", data: {
-        youtube_id: document.youtube_id
-      }
+    def render_iframe_by_src(url)
+      content_tag :iframe, nil, src: url, class: "document__container--iframe",
+        onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
     end
 end

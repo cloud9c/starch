@@ -27,12 +27,12 @@ module Document::FromSource
     source if email?
   end
 
-  # Upload
-  def upload?
-    source.is_a?(Upload)
+  # Resource
+  def resource?
+    source.is_a?(Resource)
   end
 
-  def upload
-    source if upload?
+  def resource
+    source if resource?
   end
 end
