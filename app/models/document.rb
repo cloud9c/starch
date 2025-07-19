@@ -1,5 +1,5 @@
 class Document < ApplicationRecord
-  include Searchable, Extractable, FromSource, Displayable
+  include Searchable, Extractable, FromSource, Renderable
   CONTENT_LIMIT = 500_000
 
   belongs_to :source, polymorphic: true

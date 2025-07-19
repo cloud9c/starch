@@ -5,13 +5,13 @@ class Resource < ApplicationRecord
 
   has_one :document, as: :source, dependent: :destroy
   has_one_attached :file
-  enum :mime_type, [ :text, :html, :pdf, :epub, :doc, :docx ]
+  enum :mime_type, [ :text, :html, :pdf, :epub, :doc, :docx, :mobi ]
 
   validates :file, presence: true
   validate :validate_file_properties
   before_create :set_mime_type
 
-  after_update_commit :setup_new_file, if: -> { file.attached? && !document }
+  after_create :create_document_for_user
 
   before_destroy :dont_purge_file_if_shared
 
@@ -21,11 +21,12 @@ class Resource < ApplicationRecord
     "application/pdf" => :pdf,
     "application/epub+zip" => :epub,
     "application/msword" => :doc,
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => :docx
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => :docx,
+    "application/x-mobipocket-ebook" => :mobi,
+    "application/vnd.amazon.ebook" => :azw3
   }.freeze
   SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
   FILE_SIZE_LIMIT = 10.megabytes
-
 
   require "zip"
   def serve_file(file_path)
@@ -59,11 +60,6 @@ class Resource < ApplicationRecord
       self.mime_type = MIME_TYPE_LOOKUP[file.blob.content_type]
     end
 
-    def setup_new_file
-      create_document_for_user
-      initialize_resource
-    end
-
     def create_document_for_user
       create_document!(
         title: file.blob.filename.to_s,
@@ -71,13 +67,6 @@ class Resource < ApplicationRecord
         published_at: Time.current,
         user: user
       )
-    end
-
-    def initialize_resource
-      case mime_type
-      when "epub"
-        initialize_epub
-      end
     end
 
     def dont_purge_file_if_shared

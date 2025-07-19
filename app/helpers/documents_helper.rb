@@ -54,43 +54,78 @@ module DocumentsHelper
     end
   end
 
+  def render_header(document)
+    content_tag :header, class: "document__header" do
+      source_container(document) +
+      content_tag(:hgroup) do
+        content_tag :h1, class: "document__title" do
+          link_to document.title, document.url, target: "_blank"
+        end
+      end +
+      content_tag(:div, class: "document__metadata-row") do
+        content_tag(:span, document.author) +
+        if document.published_at
+          content_tag(:span, local_time(document.published_at, "%b %d, %Y"))
+        else
+          "".html_safe
+        end
+      end
+    end
+  end
+
   def render_document(document)
     wrap_content(document) do
-      case
-      when document.youtube?
+      case document.render_type
+      when :youtube
         render_youtube(document)
-      when document.email?
+      when :email
         render_email(document)
-      when document.display_type == :html
+      when :html
         render_html(document)
-      when document.display_type == :epub
-        render_epub(document)
       end
     end
   end
 
   private
     def wrap_content(document)
-      content_tag :article, class: document_classes(document),
-        data: {
-          controller: "update-#{document.display_type}-progress",
-          "update_#{document.display_type}_progress_progress_value": document.progress,
-          "update_#{document.display_type}_progress_progress_identifier_value": document.progress_identifier
-        } do
+      content_tag :article, class: container_classes(document.render_type),
+        data: container_data(document) do
         yield if block_given?
       end
     end
 
-    def document_classes(document)
+    def container_data(document)
+      case document.render_type
+      when :html, :email
+        {
+          controller: "update-html-progress",
+          "update_html_progress_progress_value": document.progress,
+          "update_html_progress_progress_identifier_value": document.progress_identifier
+        }
+      when :youtube
+        {
+          controller: "update-youtube-progress",
+          "update_youtube_progress_progress_value": document.progress,
+          "update_youtube_progress_progress_identifier_value": document.progress_identifier
+        }
+      when :ebook
+        {
+          controller: "ebook",
+          ebook_url_value: rails_blob_url(document.resource.file)
+        }
+      end
+    end
+
+    def container_classes(render_type)
       classes = [ "document__container" ]
 
-      case document.display_type
+      case render_type
       when :html
-        if document.email?
-          classes << "document__container--email"
-        else
-          classes << "typography"
-        end
+        classes << "typography"
+      when :email
+        classes << "document__container--email"
+      when :ebook
+        classes << "document__container--ebook"
       end
 
       classes.join(" ")
@@ -107,18 +142,6 @@ module DocumentsHelper
     end
 
     def render_email(document)
-      render_iframe_by_srcdoc(with_iframe_styling document.content)
-    end
-
-    def render_epub(document)
-      first_chapter = document.resource.metadata.dig("epub", "chapters")&.first
-      return "No EPUB content found" unless first_chapter
-
-      iframe_url = "/resources/#{document.resource.id}/files/#{first_chapter['file']}"
-      render_iframe_by_src(iframe_url)
-    end
-
-    def with_iframe_styling(html)
       style = <<~CSS
         <style>
           * {
@@ -131,16 +154,10 @@ module DocumentsHelper
           }
         </style>
       CSS
-      style + html
-    end
+      html = style + document.content
 
-    def render_iframe_by_srcdoc(html)
       content_tag :iframe, nil, srcdoc: html, class: "document__container--iframe",
-        onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
-    end
-
-    def render_iframe_by_src(url)
-      content_tag :iframe, nil, src: url, class: "document__container--iframe",
+        sandbox: "allow-same-origin allow-scripts",
         onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
     end
 end

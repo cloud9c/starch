@@ -33,8 +33,11 @@ module Document::Extractable
 
   private
     def should_extract
-      return false unless source.is_a?(Entry)
-      Current.user.subscriptions.find_by(feed: feed)&.view_extracted
+      if entry? && url.present?
+        return Current.user.subscriptions.find_by(feed: feed)&.view_extracted
+      end
+
+      false
     end
 
     def extract_data_from_url(url)

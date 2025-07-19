@@ -7,4 +7,5 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "@hotwired/hotwire-native-bridge", to: "@hotwired--hotwire-native-bridge.js" # @1.0.0
 pin "local-time" # @3.0.3
-pin "@github/webauthn-json", to: "@github--webauthn-json.js" # @2.1.1
+pin "@github/webauthn-json", to: "@github--webauthn-json.js", preload: false # @2.1.1
+pin "foliate-view", to: "foliate-js/view.js", preload: false

@@ -75,8 +75,6 @@ Rails.application.routes.draw do
     get "feed", action: :feed, as: :feed
   end
 
-  get "/resources/:id/files/*path", to: "resources#serve_file", format: false
-
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   get "errors/show"
