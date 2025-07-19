@@ -5,12 +5,12 @@
 <% end %>
 
 <div class="page page--document"> 
-  <div id="<%= dom_id(@document) %>" class="flex-item--fill <%= @document.render_type == :ebook ? "full-width" : "content" %>">
+  <div id="<%= dom_id(@document) %>" class="flex-item--fill <%= @document.render_type == :ebook ? "content--ebook" : "content" %>">
     <%= render_header(@document) unless @document.render_type == :ebook %>
     <%= render_document(@document) %>
   </div>
 
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) %>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) unless @document.render_type == :ebook %>
 </div>
 
 <% @hide_tabbar = true %>

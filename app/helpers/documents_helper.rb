@@ -121,7 +121,7 @@ module DocumentsHelper
 
       case render_type
       when :html
-        classes << "typography"
+        classes << "typography document__container--html"
       when :email
         classes << "document__container--email"
       when :ebook

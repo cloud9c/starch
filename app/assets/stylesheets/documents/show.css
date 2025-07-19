@@ -31,7 +31,6 @@
 
 .document__container {
   word-break: break-word;
-  padding-bottom: 2em;
 
   * {
     max-width: 100%;
@@ -45,6 +44,10 @@
     aspect-ratio: 16/9;
     width: 100%;
   }
+}
+
+.document__container--html {
+  padding-bottom: 2em;
 }
 
 .document__container--email {
@@ -63,4 +66,8 @@
   height: 80vh;
   background: white;
   width: 100%;
+}
+
+.content--ebook {
+  width: var(--navbar-width);
 }
