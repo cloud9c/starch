@@ -11,51 +11,26 @@ export default class extends Controller {
   }
 
   connect() {
-    this.abortController = new AbortController();
-    if (this.progressValue > 0) {
-      this.waitForIframes().then(() => {
-        this.scrollToProgress()
-      })
-    }
-
+    this.abortController = new AbortController()
     this.connectListeners()
+
+    const iframe = this.element.querySelector('.document__container--iframe')
+    if (iframe) {
+      const observer = new ResizeObserver(() => {
+        if (iframe.offsetHeight > 0) {
+          this.scrollToProgress()
+          observer.disconnect()
+        }
+      })
+      observer.observe(iframe)
+    } else {
+      this.scrollToProgress()
+    }
   }
 
   disconnect() {
     clearTimeout(this.rateLimitTimeout)
-    this.abortController.abort();
-  }
-
-  waitForIframes() {
-    return new Promise((resolve) => {
-      const iframes = document.querySelectorAll('iframe[srcdoc]')
-
-      if (iframes.length === 0) {
-        resolve()
-        return
-      }
-  
-      let loadedCount = 0
-      const totalIframes = iframes.length
-
-      iframes.forEach(iframe => {
-        if (iframe.complete || iframe.readyState === 'complete') {
-          loadedCount++
-        } else {
-          iframe.addEventListener('load', () => {
-            loadedCount++
-            if (loadedCount === totalIframes) {
-              // Add small delay for height adjustment
-              setTimeout(resolve, 50)
-            }
-          }, { once: true })
-        }
-      })
-  
-      if (loadedCount === totalIframes) {
-        setTimeout(resolve, 50)
-      }
-    })
+    this.abortController.abort()
   }
 
   syncProgress() {

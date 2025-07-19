@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 import "foliate-view"
 
+
+
 export default class extends Controller {
   static values = { url: String }
 
@@ -8,34 +10,48 @@ export default class extends Controller {
     this.view = document.createElement('foliate-view')
     this.element.appendChild(this.view)
 
-    this.view.addEventListener('relocate', (e) => {
-    })
+    this.view.addEventListener('relocate', this.handleRelocate.bind(this))
+    this.view.addEventListener('load', this.onLoad.bind(this))
+    document.addEventListener('keydown', this.handleKeydown.bind(this))
 
     await this.view.open(this.urlValue)
     await this.view.renderer.next()
-
-    this.element.addEventListener('click', this.handleEdgeClick.bind(this))
-    document.addEventListener('keydown', this.handleKeydown.bind(this))
   }
 
-  handleEdgeClick(event) {
-    const rect = this.view.getBoundingClientRect()
-    const clickX = event.clientX - rect.left
-    const width = rect.width
-    const edgeThreshold = width * 0.4
+  onLoad({ detail: { doc } }) {
+    doc.addEventListener('keydown', this.handleKeydown.bind(this))
+    doc.addEventListener('click', this.handleClick.bind(this))
+  }
 
-    if (clickX < edgeThreshold) {
+  handleRelocate(event) {
+
+  }
+
+  handleClick(event) {
+    const NAVIGATION_THRESHOLD = 0.2
+    const viewportWidth = window.innerWidth
+    const clickX = event.clientX
+    const clickPercentage = clickX / viewportWidth
+    
+    if (clickPercentage <= NAVIGATION_THRESHOLD) {
+      event.preventDefault();
+      event.stopPropagation();
       this.view.goLeft()
-    } else if (clickX > width - edgeThreshold) {
+    } else if (clickPercentage >= 1 - NAVIGATION_THRESHOLD) {
+      event.preventDefault();
+      event.stopPropagation();
       this.view.goRight()
     }
   }
 
   handleKeydown(event) {
-    if (event.key === 'ArrowLeft') {
-      this.view.goLeft()
-    } else if (event.key === 'ArrowRight') {
-      this.view.goRight()
+    switch(event.key) {
+      case "ArrowLeft":
+        this.view.goLeft()
+        break;
+      case "ArrowRight":
+        this.view.goRight()
+        break;
     }
   }
 
