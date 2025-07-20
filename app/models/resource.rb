@@ -7,6 +7,7 @@ class Resource < ApplicationRecord
   has_one_attached :file
   enum :mime_type, [ :text, :html, :pdf, :epub, :doc, :docx, :mobi ]
 
+  validate :validate_user_total_storage
   validates :file, presence: true
   validate :validate_file_properties
   before_create :set_mime_type
@@ -26,7 +27,9 @@ class Resource < ApplicationRecord
     "application/vnd.amazon.ebook" => :azw3
   }.freeze
   SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
+
   FILE_SIZE_LIMIT = 10.megabytes
+  USER_STORAGE_LIMIT = 100.megabytes
 
   require "zip"
   def serve_file(file_path)
@@ -52,6 +55,25 @@ class Resource < ApplicationRecord
 
       if file.blob.byte_size > FILE_SIZE_LIMIT
         errors.add(:file, "must be less than #{FILE_SIZE_LIMIT / 1.megabyte}MB")
+      end
+    end
+
+    def validate_user_total_storage
+      return unless file.attached? && user
+
+      current_total = user.total_storage_used
+      new_file_size = file.blob.byte_size
+
+      if persisted? && file_previously_changed?
+        old_blob = file.blob_was
+        current_total -= old_blob.byte_size if old_blob
+      end
+
+      total_after_upload = current_total + new_file_size
+
+      if total_after_upload > USER_STORAGE_LIMIT
+        remaining = USER_STORAGE_LIMIT - current_total
+        errors.add(:file, "would exceed storage limit. You have #{remaining / 1.megabyte}MB remaining of your #{USER_STORAGE_LIMIT / 1.megabyte}MB limit")
       end
     end
 

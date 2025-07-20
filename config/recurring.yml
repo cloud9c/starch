@@ -11,6 +11,10 @@ default: &default
   cleanup_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches"
     schedule: every day at 9am
+  cleanup_orphaned_files:
+    class: CleanupOrphanedFilesJob
+    args: [{ dry_run: false }]
+    schedule: every week at 2am
 development:
   <<: *default
 

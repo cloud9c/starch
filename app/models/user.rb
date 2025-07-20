@@ -14,4 +14,9 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" }
 
   scope :unverified, -> { where(verified_at: nil) }
+
+  def total_storage_used
+    resources.joins(file_attachment: :blob)
+             .sum('active_storage_blobs.byte_size')
+  end
 end
