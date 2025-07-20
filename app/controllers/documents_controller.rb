@@ -68,13 +68,13 @@ class DocumentsController < ApplicationController
 
   def show
     @document = Current.user.documents.find(params[:id]).with_view_preferences
+    @document.update(read: true)
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: "Document not found"
   end
 
   def toolbar
     @document = Current.user.documents.find(params[:id]).with_view_preferences
-    @document.update(read: true)
   end
 
   def read_all

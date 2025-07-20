@@ -98,20 +98,19 @@ module DocumentsHelper
       case document.render_type
       when :html, :email
         {
-          controller: "update-html-progress",
-          "update_html_progress_progress_value": document.progress,
-          "update_html_progress_progress_identifier_value": document.progress_identifier
+          controller: "html",
+          html_progress_value: document.progress
         }
       when :youtube
         {
-          controller: "update-youtube-progress",
-          "update_youtube_progress_progress_value": document.progress,
-          "update_youtube_progress_progress_identifier_value": document.progress_identifier
+          controller: "youtube",
+          youtube_start_value: document.progress_identifier
         }
       when :ebook
         {
           controller: "ebook",
-          ebook_url_value: rails_blob_url(document.resource.file)
+          ebook_url_value: rails_blob_url(document.resource.file),
+          ebook_cfi_value: document.progress_identifier
         }
       end
     end

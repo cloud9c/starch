@@ -6,8 +6,7 @@ const DEBOUNCE = 500
 
 export default class extends Controller {
   static values = {
-    progress: Number,
-    progressIdentifier: Number,
+    start: Number,
     lastUpdated: Number
   }
 
@@ -45,13 +44,12 @@ export default class extends Controller {
   }
 
   initializePlayer() {
-    console.log(this.progressIdentifierValue)
     this.player = new YT.Player("video-container", {
       videoId: document.getElementById("video-container").dataset.youtubeId,
       playerVars: {
         "playsinline": 0,
         "rel": 0,
-        "start": Math.floor(this.progressIdentifierValue)
+        "start": Math.floor(this.startValue)
       },
       events: {
         "onReady": (event) => this.onPlayerReady(event),
@@ -73,17 +71,16 @@ export default class extends Controller {
   }
 
   async updateProgress() {
-    if (this.player) {
-      const ended = this.player.getPlayerState() === YT.PlayerState.ENDED
-      this.progressValue = ended ? 1 : this.player.getCurrentTime() / this.player.getDuration()
-      this.progressIdentifierValue = ended ? 0 : Math.floor(this.player.getCurrentTime())
-    }
+    if (!this.player) return
+
+    const progress = ended ? 1 : this.player.getCurrentTime() / this.player.getDuration()
+    const progressIdentifier = ended ? 0 : Math.floor(this.player.getCurrentTime())
 
     await patch(window.location.href, {
       body: JSON.stringify({
         document: {
-          progress: this.progressValue,
-          progress_identifier: this.progressIdentifierValue.toString()
+          progress: progress,
+          progress_identifier: progressIdentifier
         }
       })
     })
