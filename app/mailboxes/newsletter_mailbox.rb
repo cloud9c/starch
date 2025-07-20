@@ -16,6 +16,8 @@ class NewsletterMailbox < ApplicationMailbox
       user: email_address.user,
       status: :inbox
     )
+
+    inbound_email.incinerate
   end
 
   private
