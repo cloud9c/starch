@@ -17,7 +17,6 @@ export default class extends Controller {
     this.view.addEventListener('load', this.onLoad.bind(this))
     this.view.addEventListener('relocate', this.handleRelocate.bind(this))
     this.view.addEventListener("create-overlayer", this.createOverlayer.bind(this))
-    this.view.addEventListener('click', this.handleClick.bind(this))
 
     await this.view.open(this.urlValue)
 
@@ -30,7 +29,6 @@ export default class extends Controller {
 
   onLoad({ detail: { doc, index } }) {
     doc.addEventListener('keydown', this.handleKeydown.bind(this))
-    doc.addEventListener('click', this.handleClick.bind(this))
   }
 
   handleRelocate({ detail: { fraction, cfi, location } }) {
@@ -60,23 +58,6 @@ export default class extends Controller {
 
   createOverlayer({ detail: { doc, index, attach } }) {
 
-  }
-
-  handleClick(event) {
-    const NAVIGATION_THRESHOLD = 0.25
-    const viewportWidth = window.innerWidth
-    const clickX = event.clientX
-    const clickPercentage = clickX / viewportWidth
-
-    if (clickPercentage <= NAVIGATION_THRESHOLD) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.view.goLeft()
-    } else if (clickPercentage >= 1 - NAVIGATION_THRESHOLD) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.view.goRight()
-    }
   }
 
   handleKeydown(event) {
