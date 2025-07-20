@@ -97,4 +97,5 @@ Rails.application.configure do
   config.webauthn_origin = "https://starch.app"
 
   config.action_mailbox.ingress_password = Rails.application.credentials.dig(:action_mailbox, :ingress_password)
+  config.action_mailbox.incinerate_after = 5.days
 end
