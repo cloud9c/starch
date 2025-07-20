@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import "foliate-view"
+import "/foliate-js/view.js"
 
 export default class extends Controller {
   static values = { url: String }
