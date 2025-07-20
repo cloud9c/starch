@@ -17,7 +17,7 @@ class CleanupOrphanedFilesJob < ApplicationJob
     orphaned_blobs = ActiveStorage::Blob
       .left_joins(:attachments)
       .where(active_storage_attachments: { id: nil })
-      .where('active_storage_blobs.created_at < ?', 1.day.ago)
+      .where("active_storage_blobs.created_at < ?", 1.day.ago)
 
     Rails.logger.info "Found #{orphaned_blobs.count} orphaned blobs"
 
@@ -38,7 +38,7 @@ class CleanupOrphanedFilesJob < ApplicationJob
   def cleanup_orphaned_attachments(dry_run)
     # Find Resource attachments pointing to non-existent resources
     orphaned_attachments = ActiveStorage::Attachment
-      .where(record_type: 'Resource')
+      .where(record_type: "Resource")
       .where.not(record_id: Resource.pluck(:id))
 
     Rails.logger.info "Found #{orphaned_attachments.count} orphaned Resource attachments"

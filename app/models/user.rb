@@ -17,6 +17,6 @@ class User < ApplicationRecord
 
   def total_storage_used
     resources.joins(file_attachment: :blob)
-             .sum('active_storage_blobs.byte_size')
+             .sum("active_storage_blobs.byte_size")
   end
 end
