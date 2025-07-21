@@ -9,14 +9,13 @@ export default class extends Controller {
   }
 
   async connect() {
-    this.view = document.createElement('foliate-view')
+    this.view = document.createElement("foliate-view")
     this.element.appendChild(this.view)
 
-    document.addEventListener('keydown', this.handleKeydown.bind(this))
-
-    this.view.addEventListener('load', this.onLoad.bind(this))
-    this.view.addEventListener('relocate', this.handleRelocate.bind(this))
-    this.view.addEventListener("create-overlayer", this.createOverlayer.bind(this))
+    document.addEventListener("keydown", this.onKeydown.bind(this))
+    this.view.addEventListener("click", this.onClick.bind(this))
+    this.view.addEventListener("load", this.onLoad.bind(this))
+    this.view.addEventListener("relocate", this.onRelocate.bind(this))
 
     await this.view.open(this.urlValue)
 
@@ -28,10 +27,10 @@ export default class extends Controller {
   }
 
   onLoad({ detail: { doc, index } }) {
-    doc.addEventListener('keydown', this.handleKeydown.bind(this))
+    doc.addEventListener("keydown", this.onKeydown.bind(this))
   }
 
-  handleRelocate({ detail: { fraction, cfi, location } }) {
+  onRelocate({ detail: { fraction, cfi, location } }) {
     clearTimeout(this.progressTimeout)
 
     this.progressTimeout = setTimeout(() => {
@@ -45,6 +44,10 @@ export default class extends Controller {
     }, 500)
   }
 
+  onClick(event) {
+    console.log("here")
+  }
+
   async updateProgress(progress, progressIdentifier) {
     await patch(window.location.href, {
       body: JSON.stringify({
@@ -56,11 +59,7 @@ export default class extends Controller {
     })
   }
 
-  createOverlayer({ detail: { doc, index, attach } }) {
-
-  }
-
-  handleKeydown(event) {
+  onKeydown(event) {
     switch(event.key) {
       case "ArrowLeft":
         this.view.goLeft()

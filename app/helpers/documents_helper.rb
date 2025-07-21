@@ -96,7 +96,7 @@ module DocumentsHelper
 
     def container_data(document)
       case document.render_type
-      when :html, :email
+      when :html
         {
           controller: "html",
           html_progress_value: document.progress
@@ -141,7 +141,7 @@ module DocumentsHelper
     end
 
     def render_email(document)
-      style = <<~CSS
+      head_html = <<~HTML
         <style>
           * {
             max-width: 100% !important;
@@ -152,11 +152,13 @@ module DocumentsHelper
               display: revert;
           }
         </style>
-      CSS
-      html = style + document.content
+        <base target="_blank" >
+      HTML
+
+      html = head_html + document.content
 
       content_tag :iframe, nil, srcdoc: html, class: "document__container--iframe",
-        sandbox: "allow-same-origin allow-scripts",
+        sandbox: "allow-same-origin allow-scripts allow-popups",
         onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
     end
 end

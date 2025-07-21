@@ -6,7 +6,7 @@
 
 <div class="page page--document"> 
   <div id="<%= dom_id(@document) %>" class="flex-item--fill <%= @document.render_type == :ebook ? "content--ebook" : "content" %>">
-    <%= render_header(@document) unless @document.render_type == :ebook %>
+    <%= render "header", document: @document unless @document.render_type == :ebook %>
     <%= render_document(@document) %>
   </div>
 

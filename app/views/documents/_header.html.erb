@@ -1,0 +1,16 @@
+<header class="document__header">
+  <%= source_container(document) %>
+  
+  <hgroup>
+    <h1 class="document__title">
+      <%= link_to document.title, document.url, target: "_blank" %>
+    </h1>
+  </hgroup>
+  
+  <div class="document__metadata-row">
+    <span><%= document.author %></span>
+    <% if document.published_at %>
+      <span><%= local_time(document.published_at, "%b %d, %Y") %></span>
+    <% end %>
+  </div>
+</header>
