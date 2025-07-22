@@ -17,16 +17,16 @@ body {
 
   display: flex;
   flex-direction: column;
-  margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
   &:has(#navbar:not(.hide)) {
-    padding-top: var(--navbar-padding);
-    scroll-padding-top: var(--navbar-padding);
+    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding));
+    scroll-padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding));
   }
 
   &:has(#trial-banner) {
-    padding-top: calc(var(--navbar-padding) + 1.7rem);
-    scroll-padding-top: calc(var(--navbar-padding) + 1.7rem);
+    padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding) + 1.7rem);
+    scroll-padding-top: calc(env(safe-area-inset-top) + var(--navbar-padding) + 1.7rem);
   }
 }
 
