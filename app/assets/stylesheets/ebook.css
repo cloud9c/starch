@@ -88,7 +88,7 @@
   z-index: 20;
 }
 
-.ebook__progress_slider::-webkit-slider-track,
+.ebook__progress_slider::-webkit-slider-runnable-track,
 .ebook__progress_slider::-moz-range-track {
   background: var(--color-primary);
   height: 2px;
