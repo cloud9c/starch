@@ -3,9 +3,14 @@
 }
 
 .ebook  {
-  height: calc(100dvh - 3rem * 2);
+  height: calc(100svh - 3rem * 2);
   margin: 3rem 0;
   width: 100%;
+
+  @media(max-width: 100ch) {
+    height: 100svh;
+    margin: 0;
+  }
 }
 
 .ebook__section {
@@ -37,6 +42,10 @@
 
   background: var(--bg-secondary);
   box-shadow: 0 0 4px var(--color-shadow);
+
+  @media(max-width: 100ch) {
+    position: fixed;
+  }
 }
 
 .ebook__header {
@@ -91,5 +100,9 @@
 
   &:hover .btn {
     opacity: 1;
+  }
+
+  @media(max-width: 100ch) {
+    display: none;
   }
 }

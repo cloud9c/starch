@@ -22,11 +22,10 @@ export default class extends Controller {
 
     await book.open(this.urlValue)
 
-    book.renderer.setStyles?.(getCSS({
-        spacing: 1.4,
-        justify: true,
-        hyphenate: true,
-    }))
+    this.setStyles()
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      this.setStyles()
+    });
 
     this.setupControls()
 
@@ -35,6 +34,14 @@ export default class extends Controller {
     } else {
       await book.renderer.next()
     }
+  }
+
+  setStyles() {
+    this.view.renderer.setStyles?.(getCSS({
+        spacing: 1.4,
+        justify: true,
+        hyphenate: true,
+    }))
   }
 
   setupControls() {
@@ -159,8 +166,12 @@ const getCSS = ({ spacing, justify, hyphenate }) => {
     @namespace epub "http://www.idpf.org/2007/ops";
     html {
       color-scheme: light dark;
-      background: ${getCSSVariable("--bg-primary")} !important;
     }
+
+    body {
+      background-color: ${getCSSVariable("--bg-primary")} !important;
+    }
+
     * {
       color: ${getCSSVariable("--color-text")} !important;
     }
