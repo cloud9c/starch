@@ -4,8 +4,8 @@ class Resource < ApplicationRecord
   belongs_to :user
 
   has_one :document, as: :source, dependent: :destroy
+  enum :mime_type, [ :text, :html, :pdf, :epub, :mobi, :azw3, :cbz, :fb2, :fbz ]
   has_one_attached :file
-  enum :mime_type, [ :text, :html, :pdf, :epub, :mobi, :azw3 ]
 
   validate :validate_user_total_storage
   validates :file, presence: true
@@ -22,7 +22,10 @@ class Resource < ApplicationRecord
     "application/pdf" => :pdf,
     "application/epub+zip" => :epub,
     "application/x-mobipocket-ebook" => :mobi,
-    "application/vnd.amazon.ebook" => :azw3
+    "application/vnd.amazon.mobi8-ebook" => :azw3,
+    "application/vnd.comicbook+zip" => :cbz,
+    "application/x-fictionbook+xml" => :fb2,
+    "application/x-zip-compressed-fb2" => :fbz
   }.freeze
   SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
 
