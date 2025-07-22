@@ -1,5 +1,5 @@
 .ebook__container {
-  height: 100svh;
+  height: 100%;
   width: 100vw;
   display: flex;
   flex-direction: column;

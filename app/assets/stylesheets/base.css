@@ -1,16 +1,10 @@
 html {
 	font-size: 16px;
   background: var(--bg-primary);
+}
 
-  &:has(#navbar:not(.hide)) {
-    padding-top: var(--navbar-padding);
-    scroll-padding-top: var(--navbar-padding);
-  }
-
-  &:has(#trial-banner) {
-    padding-top: calc(var(--navbar-padding) + 1.7rem);
-    scroll-padding-top: calc(var(--navbar-padding) + 1.7rem);
-  }
+html, body {
+  height: 100%;
 }
 
 body {
@@ -23,8 +17,17 @@ body {
 
   display: flex;
   flex-direction: column;
-  min-height: calc(100svh - var(--navbar-padding));
   margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+
+  &:has(#navbar:not(.hide)) {
+    padding-top: var(--navbar-padding);
+    scroll-padding-top: var(--navbar-padding);
+  }
+
+  &:has(#trial-banner) {
+    padding-top: calc(var(--navbar-padding) + 1.7rem);
+    scroll-padding-top: calc(var(--navbar-padding) + 1.7rem);
+  }
 }
 
 turbo-frame {
