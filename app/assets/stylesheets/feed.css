@@ -11,7 +11,7 @@
   }
 
   picture:not(:has(source)) {
-    filter: var(--filter-text-subtle);
+    filter: var(--filter-text--subtle);
   }
 
   span {

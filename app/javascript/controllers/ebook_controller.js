@@ -16,18 +16,22 @@ export default class extends Controller {
     this.contentTarget.appendChild(book)
 
     document.addEventListener("keydown", this.onKeydown.bind(this))
-    this.view.addEventListener("load", this.onLoad.bind(this))
-    this.view.addEventListener("relocate", this.onRelocate.bind(this))
-    this.overlayTargets.forEach(overlay => overlay.addEventListener("click", this.onClick.bind(this)))
+    book.addEventListener("load", this.onLoad.bind(this))
+    book.addEventListener("relocate", this.onRelocate.bind(this))
+    book.addEventListener("mousedown", this.onMouseDown.bind(this))
+    book.addEventListener("mouseup", this.onMouseUp.bind(this))
 
     await book.open(this.urlValue)
+
+    this.setupControls()
+
+    book.renderer.setAttribute("margin", "0px");
+    book.renderer.setAttribute("gap", "2%");
 
     this.setStyles()
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
       this.setStyles()
     });
-
-    this.setupControls()
 
     if (this.cfiValue) {
       await book.goTo(this.cfiValue)
@@ -44,29 +48,33 @@ export default class extends Controller {
     }))
   }
 
+  showControls() {
+    const sections = this.sectionTargets
+    sections.forEach(section => {
+      section.style.opacity = '1'
+    })
+  }
+
+  hideControls() {
+    const sections = this.sectionTargets
+    sections.forEach(section => {
+      section.style.opacity = '0'
+    })
+  }
+
+  onLoad({ detail: { doc, index } }) {
+    doc.addEventListener("keydown", this.onKeydown.bind(this))
+    doc.addEventListener("mousedown", this.onMouseDown.bind(this))
+    doc.addEventListener("mouseup", this.onMouseUp.bind(this))
+  }
+
   setupControls() {
     // Toggle header/footer visibility on hover
-    let hideTimeout
     const sections = this.sectionTargets
 
-    const showControls = () => {
-      clearTimeout(hideTimeout)
-      sections.forEach(section => {
-        section.style.opacity = '1'
-        section.style.transition = 'opacity 0.1s linear'
-      })
-    }
-
-    const hideControls = () => {
-      sections.forEach(section => {
-        section.style.opacity = '0'
-        section.style.transition = 'opacity 0.1s linear'
-      })
-    }
-
     sections.forEach(section => {
-      section.addEventListener('mouseenter', showControls)
-      section.addEventListener('mouseleave', hideControls)
+      section.addEventListener('mouseenter', this.showControls.bind(this))
+      section.addEventListener('mouseleave', this.hideControls.bind(this))
     })
 
     // Progress slider
@@ -99,10 +107,6 @@ export default class extends Controller {
     }
   }
 
-  onLoad({ detail: { doc, index } }) {
-    doc.addEventListener("keydown", this.onKeydown.bind(this))
-  }
-
   onRelocate({ detail: { fraction, cfi, location } }) {
     clearTimeout(this.progressTimeout)
 
@@ -110,7 +114,7 @@ export default class extends Controller {
 
     this.progressTimeout = setTimeout(() => {
       const isDoublePage = window.innerWidth > window.innerHeight
-      const isLastPage = isDoublePage ? 
+      const isLastPage = isDoublePage ?
         (location?.next === location?.total - 1) :
         (location?.next === location?.total)
 
@@ -119,9 +123,33 @@ export default class extends Controller {
     }, 500)
   }
 
-  onClick(event) {
+  onMouseDown(event) {
+    this.mouseStart = { x: event.clientX, y: event.clientY }
+  }
+
+  onMouseUp(event) {
+    if (this.clickTimeout) {
+      clearTimeout(this.clickTimeout)
+      this.clickTimeout = null
+      return
+    }
+
+    const deltaX = Math.abs(event.clientX - this.mouseStart.x)
+    const deltaY = Math.abs(event.clientY - this.mouseStart.y)
+    if (deltaX > 5 || deltaY > 5) return
+
+    this.clickTimeout = setTimeout(() => {
+      this.handleClick(event)
+      this.clickTimeout = null
+    }, 300)
+  }
+
+  handleClick(event) {
+    this.element.toggleAttribute('data-paused')
+  }
+
+  overlayClick(event) {
     const side = event.currentTarget.dataset.side
-    console.log(`Clicked ${side} overlay`)
  
     if (side === 'left') {
       this.view.goLeft()

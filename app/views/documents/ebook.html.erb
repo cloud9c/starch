@@ -3,7 +3,7 @@
 <% @hide_navbar = true %>
 <% @hide_tabbar = true %>
 
-<%= tag.div(data: {
+<%= tag.div(class: "ebook__container", data: {
   controller: "ebook",
   ebook_url_value: rails_blob_url(@document.resource.file),
   ebook_cfi_value: @document.progress_identifier
@@ -12,8 +12,8 @@
     <%= render "ebook_header", document: @document %>
   </div>
 
-  <div class="ebook__container">
-    <div class="ebook__overlay" data-ebook-target="overlay" data-side="left">
+  <div class="ebook__body">
+    <div class="ebook__overlay" data-ebook-target="overlay" data-side="left" data-action="click->ebook#overlayClick">
       <div class="btn btn--sm btn--rounded btn--icon icon--arrow-left"></div>
     </div>
 
@@ -21,7 +21,7 @@
       ebook_target: "content"
     } %>
 
-    <div class="ebook__overlay" data-ebook-target="overlay" data-side="right">
+    <div class="ebook__overlay" data-ebook-target="overlay" data-side="right" data-action="click->ebook#overlayClick">
       <div class="btn btn--sm btn--rounded btn--icon icon--arrow-right"></div>
     </div>
   </div>

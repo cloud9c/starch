@@ -1,26 +1,36 @@
 .ebook__container {
+  height: 100svh;
+  width: 100vw;
   display: flex;
+  flex-direction: column;
 }
 
-.ebook  {
-  height: calc(100svh - 3rem * 2);
-  margin: 3rem 0;
-  width: 100%;
+.ebook__body {
+  display: flex;
+  height: 100%;
+}
 
-  @media(max-width: 100ch) {
-    height: 100svh;
-    margin: 0;
+.ebook {
+  margin: 2rem 0;
+  width: 100%;
+  transform-origin: center;
+
+  transition: transform 0.05s linear;
+
+  .ebook__container[data-paused] & {
+    transform: scale(0.9);
   }
 }
 
 .ebook__section {
   display: flex;
-  height: 3rem;
+  height: 4rem;
   width: 100%;
   position: fixed;
   width: 100%;
   opacity: 0;
   z-index: 10;
+  transition: opacity 0.05s linear;
 
   &:has(.ebook__header) {
     top: 0;
@@ -28,6 +38,14 @@
 
   &:has(.ebook__footer) {
     bottom: 0;
+  }
+
+  @media(max-width: 100ch) {
+    pointer-events: none;
+  }
+
+  .ebook__container[data-paused] & {
+    opacity: 1 !important;
   }
 }
 
@@ -42,6 +60,8 @@
 
   background: var(--bg-secondary);
   box-shadow: 0 0 4px var(--color-shadow);
+
+  pointer-events: auto;
 
   @media(max-width: 100ch) {
     position: fixed;
@@ -60,6 +80,7 @@
 
 .ebook__footer {
   margin-top: auto;
+  bottom: 0;
 }
 
 .ebook__progress_slider {
@@ -92,17 +113,25 @@
 .ebook__overlay {
   display: flex;
   align-items: center;
+  padding: 0 0.5em;
 
   .btn {
     opacity: 0;
-    margin: 0.5em;
-  }
-
-  &:hover .btn {
-    opacity: 1;
   }
 
   @media(max-width: 100ch) {
     display: none;
+  }
+
+  @media (any-hover: hover) {
+    &:where(:hover) {
+      & .btn {
+        opacity: 1;
+      }
+    }
+  }
+
+  .ebook__container[data-paused] & .btn {
+    opacity: 1 !important;
   }
 }
