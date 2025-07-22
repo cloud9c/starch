@@ -137,11 +137,11 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
-    faraday (2.13.1)
+    faraday (2.13.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.0)
+    faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     feedbag (1.0.0)
       nokogiri (~> 1.8, >= 1.8.2)
@@ -187,7 +187,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
-    json (2.12.0)
+    json (2.12.2)
     jwt (2.10.1)
       base64
     kamal (2.7.0)
@@ -264,7 +264,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
-    oj (3.16.10)
+    oj (3.16.11)
       bigdecimal (>= 3.0)
       ostruct (>= 0.2)
     openssl (3.3.0)
@@ -440,7 +440,7 @@ GEM
     turbo-rails (2.0.16)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
-    typesense (3.1.0)
+    typesense (3.2.0)
       base64 (~> 0.2.0)
       faraday (~> 2.8)
       oj (~> 3.16)
