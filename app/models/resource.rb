@@ -5,7 +5,7 @@ class Resource < ApplicationRecord
 
   has_one :document, as: :source, dependent: :destroy
   has_one_attached :file
-  enum :mime_type, [ :text, :html, :pdf, :epub, :doc, :docx, :mobi ]
+  enum :mime_type, [ :text, :html, :pdf, :epub,, :mobi, :azw3 ]
 
   validate :validate_user_total_storage
   validates :file, presence: true
@@ -21,8 +21,6 @@ class Resource < ApplicationRecord
     "text/html" => :html,
     "application/pdf" => :pdf,
     "application/epub+zip" => :epub,
-    "application/msword" => :doc,
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => :docx,
     "application/x-mobipocket-ebook" => :mobi,
     "application/vnd.amazon.ebook" => :azw3
   }.freeze
