@@ -1,6 +1,6 @@
 .ebook__container {
-  height: 100%;
-  width: 100vw;
+  height: var(--full-height);
+  width: var(--full-width);
   display: flex;
   flex-direction: column;
 }
