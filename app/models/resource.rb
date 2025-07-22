@@ -5,7 +5,7 @@ class Resource < ApplicationRecord
 
   has_one :document, as: :source, dependent: :destroy
   has_one_attached :file
-  enum :mime_type, [ :text, :html, :pdf, :epub,, :mobi, :azw3 ]
+  enum :mime_type, [ :text, :html, :pdf, :epub, :mobi, :azw3 ]
 
   validate :validate_user_total_storage
   validates :file, presence: true
