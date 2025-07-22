@@ -3,13 +3,14 @@
 }
 
 .ebook  {
-  height: 100dvh;
+  height: calc(100dvh - 3rem * 2);
+  margin: 3rem 0;
   width: 100%;
 }
 
 .ebook__section {
   display: flex;
-  height: 4rem;
+  height: 3rem;
   width: 100%;
   position: fixed;
   width: 100%;
