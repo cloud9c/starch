@@ -8,7 +8,7 @@ export default class extends Controller {
     cfi: String
   }
 
-  static targets = ["progressSlider", "content", "progressStepList", "header", "footer"]
+  static targets = ["progressSlider", "content", "progressStepList", "header", "footer", "section", "overlay"]
 
   async connect() {
     this.view = document.createElement("foliate-view")
@@ -16,11 +16,18 @@ export default class extends Controller {
     this.contentTarget.appendChild(book)
 
     document.addEventListener("keydown", this.onKeydown.bind(this))
-    this.view.addEventListener("click", this.onClick.bind(this))
     this.view.addEventListener("load", this.onLoad.bind(this))
     this.view.addEventListener("relocate", this.onRelocate.bind(this))
+    this.overlayTargets.forEach(overlay => overlay.addEventListener("click", this.onClick.bind(this)))
 
     await book.open(this.urlValue)
+
+    book.renderer.setStyles?.(getCSS({
+        spacing: 1.4,
+        justify: true,
+        hyphenate: true,
+    }))
+
     this.setupControls()
 
     if (this.cfiValue) {
@@ -31,31 +38,29 @@ export default class extends Controller {
   }
 
   setupControls() {
+    // Toggle header/footer visibility on hover
     let hideTimeout
-    const header = this.headerTarget
-    const footer = this.footerTarget
+    const sections = this.sectionTargets
 
     const showControls = () => {
-      console.log("here")
       clearTimeout(hideTimeout)
-      header.style.opacity = '1'
-      footer.style.opacity = '1'
-      header.style.transition = 'opacity 0.1s linear'
-      footer.style.transition = 'opacity 0.1s linear'
+      sections.forEach(section => {
+        section.style.opacity = '1'
+        section.style.transition = 'opacity 0.1s linear'
+      })
     }
 
     const hideControls = () => {
-      header.style.opacity = '0'
-      footer.style.opacity = '0'
-      header.style.transition = 'opacity 0.1s linear'
-      footer.style.transition = 'opacity 0.1s linear'
+      sections.forEach(section => {
+        section.style.opacity = '0'
+        section.style.transition = 'opacity 0.1s linear'
+      })
     }
 
-    // Add event listeners
-    header.addEventListener('mouseenter', showControls)
-    header.addEventListener('mouseleave', hideControls)
-    footer.addEventListener('mouseenter', showControls)
-    footer.addEventListener('mouseleave', hideControls)
+    sections.forEach(section => {
+      section.addEventListener('mouseenter', showControls)
+      section.addEventListener('mouseleave', hideControls)
+    })
 
     // Progress slider
     const progressSlider = this.progressSliderTarget
@@ -108,6 +113,14 @@ export default class extends Controller {
   }
 
   onClick(event) {
+    const side = event.currentTarget.dataset.side
+    console.log(`Clicked ${side} overlay`)
+ 
+    if (side === 'left') {
+      this.view.goLeft()
+    } else if (side === 'right') {
+      this.view.goRight()
+    }
   }
 
   async updateProgress(progress, progressIdentifier) {
@@ -137,4 +150,71 @@ export default class extends Controller {
       this.view.remove()
     }
   }
+}
+
+const getCSSVariable = (variable) => getComputedStyle(document.documentElement).getPropertyValue(variable).trim()
+
+const getCSS = ({ spacing, justify, hyphenate }) => {
+  return `
+    @namespace epub "http://www.idpf.org/2007/ops";
+    html {
+      color-scheme: light dark;
+      background: ${getCSSVariable("--bg-primary")} !important;
+    }
+    * {
+      color: ${getCSSVariable("--color-text")} !important;
+    }
+
+    /* Link colors */
+    a, a:visited, a:link {
+      color: ${getCSSVariable("--color-link")} !important;
+    }
+
+    /* Border colors */
+    hr, table, th, td {
+      border-color: ${getCSSVariable("--color-border")} !important;
+    }
+
+    /* Code/Pre blocks */
+    code, pre {
+      background: ${getCSSVariable("--bg-secondary")} !important;
+      color: ${getCSSVariable("--color-text")} !important;
+      border: 1px solid ${getCSSVariable("--color-border")} !important;
+    }
+
+    /* Tables */
+    table {
+      background: ${getCSSVariable("--bg-primary")} !important;
+    }
+
+    th {
+      background: ${getCSSVariable("--bg-secondary")} !important;
+    }
+
+    p, li, blockquote, dd {
+      line-height: ${spacing};
+      text-align: ${justify ? 'justify' : 'start'};
+      -webkit-hyphens: ${hyphenate ? 'auto' : 'manual'};
+      hyphens: ${hyphenate ? 'auto' : 'manual'};
+      -webkit-hyphenate-limit-before: 3;
+      -webkit-hyphenate-limit-after: 2;
+      -webkit-hyphenate-limit-lines: 2;
+      hanging-punctuation: allow-end last;
+      widows: 2;
+    }
+    /* prevent the above from overriding the align attribute */
+    [align="left"] { text-align: left; }
+    [align="right"] { text-align: right; }
+    [align="center"] { text-align: center; }
+    [align="justify"] { text-align: justify; }
+    pre {
+      white-space: pre-wrap !important;
+    }
+    aside[epub|type~="endnote"],
+    aside[epub|type~="footnote"],
+    aside[epub|type~="note"],
+    aside[epub|type~="rearnote"] {
+      display: none;
+    }
+  `
 }

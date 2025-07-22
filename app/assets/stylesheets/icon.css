@@ -66,6 +66,10 @@
   mask-image: url(/icons/arrow-left.svg);
 }
 
+.icon--arrow-right::before {
+  mask-image: url(/icons/arrow-right.svg);
+}
+
 .icon--plus-circle-fill::before {
   mask-image: url(/icons/plus-circle-fill.svg);
 }

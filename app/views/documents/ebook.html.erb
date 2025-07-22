@@ -7,10 +7,26 @@
   controller: "ebook",
   ebook_url_value: rails_blob_url(@document.resource.file),
   ebook_cfi_value: @document.progress_identifier
-  }) do %>
-  <%= render "ebook_header", document: @document %>
-  <%= tag.div class: "ebook", data: {
-    ebook_target: "content"
-  } %>
-  <%= render "ebook_footer", document: @document %>
+}) do %>
+  <div class="ebook__section" data-ebook-target="section">
+    <%= render "ebook_header", document: @document %>
+  </div>
+
+  <div class="ebook__container">
+    <div class="ebook__overlay" data-ebook-target="overlay" data-side="left">
+      <div class="btn btn--sm btn--rounded btn--icon icon--arrow-left"></div>
+    </div>
+
+    <%= tag.div class: "ebook", data: {
+      ebook_target: "content"
+    } %>
+
+    <div class="ebook__overlay" data-ebook-target="overlay" data-side="right">
+      <div class="btn btn--sm btn--rounded btn--icon icon--arrow-right"></div>
+    </div>
+  </div>
+
+  <div class="ebook__section" data-ebook-target="section">
+    <%= render "ebook_footer", document: @document %>
+  </div>
 <% end %>
