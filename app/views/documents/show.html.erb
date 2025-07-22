@@ -1,16 +1,13 @@
 <% content_for(:title) { @document.title } %>
 
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
+<% @hide_tabbar = true %>
 
-<div class="page page--document"> 
-  <div id="<%= dom_id(@document) %>" class="flex-item--fill <%= @document.render_type == :ebook ? "content--ebook" : "content" %>">
-    <%= render "header", document: @document unless @document.render_type == :ebook %>
-    <%= render_document(@document) %>
+<div class="page"> 
+  <div id="<%= dom_id @document %>" class="flex-item--fill content">
+    <%= render "header", document: @document %>
+    <%= render_document @document %>
   </div>
 
-  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) unless @document.render_type == :ebook %>
+  <%= turbo_frame_tag :document_toolbar, src: toolbar_document_path(@document) %>
 </div>
 
-<% @hide_tabbar = true %>

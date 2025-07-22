@@ -2,7 +2,7 @@ html {
 	font-size: 16px;
   background: var(--bg-primary);
 
-  &:has(#navbar) {
+  &:has(#navbar:not(.hide)) {
     padding-top: var(--navbar-padding);
     scroll-padding-top: var(--navbar-padding);
   }
@@ -23,7 +23,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--navbar-padding));
+  min-height: calc(100dvh - var(--navbar-padding));
   margin: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 

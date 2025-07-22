@@ -1,0 +1,16 @@
+<% content_for(:title) { @document.title } %>
+
+<% @hide_navbar = true %>
+<% @hide_tabbar = true %>
+
+<%= tag.div(data: {
+  controller: "ebook",
+  ebook_url_value: rails_blob_url(@document.resource.file),
+  ebook_cfi_value: @document.progress_identifier
+  }) do %>
+  <%= render "ebook_header", document: @document %>
+  <%= tag.div class: "ebook", data: {
+    ebook_target: "content"
+  } %>
+  <%= render "ebook_footer", document: @document %>
+<% end %>

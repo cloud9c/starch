@@ -23,16 +23,17 @@
     <%= yield :head %>
   </head>
 
-  <body data-controller="<%="shortcut detect-scroll" if authenticated? %>" class="<%= "native" if hotwire_native_app?%>">
+  <body data-controller="shortcut detect-scroll" class="<%= "native" if hotwire_native_app?%>">
     <%= render "layouts/flash" %>
+
     <% if authenticated? %>
-      <% unless @hide_navbar %>
-        <%= render('layouts/navbar') %>
-      <% end %>
+      <%= render('layouts/navbar', class: (@hide_navbar ? 'hide' : '')) %>
     <% end %>
+
     <main class="main">
       <%= yield %>
     </main>
+
     <% if authenticated? %>
       <% unless @hide_tabbar %>
         <%= render('layouts/tabbar') %>

@@ -40,41 +40,24 @@ module DocumentsHelper
       fallback_icon = "icons/file.svg"
     end
 
-    content_tag :div, class: "source-container" do
+    tag.div class: "source-container" do
       picture = capture do
-        content_tag :picture do
-          source_tag = icon.present? ? content_tag(:source, "", srcset: icon) : ""
+        tag.picture do
+          source_tag = icon.present? ? tag.source(srcset: icon) : ""
           image_tag_html = image_tag(fallback_icon, width: 24)
           (source_tag + image_tag_html).html_safe
         end
       end
 
       concat picture
-      concat content_tag(:span, title)
-    end
-  end
-
-  def render_header(document)
-    content_tag :header, class: "document__header" do
-      source_container(document) +
-      content_tag(:hgroup) do
-        content_tag :h1, class: "document__title" do
-          link_to document.title, document.url, target: "_blank"
-        end
-      end +
-      content_tag(:div, class: "document__metadata-row") do
-        content_tag(:span, document.author) +
-        if document.published_at
-          content_tag(:span, local_time(document.published_at, "%b %d, %Y"))
-        else
-          "".html_safe
-        end
-      end
+      concat tag.span title
     end
   end
 
   def render_document(document)
-    wrap_content(document) do
+    tag.article(
+      class: container_classes(document.render_type),
+      data: container_data(document)) do
       case document.render_type
       when :youtube
         render_youtube(document)
@@ -87,13 +70,6 @@ module DocumentsHelper
   end
 
   private
-    def wrap_content(document)
-      content_tag :article, class: container_classes(document.render_type),
-        data: container_data(document) do
-        yield if block_given?
-      end
-    end
-
     def container_data(document)
       case document.render_type
       when :html
@@ -106,12 +82,6 @@ module DocumentsHelper
           controller: "youtube",
           youtube_start_value: document.progress_identifier
         }
-      when :ebook
-        {
-          controller: "ebook",
-          ebook_url_value: rails_blob_url(document.resource.file),
-          ebook_cfi_value: document.progress_identifier
-        }
       end
     end
 
@@ -120,11 +90,9 @@ module DocumentsHelper
 
       case render_type
       when :html
-        classes << "typography document__container--html"
+        classes << "html"
       when :email
-        classes << "document__container--email"
-      when :ebook
-        classes << "document__container--ebook"
+        classes << "email"
       end
 
       classes.join(" ")
@@ -135,7 +103,7 @@ module DocumentsHelper
     end
 
     def render_youtube(document)
-      content_tag :div, nil, id: "video-container", data: {
+      tag.div id: "video-container", data: {
         youtube_id: document.youtube_id
       }
     end
@@ -157,7 +125,7 @@ module DocumentsHelper
 
       html = head_html + document.content
 
-      content_tag :iframe, nil, srcdoc: html, class: "document__container--iframe",
+      tag.iframe nil, srcdoc: html, class: "email--iframe",
         sandbox: "allow-same-origin allow-scripts allow-popups",
         onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
     end

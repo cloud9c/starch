@@ -7,9 +7,9 @@ module LayoutsHelper
     days_remaining = (Current.user.created_at + 30.days - Time.current).to_i / 1.day
 
     link_to user_billing_path, id: "trial-banner" do
-      content_tag(:span, "You have", class: "desktop-only") +
+      tag.span("You have", class: "desktop-only") +
       " #{days_remaining} days left on your free trial. " +
-      content_tag(:span, "Let's pay for Starch »")
+      tag.span("Let's pay for Starch »")
     end
   end
 
@@ -20,7 +20,7 @@ module LayoutsHelper
       { url: inbox_path, text: "Inbox" }
     end
 
-    content_tag(:div, id: "navbar__left") do
+    tag.div(id: "navbar__left") do
       back_link_content = if back_link_config
         link_to back_link_config[:text],
           back_link_config[:url],
@@ -33,10 +33,9 @@ module LayoutsHelper
         ""
       end
 
-      search_content = content_tag(:search,
-                                  class: "searchbar searchbar--transparent #{'hide' if current_page?(controller: :documents, action: :search)}") do
+      search_content = tag.search(class: "searchbar searchbar--transparent #{'hide' if current_page?(controller: :documents, action: :search)}") do
         form_with(url: search_path, method: :get) do |form|
-          content_tag(:div, class: "searchfield-container") do
+          tag.div(class: "searchfield-container") do
             form.search_field :q,
               id: nil,
               autocomplete: "off",
@@ -61,23 +60,23 @@ module LayoutsHelper
       { path: feed_path, icon: "feed", text: "Feed", hotkey: "2" },
       { path: later_path, icon: "later", text: "Later", hotkey: "3" }
     ]
-    content_tag(:ol,
-              id: "navbar__menu",
-              class: "desktop-only") do
-      links.map do |link|
-        is_current = current_page?(link[:path])
-        content_tag(:li) do
-          link_to link[:path],
-                  data: {
-                    controller: "shortcut",
-                    "shortcut-hotkey-value": link[:hotkey]
-                  },
-                  class: "icon icon--#{link[:icon]} text--primary",
-                  "aria-current": (is_current ? "page" : nil) do
-            content_tag(:span, link[:text])
+    tag.ol(id: "navbar__menu", class: "desktop-only") do
+      safe_join(
+        links.map do |link|
+          is_current = current_page?(link[:path])
+          tag.li do
+            link_to link[:path],
+              data: {
+                controller: "shortcut",
+                "shortcut-hotkey-value": link[:hotkey]
+              },
+              class: "icon icon--#{link[:icon]} text--primary",
+              "aria-current": (is_current ? "page" : nil) do
+                tag.span link[:text]
+            end
           end
         end
-      end.join.html_safe
+      )
     end
   end
 
@@ -92,7 +91,7 @@ module LayoutsHelper
   end
 
   def navbar_user
-    content_tag(:div, id: "navbar__user__container") do
+    tag.div id: "navbar__user__container" do
       link_to user_path,
               data: {
                 controller: "shortcut",

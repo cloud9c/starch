@@ -1,9 +1,5 @@
 <% content_for(:title) { "Later" } %>
 
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-
 <div class="document-list page page--tab" data-controller="pagination navbar-user"
                                           data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">
   <h1 class="heading web-only">Later</h1>

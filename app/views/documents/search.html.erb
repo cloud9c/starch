@@ -1,9 +1,5 @@
 <% content_for(:title) { "Search" } %>
 
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-
 <div class="page document-list page--tab" data-controller="pagination" 
      data-pagination-query-value="<%= "q=#{params[:query]}" %>">
     <h1 class="heading web-only">Search</h1>

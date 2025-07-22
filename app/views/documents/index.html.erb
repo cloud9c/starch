@@ -1,9 +1,5 @@
 <% content_for(:title) { "Inbox" } %>
 
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-
 <div class="document-list page page--tab"
   data-controller="pagination navbar-search navbar-user" data-bridge-placeholder="Search..."
   data-bridge-user-hue="<%= navbar_user_hue %>" data-bridge-user-title="<%= navbar_user_title %>">

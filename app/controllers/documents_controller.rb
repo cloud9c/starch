@@ -69,6 +69,8 @@ class DocumentsController < ApplicationController
   def show
     @document = Current.user.documents.find(params[:id]).with_view_preferences
     @document.update(read: true)
+
+    render :ebook if @document.render_type == :ebook
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: "Document not found"
   end

@@ -8,21 +8,82 @@ export default class extends Controller {
     cfi: String
   }
 
+  static targets = ["progressSlider", "content", "progressStepList", "header", "footer"]
+
   async connect() {
     this.view = document.createElement("foliate-view")
-    this.element.appendChild(this.view)
+    const book = this.view
+    this.contentTarget.appendChild(book)
 
     document.addEventListener("keydown", this.onKeydown.bind(this))
     this.view.addEventListener("click", this.onClick.bind(this))
     this.view.addEventListener("load", this.onLoad.bind(this))
     this.view.addEventListener("relocate", this.onRelocate.bind(this))
 
-    await this.view.open(this.urlValue)
+    await book.open(this.urlValue)
+    this.setupControls()
 
     if (this.cfiValue) {
-      await this.view.goTo(this.cfiValue)
+      await book.goTo(this.cfiValue)
     } else {
-      await this.view.renderer.next()
+      await book.renderer.next()
+    }
+  }
+
+  setupControls() {
+    let hideTimeout
+    const header = this.headerTarget
+    const footer = this.footerTarget
+
+    const showControls = () => {
+      console.log("here")
+      clearTimeout(hideTimeout)
+      header.style.opacity = '1'
+      footer.style.opacity = '1'
+      header.style.transition = 'opacity 0.1s linear'
+      footer.style.transition = 'opacity 0.1s linear'
+    }
+
+    const hideControls = () => {
+      header.style.opacity = '0'
+      footer.style.opacity = '0'
+      header.style.transition = 'opacity 0.1s linear'
+      footer.style.transition = 'opacity 0.1s linear'
+    }
+
+    // Add event listeners
+    header.addEventListener('mouseenter', showControls)
+    header.addEventListener('mouseleave', hideControls)
+    footer.addEventListener('mouseenter', showControls)
+    footer.addEventListener('mouseleave', hideControls)
+
+    // Progress slider
+    const progressSlider = this.progressSliderTarget
+    progressSlider.dir = this.view.dir
+    progressSlider.addEventListener('input', e =>
+        this.view.goToFraction(parseFloat(e.target.value)))
+
+    progressSlider.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    })
+
+    // Progress step list
+    const stepList = this.progressStepListTarget
+    const sectionFractions = this.view.getSectionFractions().filter(fraction => {
+      return fraction >= 0 && fraction <= 1
+    })
+
+    for (const fraction of sectionFractions) {
+      const option = document.createElement("option")
+      option.value = fraction
+      stepList.append(option)
+
+      const visualOption = document.createElement("div")
+      visualOption.style.setProperty("--position", `${fraction * 100}%`)
+      stepList.append(visualOption)
     }
   }
 
@@ -32,6 +93,8 @@ export default class extends Controller {
 
   onRelocate({ detail: { fraction, cfi, location } }) {
     clearTimeout(this.progressTimeout)
+
+    this.progressSliderTarget.value = fraction
 
     this.progressTimeout = setTimeout(() => {
       const isDoublePage = window.innerWidth > window.innerHeight
@@ -45,7 +108,6 @@ export default class extends Controller {
   }
 
   onClick(event) {
-    console.log("here")
   }
 
   async updateProgress(progress, progressIdentifier) {

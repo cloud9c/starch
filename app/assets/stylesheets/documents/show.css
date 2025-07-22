@@ -37,7 +37,7 @@
     height: auto;
   }
 
-  #video-container iframe {
+  #video-container {
     display: flex;
     justify-content: center;
     margin-bottom: 2em;
@@ -46,28 +46,18 @@
   }
 }
 
-.document__container--html {
+.html {
   padding-bottom: 2em;
 }
 
-.document__container--email {
+.email {
   padding: var(--page-padding) var(--page-padding) 2em;
 }
 
-.document__container--iframe {
+.email--iframe {
   background: white;
   display: block;
   border: none;
   width: 100%;
   height: 0px;
-}
-
-.document__container--ebook  {
-  height: 80vh;
-  background: white;
-  width: 100%;
-}
-
-.content--ebook {
-  width: var(--navbar-width);
 }

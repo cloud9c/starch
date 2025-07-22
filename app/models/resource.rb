@@ -28,8 +28,7 @@ class Resource < ApplicationRecord
   }.freeze
   SUPPORTED_MIME_TYPES = MIME_TYPE_LOOKUP.keys.freeze
 
-  FILE_SIZE_LIMIT = 10.megabytes
-  USER_STORAGE_LIMIT = 100.megabytes
+  FILE_SIZE_LIMIT = 100.megabytes
 
   require "zip"
   def serve_file(file_path)
@@ -71,9 +70,9 @@ class Resource < ApplicationRecord
 
       total_after_upload = current_total + new_file_size
 
-      if total_after_upload > USER_STORAGE_LIMIT
-        remaining = USER_STORAGE_LIMIT - current_total
-        errors.add(:file, "would exceed storage limit. You have #{remaining / 1.megabyte}MB remaining of your #{USER_STORAGE_LIMIT / 1.megabyte}MB limit")
+      if total_after_upload > User::STORAGE_LIMIT
+        remaining = User::STORAGE_LIMIT - current_total
+        errors.add(:file, "would exceed storage limit. You have #{remaining / 1.megabyte}MB remaining of your #{User::STORAGE_LIMIT / 1.megabyte}MB limit")
       end
     end
 

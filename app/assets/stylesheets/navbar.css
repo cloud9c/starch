@@ -30,10 +30,6 @@
     }
   }
 
-  .searchbar {
-    margin-right: 2em;
-  }
-
   #navbar__left {
     display: flex;
     gap: 1em;

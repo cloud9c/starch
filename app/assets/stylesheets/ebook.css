@@ -1,0 +1,61 @@
+.ebook  {
+  height: 100dvh;
+  width: 100%;
+  background: white;
+}
+
+.ebook__header, .ebook__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 2em;
+  padding: 0 var(--page-padding);
+  position: fixed;
+  width: 100%;
+  background: var(--bg-primary);
+  box-shadow: 0 0 4px var(--color-shadow);
+  opacity: 0;
+  z-index: 10;
+}
+
+.ebook__header {
+  top: 0;
+  h1 {
+    font-size: var(--text-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ebook__footer {
+  bottom: 0;
+}
+
+.ebook__progress_slider {
+  width: 100%;
+  background: transparent;
+  z-index: 20;
+}
+
+.ebook__progress_slider::-webkit-slider-track,
+.ebook__progress_slider::-moz-range-track {
+  background: var(--color-primary);
+  height: 2px;
+}
+
+#progress_step_list {
+  display: block;
+  position: absolute;
+  width: calc(100vw - 2*var(--page-padding));
+  margin: 0 var(--page-padding);
+
+  div {
+    width: 2px;
+    height: 6px;
+    background: var(--color-text);
+    position: absolute;
+    left: var(--position);
+  }
+}

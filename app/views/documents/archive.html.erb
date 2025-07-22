@@ -1,9 +1,5 @@
 <% content_for(:title) { "Archive" } %>
 
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-
 <div class="document-list page" data-controller="pagination">
   <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
   <h1 class="heading web-only">Archive</h1>

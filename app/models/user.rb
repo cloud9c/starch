@@ -15,8 +15,15 @@ class User < ApplicationRecord
 
   scope :unverified, -> { where(verified_at: nil) }
 
+  STORAGE_LIMIT = 1000.megabytes
+
   def total_storage_used
-    resources.joins(file_attachment: :blob)
-             .sum("active_storage_blobs.byte_size")
+    resource_storage = resources.joins(file_attachment: :blob)
+                                .sum("active_storage_blobs.byte_size")
+
+    document_storage = documents.joins(file_attachment: :blob)
+                                .sum("active_storage_blobs.byte_size")
+
+    resource_storage + document_storage
   end
 end
