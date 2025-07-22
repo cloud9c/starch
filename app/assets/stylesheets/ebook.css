@@ -14,7 +14,6 @@
   margin: 2rem 0;
   width: 100%;
   transform-origin: center;
-
   transition: transform 0.05s linear;
 
   .ebook__container[data-paused] & {
@@ -33,11 +32,11 @@
   transition: opacity 0.05s linear;
 
   &:has(.ebook__header) {
-    top: 0;
+    top: env(safe-area-inset-top, 0);
   }
 
   &:has(.ebook__footer) {
-    bottom: 0;
+    bottom: env(safe-area-inset-bottom, 0);
   }
 
   @media(max-width: 100ch) {
@@ -80,7 +79,7 @@
 
 .ebook__footer {
   margin-top: auto;
-  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0);
 }
 
 .ebook__progress_slider {
