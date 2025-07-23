@@ -19,6 +19,14 @@
   .ebook__container[data-paused] & {
     transform: scale(0.9);
   }
+
+  .native & {
+    transform-origin: top;
+  }
+
+  .native .ebook__container[data-paused] & {
+    transform: scale(0.95);
+  }
 }
 
 .ebook__section {
@@ -45,6 +53,10 @@
 
   .ebook__container[data-paused] & {
     opacity: 1 !important;
+  }
+
+  body.native &:has(.ebook__header) {
+    display: none;
   }
 }
 
