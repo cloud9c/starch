@@ -17,7 +17,7 @@
   transition: transform 0.05s linear;
 
   .ebook__container[data-paused] & {
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
 
   .native & {

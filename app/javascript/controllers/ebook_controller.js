@@ -27,6 +27,7 @@ export default class extends Controller {
 
     book.renderer.setAttribute("margin", "0px");
     book.renderer.setAttribute("gap", "2%");
+    book.renderer.setAttribute("max-column-count", "2");
 
     this.setStyles()
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
