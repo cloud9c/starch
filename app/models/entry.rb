@@ -9,7 +9,7 @@ class Entry < ApplicationRecord
   before_validation :add_attributes_from_parsed_entry
   validates :stable_id, presence: true, uniqueness: true
   validates :feed, presence: true
-  after_create :add_to_inbox
+  after_create :add_to_subscriptions
 
   scope :recent, ->(limit = 5) { order(published_at: :desc).limit(limit).reverse }
 
@@ -21,17 +21,16 @@ class Entry < ApplicationRecord
       self.published_at = parsed_entry.published || Time.current
     end
 
-    def add_to_inbox
+    def add_to_subscriptions
       return unless parsed_entry.present?
 
       document_attributes = Entry.extract_document_attributes(parsed_entry)
       return if document_attributes[:published_at] < feed.created_at
 
-      users = subscriptions.where(to_inbox: true).includes(:user).map(&:user).uniq
-      users.each do |user|
+      subscriptions.includes(:user).each do |subscription|
         documents.create!(**document_attributes,
-          status: :inbox,
-          user_id: user.id)
+          status: subscription.to_inbox ? :inbox : :feed,
+          user_id: subscription.user.id)
       end
     end
 
