@@ -51,7 +51,9 @@
 }
 
 .email {
-  padding: var(--page-padding) var(--page-padding) 2em;
+  width: calc(100% + 2 * var(--page-padding));
+  margin: 0 calc(-1 * var(--page-padding));
+  padding-bottom: 2em;
 }
 
 .email--iframe {
@@ -59,5 +61,5 @@
   display: block;
   border: none;
   width: 100%;
-  height: 0px;
+  height: 100vh;
 }

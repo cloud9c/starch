@@ -119,6 +119,7 @@ module DocumentsHelper
               all: unset;
               display: revert;
           }
+          html, body { overflow: hidden; }
         </style>
         <base target="_blank" >
       HTML
@@ -127,6 +128,6 @@ module DocumentsHelper
 
       tag.iframe nil, srcdoc: html, class: "email--iframe",
         sandbox: "allow-same-origin allow-scripts allow-popups",
-        onload: "this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'"
+        onload: "this.style.height = this.contentWindow.document.body.scrollHeight + 'px'"
     end
 end
