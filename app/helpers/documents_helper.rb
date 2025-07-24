@@ -120,6 +120,9 @@ module DocumentsHelper
               display: revert;
           }
           html, body { overflow: hidden; }
+          body {
+            padding: 16px;
+          }
         </style>
         <base target="_blank" >
       HTML
