@@ -18,12 +18,6 @@ class User < ApplicationRecord
   STORAGE_LIMIT = 1000.megabytes
 
   def total_storage_used
-    resource_storage = resources.joins(file_attachment: :blob)
-                                .sum("active_storage_blobs.byte_size")
-
-    document_storage = documents.joins(file_attachment: :blob)
-                                .sum("active_storage_blobs.byte_size")
-
-    resource_storage + document_storage
+    resources.with_attached_file.sum { |resource| resource.file.byte_size }
   end
 end
