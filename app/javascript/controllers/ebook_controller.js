@@ -69,6 +69,11 @@ export default class extends Controller {
     doc.addEventListener("mouseup", this.onMouseUp.bind(this))
   }
 
+  updateProgressSliderTrack(target) {
+    const value = (target.value-target.min)/(target.max-target.min)*100
+    target.style.background = 'linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ' + value + '%, #fff ' + value + '%, white 100%)'
+  }
+
   setupControls() {
     // Toggle header/footer visibility on hover
     const sections = this.sectionTargets
@@ -81,8 +86,11 @@ export default class extends Controller {
     // Progress slider
     const progressSlider = this.progressSliderTarget
     progressSlider.dir = this.view.dir
-    progressSlider.addEventListener('input', e =>
-        this.view.goToFraction(parseFloat(e.target.value)))
+
+    progressSlider.addEventListener('input', e => {
+      this.view.goToFraction(parseFloat(e.target.value))
+      this.updateProgressSliderTrack(e.target)
+    })
 
     progressSlider.addEventListener('keydown', e => {
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
@@ -90,6 +98,9 @@ export default class extends Controller {
         e.stopPropagation()
       }
     })
+    progressSlider.addEventListener("input",  function() {
+
+    });
 
     // Progress step list
     const stepList = this.progressStepListTarget
@@ -112,6 +123,7 @@ export default class extends Controller {
     clearTimeout(this.progressTimeout)
 
     this.progressSliderTarget.value = fraction
+    this.updateProgressSliderTrack(this.progressSliderTarget)
 
     this.progressTimeout = setTimeout(() => {
       const isDoublePage = window.innerWidth > window.innerHeight

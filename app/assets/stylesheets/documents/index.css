@@ -15,7 +15,7 @@
 
   #inbox__read-section {
     flex: 1;
-    border-top: 2px dashed var(--color-border);
+    border-top: 3px dashed var(--color-border);
     background: var(--bg-secondary);
 
     .document-list__title-row {

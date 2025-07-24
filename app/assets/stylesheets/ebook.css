@@ -11,7 +11,7 @@
 }
 
 .ebook {
-  margin: 2rem 0;
+  margin: 4rem 0;
   width: 100%;
   transform-origin: center;
   transition: transform 0.05s linear;
@@ -96,14 +96,27 @@
 
 .ebook__progress_slider {
   width: 100%;
-  background: transparent;
   z-index: 20;
+  height: 2px;
 }
 
-.ebook__progress_slider::-webkit-slider-runnable-track,
-.ebook__progress_slider::-moz-range-track {
-  background: var(--color-primary);
-  height: 2px;
+.ebook__progress_slider::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--color-text);
+  cursor: pointer;
+}
+
+.ebook__progress_slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: 2px solid var(--color-text);
 }
 
 #progress_step_list {
