@@ -95,7 +95,7 @@ class DocumentsController < ApplicationController
     files = params[:files]
 
     files.each do |file|
-      Current.user.resources.create!(
+      Current.user.resources.create(
         file: file
       )
     end
