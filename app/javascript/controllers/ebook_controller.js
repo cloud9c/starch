@@ -103,20 +103,20 @@ export default class extends Controller {
     });
 
     // Progress step list
-    const stepList = this.progressStepListTarget
-    const sectionFractions = this.view.getSectionFractions().filter(fraction => {
-      return fraction >= 0 && fraction <= 1
-    })
-
-    for (const fraction of sectionFractions) {
-      const option = document.createElement("option")
-      option.value = fraction
-      stepList.append(option)
-
-      const visualOption = document.createElement("div")
-      visualOption.style.setProperty("--position", `${fraction * 100}%`)
-      stepList.append(visualOption)
-    }
+    // const stepList = this.progressStepListTarget
+    // const sectionFractions = this.view.getSectionFractions().filter(fraction => {
+    //   return fraction >= 0 && fraction <= 1
+    // })
+    //
+    // for (const fraction of sectionFractions) {
+    //   const option = document.createElement("option")
+    //   option.value = fraction
+    //   stepList.append(option)
+    //
+    //   const visualOption = document.createElement("div")
+    //   visualOption.style.setProperty("--position", `${fraction * 100}%`)
+    //   stepList.append(visualOption)
+    // }
   }
 
   onRelocate({ detail: { fraction, cfi, location } }) {
