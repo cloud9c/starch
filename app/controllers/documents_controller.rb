@@ -25,7 +25,7 @@ class DocumentsController < ApplicationController
     respond_with_pagination(:later, @documents, :append)
   end
 
-  def trash 
+  def trash
     @documents = Document.accessible
       .trash
       .order(updated_at: :desc)
