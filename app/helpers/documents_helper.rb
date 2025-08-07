@@ -90,7 +90,7 @@ module DocumentsHelper
 
       case render_type
       when :html
-        classes << "html"
+        classes << "html typography"
       when :email
         classes << "email"
       end
