@@ -23,12 +23,10 @@ class NewsletterMailbox < ApplicationMailbox
   private
     def extract_content
       html_part = mail.parts.find { |part| part.content_type.include?("text/html") }
+      body = html_part.present? ? html_part.body.decoded : mail.body.decoded
+      encoded_body = body.force_encoding("UTF-8")
 
-      if html_part.present?
-        format_html(html_part.body&.decoded)
-      else
-        mail.body.decoded
-      end
+      html_part.present? ? format_html(encoded_body) : encoded_body
     end
 
     def format_html(html)
