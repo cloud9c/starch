@@ -1,0 +1,8 @@
+FROM ruby:3.4
+
+# Install system dependencies including Poppler
+RUN apt-get update -qq && \
+    apt-get install -y poppler-utils libvips-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app

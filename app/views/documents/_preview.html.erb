@@ -15,7 +15,9 @@
       <p class="document-preview-description"><%= preview.description %></p>
     </div>
     <% if preview.thumbnail_url %>
-        <img class="document-preview-thumbnail" src="<%= preview.thumbnail_url %>" onerror="this.dataset.failed=true"/>
+      <img class="document-preview-thumbnail" src="<%= preview.thumbnail_url %>" onerror="this.dataset.failed=true"/>
+    <% elsif preview.resource? && preview.resource.file.previewable? %>
+      <%= image_tag preview.resource.file.preview(resize_to_limit: [240, 240]), class: "document-preview-thumbnail" %>
     <% end %>
   </div>
 <% end %>

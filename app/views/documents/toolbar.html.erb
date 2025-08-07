@@ -1,7 +1,7 @@
 <turbo-frame id="document_toolbar">
   <%= form_with model: @document, class: "toolbar", data: {controller: "toolbar"} do |form| %>
     <%= form.hidden_field :id, value: params[:id] %>
-    <% Document.statuses.keys.each do |status| %>
+    <% ["inbox", "feed", "later", "archive"].each do |status| %>
       <%= form.button type: :submit, 
       name: "document[status]",
       value: status,

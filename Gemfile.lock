@@ -171,6 +171,9 @@ GEM
       http-2 (>= 1.0.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    image_processing (1.14.0)
+      mini_magick (>= 4.9.5, < 6)
+      ruby-vips (>= 2.0.17, < 3)
     image_size (3.4.0)
     importmap-rails (2.2.0)
       actionpack (>= 6.0.0)
@@ -218,6 +221,8 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
+    mini_magick (5.3.0)
+      logger
     mini_mime (1.1.5)
     minitest (5.25.5)
     mission_control-jobs (1.1.0)
@@ -380,6 +385,9 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    ruby-vips (2.2.4)
+      ffi (~> 1.12)
+      logger
     rubyzip (2.4.1)
     safety_net_attestation (0.4.0)
       jwt (~> 2.0)
@@ -496,6 +504,7 @@ DEPENDENCIES
   feedjira
   hotwire-spark
   httpx
+  image_processing
   image_size (~> 3.4)
   importmap-rails
   invisible_captcha

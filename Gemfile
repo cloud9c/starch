@@ -114,3 +114,6 @@ gem "aws-sdk-s3", require: false
 
 # read zip files
 gem "rubyzip"
+
+# image processing for previews
+gem "image_processing"
