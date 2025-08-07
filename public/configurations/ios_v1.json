@@ -31,7 +31,7 @@
     },
     {
       "patterns": [
-       "/user", "/subscriptions", "/archive"
+       "/user", "/subscriptions", "/trash"
       ],
       "properties": {
         "context": "modal",

@@ -70,7 +70,7 @@ Rails.application.routes.draw do
   controller :documents do
     get "inbox", action: :index, as: :inbox
     get "later", action: :later, as: :later
-    get "archive", action: :archive, as: :archive
+    get "trash", action: :trash, as: :trash
     get "search", action: :search, as: :search
     get "feed", action: :feed, as: :feed
   end

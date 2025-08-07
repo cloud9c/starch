@@ -25,14 +25,14 @@ class DocumentsController < ApplicationController
     respond_with_pagination(:later, @documents, :append)
   end
 
-  def archive
+  def trash 
     @documents = Document.accessible
-      .archive
+      .trash
       .order(updated_at: :desc)
       .then(&paginate)
       .map(&:with_view_preferences)
 
-    respond_with_pagination(:archive, @documents, :append)
+    respond_with_pagination(:trash, @documents, :append)
   end
 
   def feed
@@ -89,6 +89,16 @@ class DocumentsController < ApplicationController
 
     document = Document.find_by!(id: params[:id], user: Current.user)
     document.update(permitted)
+
+    if permitted[:status] == "trash"
+      flash[:notice] = "Document moved to trash"
+    elsif permitted[:status] == "later"
+      flash[:notice] = "Document moved to later"
+    elsif permitted[:status] == "inbox"
+      flash[:notice] = "Document moved to inbox"
+    else
+      head :ok
+    end
   end
 
   def upload

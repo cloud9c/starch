@@ -1,8 +1,8 @@
-<% content_for(:title) { "Archive" } %>
+<% content_for(:title) { "Trash" } %>
 
 <div class="document-list page" data-controller="pagination">
-  <%= link_to "Go back", :back, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
-  <h1 class="heading web-only">Archive</h1>
+  <%= link_to "Go back", user_path, class: "btn btn--outline btn--secondary btn--sm btn--icon icon--arrow-left web-only push--bottom" %>
+  <h1 class="heading web-only">Trash</h1>
   <div class="document-preview-section" id="documents-section">
     <% if @documents.any? %>
       <%= render partial: 'documents/preview', collection: @documents %>

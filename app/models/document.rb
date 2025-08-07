@@ -7,7 +7,7 @@ class Document < ApplicationRecord
 
   before_validation :format_attributes
   validates :content, length: { maximum: CONTENT_LIMIT }
-  enum :status, [ :inbox, :later, :archive, :feed ]
+  enum :status, [ :inbox, :later, :trash, :feed ]
   after_commit :cleanup_source, on: :destroy
 
   def self.accessible

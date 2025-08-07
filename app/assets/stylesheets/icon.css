@@ -50,8 +50,8 @@
   mask-image: url(/icons/later.svg);
 }
 
-.icon--archive::before {
-  mask-image: url(/icons/archive.svg);
+.icon--trash::before {
+  mask-image: url(/icons/trash.svg);
 }
 
 .icon--read::before {
@@ -116,4 +116,12 @@
 
 .icon--page-view::before {
   mask-image: url(/icons/page-view.svg);
+}
+
+.icon--upload::before {
+  mask-image: url(/icons/upload.svg);
+}
+
+.icon--restore::before {
+  mask-image: url(/icons/restore.svg);
 }

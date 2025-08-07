@@ -23,7 +23,7 @@
 
   &.shortcut-hotkey__corner:after {
     position: absolute;
-    top: 0;
-    right: 0.5em;
+    top: 0.25em;
+    right: 1em;
   }
 }
