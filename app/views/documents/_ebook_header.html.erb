@@ -2,7 +2,9 @@
   <%= link_to "", :back, class: "btn btn--icon icon--arrow-left btn--ghost" %>
   <h1 class="flex-item--grow"><%= document.title %></h1>
   <div class="flex flex--align-center flex--gap" style="--gap: 0.6rem">
-    <input type="checkbox" class="toggle icon--page-view" data-ebook-target="flow" checked="true">
+    <% unless document.mime_type == :pdf %>
+      <input type="checkbox" class="toggle icon--page-view" data-ebook-target="flow" checked>
+    <% end %>
     <button class="btn btn--icon btn--ghost icon--fullscreen"
       onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()"></button>
   </div>

@@ -13,7 +13,7 @@ export default class extends Controller {
   async connect() {
     this.view = document.createElement("foliate-view")
     const book = this.view
-    this.contentTarget.appendChild(book)
+    this.contentTarget.prepend(book)
 
     document.addEventListener("keydown", this.onKeydown.bind(this))
     book.addEventListener("load", this.onLoad.bind(this))
@@ -23,7 +23,6 @@ export default class extends Controller {
 
     await book.open(this.urlValue)
 
-    this.setupControls()
     this.setStyles()
 
     if (this.cfiValue) {
@@ -31,10 +30,12 @@ export default class extends Controller {
     } else {
       await book.renderer.next()
     }
+
+    this.setupControls()
   }
 
   setStyles() {
-    const book = this.view;
+    const book = this.view
     book.renderer.setStyles?.(getCSS({
         spacing: 1.4,
         justify: true,
@@ -49,9 +50,11 @@ export default class extends Controller {
     });
 
     // Flow toggle
-    this.flowTarget.addEventListener("change", (e) => {
-      book.renderer.setAttribute("flow", e.target.checked ? "paginated" : "scrolled")
-    })
+    if (this.hasFlowTarget) {
+      this.flowTarget.addEventListener("change", (e) => {
+        book.renderer.setAttribute("flow", e.target.checked ? "paginated" : "scrolled")
+      })
+    }
   }
 
   showControls() {
@@ -141,33 +144,33 @@ export default class extends Controller {
     }, 500)
   }
 
-  onMouseDown(event) {
-    this.mouseStart = { x: event.clientX, y: event.clientY }
+  onMouseDown(e) {
+    this.mouseStart = { x: e.clientX, y: e.clientY }
   }
 
-  onMouseUp(event) {
+  onMouseUp(e) {
     if (this.clickTimeout) {
       clearTimeout(this.clickTimeout)
       this.clickTimeout = null
       return
     }
 
-    const deltaX = Math.abs(event.clientX - this.mouseStart.x)
-    const deltaY = Math.abs(event.clientY - this.mouseStart.y)
+    const deltaX = Math.abs(e.clientX - this.mouseStart.x)
+    const deltaY = Math.abs(e.clientY - this.mouseStart.y)
     if (deltaX > 5 || deltaY > 5) return
 
     this.clickTimeout = setTimeout(() => {
-      this.handleClick(event)
+      this.handleClick(e)
       this.clickTimeout = null
     }, 300)
   }
 
-  handleClick(event) {
+  handleClick(e) {
     this.element.toggleAttribute('data-paused')
   }
 
-  overlayClick(event) {
-    const side = event.currentTarget.dataset.side
+  overlayClick(e) {
+    const side = e.currentTarget.dataset.side
  
     if (side === 'left') {
       this.view.goLeft()
