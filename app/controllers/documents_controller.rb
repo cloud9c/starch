@@ -2,7 +2,7 @@ class DocumentsController < ApplicationController
   include Pagination
 
   def index
-    documents = Current.user.documents
+    documents = Document.accessible
       .inbox
       .order(read: :asc)
       .order(created_at: :desc)
@@ -16,7 +16,7 @@ class DocumentsController < ApplicationController
   end
 
   def later
-    @documents = Current.user.documents
+    @documents = Document.accessible
       .later
       .order(updated_at: :desc)
       .then(&paginate)
@@ -26,7 +26,7 @@ class DocumentsController < ApplicationController
   end
 
   def archive
-    @documents = Current.user.documents
+    @documents = Document.accessible
       .archive
       .order(updated_at: :desc)
       .then(&paginate)
@@ -67,7 +67,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Current.user.documents.find(params[:id]).with_view_preferences
+    @document = Document.accessible.find(params[:id]).with_view_preferences
     @document.update(read: true)
 
     render :ebook if @document.render_type == :ebook
@@ -76,11 +76,11 @@ class DocumentsController < ApplicationController
   end
 
   def toolbar
-    @document = Current.user.documents.find(params[:id]).with_view_preferences
+    @document = Document.accessible.find(params[:id]).with_view_preferences
   end
 
   def read_all
-    Current.user.documents.where(status: :inbox, read: false).update_all(read: true)
+    Document.accessible.where(status: :inbox, read: false).update_all(read: true)
     flash[:notice] = "Marking all as seen"
   end
 

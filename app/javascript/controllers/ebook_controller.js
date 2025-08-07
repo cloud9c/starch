@@ -8,7 +8,7 @@ export default class extends Controller {
     cfi: String
   }
 
-  static targets = ["progressSlider", "content", "progressStepList", "header", "footer", "section", "overlay"]
+  static targets = ["progressSlider", "content", "progressStepList", "header", "footer", "section", "overlay", "flow"]
 
   async connect() {
     this.view = document.createElement("foliate-view")
@@ -24,15 +24,7 @@ export default class extends Controller {
     await book.open(this.urlValue)
 
     this.setupControls()
-
-    book.renderer.setAttribute("margin", "0px");
-    book.renderer.setAttribute("gap", "2%");
-    book.renderer.setAttribute("max-column-count", "2");
-
     this.setStyles()
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-      this.setStyles()
-    });
 
     if (this.cfiValue) {
       await book.goTo(this.cfiValue)
@@ -42,11 +34,24 @@ export default class extends Controller {
   }
 
   setStyles() {
-    this.view.renderer.setStyles?.(getCSS({
+    const book = this.view;
+    book.renderer.setStyles?.(getCSS({
         spacing: 1.4,
         justify: true,
         hyphenate: true,
     }))
+    book.renderer.setAttribute("margin", "16px");
+    book.renderer.setAttribute("gap", "2%");
+    book.renderer.setAttribute("max-column-count", "2");
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      this.setStyles()
+    });
+
+    // Flow toggle
+    this.flowTarget.addEventListener("change", (e) => {
+      book.renderer.setAttribute("flow", e.target.checked ? "paginated" : "scrolled")
+    })
   }
 
   showControls() {

@@ -109,3 +109,11 @@
 .icon--file::before {
   mask-image: url(/icons/file.svg);
 }
+
+.icon--fullscreen::before {
+  mask-image: url(/icons/fullscreen.svg);
+}
+
+.icon--page-view::before {
+  mask-image: url(/icons/page-view.svg);
+}

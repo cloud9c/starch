@@ -10,6 +10,10 @@ class Document < ApplicationRecord
   enum :status, [ :inbox, :later, :archive, :feed ]
   after_commit :cleanup_source, on: :destroy
 
+  def self.accessible
+    Current.user.documents
+  end
+
   private
     def format_attributes
       self.url = UrlUtils.normalize(url) if url.present?

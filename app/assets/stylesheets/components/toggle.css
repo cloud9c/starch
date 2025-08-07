@@ -14,15 +14,15 @@
     align-items: center;
   }
 
-  padding: 0.5em;
+  padding: 0.35em;
   border-radius: 0.375em;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  
+ 
   &::before {
-    background: var(--color-text--subtle);
+    background: var(--color-text);
   }
 
   &[data-checked="true"], &:checked {

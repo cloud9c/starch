@@ -13,20 +13,21 @@
 .ebook {
   margin: 3.5rem 0;
   width: 100%;
-  transform-origin: center;
-  transition: transform 0.05s linear;
 
-  .ebook__container[data-paused] & {
-    transform: scale(0.95);
-  }
-
-  .native & {
-    transform-origin: top;
-  }
-
-  .native .ebook__container[data-paused] & {
-    transform: scale(0.95);
-  }
+  /* transform-origin: center; */
+  /* transition: transform 0.05s linear; */
+  /**/
+  /* .ebook__container[data-paused] & { */
+  /*   transform: scale(0.85); */
+  /* } */
+  /**/
+  /* .native & { */
+  /*   transform-origin: top; */
+  /* } */
+  /**/
+  /* .native .ebook__container[data-paused] & { */
+  /*   transform: scale(0.95); */
+  /* } */
 }
 
 .ebook__section {
@@ -87,11 +88,15 @@
     text-overflow: ellipsis;
     text-align: center;
   }
+
+  border-bottom: 1px solid var(--color-border);
 }
 
 .ebook__footer {
   margin-top: auto;
   bottom: env(safe-area-inset-bottom, 0);
+
+  border-top: 1px solid var(--color-border);
 }
 
 .ebook__progress_slider {
