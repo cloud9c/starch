@@ -2,22 +2,22 @@
   id: dom_id(preview),
   style: "--progress: #{(preview.progress * 100).clamp(0, 100)}%",
   class: "document-preview" do %>
-  <header class="document-preview-header">
+  <header class="document-preview__header">
     <%= source_container(preview) %>
 
     <% if preview.published_at %>
       <%= local_relative_time(preview.published_at, type: 'time-or-date') %>
     <% end %>
   </header>
-  <div class="document-preview-main">
-    <div class="document-preview-left">
-      <h2 class="document-preview-title"><%= preview.title %></h2>
-      <p class="document-preview-description"><%= preview.description %></p>
+  <div class="document-preview__main">
+    <div class="document-preview__left">
+      <h2 class="document-preview__title"><%= preview.title %></h2>
+      <p class="document-preview__description"><%= preview.description %></p>
     </div>
     <% if preview.thumbnail_url %>
-      <img class="document-preview-thumbnail" src="<%= preview.thumbnail_url %>" onerror="this.dataset.failed=true"/>
+      <img class="document-preview__thumbnail" src="<%= preview.thumbnail_url %>" onerror="this.dataset.failed=true"/>
     <% elsif preview.resource? && preview.resource.file.previewable? %>
-      <%= image_tag preview.resource.file.preview(resize_to_limit: [240, 240]), class: "document-preview-thumbnail" %>
+      <%= image_tag preview.resource.file.preview(resize_to_limit: [240, 240]), class: "document-preview__thumbnail", onerror: "this.dataset.failed=true" %>
     <% end %>
   </div>
 <% end %>
