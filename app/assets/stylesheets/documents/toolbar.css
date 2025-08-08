@@ -8,8 +8,6 @@
   padding: 0.25em 0.25em;
   justify-content: center;
 
-  width: min(16rem, 100%);
-
   @media (max-width: 100ch) {
     border-radius: 0.9rem;
   }
@@ -32,7 +30,7 @@
     font-size: var(--text-sm);
     gap: 0.2em;
     align-items: center;
-    width: 100%;
+    width: 7rem;
 
     @media (max-width: 100ch) {
       padding: 0.5em 1em;

@@ -1,7 +1,7 @@
 module ToolbarHelper
   extend self
 
-  def toolbar_toggle(text, icon, status, checkedStatus = nil)
+  def toolbar_toggle(text, icon, status, checkedStatus = status)
     checked = @document.status == status
 
     tag.button type: :submit,
