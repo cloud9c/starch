@@ -36,8 +36,15 @@ class DocumentsController < ApplicationController
   end
 
   def feed
-    @documents = Document.accessible
-      .feed
+    if params[:subscription]
+      documents = Subscription.accessible
+        .find(params[:subscription])
+        .documents
+    else
+      documents = Document.accessible.feed
+    end
+
+    @documents = documents
       .order(published_at: :desc)
       .then(&paginate)
       .map(&:with_view_preferences)
@@ -82,11 +89,11 @@ class DocumentsController < ApplicationController
     document.update(permitted)
 
     if permitted[:status] == "trash"
-      flash[:notice] = "Document moved to trash"
+      flash[:notice] = "Document moved to Trash"
     elsif permitted[:status] == "later"
-      flash[:notice] = "Document moved to later"
+      flash[:notice] = "Document moved to Later"
     elsif permitted[:status] == "inbox"
-      flash[:notice] = "Document moved to inbox"
+      flash[:notice] = "Document moved to Inbox"
     else
       head :ok
     end
