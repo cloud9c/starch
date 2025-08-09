@@ -1,7 +1,7 @@
 module ToolbarHelper
   extend self
 
-  def toolbar_toggle(text, icon, status, checkedStatus = status)
+  def toolbar_toggle(text:, short_text: text, icon:, status:, checked_status: status)
     checked = @document.status == status
 
     tag.button type: :submit,
@@ -14,7 +14,8 @@ module ToolbarHelper
       shortcut_hotkey_value: status[0].downcase,
       checked: checked
     } do
-      text
+      concat tag.span text, class: "toolbar__action__text"
+      concat tag.span short_text, class: "toolbar__action__short_text"
     end
   end
 

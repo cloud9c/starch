@@ -46,13 +46,6 @@
   box-shadow: var(--shadow);
   padding: 1em;
   width: 16rem;
-
-  @media(max-width: 100ch) {
-    left: initial;
-    right: 1rem;
-    bottom: 5rem;
-    position: fixed;
-  }
 }
 
 .action-group--grid {

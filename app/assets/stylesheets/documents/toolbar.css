@@ -47,6 +47,19 @@
   transition: opacity 0.2s ease;
 }
 
+.toolbar__action__short_text {
+  display: none;
+}
+
+@media (max-width: 100ch) {
+  .toolbar__action__text {
+    display: none;
+  }
+  .toolbar__action__short_text {
+    display: initial;
+  }
+}
+
 .body--scrolled-down {
   .toolbar {
     opacity: 0;

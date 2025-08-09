@@ -3,12 +3,25 @@
     turbo: false,
     controller: "toolbar" } do |form| %>
     <%= form.hidden_field :id, value: params[:id] %>
-    <%= toolbar_toggle("Read Later", "later", "later", "inbox") unless @document.status == "trash" %>
+    <%= toolbar_toggle(
+      text: "Read Later",
+      short_text: "Later",
+      icon: "later",
+      status: "later",
+      checked_status: "inbox"
+    ) unless @document.status == "trash" %>
 
     <% if @document.status == "trash" %>
-      <%= toolbar_toggle("Restore to Inbox", "restore", "inbox") %>
+      <%= toolbar_toggle(
+        text: "Restore to Inbox",
+        short_text: "Restore",
+        icon: "restore",
+        status: "inbox") %>
     <% else %>
-      <%= toolbar_toggle("Trash", "trash", "trash") %>
+      <%= toolbar_toggle(
+        text: "Trash",
+        icon: "trash",
+        status: "trash") %>
     <% end %>
 
     <% unless @document.status == "trash" %>

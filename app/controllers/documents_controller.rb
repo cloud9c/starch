@@ -90,7 +90,6 @@ class DocumentsController < ApplicationController
     document.update(permitted)
 
     if permitted[:status]
-
       case permitted[:status]
       when "trash" then flash[:notice] = "Document deleted"
       when "later" then flash[:notice] = "Document moved to Later"
