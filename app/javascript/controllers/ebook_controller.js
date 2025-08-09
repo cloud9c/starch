@@ -169,9 +169,9 @@ export default class extends Controller {
 
     const percentageX = e.screenX / window.innerWidth
 
-    if (percentageX > 0.80) {
+    if (percentageX <= 0.20) {
       this.view.goLeft()
-    } else if (percentageX < 0.20) {
+    } else if (percentageX >= 0.80) {
       this.view.goRight()
     } else {
       this.element.toggleAttribute('data-paused')
