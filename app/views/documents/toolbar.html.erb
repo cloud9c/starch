@@ -1,7 +1,7 @@
 <turbo-frame id="document_toolbar" target="_top">
   <%= form_with model: @document, class: "toolbar", data: {
-    controller: "toolbar",
-    action: "turbo:submit-end->toolbar#next"} do |form| %>
+    turbo: false,
+    controller: "toolbar" } do |form| %>
     <%= form.hidden_field :id, value: params[:id] %>
     <%= toolbar_toggle("Read Later", "later", "later", "inbox") unless @document.status == "trash" %>
 

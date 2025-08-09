@@ -11,7 +11,7 @@ module ToolbarHelper
     "aria-label": text,
     data: {
       controller: "shortcut",
-      "shortcut-hotkey-value": status[0].downcase,
+      shortcut_hotkey_value: status[0].downcase,
       checked: checked
     } do
       text
@@ -21,7 +21,7 @@ module ToolbarHelper
   def toolbar_move
     tag.details class: "shortcut-hotkey shortcut-hotkey__corner relative", data: {
         controller: "shortcut",
-        "shortcut-hotkey-value": "m"
+        shortcut_hotkey_value: "m"
       } do
       concat tag.summary "Move", "aria-label": "Move",
         class: "toggle icon--move toolbar__action"
@@ -47,7 +47,7 @@ module ToolbarHelper
     "aria-label": "Move to #{status.capitalize}",
     data: {
       controller: "shortcut",
-      "shortcut-hotkey-value": status[0].downcase,
+      shortcut_hotkey_value: status[0].downcase,
       checked: checked
     } do
       status.capitalize

@@ -86,14 +86,26 @@ class DocumentsController < ApplicationController
     permitted = params.expect(document: [ :status, :progress, :progress_identifier ])
 
     document = Document.find_by!(id: params[:id], user: Current.user)
+    old_status = document.status
     document.update(permitted)
 
-    case permitted[:status]
-    when "trash" then flash[:notice] = "Document deleted"
-    when "later" then flash[:notice] = "Document moved to Later"
-    when "inbox" then flash[:notice] = "Document moved to Inbox"
-    when "feed" then flash[:notice] = "Document moved to Feed"
-    else head :ok
+    if permitted[:status]
+
+      case permitted[:status]
+      when "trash" then flash[:notice] = "Document deleted"
+      when "later" then flash[:notice] = "Document moved to Later"
+      when "inbox" then flash[:notice] = "Document moved to Inbox"
+      when "feed" then flash[:notice] = "Document moved to Feed"
+      end
+
+      case old_status
+      when "trash" then redirect_path = trash_path
+      when "later" then redirect_path = later_path
+      when "inbox" then redirect_path = inbox_path
+      when "feed" then redirect_path = feed_path
+      end
+
+      recede_or_redirect_to redirect_path, status: :see_other
     end
   end
 
