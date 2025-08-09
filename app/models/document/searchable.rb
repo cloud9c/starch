@@ -20,7 +20,7 @@ module Document::Searchable
         query_by: "title,description,content",
         per_page: options[:per_page],
         page: options[:page],
-        filter_by: "user_id=[#{Current.user_or_raise!.id}]",
+        filter_by: "user_id:=#{Current.user_or_raise!.id}",
         include_fields: "id"
       }
 
