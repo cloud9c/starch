@@ -73,6 +73,7 @@ export default class extends Controller {
   async updateProgress() {
     if (!this.player) return
 
+    const ended = this.player.getPlayerState() === YT.PlayerState.ENDED
     const progress = ended ? 1 : this.player.getCurrentTime() / this.player.getDuration()
     const progressIdentifier = ended ? 0 : Math.floor(this.player.getCurrentTime())
 
