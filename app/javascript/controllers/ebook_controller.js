@@ -166,7 +166,6 @@ export default class extends Controller {
   }
 
   handleClick(e) {
-
     const percentageX = e.screenX / window.innerWidth
 
     if (percentageX <= 0.20) {

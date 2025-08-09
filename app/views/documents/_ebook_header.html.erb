@@ -3,7 +3,7 @@
   <h1 class="flex-item--grow"><%= document.title %></h1>
   <div class="flex flex--align-center flex--gap" style="--gap: 0.6rem">
     <% unless document.mime_type == :pdf %>
-      <input type="checkbox" class="toggle icon--page-view" data-ebook-target="flow" checked>
+      <input type="checkbox" class="toggle icon--page-view" data-ebook-target="flow" checked="true">
     <% end %>
     <button class="btn btn--icon btn--ghost icon--fullscreen"
       onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()"></button>
