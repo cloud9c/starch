@@ -74,9 +74,6 @@
   height: 3rem;
   padding: 0 var(--page-padding);
 
-  background: var(--bg-secondary);
-  box-shadow: 0 0 4px var(--color-shadow);
-
   pointer-events: auto;
 
   @media(max-width: 100ch) {
@@ -92,15 +89,11 @@
     text-overflow: ellipsis;
     text-align: center;
   }
-
-  border-bottom: 1px solid var(--color-border);
 }
 
 .ebook__footer {
   margin-top: auto;
   bottom: env(safe-area-inset-bottom, 0);
-
-  border-top: 1px solid var(--color-border);
 }
 
 .ebook__progress_slider {

@@ -78,6 +78,8 @@
 
   --filter-text--subtle: invert(40%) sepia(0%) saturate(14%) hue-rotate(192deg) brightness(93%) contrast(88%);
 
+  --shadow: 0 0 1em var(--color-shadow);
+
   @media (prefers-color-scheme: dark) {
     & {
       --color-shadow: oklch(var(--lch-black));

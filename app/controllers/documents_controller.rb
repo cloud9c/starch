@@ -88,14 +88,12 @@ class DocumentsController < ApplicationController
     document = Document.find_by!(id: params[:id], user: Current.user)
     document.update(permitted)
 
-    if permitted[:status] == "trash"
-      flash[:notice] = "Document moved to Trash"
-    elsif permitted[:status] == "later"
-      flash[:notice] = "Document moved to Later"
-    elsif permitted[:status] == "inbox"
-      flash[:notice] = "Document moved to Inbox"
-    else
-      head :ok
+    case permitted[:status]
+    when "trash" then flash[:notice] = "Document deleted"
+    when "later" then flash[:notice] = "Document moved to Later"
+    when "inbox" then flash[:notice] = "Document moved to Inbox"
+    when "feed" then flash[:notice] = "Document moved to Feed"
+    else head :ok
     end
   end
 

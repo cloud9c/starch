@@ -166,7 +166,16 @@ export default class extends Controller {
   }
 
   handleClick(e) {
-    this.element.toggleAttribute('data-paused')
+
+    const percentageX = e.screenX / window.innerWidth
+
+    if (percentageX > 0.80) {
+      this.view.goLeft()
+    } else if (percentageX < 0.20) {
+      this.view.goRight()
+    } else {
+      this.element.toggleAttribute('data-paused')
+    }
   }
 
   overlayClick(e) {

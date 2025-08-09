@@ -125,3 +125,7 @@
 .icon--restore::before {
   mask-image: url(/icons/restore.svg);
 }
+
+.icon--move::before {
+  mask-image: url(/icons/move.svg);
+}

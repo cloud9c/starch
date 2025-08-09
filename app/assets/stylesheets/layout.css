@@ -90,7 +90,7 @@
   background: var(--color-text);
   color: var(--color-text--reversed);
   border-radius: 2em;
-  box-shadow: 0 0 1em var(--color-shadow);
+  box-shadow: var(--shadow);
   opacity: 0;
   animation: fadeInOut 4s linear forwards;
   pointer-events: auto;

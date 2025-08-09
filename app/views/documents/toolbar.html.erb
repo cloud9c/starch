@@ -10,5 +10,9 @@
     <% else %>
       <%= toolbar_toggle("Trash", "trash", "trash") %>
     <% end %>
+
+    <% unless @document.status == "trash" %>
+      <%= toolbar_move %>
+    <% end %>
   <% end %>
 </turbo-frame>
