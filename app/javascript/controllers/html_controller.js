@@ -11,6 +11,10 @@ export default class extends Controller {
   }
 
   connect() {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     this.abortController = new AbortController()
     this.connectListeners()
 
@@ -68,17 +72,19 @@ export default class extends Controller {
   }
 
   scrollToProgress() {
-    const viewportHeight = window.innerHeight
-    const elementHeight = this.element.offsetHeight
-    const elementTop = this.element.offsetTop
+    requestAnimationFrame(() => {
+      const viewportHeight = window.innerHeight
+      const elementHeight = this.element.offsetHeight
+      const elementTop = this.element.offsetTop
 
-    if (this.isSmallElement(elementHeight, viewportHeight)) {
-      window.scrollTo({ top: elementTop })
-    } else {
-      const scrollRange = elementHeight - viewportHeight
-      let targetScroll = elementTop + (this.progressValue * scrollRange)
-      window.scrollTo({ top: targetScroll })
-    }
+      if (this.isSmallElement(elementHeight, viewportHeight)) {
+        window.scrollTo({ top: elementTop })
+      } else {
+        const scrollRange = elementHeight - viewportHeight
+        let targetScroll = elementTop + (this.progressValue * scrollRange)
+        window.scrollTo({ top: targetScroll })
+      }
+    });
   }
 
   connectListeners() {

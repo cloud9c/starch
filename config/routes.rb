@@ -55,7 +55,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :documents do
+  resources :documents, except: [:index] do
     member do
       get :preview
       get :toolbar
