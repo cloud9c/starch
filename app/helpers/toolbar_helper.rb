@@ -6,7 +6,7 @@ module ToolbarHelper
 
     tag.button type: :submit,
     name: "document[status]",
-    value: checked ? checkedStatus : status,
+    value: checked ? checked_status : status,
     class: "toggle icon--#{icon} shortcut-hotkey shortcut-hotkey__corner toolbar__action",
     "aria-label": text,
     data: {
