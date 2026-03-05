@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
 
       - name: Build reading_parser image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./reading_parser
           push: true
